@@ -1,0 +1,13 @@
+{
+  "fileName": "professional-backup-2025-07-06T11-17-23-933Z.sql",
+  "filePath": "/home/runner/workspace/backend/domains/database-backup-restore/backups/professional-backup-2025-07-06T11-17-23-933Z.sql",
+  "fileSize": "0.07 MB",
+  "checksum": "302e4cf73b6c0b98",
+  "type": "logical",
+  "tableCount": 33,
+  "duration": "7.8s",
+  "createdAt": "2025-07-06T11:17:32.065Z",
+  "databaseUrl": "neondb",
+  "host": "ep-delicate-mountain-af9oz5qi.c-2.us-west-2.aws.neon.tech",
+  "method": "pg_dump"
+}

@@ -1,0 +1,148 @@
+wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ImageManagementHub.tsx:45  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:45
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:45  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:45
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:45  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:45
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ImageManagementHub.tsx:45  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:45
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ImageManagementHub.tsx:45  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:45
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+fetch @ queryObserver.js:164
+refetch @ queryObserver.js:154
+onFocus @ query.js:119
+eval @ queryCache.js:90
+eval @ queryCache.js:89
+batch @ notifyManager.js:46
+onFocus @ queryCache.js:88
+eval @ queryClient.js:43
+await in eval
+eval @ focusManager.js:60
+onFocus @ focusManager.js:59
+eval @ focusManager.js:46
+listener @ focusManager.js:19Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

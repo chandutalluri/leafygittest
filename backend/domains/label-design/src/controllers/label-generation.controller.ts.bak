@@ -1,0 +1,76 @@
+import { Controller, Post, Body, HttpStatus, Res } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Response } from 'express';
+import { LabelGenerationService } from '../services/label-generation.service';
+import { 
+  GeneratePreviewDto, 
+  GenerateBatchDto, 
+  ExportPdfDto, 
+  ApplyPlaceholdersDto 
+} from '../dto/label-generation.dto';
+
+@ApiTags('Label Generation')
+@Controller('labels')
+export class LabelGenerationController {
+  constructor(private readonly labelGenerationService: LabelGenerationService) {}
+
+  @Post('generate-preview')
+  @ApiOperation({ summary: 'Generate label preview with product data' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Preview generated' })
+  async generatePreview(@Body() generateDto: GeneratePreviewDto) {
+    const preview = await this.labelGenerationService.generatePreview(generateDto);
+    return {
+      success: true,
+      data: preview
+    };
+  }
+
+  @Post('generate-batch')
+  @ApiOperation({ summary: 'Generate labels for multiple products' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Batch labels generated' })
+  async generateBatch(@Body() batchDto: GenerateBatchDto) {
+    const result = await this.labelGenerationService.generateBatch(batchDto);
+    return {
+      success: true,
+      data: result,
+      message: `Generated ${result.totalLabels} labels for ${result.products.length} products`
+    };
+  }
+
+  @Post('export-pdf')
+  @ApiOperation({ summary: 'Export labels as PDF' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'PDF exported' })
+  async exportPdf(@Body() exportDto: ExportPdfDto, @Res() res: Response) {
+    const pdfBuffer = await this.labelGenerationService.exportPdf(exportDto);
+    
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="labels-${Date.now()}.pdf"`,
+      'Content-Length': pdfBuffer.length
+    });
+    
+    res.send(pdfBuffer);
+  }
+
+  @Post('apply-placeholders')
+  @ApiOperation({ summary: 'Replace placeholders with product data' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Placeholders replaced' })
+  async applyPlaceholders(@Body() placeholderDto: ApplyPlaceholdersDto) {
+    const result = await this.labelGenerationService.applyPlaceholders(placeholderDto);
+    return {
+      success: true,
+      data: result
+    };
+  }
+
+  @Post('validate-elements')
+  @ApiOperation({ summary: 'Validate label elements against media dimensions' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Validation result' })
+  async validateElements(@Body() body: { elements: any[], mediaId: number }) {
+    const result = await this.labelGenerationService.validateElements(body.elements, body.mediaId);
+    return {
+      success: result.isValid,
+      data: result
+    };
+  }
+}

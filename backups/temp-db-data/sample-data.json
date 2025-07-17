@@ -1,0 +1,30 @@
+{
+  "companies": [
+    {"id": 1, "name": "Sri Venkateswara Organic Foods", "code": "SVOF", "email": "info@svorganicfoods.com", "phone": "+91-9876543210", "website": "https://svorganicfoods.com", "fssai_license": "FSSAI12345", "is_active": true},
+    {"id": 2, "name": "Green Valley Naturals", "code": "GVN", "email": "contact@greenvalleynaturals.com", "phone": "+91-9876543211", "website": "https://greenvalleynaturals.com", "fssai_license": "FSSAI67890", "is_active": true},
+    {"id": 3, "name": "Pure Earth Organics", "code": "PEO", "email": "hello@pureearthorganics.com", "phone": "+91-9876543212", "website": "https://pureearthorganics.com", "fssai_license": "FSSAI11111", "is_active": true}
+  ],
+  "branches": [
+    {"id": 1, "company_id": 1, "name": "SVOF Gachibowli Main", "code": "SVOF-GCB", "address": "Plot No. 123, Gachibowli", "city": "Hyderabad", "state": "Telangana", "manager_name": "Ravi Kumar", "latitude": 17.4239, "longitude": 78.3482, "is_active": true},
+    {"id": 2, "company_id": 1, "name": "SVOF Madhapur", "code": "SVOF-MDP", "address": "Block A, Madhapur", "city": "Hyderabad", "state": "Telangana", "manager_name": "Lakshmi Reddy", "latitude": 17.4483, "longitude": 78.3915, "is_active": true},
+    {"id": 3, "company_id": 1, "name": "SVOF Visakhapatnam", "code": "SVOF-VSP", "address": "Beach Road, Visakhapatnam", "city": "Visakhapatnam", "state": "Andhra Pradesh", "manager_name": "Prasad Rao", "latitude": 17.7231, "longitude": 83.3050, "is_active": true},
+    {"id": 4, "company_id": 2, "name": "GVN Banjara Hills", "code": "GVN-BHI", "address": "Road No. 12, Banjara Hills", "city": "Hyderabad", "state": "Telangana", "manager_name": "Srinivas Yadav", "latitude": 17.4126, "longitude": 78.4426, "is_active": true},
+    {"id": 5, "company_id": 3, "name": "PEO Jubilee Hills", "code": "PEO-JHI", "address": "Plot 456, Jubilee Hills", "city": "Hyderabad", "state": "Telangana", "manager_name": "Ramesh Chandra", "latitude": 17.4333, "longitude": 78.4064, "is_active": true}
+  ],
+  "categories": [
+    {"id": 1, "name": "Rice & Grains", "name_telugu": "బియ్యం & ధాన్యాలు", "description": "Organic rice varieties and grains", "is_active": true},
+    {"id": 2, "name": "Pulses & Lentils", "name_telugu": "పప్పులు", "description": "Fresh organic pulses and lentils", "is_active": true},
+    {"id": 3, "name": "Spices", "name_telugu": "మసాలాలు", "description": "Traditional Indian spices", "is_active": true},
+    {"id": 4, "name": "Oils & Ghee", "name_telugu": "నూనెలు & నెయ్యి", "description": "Cold-pressed oils and pure ghee", "is_active": true},
+    {"id": 5, "name": "Vegetables", "name_telugu": "కూరగాయలు", "description": "Fresh organic vegetables", "is_active": true},
+    {"id": 6, "name": "Fruits", "name_telugu": "పండ్లు", "description": "Seasonal organic fruits", "is_active": true}
+  ],
+  "products": [
+    {"id": 1, "name": "Organic Basmati Rice", "name_telugu": "ఆర్గానిక్ బాస్మతి బియ్యం", "sku": "ORG-RICE-001", "category_id": 1, "selling_price": 180.00, "mrp": 200.00, "unit": "kg", "is_active": true},
+    {"id": 2, "name": "Organic Toor Dal", "name_telugu": "ఆర్గానిక్ కంది పప్పు", "sku": "ORG-DAL-001", "category_id": 2, "selling_price": 150.00, "mrp": 170.00, "unit": "kg", "is_active": true},
+    {"id": 3, "name": "Organic Turmeric Powder", "name_telugu": "ఆర్గానిక్ పసుపు పొడి", "sku": "ORG-SPC-001", "category_id": 3, "selling_price": 80.00, "mrp": 90.00, "unit": "250g", "is_active": true},
+    {"id": 4, "name": "Organic Coconut Oil", "name_telugu": "ఆర్గానిక్ కొబ్బరి నూనె", "sku": "ORG-OIL-001", "category_id": 4, "selling_price": 220.00, "mrp": 250.00, "unit": "500ml", "is_active": true},
+    {"id": 5, "name": "Organic Tomatoes", "name_telugu": "ఆర్గానిక్ టమాటోలు", "sku": "ORG-VEG-001", "category_id": 5, "selling_price": 45.00, "mrp": 50.00, "unit": "kg", "is_active": true},
+    {"id": 6, "name": "Organic Bananas", "name_telugu": "ఆర్గానిక్ అరటిపండ్లు", "sku": "ORG-FRT-001", "category_id": 6, "selling_price": 35.00, "mrp": 40.00, "unit": "dozen", "is_active": true}
+  ]
+}

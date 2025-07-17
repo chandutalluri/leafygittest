@@ -1,0 +1,114 @@
+InventoryManagementCenter.tsx:202  POST https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/inventory/adjust 404 (Not Found)
+handleStockAdjustment @ InventoryManagementCenter.tsx:202
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+eval @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26174
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430Understand this error
+InventoryManagementCenter.tsx:202  POST https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/inventory/adjust 404 (Not Found)
+handleStockAdjustment @ InventoryManagementCenter.tsx:202
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+eval @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26174
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+SimpleImageUpload.tsx:18  POST https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/upload 400 (Bad Request)
+SimpleImageUpload.useMutation[uploadMutation] @ SimpleImageUpload.tsx:18
+fn @ mutation.js:75
+run @ retryer.js:91
+start @ retryer.js:132
+execute @ mutation.js:110
+await in execute
+mutate @ mutationObserver.js:69
+handleUpload @ SimpleImageUpload.tsx:58
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+eval @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26174
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430Understand this error
+SimpleImageUpload.tsx:63 Upload error: Error: Upload failed: 400 - {"message":"Unexpected field - file","error":"Bad Request","statusCode":400}
+    at SimpleImageUpload.useMutation[uploadMutation] [as mutationFn] (SimpleImageUpload.tsx:25:15)
+nextJsHandleConsoleError @ client.js:82
+handleUpload @ SimpleImageUpload.tsx:63
+await in handleUpload
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+eval @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26174
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430Understand this error
+VM20413:1 Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSONUnderstand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+SimpleImageGrid.tsx:89  DELETE https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images/red-bell-peppers-2.jpg 404 (Not Found)
+SimpleImageGrid.useMutation[deleteMutation] @ SimpleImageGrid.tsx:89
+fn @ mutation.js:75
+run @ retryer.js:91
+start @ retryer.js:132
+execute @ mutation.js:110
+await in execute
+mutate @ mutationObserver.js:69
+eval @ useMutation.js:37
+onClick @ SimpleImageGrid.tsx:213
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+eval @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26174
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

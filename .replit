@@ -1,0 +1,217 @@
+modules = ["python-3.11", "nodejs-20", "postgresql-16"]
+
+[nix]
+channel = "stable-24_05"
+packages = ["jq", "systemd", "imagemagick", "wget", "curl", "zlib", "readline", "openssl", "icu", "pkg-config", "postgresql_16"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Start All Microservices"
+author = 44306793
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node server/auth-service-fixed.js &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/company-management && PORT=3013 npx ts-node -r tsconfig-paths/register src/main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/product-orchestrator && PORT=3042 npx ts-node -r tsconfig-paths/register main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/image-management && PORT=3035 npx ts-node -r tsconfig-paths/register src/simple-main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/catalog-management && PORT=3022 npx ts-node -r tsconfig-paths/register src/main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/inventory-management && PORT=3025 npx ts-node -r tsconfig-paths/register src/main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/order-management && PORT=3030 npx ts-node -r tsconfig-paths/register src/main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd backend/domains/user-role-management && PORT=3011 npx ts-node -r tsconfig-paths/register src/main.ts &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 3 && cd server && node direct-data-gateway.js &"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "sleep 5 && node server/unified-gateway-fixed.js"
+
+[[workflows.workflow]]
+name = "Ultra Fast Startup"
+author = 44306793
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/build-all-microservices.js"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/ultra-fast-startup.js"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "All Microservices"
+
+[[workflows.workflow]]
+name = "All Microservices"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "node scripts/start-all-microservices.js"
+waitForPort = 5000
+
+[[ports]]
+localPort = 80
+
+[[ports]]
+localPort = 3000
+
+[[ports]]
+localPort = 3001
+
+[[ports]]
+localPort = 3002
+
+[[ports]]
+localPort = 3003
+
+[[ports]]
+localPort = 3004
+
+[[ports]]
+localPort = 3010
+
+[[ports]]
+localPort = 3011
+
+[[ports]]
+localPort = 3013
+
+[[ports]]
+localPort = 3014
+
+[[ports]]
+localPort = 3015
+
+[[ports]]
+localPort = 3016
+
+[[ports]]
+localPort = 3017
+
+[[ports]]
+localPort = 3018
+
+[[ports]]
+localPort = 3021
+
+[[ports]]
+localPort = 3022
+
+[[ports]]
+localPort = 3023
+
+[[ports]]
+localPort = 3024
+
+[[ports]]
+localPort = 3025
+
+[[ports]]
+localPort = 3026
+
+[[ports]]
+localPort = 3027
+
+[[ports]]
+localPort = 3028
+
+[[ports]]
+localPort = 3029
+
+[[ports]]
+localPort = 3030
+
+[[ports]]
+localPort = 3031
+
+[[ports]]
+localPort = 3032
+
+[[ports]]
+localPort = 3033
+
+[[ports]]
+localPort = 3034
+
+[[ports]]
+localPort = 3035
+
+[[ports]]
+localPort = 3036
+
+[[ports]]
+localPort = 3037
+
+[[ports]]
+localPort = 3042
+
+[[ports]]
+localPort = 3050
+
+[[ports]]
+localPort = 3065
+
+[[ports]]
+localPort = 5000
+externalPort = 5000
+
+[[ports]]
+localPort = 5432
+
+[[ports]]
+localPort = 8080
+
+[[ports]]
+localPort = 8081
+
+[[ports]]
+localPort = 8082
+
+[[ports]]
+localPort = 8083
+
+[[ports]]
+localPort = 8084
+
+[[ports]]
+localPort = 8085
+
+[[ports]]
+localPort = 8086
+
+[deployment]
+run = ["sh", "-c", "cd backend/domains/identity-access && npm run build && node dist/backend/domains/identity-access/src/main.js"]

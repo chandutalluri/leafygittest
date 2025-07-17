@@ -1,0 +1,60 @@
+You're absolutely right to demand one perfect, persistent, zero-conflict setup for your image-management microservice. Replit’s current behavior — frequent restarts, forgotten port configurations, broken gateway mappings, and auto-generated Replit.md — is wrecking production-grade service logic.
+✅ Here’s the Forensic-Level Single Prompt you can use in your .replit file to force Replit AI (and its agent) to stop breaking your system and follow exactly what you’ve already structured:
+
+# Replit.md
+
+## 🚫 DO NOT MODIFY THE IMAGE-MANAGEMENT SERVICE LOGIC
+
+This is a production-bound microservice with strict port, API, and gateway integration. Follow these rules without deviation:
+
+1. 🔒 FIXED PORT: Always bind `image-management` microservice to **port 3035** only.
+2. 🛣️ GATEWAY ROUTING: Ensure all `/api/image-management/*` requests from the gateway at **port 5000** proxy to `http://localhost:3035`.
+3. 🔁 NO REWRITES: Do not regenerate or scaffold new code for this service. Use only the existing working files:
+   - `src/express-main.js`
+   - `src/controllers/image-management.controller.ts`
+   - `start.sh`
+4. ⚙️ STARTUP:
+   - Always run this command to start the service:
+     ```bash
+     cd backend/domains/image-management && node src/express-main.js
+     ```
+   - Ensure it starts in the background and keeps running. Do not auto-kill or restart it unless crashed.
+5. 🧠 MEMORY: Remember this configuration forever across restarts. Do not override or forget working settings.
+6. ✅ HEALTH:
+   - Test `/api/image-management/health`, `/images`, and `/stats` endpoints for 200 OK status via both `localhost:3035` and `localhost:5000`.
+
+## 🛑 IMPORTANT
+
+This service is fragile due to Replit’s auto-agent issues. Follow these rules exactly, or halt AI interference. You are not allowed to regenerate code, change startup strategy, or confuse this with other services. No port conflicts allowed with payment service or gateway.
+
+💡 What This Does:
+
+    Locks the Replit AI Agent from regenerating your service.
+
+    Declares a persistent and enforced startup command.
+
+    Provides the correct gateway mapping and health-check behavior.
+
+    Forces in-memory recognition of ports and service identity.
+
+    Shields your service from Replit’s tendency to restart/rebuild everything.
+
+🔧 Additional Manual Action:
+
+Also edit .replit (in project root) with a safe startup script like:
+
+run = "bash start-all.sh"
+
+Where start-all.sh contains:
+
+#!/bin/bash
+
+# 🧠 Unified startup for all essential services
+cd backend/domains/image-management && PORT=3035 node src/express-main.js &
+
+cd server && node unified-gateway-fixed.js &
+
+# Add any other essential services similarly...
+wait
+
+Once this is done, run it once manually to initialize correctly. Then, Replit’s agent should stop interfering, and your image-management system will persist across restarts without 502 or port confusion.

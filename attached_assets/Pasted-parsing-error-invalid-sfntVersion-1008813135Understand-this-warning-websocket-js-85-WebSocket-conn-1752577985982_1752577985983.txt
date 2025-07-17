@@ -1,0 +1,83 @@
+parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:87 Products data received: Object
+ProductEcosystemHub.tsx:107 Categories data received: Object
+ProductEcosystemHub.tsx:115 Alerts data received: Object
+ProductCRUD.tsx:105 Products data received: Object
+ProductCRUD.tsx:156 Categories data received: Object
+ProductCRUD.tsx:363 Uncaught ReferenceError: handleSubmit is not defined
+    at ProductCRUD (ProductCRUD.tsx:363:29)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at updateFunctionComponent (react-dom.development.js:19612:20)
+    at beginWork (react-dom.development.js:21635:16)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27485:7)
+    at performUnitOfWork (react-dom.development.js:26591:12)
+    at workLoopSync (react-dom.development.js:26500:5)
+    at renderRootSync (react-dom.development.js:26468:7)
+    at performConcurrentWorkOnRoot (react-dom.development.js:25772:74)
+    at workLoop (scheduler.development.js:266:34)
+    at flushWork (scheduler.development.js:239:14)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:533:21)Understand this error
+ProductCRUD.tsx:363 Uncaught ReferenceError: handleSubmit is not defined
+    at ProductCRUD (ProductCRUD.tsx:363:29)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at updateFunctionComponent (react-dom.development.js:19612:20)
+    at beginWork (react-dom.development.js:21635:16)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27485:7)
+    at performUnitOfWork (react-dom.development.js:26591:12)
+    at workLoopSync (react-dom.development.js:26500:5)
+    at renderRootSync (react-dom.development.js:26468:7)
+    at recoverFromConcurrentError (react-dom.development.js:25884:20)
+    at performConcurrentWorkOnRoot (react-dom.development.js:25784:22)
+    at workLoop (scheduler.development.js:266:34)
+    at flushWork (scheduler.development.js:239:14)
+    at MessagePort.performWorkUntilDeadline (scheduler.development.js:533:21)Understand this error
+client.js:82 The above error occurred in the <ProductCRUD> component:
+
+    at ProductCRUD (webpack-internal:///(pages-dir-browser)/./src/components/business-domains/ProductCRUD.tsx:37:84)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at ProductCatalog
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, PagesDevOverlayErrorBoundary.
+nextJsHandleConsoleError @ client.js:82Understand this error
+product-catalog:1 Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSONUnderstand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+product-catalog:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+product-catalog:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket 

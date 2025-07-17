@@ -1,0 +1,61 @@
+login:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+login:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+InventoryManagementCenter.tsx:169 Summary API Response: Object
+ProductEcosystemHub.tsx:87 Products data received: Object
+ProductEcosystemHub.tsx:107 Categories data received: Object
+ProductEcosystemHub.tsx:115 Alerts data received: Object
+client.js:82 Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `ProductEcosystemHub`. See https://reactjs.org/link/warning-keys for more information.
+    at div
+    at ProductEcosystemHub (webpack-internal:///(pages-dir-browser)/./src/components/business-domains/ProductEcosystemHub.tsx:24:74)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at CatalogManagement
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+nextJsHandleConsoleError @ client.js:82Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+catalog-management:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+catalog-management:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

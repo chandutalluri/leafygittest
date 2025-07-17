@@ -1,0 +1,87 @@
+// ✅ controllers/image-management.controller.ts
+import { Controller, Get, Post, Delete, Param, Body } from '@nestjs/common';
+
+@Controller('image-management')
+export class ImageManagementController {
+  @Get('health')
+  getHealth() {
+    return { status: 'ok' };
+  }
+
+  @Get('images')
+  getAllImages() {
+    return [
+      { id: '1', name: 'sample.jpg', url: '/uploads/sample.jpg' }
+      // Add real logic
+    ];
+  }
+
+  @Get('stats')
+  getStats() {
+    return { total: 42 }; // Replace with actual DB stats
+  }
+
+  @Post('upload')
+  uploadImage(@Body() body: any) {
+    return { message: 'Image uploaded successfully', body };
+  }
+
+  @Delete('images/:id')
+  deleteImage(@Param('id') id: string) {
+    return { message: `Deleted image with id ${id}` };
+  }
+}
+
+// ✅ main.ts (Entry point)
+import { NestFactory } from '@nestjs/core';
+import { Module } from '@nestjs/common';
+import { ImageManagementController } from './controllers/image-management.controller';
+
+@Module({
+  controllers: [ImageManagementController],
+})
+class AppModule {}
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  const PORT = process.env.PORT || 3035;
+  await app.listen(PORT);
+  console.log(`🚀 Image Management Service running on port ${PORT}`);
+}
+
+bootstrap();
+
+// ✅ start.sh (Make sure it’s executable)
+# !/bin/bash
+PORT=3035
+pnpm install
+PORT=$PORT pnpm run start:dev
+
+// ✅ .replit (located in image-management folder)
+entrypoint = "start.sh"
+run = "sh start.sh"
+
+// ✅ server/unified-gateway-fixed.js (Gateway Mapping)
+const { createProxyMiddleware } = require('http-proxy-middleware');
+const express = require('express');
+const app = express();
+
+app.use(
+  '/api/image-management',
+  createProxyMiddleware({
+    target: 'http://localhost:3035',
+    changeOrigin: true,
+  })
+);
+
+app.listen(5000, () => console.log('🔁 Gateway running on port 5000'));
+
+// ✅ shared/service-map.json (Optional Shared Config)
+{
+  "image-management": {
+    "port": 3035,
+    "route": "/api/image-management",
+    "entry": "src/main.ts",
+    "start": "start.sh"
+  }
+}

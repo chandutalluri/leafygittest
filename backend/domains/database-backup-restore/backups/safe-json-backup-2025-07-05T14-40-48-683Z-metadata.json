@@ -1,0 +1,10 @@
+{
+  "fileName": "safe-json-backup-2025-07-05T14-40-48-683Z.json",
+  "filePath": "/home/runner/workspace/backend/domains/database-backup-restore/backups/safe-json-backup-2025-07-05T14-40-48-683Z.json",
+  "size": "103.25 KB",
+  "checksum": "c245f0a50aee2b0e",
+  "tableCount": 10,
+  "totalRows": 174,
+  "duration": "5.7s",
+  "createdAt": "2025-07-05T14:40:54.363Z"
+}

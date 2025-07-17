@@ -1,0 +1,114 @@
+import { CreateMediaTypeDto, UpdateMediaTypeDto } from '../dto/media-types.dto';
+export declare class MediaTypesService {
+    private pool;
+    constructor();
+    findAll(active?: boolean): Promise<{
+        id: any;
+        name: any;
+        manufacturer: string;
+        productCode: any;
+        description: any;
+        physicalProperties: {
+            labelWidth: number;
+            labelHeight: number;
+            pageWidth: number;
+            pageHeight: number;
+            labelsPerRow: number;
+            labelsPerColumn: number;
+            totalLabelsPerSheet: number;
+            marginTop: number;
+            marginLeft: number;
+            marginRight: number;
+            marginBottom: number;
+            horizontalSpacing: number;
+            verticalSpacing: number;
+        };
+        mediaType: any;
+        orientation: string;
+        isActive: any;
+        createdAt: any;
+        updatedAt: any;
+    }[]>;
+    findOne(id: number): Promise<{
+        id: any;
+        name: any;
+        manufacturer: string;
+        productCode: any;
+        description: any;
+        physicalProperties: {
+            labelWidth: number;
+            labelHeight: number;
+            pageWidth: number;
+            pageHeight: number;
+            labelsPerRow: number;
+            labelsPerColumn: number;
+            totalLabelsPerSheet: number;
+            marginTop: number;
+            marginLeft: number;
+            marginRight: number;
+            marginBottom: number;
+            horizontalSpacing: number;
+            verticalSpacing: number;
+        };
+        mediaType: any;
+        orientation: string;
+        isActive: any;
+        createdAt: any;
+        updatedAt: any;
+    }>;
+    create(createDto: CreateMediaTypeDto): Promise<{
+        id: any;
+        name: any;
+        manufacturer: string;
+        productCode: any;
+        description: any;
+        physicalProperties: {
+            labelWidth: number;
+            labelHeight: number;
+            pageWidth: number;
+            pageHeight: number;
+            labelsPerRow: number;
+            labelsPerColumn: number;
+            totalLabelsPerSheet: number;
+            marginTop: number;
+            marginLeft: number;
+            marginRight: number;
+            marginBottom: number;
+            horizontalSpacing: number;
+            verticalSpacing: number;
+        };
+        mediaType: any;
+        orientation: string;
+        isActive: any;
+        createdAt: any;
+        updatedAt: any;
+    }>;
+    update(id: number, updateDto: UpdateMediaTypeDto): Promise<{
+        id: any;
+        name: any;
+        manufacturer: string;
+        productCode: any;
+        description: any;
+        physicalProperties: {
+            labelWidth: number;
+            labelHeight: number;
+            pageWidth: number;
+            pageHeight: number;
+            labelsPerRow: number;
+            labelsPerColumn: number;
+            totalLabelsPerSheet: number;
+            marginTop: number;
+            marginLeft: number;
+            marginRight: number;
+            marginBottom: number;
+            horizontalSpacing: number;
+            verticalSpacing: number;
+        };
+        mediaType: any;
+        orientation: string;
+        isActive: any;
+        createdAt: any;
+        updatedAt: any;
+    }>;
+    delete(id: number): Promise<void>;
+}

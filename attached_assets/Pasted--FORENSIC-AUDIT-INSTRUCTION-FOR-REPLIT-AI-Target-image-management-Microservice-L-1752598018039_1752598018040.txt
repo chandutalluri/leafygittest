@@ -1,0 +1,71 @@
+# 🕵️‍♂️ FORENSIC AUDIT INSTRUCTION FOR REPLIT AI  
+## 📍 Target: `image-management` Microservice (LeafyHealth Platform)
+
+This is an ongoing, critical forensic debug operation. You are NOT allowed to auto-repair, scaffold, or reset the project structure.  
+The issue is **systematic API malfunction + port/gateway misalignment** in the `image-management` service.
+
+## 🔍 What You Must Do
+
+### ✅ Phase 1: PORT & ROUTE AUDIT
+- Locate actual port `image-management` is using from:  
+  - `backend/domains/image-management/src/main.ts`  
+  - or `start.sh`, or `service-map.json`  
+- Confirm it matches the route configured in:
+  - `server/unified-gateway-fixed.js`
+  - `shared/port-config.js` or `shared/service-map.json`
+
+🚫 Do NOT change the port. Just **report any mismatch clearly**.
+
+---
+
+### ✅ Phase 2: HEALTH + ROUTING VALIDATION
+- Check if `GET /api/image-management/health` works on:
+  - Direct port (e.g., `localhost:3035`)
+  - Gateway (`localhost:5000/api/image-management/health`)
+- If not working, output:
+  - Which file exposes the health controller
+  - Whether `@Controller('image-management')` exists
+  - Whether gateway proxy points to correct port
+
+🚫 Do NOT change controller logic or delete files.
+
+---
+
+### ✅ Phase 3: SHARP & MULTER ISSUES
+- Open `image-optimization.service.ts` and validate:
+  - If `sharp` is imported correctly
+  - If file upload is handled via `multer` or NestJS pipes
+- Output any build or runtime error logs **but do not fix automatically**
+
+---
+
+### ✅ Phase 4: UI LINKAGE (Super Admin Frontend)
+- Inspect `ImageManagementHub.tsx` and check:
+  - Does it call valid endpoints like `/api/image-management/images`, `/stats`, etc.
+  - Are those APIs exposed and working on backend?
+  - Any React errors, fallback state rendering, or broken navigation?
+
+---
+
+### 🚫 STRICTLY FORBIDDEN
+- Do NOT delete or rename `image-management` folder
+- Do NOT overwrite working ports or configs
+- Do NOT auto-fix or run installation scripts
+- Do NOT scaffold new backend or frontend logic
+
+---
+
+## 📦 Context
+- This is part of a production-grade platform (LeafyHealth)
+- Contains 27 microservices, frontend apps, and custom gateway logic
+- Ports and routes are locked using `shared/service-map.json`
+- Gateway routes requests to correct service via `http-proxy-middleware`
+
+---
+
+## 🎯 GOAL:
+**Perform full forensic audit of the image-management system without changing anything. Output findings only.**
+
+This audit is the **first step** toward resolving broken gateway routing, API visibility, and UI sync issues.
+
+Once the audit is done and all findings are shown, user will decide how to apply fixes manually.

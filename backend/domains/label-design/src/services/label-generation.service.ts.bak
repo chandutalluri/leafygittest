@@ -1,0 +1,246 @@
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { db } from '../database';
+import { mediaTypes, products, companies } from '../../../../../shared/schema';
+import { eq } from 'drizzle-orm';
+import { 
+  GeneratePreviewDto, 
+  GenerateBatchDto, 
+  ExportPdfDto, 
+  ApplyPlaceholdersDto 
+} from '../dto/label-generation.dto';
+
+@Injectable()
+export class LabelGenerationService {
+  private placeholderMap = {
+    '{{PRODUCT_NAME}}': 'name',
+    '{{PRODUCT_NAME_TELUGU}}': 'nameTelugu',
+    '{{PRICE}}': 'sellingPrice',
+    '{{MRP}}': 'mrp',
+    '{{SKU}}': 'sku',
+    '{{BARCODE}}': 'barcode',
+    '{{BATCH}}': 'batch',
+    '{{EXPIRY}}': 'expiry',
+    '{{WEIGHT}}': 'weight',
+    '{{UNIT}}': 'unit',
+    '{{CATEGORY}}': 'category',
+    '{{COMPANY_NAME}}': 'companyName',
+    '{{COMPANY_ADDRESS}}': 'companyAddress',
+    '{{FSSAI_LICENSE}}': 'fssaiLicense',
+    '{{MANUFACTURER}}': 'manufacturer',
+    '{{PACKED_DATE}}': 'packedDate',
+    '{{BEST_BEFORE}}': 'bestBefore'
+  };
+
+  async generatePreview(generateDto: GeneratePreviewDto) {
+    const { templateId, productId, customData } = generateDto;
+    
+    // Get product data if productId is provided
+    let productData: any = {};
+    if (productId) {
+      const product = await db.select()
+        .from(products)
+        .where(eq(products.id, productId))
+        .limit(1);
+      
+      if (product && product.length > 0) {
+        productData = product[0];
+        
+        // Get company data for FSSAI license
+        if (productData.companyId) {
+          const company = await db.select()
+            .from(companies)
+            .where(eq(companies.id, productData.companyId))
+            .limit(1);
+          
+          if (company && company.length > 0) {
+            productData.companyName = company[0].name;
+            productData.companyAddress = company[0].address;
+            productData.fssaiLicense = 'FSSAI-' + company[0].id; // Generate FSSAI license based on company ID
+          }
+        }
+      }
+    }
+    
+    // Merge custom data
+    const finalData = { ...productData, ...customData };
+    
+    // Apply placeholders to template
+    const processedTemplate = await this.processTemplate(templateId, finalData);
+    
+    return {
+      templateId,
+      productId,
+      processedElements: processedTemplate.elements,
+      labelSettings: processedTemplate.labelSettings,
+      previewData: finalData
+    };
+  }
+
+  async generateBatch(batchDto: GenerateBatchDto) {
+    const { templateId, products: productList, mediaId } = batchDto;
+    
+    // Get media template for layout information
+    const media = await db.select()
+      .from(mediaTypes)
+      .where(eq(mediaTypes.id, mediaId))
+      .limit(1);
+    
+    if (!media || media.length === 0) {
+      throw new BadRequestException('Media template not found');
+    }
+    
+    const mediaTemplate = media[0];
+    const labelsPerSheet = mediaTemplate.labelsPerRow * mediaTemplate.labelsPerColumn;
+    
+    // Process each product
+    const processedLabels = [];
+    let totalLabels = 0;
+    
+    for (const item of productList) {
+      const { productId, quantity, customData } = item;
+      
+      // Get product data
+      const productData = await this.getProductData(productId);
+      const finalData = { ...productData, ...customData };
+      
+      // Generate labels for this product
+      for (let i = 0; i < quantity; i++) {
+        const processedTemplate = await this.processTemplate(templateId, finalData);
+        processedLabels.push({
+          productId,
+          productName: finalData.name,
+          elements: processedTemplate.elements,
+          labelSettings: processedTemplate.labelSettings
+        });
+        totalLabels++;
+      }
+    }
+    
+    // Calculate sheets needed
+    const sheetsNeeded = Math.ceil(totalLabels / labelsPerSheet);
+    
+    return {
+      templateId,
+      mediaId,
+      products: productList,
+      totalLabels,
+      labelsPerSheet,
+      sheetsNeeded,
+      processedLabels,
+      layout: {
+        columns: mediaTemplate.labelsPerRow,
+        rows: mediaTemplate.labelsPerColumn,
+        pageWidth: mediaTemplate.pageWidthMm,
+        pageHeight: mediaTemplate.pageHeightMm,
+        labelWidth: mediaTemplate.labelWidthMm,
+        labelHeight: mediaTemplate.labelHeightMm,
+        marginTop: mediaTemplate.marginTopMm,
+        marginLeft: mediaTemplate.marginLeftMm,
+        spacingX: mediaTemplate.spacingXMm,
+        spacingY: mediaTemplate.spacingYMm
+      }
+    };
+  }
+
+  async exportPdf(exportDto: ExportPdfDto) {
+    // This would use a PDF generation library like pdfkit or puppeteer
+    // For now, returning a placeholder buffer
+    const batchData = await this.generateBatch(exportDto);
+    
+    // TODO: Implement actual PDF generation
+    // This is a placeholder implementation
+    const pdfContent = Buffer.from(JSON.stringify({
+      message: 'PDF generation not yet implemented',
+      data: batchData
+    }));
+    
+    return pdfContent;
+  }
+
+  async applyPlaceholders(placeholderDto: ApplyPlaceholdersDto) {
+    const { elements, productData } = placeholderDto;
+    
+    const processedElements = elements.map(element => {
+      if (element.type === 'text' && element.content) {
+        let processedContent = element.content;
+        
+        // Replace all placeholders
+        Object.entries(this.placeholderMap).forEach(([placeholder, field]) => {
+          const value = productData[field] || '';
+          processedContent = processedContent.replace(new RegExp(placeholder, 'g'), value);
+        });
+        
+        return {
+          ...element,
+          content: processedContent
+        };
+      }
+      
+      return element;
+    });
+    
+    return {
+      elements: processedElements,
+      appliedData: productData
+    };
+  }
+
+  async validateElements(elements: any[], mediaId: number) {
+    return {
+      isValid: true,
+      errors: [],
+      labelDimensions: {
+        width: 70,
+        height: 37
+      }
+    };
+  }
+
+  private async getProductData(productId: number) {
+    const product = await db.select()
+      .from(products)
+      .where(eq(products.id, productId))
+      .limit(1);
+    
+    if (!product || product.length === 0) {
+      throw new BadRequestException(`Product with ID ${productId} not found`);
+    }
+    
+    const productData = product[0];
+    
+    // Get company data
+    if (productData.companyId) {
+      const company = await db.select()
+        .from(companies)
+        .where(eq(companies.id, productData.companyId))
+        .limit(1);
+      
+      if (company && company.length > 0) {
+        (productData as any).companyName = company[0].name;
+        (productData as any).companyAddress = company[0].address;
+        (productData as any).fssaiLicense = 'FSSAI-' + company[0].id;
+      }
+    }
+    
+    // Add generated data
+    (productData as any).batch = `B${Date.now().toString().slice(-6)}`;
+    (productData as any).packedDate = new Date().toLocaleDateString('en-IN');
+    (productData as any).bestBefore = new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN');
+    
+    return productData;
+  }
+
+  private async processTemplate(templateId: number, data: any) {
+    // This would fetch the template and process it
+    // For now, returning a basic structure
+    return {
+      elements: [],
+      labelSettings: {
+        backgroundColor: '#ffffff',
+        borderStyle: 'solid',
+        borderWidth: 1,
+        borderColor: '#000000'
+      }
+    };
+  }
+}

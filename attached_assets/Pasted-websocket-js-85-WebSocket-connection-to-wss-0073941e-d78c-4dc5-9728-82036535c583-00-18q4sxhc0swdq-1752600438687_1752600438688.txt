@@ -1,0 +1,335 @@
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+ImageManagementHub.tsx:66  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:66
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:51  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:51
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:173  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:173
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:194 Error fetching image stats: Error: Failed to fetch image stats
+    at ImageManagementHub.useQuery (ImageManagementHub.tsx:175:17)
+nextJsHandleConsoleError @ client.js:82
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:194
+await in ImageManagementHub.useQuery
+fetchFn @ query.js:213
+run @ retryer.js:91
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+VM66759:1 Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSONUnderstand this error
+ImageManagementHub.tsx:66  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:66
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ImageManagementHub.tsx:51  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:51
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ImageManagementHub.tsx:51  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 502 (Bad Gateway)
+ImageManagementHub.useQuery @ ImageManagementHub.tsx:51
+fetchFn @ query.js:213
+run @ retryer.js:91
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+eval @ retryer.js:115
+Promise.then
+eval @ retryer.js:111
+Promise.catch
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+AdvancedImageManagement.tsx:488 Uncaught TypeError: Cannot convert undefined or null to object
+    at Object.keys (<anonymous>)
+    at AdvancedImageManagement (AdvancedImageManagement.tsx:488:27)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at updateFunctionComponent (react-dom.development.js:19612:20)
+    at beginWork (react-dom.development.js:21635:16)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27485:7)
+    at performUnitOfWork (react-dom.development.js:26591:12)
+    at workLoopSync (react-dom.development.js:26500:5)
+    at renderRootSync (react-dom.development.js:26468:7)
+    at performSyncWorkOnRoot (react-dom.development.js:26119:20)
+    at flushSyncCallbacks (react-dom.development.js:12042:22)
+    at eval (react-dom.development.js:25685:13)
+AdvancedImageManagement @ AdvancedImageManagement.tsx:488
+renderWithHooks @ react-dom.development.js:15486
+updateFunctionComponent @ react-dom.development.js:19612
+beginWork @ react-dom.development.js:21635
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+beginWork$1 @ react-dom.development.js:27485
+performUnitOfWork @ react-dom.development.js:26591
+workLoopSync @ react-dom.development.js:26500
+renderRootSync @ react-dom.development.js:26468
+performSyncWorkOnRoot @ react-dom.development.js:26119
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25685
+setTimeout
+defaultScheduler @ notifyManager.js:8
+flush @ notifyManager.js:32
+batch @ notifyManager.js:50
+#dispatch @ query.js:366
+setData @ query.js:54
+onSuccess @ query.js:268
+resolve @ retryer.js:56
+Promise.then
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+commitRootImpl @ react-dom.development.js:26969
+commitRoot @ react-dom.development.js:26716
+performSyncWorkOnRoot @ react-dom.development.js:26151
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25685Understand this error
+AdvancedImageManagement.tsx:488 Uncaught TypeError: Cannot convert undefined or null to object
+    at Object.keys (<anonymous>)
+    at AdvancedImageManagement (AdvancedImageManagement.tsx:488:27)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at updateFunctionComponent (react-dom.development.js:19612:20)
+    at beginWork (react-dom.development.js:21635:16)
+    at HTMLUnknownElement.callCallback (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27485:7)
+    at performUnitOfWork (react-dom.development.js:26591:12)
+    at workLoopSync (react-dom.development.js:26500:5)
+    at renderRootSync (react-dom.development.js:26468:7)
+    at recoverFromConcurrentError (react-dom.development.js:25884:20)
+    at performSyncWorkOnRoot (react-dom.development.js:26130:20)
+    at flushSyncCallbacks (react-dom.development.js:12042:22)
+    at eval (react-dom.development.js:25685:13)
+AdvancedImageManagement @ AdvancedImageManagement.tsx:488
+renderWithHooks @ react-dom.development.js:15486
+updateFunctionComponent @ react-dom.development.js:19612
+beginWork @ react-dom.development.js:21635
+callCallback @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+beginWork$1 @ react-dom.development.js:27485
+performUnitOfWork @ react-dom.development.js:26591
+workLoopSync @ react-dom.development.js:26500
+renderRootSync @ react-dom.development.js:26468
+recoverFromConcurrentError @ react-dom.development.js:25884
+performSyncWorkOnRoot @ react-dom.development.js:26130
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25685
+setTimeout
+defaultScheduler @ notifyManager.js:8
+flush @ notifyManager.js:32
+batch @ notifyManager.js:50
+#dispatch @ query.js:366
+setData @ query.js:54
+onSuccess @ query.js:268
+resolve @ retryer.js:56
+Promise.then
+run @ retryer.js:95
+start @ retryer.js:132
+fetch @ query.js:296
+#executeFetch @ queryObserver.js:174
+onSubscribe @ queryObserver.js:57
+subscribe @ subscribable.js:13
+eval @ useBaseQuery.js:61
+subscribeToStore @ react-dom.development.js:16139
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+commitRootImpl @ react-dom.development.js:26969
+commitRoot @ react-dom.development.js:26716
+performSyncWorkOnRoot @ react-dom.development.js:26151
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25685Understand this error
+client.js:82 The above error occurred in the <AdvancedImageManagement> component:
+
+    at AdvancedImageManagement (webpack-internal:///(pages-dir-browser)/./src/components/image-management/AdvancedImageManagement.tsx:799:94)
+    at div
+    at ImageManagementHub (webpack-internal:///(pages-dir-browser)/./src/components/image-management/ImageManagementHub.tsx:32:96)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at ImageManagement
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+
+React will try to recreate this component tree from scratch using the error boundary you provided, PagesDevOverlayErrorBoundary.

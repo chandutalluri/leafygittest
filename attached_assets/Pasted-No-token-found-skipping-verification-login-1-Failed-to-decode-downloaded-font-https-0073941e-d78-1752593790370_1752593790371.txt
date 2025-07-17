@@ -1,0 +1,25 @@
+No token found, skipping verification
+login:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+login:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85
+connectHMR @ websocket.js:91
+pageBootstrap @ page-bootstrap.js:25
+eval @ next-dev.js:24Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:87 Products data received: {success: true, data: Array(22), branchId: null, total: 22}
+ProductEcosystemHub.tsx:107 Categories data received: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+ProductEcosystemHub.tsx:115 Alerts data received: {success: true, data: Array(8), total: 8, critical: 3, warning: 5}
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

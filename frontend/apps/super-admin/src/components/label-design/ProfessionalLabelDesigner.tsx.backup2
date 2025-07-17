@@ -1,0 +1,3845 @@
+"use client";
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { toast } from 'react-hot-toast';
+import {
+  PlusIcon,
+  ChatBubbleLeftRightIcon,
+  QrCodeIcon,
+  PhotoIcon,
+  RectangleGroupIcon,
+  PaintBrushIcon,
+  EyeIcon,
+  DocumentArrowDownIcon,
+  Square3Stack3DIcon,
+  CogIcon,
+  TrashIcon,
+  ArrowsRightLeftIcon,
+  ArrowsUpDownIcon,
+  MagnifyingGlassPlusIcon,
+  MagnifyingGlassMinusIcon,
+  ArrowsPointingOutIcon,
+  Squares2X2Icon,
+  BeakerIcon,
+  DocumentTextIcon,
+  ShieldCheckIcon,
+  SparklesIcon,
+  RectangleStackIcon,
+  DocumentDuplicateIcon,
+  ClipboardDocumentIcon,
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon,
+  Cog6ToothIcon
+} from '@heroicons/react/24/outline';
+import { EnhancedQRCodeGenerator } from './EnhancedQRCodeGenerator';
+import MultipleBarcodeGenerator from './MultipleBarcodeGenerator';
+import NutritionFactsForm from './NutritionFactsForm';
+import KonvaNutritionTable from './KonvaNutritionTable';
+import AutomaticLabelGenerator from './AutomaticLabelGenerator';
+import AutomaticLabelTemplates from './AutomaticLabelTemplates';
+import DynamicNutritionFacts from './DynamicNutritionFacts';
+import NutritionFactsTemplates from './NutritionFactsTemplates';
+import TemplateController from './TemplateController';
+import TwoTemplateSystem from './TwoTemplateSystem';
+
+// Utility functions for canvas operations
+const mmToPx = (mm: number) => mm * 3.7795275591; // 96 DPI conversion
+const pxToMm = (px: number) => px / 3.7795275591;
+
+interface CanvasElement {
+  id: string;
+  type: 'text' | 'barcode' | 'qr' | 'image' | 'rectangle' | 'line' | 'nutrition-table' | 'indian-compliance';
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  content?: string;
+  placeholder?: string;
+  fontSize?: number;
+  fontWeight?: string;
+  fontFamily?: string;
+  textAlign?: string;
+  color?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  borderWidth?: number;
+  rotation?: number;
+  opacity?: number;
+  zIndex?: number;
+  isEditing?: boolean;
+  imageId?: string;
+  imageUrl?: string;
+  qrType?: 'text' | 'url' | 'phone' | 'email' | 'sms' | 'wifi' | 'vcard' | 'whatsapp';
+  nutritionData?: any;
+  nutritionTemplate?: 'standard' | 'tall-bottle' | 'wide-bag' | 'compact-square' | 'mini-sachet';
+  companyData?: any;
+  // Properties specific to indian-compliance grouped element
+  isGroup?: boolean;
+  groupName?: string;
+  lineHeight?: number;
+}
+
+interface MediaType {
+  id: number;
+  name: string;
+  dimensions: {
+    labelWidth: number;
+    labelHeight: number;
+    pageWidth: number;
+    pageHeight: number;
+  };
+  layout: {
+    rows: number;
+    columns: number;
+    gaps: { x: number; y: number; };
+    margins: { top: number; bottom: number; left: number; right: number; };
+  };
+}
+
+interface Product {
+  id: number;
+  name: string;
+  sku: string;
+  price: number;
+  category: { name: string; };
+  nutritionData?: {
+    calories: string;
+    protein: string;
+    carbs: string;
+    fat: string;
+    fiber: string;
+    sodium: string;
+  };
+}
+
+interface LabelTemplate {
+  id?: number;
+  name: string;
+  description: string;
+  type: string;
+  mediaId: number;
+  templateJson: {
+    elements: CanvasElement[];
+    labelSettings: {
+      backgroundColor: string;
+      borderStyle: string;
+      borderWidth: number;
+      borderColor: string;
+    };
+  };
+}
+
+// Professional Barcode Component
+function ProfessionalBarcode({ content, width, height }: { content: string; width: number; height: number }) {
+  // Generate professional barcode pattern based on content
+  const generateBarcodePattern = (text: string): number[] => {
+    // UPC-A/EAN-13 style pattern generation
+    const patterns = {
+      '0': [3, 2, 1, 1], '1': [2, 2, 2, 1], '2': [2, 1, 2, 2], '3': [1, 4, 1, 1],
+      '4': [1, 1, 3, 2], '5': [1, 2, 3, 1], '6': [1, 1, 1, 4], '7': [1, 3, 1, 2],
+      '8': [1, 2, 1, 3], '9': [3, 1, 1, 2], 'A': [2, 1, 1, 3], 'B': [1, 1, 2, 3]
+    };
+    
+    // Convert content to pattern array
+    let bars: number[] = [1, 1, 1]; // Start guard
+    
+    const chars = text.slice(0, 12).split(''); // Max 12 characters
+    chars.forEach(char => {
+      const pattern = patterns[char.toUpperCase() as keyof typeof patterns] || patterns['0'];
+      bars = bars.concat(pattern);
+    });
+    
+    bars = bars.concat([1, 1, 1]); // End guard
+    return bars;
+  };
+
+  const barcodePattern = generateBarcodePattern(content);
+  const totalBars = barcodePattern.length;
+  const barWidth = Math.max(1, (width - 20) / totalBars); // 10px margin each side
+  const barcodeHeight = height * 0.75; // 75% for bars, 25% for text
+
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center bg-white">
+      {/* Quiet Zone */}
+      <div className="w-full h-full flex flex-col items-center justify-center px-3">
+        {/* Barcode Bars */}
+        <div className="flex items-end justify-center" style={{ height: `${barcodeHeight}px` }}>
+          {barcodePattern.map((barHeight, index) => (
+            <div
+              key={index}
+              className="bg-black"
+              style={{
+                width: `${barWidth}px`,
+                height: barHeight % 2 === 0 ? `${barcodeHeight}px` : `${barcodeHeight * 0.9}px`,
+                marginRight: index < totalBars - 1 ? '1px' : '0'
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Human Readable Text */}
+        <div 
+          className="text-center text-black font-mono mt-1"
+          style={{ 
+            fontSize: Math.min(12, height * 0.15),
+            letterSpacing: '1px'
+          }}
+        >
+          {content}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// UNIFIED STATE MANAGEMENT INTERFACE (Phase 0.3 Implementation)
+interface UnifiedLabelState {
+  // Template Management (INDUSTRIAL-GRADE)
+  selectedTemplate: MediaType | null;
+  availableTemplates: MediaType[];
+  templateValidation: { isValid: boolean; errors: string[] };
+  
+  // Product Management  
+  selectedProduct: Product | null;
+  availableProducts: Product[];
+  productPlaceholders: { [key: string]: string };
+  
+  // Canvas Management (SINGLE LABEL ONLY - CRITICAL CONSTRAINT)
+  canvasElements: CanvasElement[];
+  selectedElements: string[];
+  canvasSettings: {
+    showOnlyOneLabel: boolean;        // CRITICAL: Never show full sheet
+    labelDimensions: { width: number; height: number; };
+    snapToLabelBounds: boolean;
+    zoom: number;
+    showGrid: boolean;
+    snapToGrid: boolean;
+    panOffset: { x: number; y: number; };
+  };
+  
+  // Enhanced QR Code Management
+  qrCodeOptions: {
+    type: 'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi' | 'vcard' | 'whatsapp';
+    content: string;
+    size: number;
+    errorCorrectionLevel: 'L'|'M'|'Q'|'H';
+    foregroundColor: string;
+    backgroundColor: string;
+  };
+  
+  // Print Management
+  printPreview: {
+    showFullSheet: boolean;
+    replicationPattern: any;
+    multiProductSetup: any[];
+  };
+  
+  // UI State
+  activePanel: 'templates' | 'design' | 'properties' | 'preview' | 'print';
+  showModal: 'qr-generator' | 'barcode-generator' | 'nutrition-form' | 'template-selector' | null;
+  editingElementId: string | null;
+  
+  // User Role Context (MULTI-BRANCH)
+  userRole: 'super_admin' | 'branch_admin' | 'staff';
+  branchId: string;
+  permissions: { canCreateTemplates: boolean; canDeleteElements: boolean; };
+}
+
+interface ProfessionalLabelDesignerProps {
+  selectedTemplate?: any;
+  onTemplateCleared?: () => void;
+}
+
+export function ProfessionalLabelDesigner({ selectedTemplate, onTemplateCleared }: ProfessionalLabelDesignerProps = {}) {
+  // UNIFIED STATE IMPLEMENTATION (Phase 0.3)
+  const [unifiedState, setUnifiedState] = useState<UnifiedLabelState>({
+    // Template Management
+    selectedTemplate: null,
+    availableTemplates: [],
+    templateValidation: { isValid: true, errors: [] },
+    
+    // Product Management
+    selectedProduct: null,
+    availableProducts: [],
+    productPlaceholders: {},
+    
+    // Canvas Management (SINGLE LABEL CONSTRAINT)
+    canvasElements: [],
+    selectedElements: [],
+    canvasSettings: {
+      showOnlyOneLabel: true,        // ENFORCED: Only show single label
+      labelDimensions: { width: 100, height: 100 },
+      snapToLabelBounds: true,
+      zoom: 150,
+      showGrid: true,
+      snapToGrid: true,
+      panOffset: { x: 0, y: 0 }
+    },
+    
+    // Enhanced QR Code Management
+    qrCodeOptions: {
+      type: 'url',
+      content: '',
+      size: 300,
+      errorCorrectionLevel: 'M',
+      foregroundColor: '#000000',
+      backgroundColor: '#FFFFFF'
+    },
+    
+    // Print Management
+    printPreview: {
+      showFullSheet: false,
+      replicationPattern: null,
+      multiProductSetup: []
+    },
+    
+    // UI State
+    activePanel: 'templates',
+    showModal: null,
+    editingElementId: null,
+    
+    // User Role Context (Multi-Branch)
+    userRole: 'super_admin',
+    branchId: 'branch-1',
+    permissions: { canCreateTemplates: true, canDeleteElements: true }
+  });
+
+  // CLIPBOARD STATE for copy/paste functionality
+  const [clipboard, setClipboard] = useState<CanvasElement[]>([]);
+  
+  // HISTORY STATE for undo/redo functionality
+  const [history, setHistory] = useState<CanvasElement[][]>([[]]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+
+  // BACKWARD COMPATIBILITY - Maintain existing functionality during transition
+  const mediaTypes = unifiedState.availableTemplates;
+  const products = unifiedState.availableProducts;
+  const selectedMedia = unifiedState.selectedTemplate;
+  const selectedProduct = unifiedState.selectedProduct;
+  const canvasElements = unifiedState.canvasElements;
+  const selectedElement = unifiedState.selectedElements[0] || null;
+  const selectedElements = unifiedState.selectedElements;
+  const zoom = unifiedState.canvasSettings.zoom;
+  const showGrid = unifiedState.canvasSettings.showGrid;
+  const snapToGrid = unifiedState.canvasSettings.snapToGrid;
+  const panOffset = unifiedState.canvasSettings.panOffset;
+  const editingElementId = unifiedState.editingElementId;
+  const showEnhancedQRGenerator = unifiedState.showModal === 'qr-generator';
+  const showBarcodeGenerator = unifiedState.showModal === 'barcode-generator';
+  const showNutritionForm = unifiedState.showModal === 'nutrition-form';
+  const showTemplateSelector = unifiedState.showModal === 'template-selector';
+
+  // Helper functions for state updates
+  const updateUnifiedState = (updates: Partial<UnifiedLabelState>) => {
+    setUnifiedState(prev => ({ ...prev, ...updates }));
+  };
+
+  const updateCanvasSettings = (updates: Partial<UnifiedLabelState['canvasSettings']>) => {
+    setUnifiedState(prev => ({
+      ...prev,
+      canvasSettings: { ...prev.canvasSettings, ...updates }
+    }));
+  };
+
+  const setCanvasElements = (updater: (prev: CanvasElement[]) => CanvasElement[]) => {
+    setUnifiedState(prev => ({
+      ...prev,
+      canvasElements: updater(prev.canvasElements)
+    }));
+  };
+
+  const setSelectedElement = (elementId: string | null) => {
+    setUnifiedState(prev => ({
+      ...prev,
+      selectedElements: elementId ? [elementId] : []
+    }));
+  };
+
+  const setZoom = (zoom: number) => updateCanvasSettings({ zoom });
+  const setShowGrid = (showGrid: boolean) => updateCanvasSettings({ showGrid });
+  const setPanOffset = (panOffset: { x: number; y: number }) => updateCanvasSettings({ panOffset });
+  const setEditingElementId = (id: string | null) => updateUnifiedState({ editingElementId: id });
+  const setShowEnhancedQRGenerator = (show: boolean) => 
+    updateUnifiedState({ showModal: show ? 'qr-generator' : null });
+  const setShowBarcodeGenerator = (show: boolean) => 
+    updateUnifiedState({ showModal: show ? 'barcode-generator' : null });
+  const setShowNutritionForm = (show: boolean) => 
+    updateUnifiedState({ showModal: show ? 'nutrition-form' : null });
+  const setShowTemplateSelector = (show: boolean) => 
+    updateUnifiedState({ showModal: show ? 'template-selector' : null });
+
+  // UNIFIED STATE SETTERS (Phase 0.3 Completion)
+  const setSelectedMedia = (media: MediaType | null) => {
+    updateUnifiedState({ 
+      selectedTemplate: media,
+      canvasSettings: {
+        ...unifiedState.canvasSettings,
+        labelDimensions: media ? {
+          width: media.dimensions.labelWidth,
+          height: media.dimensions.labelHeight
+        } : { width: 100, height: 100 }
+      }
+    });
+  };
+
+  const setSelectedProduct = (product: Product | null) => {
+    updateUnifiedState({ selectedProduct: product });
+  };
+
+  const setMediaTypes = (mediaTypes: MediaType[]) => {
+    updateUnifiedState({ availableTemplates: mediaTypes });
+  };
+
+  const setProducts = (products: Product[]) => {
+    updateUnifiedState({ availableProducts: products });
+  };
+
+  // Legacy state for compatibility (will be removed in next phase)
+  const [availableImages, setAvailableImages] = useState<any[]>([]);
+  const [companyData, setCompanyData] = useState<any>(null);
+  const [isPanning, setIsPanning] = useState(false);
+  const [lastPanPoint, setLastPanPoint] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStartPos, setDragStartPos] = useState({ x: 0, y: 0 });
+  const [dragElementStartPos, setDragElementStartPos] = useState({ x: 0, y: 0 });
+  const [isSelectingArea, setIsSelectingArea] = useState(false);
+  const [selectionStart, setSelectionStart] = useState({ x: 0, y: 0 });
+  const [selectionEnd, setSelectionEnd] = useState({ x: 0, y: 0 });
+  const [templateName, setTemplateName] = useState('');
+  const [templateDescription, setTemplateDescription] = useState('');
+  const [templateType, setTemplateType] = useState('price_tag');
+  const [productNutritionData, setProductNutritionData] = useState<any>(null);
+  const [pendingNutritionData, setPendingNutritionData] = useState<any>(null);
+  const [showAutomaticGenerator, setShowAutomaticGenerator] = useState(false);
+  const [showAutomaticTemplates, setShowAutomaticTemplates] = useState(false);
+
+  // Industry standard QR code generators
+  const generateQRContent = (type: string, content: string): string => {
+    switch (type) {
+      case 'url':
+        return content.startsWith('http') ? content : `https://${content}`;
+      case 'email':
+        return `mailto:${content}`;
+      case 'phone':
+        return `tel:${content}`;
+      case 'sms':
+        return `sms:${content}`;
+      case 'whatsapp':
+        return `https://wa.me/${content.replace(/[^0-9]/g, '')}`;
+      case 'wifi':
+        // WiFi format: WIFI:T:WPA;S:NetworkName;P:Password;H:false;;
+        const [ssid, password] = content.split('|');
+        return `WIFI:T:WPA;S:${ssid};P:${password || ''};H:false;;`;
+      case 'vcard':
+        // vCard format: BEGIN:VCARD\nVERSION:3.0\nFN:Name\nTEL:Phone\nEMAIL:Email\nEND:VCARD
+        const [name, phone, email] = content.split('|');
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nTEL:${phone || ''}\nEMAIL:${email || ''}\nEND:VCARD`;
+      case 'text':
+      default:
+        return content;
+    }
+  };
+  const [previewMode, setPreviewMode] = useState(false);
+
+  // TEMPLATE LOADING EFFECT - Handle selectedTemplate prop changes
+  useEffect(() => {
+    if (selectedTemplate) {
+      console.log('🎨 Loading template into Professional Designer:', selectedTemplate.name);
+      
+      try {
+        // Extract template data based on structure
+        const templateData = selectedTemplate.template_data || selectedTemplate.templateJson;
+        
+        if (templateData && templateData.elements) {
+          console.log('✅ Template data found, loading elements:', templateData.elements.length);
+          
+          // Load template elements onto canvas using unified state
+          const processedElements = templateData.elements.map((element, index) => ({
+            ...element,
+            id: element.id || `template-element-${index}`,
+            // Ensure all required properties are present
+            x: element.x || 0,
+            y: element.y || 0,
+            width: element.width || 100,
+            height: element.height || 30,
+            type: element.type || 'text',
+            content: element.content || element.text || 'Template Text',
+            zIndex: element.zIndex || index,
+            fontSize: element.fontSize || 14,
+            fontFamily: element.fontFamily || 'Arial',
+            fontWeight: element.fontWeight || 'normal',
+            color: element.color || '#000000',
+            backgroundColor: element.backgroundColor || 'transparent',
+            opacity: element.opacity || 1,
+            rotation: element.rotation || 0
+          }));
+          
+          updateUnifiedState({
+            canvasElements: processedElements
+          });
+          
+          // Set label dimensions if available
+          if (templateData.paperSize || templateData.labelWidth) {
+            const width = templateData.labelWidth || 210;
+            const height = templateData.labelHeight || 148;
+            updateCanvasSettings({
+              labelDimensions: { width, height }
+            });
+          }
+          
+          // Show success message
+          toast.success(`Template "${selectedTemplate.name}" loaded successfully with ${templateData.elements.length} elements!`);
+        } else {
+          console.log('⚠️ No template elements found in template data');
+          toast.warning(`Template "${selectedTemplate.name}" has no design elements`);
+        }
+      } catch (error) {
+        console.error('❌ Error loading template:', error);
+        toast.error(`Failed to load template: ${error.message}`);
+      }
+    }
+  }, [selectedTemplate]);
+
+  // Handle two-template system integration
+  const handleTwoTemplateReady = (media: any, template: any) => {
+    console.log('🎯 Two-template system ready:', { media: media.name, template: template.name });
+    
+    // Set selected media for canvas sizing
+    setSelectedMedia(media);
+    
+    // Load template elements into canvas
+    if (template.templateJson?.elements) {
+      updateUnifiedState({
+        canvasElements: template.templateJson.elements,
+        activePanel: 'design',
+        selectedTemplate: media
+      });
+      
+      console.log(`🎨 Template loaded: ${template.templateJson.elements.length} elements`);
+      toast.success(`Template "${template.name}" loaded with ${template.templateJson.elements.length} elements`);
+    }
+  };
+
+  const handleDesignStart = (media: any) => {
+    console.log('🆕 Starting blank design on:', media.name);
+    
+    // Set selected media for canvas sizing
+    setSelectedMedia(media);
+    
+    // Start with empty canvas
+    updateUnifiedState({
+      canvasElements: [],
+      activePanel: 'design',
+      selectedTemplate: media
+    });
+    
+    toast.success(`Starting blank design on ${media.name}`);
+  };
+
+  // Clear template function
+  const clearTemplate = () => {
+    if (onTemplateCleared) {
+      onTemplateCleared();
+    }
+    updateUnifiedState({
+      canvasElements: []
+    });
+    toast.info('Template cleared from designer');
+  };
+
+  // Multi-selection functions
+  const selectAllElements = () => {
+    const allIds = canvasElements.map(el => el.id);
+    setSelectedElements(allIds);
+    setSelectedElement(null);
+    toast.success(`Selected ${allIds.length} elements`);
+  };
+
+  const clearSelection = () => {
+    setSelectedElements([]);
+    setSelectedElement(null);
+  };
+
+  const toggleElementSelection = (elementId: string, isCtrlKey: boolean) => {
+    if (isCtrlKey) {
+      setSelectedElements(prev => {
+        if (prev.includes(elementId)) {
+          return prev.filter(id => id !== elementId);
+        } else {
+          return [...prev, elementId];
+        }
+      });
+      setSelectedElement(null);
+    } else {
+      setSelectedElement(elementId);
+      setSelectedElements([]);
+    }
+  };
+
+  // Bulk alignment functions
+  const alignSelectedElements = (alignment: 'left' | 'center' | 'right' | 'top' | 'middle' | 'bottom') => {
+    if (selectedElements.length < 2) {
+      toast.error('Select at least 2 elements to align');
+      return;
+    }
+
+    const elementsToAlign = canvasElements.filter(el => selectedElements.includes(el.id));
+    
+    let referenceValue = 0;
+    
+    switch (alignment) {
+      case 'left':
+        referenceValue = Math.min(...elementsToAlign.map(el => el.x));
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, x: referenceValue } : el
+        ));
+        break;
+      case 'center':
+        const avgX = elementsToAlign.reduce((sum, el) => sum + el.x + el.width/2, 0) / elementsToAlign.length;
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, x: avgX - el.width/2 } : el
+        ));
+        break;
+      case 'right':
+        referenceValue = Math.max(...elementsToAlign.map(el => el.x + el.width));
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, x: referenceValue - el.width } : el
+        ));
+        break;
+      case 'top':
+        referenceValue = Math.min(...elementsToAlign.map(el => el.y));
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, y: referenceValue } : el
+        ));
+        break;
+      case 'middle':
+        const avgY = elementsToAlign.reduce((sum, el) => sum + el.y + el.height/2, 0) / elementsToAlign.length;
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, y: avgY - el.height/2 } : el
+        ));
+        break;
+      case 'bottom':
+        referenceValue = Math.max(...elementsToAlign.map(el => el.y + el.height));
+        setCanvasElements(prev => prev.map(el => 
+          selectedElements.includes(el.id) ? { ...el, y: referenceValue - el.height } : el
+        ));
+        break;
+    }
+    
+    toast.success(`Aligned ${selectedElements.length} elements to ${alignment}`);
+  };
+
+  // Group/Ungroup functions
+  const groupSelectedElements = () => {
+    if (selectedElements.length < 2) {
+      toast.error('Select at least 2 elements to group');
+      return;
+    }
+
+    const groupId = `group-${Date.now()}`;
+    setGroups(prev => ({ ...prev, [groupId]: [...selectedElements] }));
+    toast.success(`Grouped ${selectedElements.length} elements`);
+    console.log('🔗 Created group:', groupId, selectedElements);
+  };
+
+  const ungroupSelectedElements = () => {
+    if (selectedElements.length !== 1) {
+      toast.error('Select one grouped element to ungroup');
+      return;
+    }
+    
+    const elementId = selectedElements[0];
+    const groupId = Object.keys(groups).find(gId => groups[gId].includes(elementId));
+    
+    if (groupId) {
+      const { [groupId]: removed, ...remainingGroups } = groups;
+      setGroups(remainingGroups);
+      toast.success('Ungrouped elements');
+      console.log('🔗 Removed group:', groupId);
+    } else {
+      toast.error('Selected element is not grouped');
+    }
+  };
+
+  // Distribute elements evenly
+  const distributeElements = (direction: 'horizontal' | 'vertical') => {
+    if (selectedElements.length < 3) {
+      toast.error('Select at least 3 elements to distribute');
+      return;
+    }
+
+    const elementsToDistribute = canvasElements.filter(el => selectedElements.includes(el.id));
+    
+    if (direction === 'horizontal') {
+      elementsToDistribute.sort((a, b) => a.x - b.x);
+      const leftmost = elementsToDistribute[0].x;
+      const rightmost = elementsToDistribute[elementsToDistribute.length - 1].x + elementsToDistribute[elementsToDistribute.length - 1].width;
+      const totalSpace = rightmost - leftmost;
+      const elementSpace = elementsToDistribute.reduce((sum, el) => sum + el.width, 0);
+      const gap = (totalSpace - elementSpace) / (elementsToDistribute.length - 1);
+
+      let currentX = leftmost;
+      const updatedElements = canvasElements.map(el => {
+        const index = elementsToDistribute.findIndex(e => e.id === el.id);
+        if (index !== -1) {
+          const newX = currentX;
+          currentX += el.width + gap;
+          return { ...el, x: newX };
+        }
+        return el;
+      });
+      updateUnifiedState({ canvasElements: updatedElements });
+    } else {
+      elementsToDistribute.sort((a, b) => a.y - b.y);
+      const topmost = elementsToDistribute[0].y;
+      const bottommost = elementsToDistribute[elementsToDistribute.length - 1].y + elementsToDistribute[elementsToDistribute.length - 1].height;
+      const totalSpace = bottommost - topmost;
+      const elementSpace = elementsToDistribute.reduce((sum, el) => sum + el.height, 0);
+      const gap = (totalSpace - elementSpace) / (elementsToDistribute.length - 1);
+
+      let currentY = topmost;
+      const updatedElements = canvasElements.map(el => {
+        const index = elementsToDistribute.findIndex(e => e.id === el.id);
+        if (index !== -1) {
+          const newY = currentY;
+          currentY += el.height + gap;
+          return { ...el, y: newY };
+        }
+        return el;
+      });
+      updateUnifiedState({ canvasElements: updatedElements });
+    }
+
+    toast.success(`Distributed ${selectedElements.length} elements ${direction}ly`);
+  };
+
+  // Copy/Paste functions
+  const copySelectedElements = () => {
+    if (selectedElements.length === 0 && !selectedElement) {
+      toast.error('No elements selected to copy');
+      return;
+    }
+    
+    const elementsToCopy = selectedElements.length > 0 
+      ? canvasElements.filter(el => selectedElements.includes(el.id))
+      : selectedElement 
+        ? canvasElements.filter(el => el.id === selectedElement)
+        : [];
+    
+    setClipboard([...elementsToCopy]);
+    toast.success(`Copied ${elementsToCopy.length} elements`);
+  };
+
+  const pasteElements = () => {
+    if (clipboard.length === 0) {
+      toast.error('No elements in clipboard');
+      return;
+    }
+
+    const pastedElements = clipboard.map(el => ({
+      ...el,
+      id: `${el.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      x: el.x + 20,
+      y: el.y + 20,
+      zIndex: canvasElements.length + 1
+    }));
+
+    updateUnifiedState({
+      canvasElements: [...canvasElements, ...pastedElements],
+      selectedElements: pastedElements.map(el => el.id)
+    });
+    toast.success(`Pasted ${pastedElements.length} elements`);
+  };
+
+  // Nudge elements with arrow keys
+  const nudgeElements = (deltaX: number, deltaY: number) => {
+    const elementsToNudge = selectedElements.length > 0 ? selectedElements : selectedElement ? [selectedElement] : [];
+    
+    if (elementsToNudge.length === 0) return;
+
+    const updatedElements = canvasElements.map(el => 
+      elementsToNudge.includes(el.id) ? { 
+        ...el, 
+        x: el.x + deltaX, 
+        y: el.y + deltaY 
+      } : el
+    );
+    updateUnifiedState({ canvasElements: updatedElements });
+  };
+
+  // Undo/Redo functions
+  const undo = () => {
+    if (historyIndex > 0) {
+      setHistoryIndex(historyIndex - 1);
+      updateUnifiedState({ canvasElements: [...history[historyIndex - 1]] });
+      toast.success('Undid last action');
+    }
+  };
+
+  const redo = () => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex(historyIndex + 1);
+      updateUnifiedState({ canvasElements: [...history[historyIndex + 1]] });
+      toast.success('Redid action');
+    }
+  };
+
+  // Add to history whenever elements change
+  useEffect(() => {
+    if (canvasElements.length > 0) {
+      const newHistory = history.slice(0, historyIndex + 1);
+      newHistory.push([...canvasElements]);
+      if (newHistory.length > 50) { // Limit history size
+        newHistory.shift();
+      } else {
+        setHistoryIndex(newHistory.length - 1);
+      }
+      setHistory(newHistory);
+    }
+  }, [canvasElements]);
+
+  // Bulk resize function
+  const resizeSelectedElements = (scaleFactor: number) => {
+    if (selectedElements.length === 0) {
+      toast.error('Select elements to resize');
+      return;
+    }
+
+    updateUnifiedState({
+      canvasElements: canvasElements.map(el => {
+        if (selectedElements.includes(el.id)) {
+          return {
+            ...el,
+            width: Math.max(10, el.width * scaleFactor),
+            height: Math.max(10, el.height * scaleFactor),
+            fontSize: el.fontSize ? Math.max(6, el.fontSize * scaleFactor) : el.fontSize
+          };
+        }
+        return el;
+      })
+    });
+    
+    toast.success(`Resized ${selectedElements.length} elements`);
+  };
+  
+  // UI state
+  const [activeToolbar, setActiveToolbar] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Resize state
+  const [isResizing, setIsResizing] = useState(false);
+  const [resizeHandle, setResizeHandle] = useState<string>('');
+  const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
+  const [resizeElementStartState, setResizeElementStartState] = useState<{ 
+    x: number; 
+    y: number; 
+    width: number; 
+    height: number; 
+  }>({ x: 0, y: 0, width: 0, height: 0 });
+  
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 400, height: 300 });
+
+  // Load initial data
+  useEffect(() => {
+    fetchInitialData();
+  }, []);
+
+  // Fix: Fetch products for Product Info button
+  const fetchProducts = async () => {
+    try {
+      console.log('📦 Fetching products for product selector...');
+      const response = await fetch('/api/direct-data/products');
+      if (response.ok) {
+        const data = await response.json();
+        const productList = Array.isArray(data) ? data : (data.products || []);
+        console.log('✅ Products fetched:', productList.length);
+        setProducts(productList);
+      } else {
+        console.error('❌ Failed to fetch products:', response.status);
+        toast.error('Failed to load products');
+      }
+    } catch (error) {
+      console.error('❌ Error fetching products:', error);
+      toast.error('Failed to load products');
+    }
+  };
+
+  // CRITICAL: Canvas should show ONLY SINGLE LABEL, NOT full sheet
+  useEffect(() => {
+    if (selectedMedia && selectedMedia.dimensions) {
+      const { labelWidth, labelHeight } = selectedMedia.dimensions;
+      
+      // ENFORCE SINGLE LABEL CONSTRAINT - Only show label dimensions, NOT page dimensions
+      const singleLabelSize = {
+        width: mmToPx(labelWidth),  // Single label width only
+        height: mmToPx(labelHeight) // Single label height only
+      };
+      
+      setCanvasSize(singleLabelSize);
+      
+      // Update unified state with single label constraint
+      updateUnifiedState({
+        canvasSettings: {
+          ...canvasSettings,
+          showOnlyOneLabel: true, // CRITICAL: Force single label view
+          labelDimensions: { width: labelWidth, height: labelHeight },
+          snapToLabelBounds: true
+        }
+      });
+      
+      console.log(`🎯 Canvas set to SINGLE LABEL: ${labelWidth}×${labelHeight}mm (NOT full sheet)`);
+    }
+  }, [selectedMedia]);
+
+  const fetchInitialData = async () => {
+    try {
+      setLoading(true);
+      const [mediaResponse, productsResponse, imagesResponse, companyResponse] = await Promise.all([
+        fetch('/api/labels/media-types'),
+        fetch('/api/products'),
+        fetch('/api/image-management/images'),
+        fetch('/api/company-management/companies')
+      ]);
+
+      if (mediaResponse.ok) {
+        const mediaData = await mediaResponse.json();
+        if (mediaData.success) {
+          console.log('🏷️ Media types loaded from database:', mediaData.data.length);
+          setMediaTypes(mediaData.data);
+          if (mediaData.data.length > 0) {
+            setSelectedMedia(mediaData.data[0]);
+            console.log(`✅ Default media selected: ${mediaData.data[0].name} (${mediaData.data[0].dimensions.labelWidth}×${mediaData.data[0].dimensions.labelHeight}mm)`);
+          }
+        } else {
+          console.error('❌ Failed to load media types:', mediaData);
+        }
+      }
+
+      if (productsResponse.ok) {
+        const productsData = await productsResponse.json();
+        console.log('📦 Products API response:', productsData);
+        // Handle direct array response or wrapped response
+        const productList = Array.isArray(productsData) ? productsData : 
+                           (productsData.success && productsData.data) ? productsData.data : 
+                           (productsData.products || []);
+        
+        console.log('✅ Processed products:', productList.length);
+        setProducts(productList);
+        if (productList.length > 0) {
+          setSelectedProduct(productList[0]);
+          console.log('🎯 Selected default product:', productList[0].name);
+        }
+      } else {
+        console.warn('⚠️ Products API failed:', productsResponse.status);
+        // Try direct data gateway as fallback
+        await fetchProducts();
+      }
+
+      if (imagesResponse.ok) {
+        const imagesData = await imagesResponse.json();
+        console.log('🖼️ Images Response:', imagesData);
+        
+        // Handle different response formats and ensure proper URL construction
+        let imageList: any[] = [];
+        if (imagesData.images && Array.isArray(imagesData.images)) {
+          console.log('✅ Setting images from images wrapper:', imagesData.images);
+          imageList = imagesData.images;
+        } else if (imagesData.success && imagesData.data) {
+          console.log('✅ Setting images from success wrapper:', imagesData.data);
+          imageList = imagesData.data;
+        } else if (Array.isArray(imagesData)) {
+          console.log('✅ Setting images from direct array:', imagesData);
+          imageList = imagesData;
+        } else {
+          console.log('📷 No images found or unexpected format, setting empty array');
+          imageList = [];
+        }
+
+        // Ensure all images have proper URLs for serving
+        const processedImages = imageList.map((image: any) => ({
+          ...image,
+          url: image.url && image.url.startsWith('/api/') 
+            ? image.url 
+            : `/api/image-management/serve/${image.filename}`
+        }));
+        
+        console.log('🔧 Processed images with proper URLs:', processedImages);
+        setAvailableImages(processedImages);
+      }
+
+      if (companyResponse.ok) {
+        const companyResponse_data = await companyResponse.json();
+        // Handle both success wrapper and direct array response
+        if (Array.isArray(companyResponse_data) && companyResponse_data.length > 0) {
+          setCompanyData(companyResponse_data[0]); // Use first company from direct array
+        } else if (companyResponse_data.success && companyResponse_data.data && companyResponse_data.data.length > 0) {
+          setCompanyData(companyResponse_data.data[0]); // Use first company from wrapped response
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      setError('Failed to load designer data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Auto-populate company and product data
+  const addCompanyLogo = () => {
+    console.log('🏢 Adding company logo, company data:', companyData);
+    if (companyData?.logo_url) {
+      const logoElement: CanvasElement = {
+        id: `logo_${Date.now()}`,
+        type: 'image',
+        x: 20,
+        y: 20,
+        width: 60,
+        height: 40,
+        content: 'Company Logo',
+        imageUrl: companyData.logo_url,
+        companyData: companyData
+      };
+      updateUnifiedState({
+        canvasElements: [...canvasElements, logoElement]
+      });
+      console.log('✅ Company logo added to canvas');
+    } else {
+      console.warn('⚠️ No logo URL found in company data');
+      setError('No company logo available');
+    }
+  };
+
+  const addCompanyInfo = () => {
+    console.log('🏢 Adding company info, company data:', companyData);
+    if (companyData) {
+      const companyNameElement: CanvasElement = {
+        id: `company_name_${Date.now()}`,
+        type: 'text',
+        x: 100,
+        y: 25,
+        width: 150,
+        height: 25,
+        content: companyData.name || 'Company Name',
+        fontSize: 16,
+        fontWeight: 'bold',
+        companyData: companyData
+      };
+      
+      const licenseElement: CanvasElement = {
+        id: `license_${Date.now()}`,
+        type: 'text',
+        x: 100,
+        y: 50,
+        width: 150,
+        height: 20,
+        content: `FSSAI: ${companyData.fssaiLicense || 'N/A'}`,
+        fontSize: 10,
+        companyData: companyData
+      };
+      
+      updateUnifiedState({
+        canvasElements: [...canvasElements, companyNameElement, licenseElement]
+      });
+      console.log('✅ Company info added to canvas');
+    } else {
+      console.warn('⚠️ No company data available');
+      setError('No company data available');
+    }
+  };
+
+  const addProductNutrition = () => {
+    console.log('🍃 Opening nutrition facts form for product');
+    
+    if (!selectedProduct) {
+      toast.error('Please select a product first');
+      return;
+    }
+    
+    // Open the nutrition facts form instead of directly adding an element
+    setShowNutritionForm(true);
+    console.log('✅ Nutrition facts form opened for:', selectedProduct.name);
+    toast.info('Fill out nutrition facts form to add professional nutrition table');
+  };
+
+  // Canvas operations
+  const addElement = useCallback((type: CanvasElement['type']) => {
+    console.log(`🎯 Adding ${type} element to canvas`);
+    
+    const newElement: CanvasElement = {
+      id: `element_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      type,
+      x: 20 + (canvasElements.length * 10), // Stagger new elements
+      y: 20 + (canvasElements.length * 10),
+      width: type === 'text' ? 150 : type === 'qr' ? 60 : type === 'barcode' ? 120 : type === 'image' ? 80 : 100,
+      height: type === 'text' ? 30 : type === 'qr' ? 60 : type === 'barcode' ? 40 : type === 'image' ? 80 : 25,
+      content: type === 'text' ? 'Sample Text' : 
+               type === 'qr' ? 'https://leafyhealth.com' : // Default to functional website URL
+               type === 'barcode' ? '1234567890' : 
+               type === 'image' ? 'image.jpg' : 'Element',
+      placeholder: type === 'text' ? '{{PRODUCT_NAME}}' : undefined,
+      fontSize: type === 'text' ? 14 : 12,
+      fontWeight: 'normal',
+      fontFamily: 'Arial, sans-serif',
+      textAlign: 'left',
+      backgroundColor: type === 'rectangle' ? '#f3f4f6' : 'transparent',
+      color: type === 'text' ? '#000000' : '#000000',
+      borderColor: type === 'rectangle' ? '#6b7280' : type === 'image' ? '#d1d5db' : 'transparent',
+      borderWidth: type === 'rectangle' ? 2 : type === 'image' ? 1 : 0,
+      rotation: 0,
+      opacity: 1,
+      zIndex: canvasElements.length + 1,
+      qrType: type === 'qr' ? 'url' : undefined
+    };
+
+    updateUnifiedState({
+      canvasElements: [...canvasElements, newElement]
+    });
+    setSelectedElement(newElement.id);
+    console.log(`✅ Added ${type} element:`, newElement);
+    
+    // Show success message
+    const elementName = type.charAt(0).toUpperCase() + type.slice(1);
+    toast.success(`${elementName} element added to canvas`);
+  }, [canvasElements.length]);
+
+  const updateElement = (id: string, updates: Partial<CanvasElement>) => {
+    setCanvasElements(prev =>
+      prev.map(el => el.id === id ? { ...el, ...updates } : el)
+    );
+  };
+
+  const deleteElement = (id: string) => {
+    setCanvasElements(prev => prev.filter(el => el.id !== id));
+    if (selectedElement === id) {
+      setSelectedElement(null);
+    }
+  };
+
+  const duplicateElement = (id: string) => {
+    const element = canvasElements.find(el => el.id === id);
+    if (element) {
+      const duplicated: CanvasElement = {
+        ...element,
+        id: `element_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        x: element.x + 10,
+        y: element.y + 10,
+        zIndex: canvasElements.length
+      };
+      updateUnifiedState({
+        canvasElements: [...canvasElements, duplicated]
+      });
+      setSelectedElement(duplicated.id);
+    }
+  };
+
+  // Template operations
+  const saveTemplate = async () => {
+    if (!templateName || !selectedMedia) {
+      setError('Template name and media type are required');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const templateData: LabelTemplate = {
+        name: templateName,
+        description: templateDescription,
+        type: templateType,
+        mediaId: selectedMedia.id,
+        templateJson: {
+          elements: canvasElements,
+          labelSettings: {
+            backgroundColor: '#ffffff',
+            borderStyle: 'solid',
+            borderWidth: 1,
+            borderColor: '#000000'
+          }
+        }
+      };
+
+      const response = await fetch('/api/labels/templates', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...templateData,
+          createdBy: 1,
+          companyId: 1,
+          branchId: 1
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.success) {
+          setError(null);
+          toast.success('Template saved successfully!');
+          console.log('✅ Template saved successfully:', result);
+          // Reset form
+          setTemplateName('');
+          setTemplateDescription('');
+          setCanvasElements([]);
+          setSelectedElement(null);
+        } else {
+          const errorMessage = result.message || result.error || 'Failed to save template';
+          setError(errorMessage);
+          toast.error(errorMessage);
+          console.error('❌ Template save failed:', result);
+        }
+      } else {
+        const errorText = `Failed to save template (${response.status}: ${response.statusText})`;
+        setError(errorText);
+        toast.error(errorText);
+        console.error('❌ Template save HTTP error:', response.status, response.statusText);
+      }
+    } catch (err) {
+      console.error('Error saving template:', err);
+      setError('Failed to save template');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Preview with real data
+  const generatePreview = async () => {
+    if (!selectedProduct || canvasElements.length === 0) {
+      setError('Select a product and add elements to preview');
+      return;
+    }
+
+    try {
+      setPreviewMode(true);
+      // Here you could fetch real preview data from the backend
+      // For now, we'll simulate placeholder replacement
+      setTimeout(() => setPreviewMode(false), 3000);
+    } catch (err) {
+      console.error('Error generating preview:', err);
+      setError('Failed to generate preview');
+    }
+  };
+
+  // Text editing handlers
+  const handleDoubleClick = (elementId: string) => {
+    console.log(`🎯 Double-click detected on element ${elementId}`);
+    setEditingElementId(elementId);
+  };
+
+  const handleTextEditComplete = (elementId: string, newContent: string) => {
+    console.log(`✅ Text edit complete for ${elementId}: "${newContent}"`);
+    updateElement(elementId, { content: newContent });
+    setEditingElementId(null);
+  };
+
+  const handleTextEditCancel = () => {
+    console.log('❌ Text edit cancelled');
+    setEditingElementId(null);
+  };
+
+  // Render canvas element
+  const renderElement = (element: CanvasElement) => {
+    const isSelected = selectedElement === element.id;
+    const isEditing = editingElementId === element.id;
+    const style: React.CSSProperties = {
+      position: 'absolute',
+      left: element.x,
+      top: element.y,
+      width: element.width,
+      height: element.height,
+      transform: element.rotation ? `rotate(${element.rotation}deg)` : undefined,
+      opacity: element.opacity,
+      zIndex: element.zIndex,
+      border: isSelected ? '2px dashed #2563eb' : element.borderWidth ? 
+        `${element.borderWidth}px solid ${element.borderColor}` : 'none',
+      backgroundColor: element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
+      cursor: 'move',
+      userSelect: 'none'
+    };
+
+    const content = previewMode && element.placeholder && selectedProduct ? 
+      replaceProductPlaceholder(element.placeholder, selectedProduct) : 
+      element.content;
+
+    return (
+      <div
+        key={element.id}
+        style={style}
+        onClick={() => setSelectedElement(element.id)}
+        onDoubleClick={() => element.type === 'text' && handleDoubleClick(element.id)}
+        className={`canvas-element ${isSelected ? 'selected' : ''}`}
+      >
+        {element.type === 'text' && (
+          <>
+            {isEditing ? (
+              <input
+                type="text"
+                defaultValue={element.content}
+                autoFocus
+                onBlur={(e) => handleTextEditComplete(element.id, e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleTextEditComplete(element.id, e.currentTarget.value);
+                  } else if (e.key === 'Escape') {
+                    handleTextEditCancel();
+                  }
+                }}
+                style={{
+                  fontSize: element.fontSize,
+                  fontWeight: element.fontWeight,
+                  fontFamily: element.fontFamily,
+                  textAlign: element.textAlign as any,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none',
+                  outline: 'none',
+                  background: 'transparent',
+                  padding: '2px',
+                  color: 'inherit'
+                }}
+                className="canvas-text-editor"
+              />
+            ) : (
+              <div
+                style={{
+                  fontSize: element.fontSize,
+                  fontWeight: element.fontWeight,
+                  fontFamily: element.fontFamily,
+                  textAlign: element.textAlign as any,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '2px',
+                  overflow: 'hidden'
+                }}
+              >
+                {content}
+              </div>
+            )}
+          </>
+        )}
+        
+        {element.type === 'qr' && (
+          <div className="w-full h-full bg-white border flex items-center justify-center relative">
+            <img
+              src={element.imageUrl || `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(content || 'QR-CODE-DATA')}`}
+              alt="QR Code"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain'
+              }}
+              onError={() => {
+                console.warn('QR code failed to load, falling back to default generator');
+              }}
+            />
+            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-xs" style={{display: 'none'}}>
+              QR: {content}
+            </div>
+          </div>
+        )}
+        
+        {element.type === 'barcode' && (
+          <div className="w-full h-full bg-white border flex flex-col items-center justify-center text-xs">
+            <div className="flex-1 w-full flex items-center justify-center">
+              <div className="w-full h-8 bg-white flex items-center justify-center" style={{
+                background: `repeating-linear-gradient(
+                  90deg,
+                  #000 0px,
+                  #000 2px,
+                  #fff 2px,
+                  #fff 3px,
+                  #000 3px,
+                  #000 4px,
+                  #fff 4px,
+                  #fff 6px
+                )`
+              }}>
+              </div>
+            </div>
+            <div className="text-xs font-mono mt-1" style={{fontSize: '8px'}}>
+              {content}
+            </div>
+          </div>
+        )}
+        
+        {element.type === 'rectangle' && (
+          <div className="w-full h-full border border-gray-400"></div>
+        )}
+        
+        {element.type === 'image' && (
+          <div className="w-full h-full bg-gray-100 border flex items-center justify-center relative">
+            {element.imageUrl ? (
+              <img
+                src={element.imageUrl}
+                alt="Label Image"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+                onError={() => {
+                  // Image failed to load - fallback is already handled by conditional rendering
+                }}
+              />
+            ) : null}
+            <div 
+              className="absolute inset-0 bg-gray-100 flex items-center justify-center text-xs cursor-pointer"
+              style={{display: element.imageUrl ? 'none' : 'flex'}}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveToolbar('image');
+                setSelectedElement(element.id);
+              }}
+            >
+              📷 Click to browse
+            </div>
+          </div>
+        )}
+
+        {element.type === 'indian-compliance' && (
+          <div 
+            className="w-full h-full bg-white border border-gray-300 p-2 text-black overflow-hidden"
+            style={{
+              fontFamily: element.fontFamily || 'Arial, sans-serif',
+              fontSize: `${element.fontSize || 12}px`,
+              fontWeight: element.fontWeight || 'normal',
+              lineHeight: element.lineHeight || 1.5,
+              backgroundColor: element.backgroundColor || 'white',
+              borderColor: element.borderColor || '#374151',
+              borderWidth: `${element.borderWidth || 1}px`
+            }}
+          >
+            <div 
+              className="text-xs leading-tight"
+              style={{
+                whiteSpace: 'pre-line',
+                wordWrap: 'break-word'
+              }}
+            >
+              {content}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Replace product placeholders
+  const replaceProductPlaceholder = (placeholder: string, product: Product): string => {
+    const placeholders = {
+      '{{PRODUCT_NAME}}': product?.name || 'Product Name',
+      '{{SKU}}': product?.sku || 'SKU-001',
+      '{{PRICE}}': product?.selling_price ? `₹${product.selling_price}` : '₹0.00',
+      '{{MRP}}': product?.mrp ? `MRP: ₹${product.mrp} (incl. all taxes)` : 'MRP: ₹0.00 (incl. all taxes)',
+      '{{NET_QUANTITY}}': product?.unit ? `Net Qty: ${product.unit}` : 'Net Qty: 1 unit',
+      '{{UNIT_PRICE}}': product?.selling_price && product?.unit ? 
+        `₹${(product.selling_price / parseFloat(product.unit.replace(/[^\d.]/g, '') || '1')).toFixed(2)}/unit` : 
+        '₹0.00/unit',
+      '{{CATEGORY}}': product?.category?.name || 'Category',
+      '{{DESCRIPTION}}': product?.description || 'Product Description',
+      '{{FSSAI_LICENSE}}': 'FSSAI Lic. No: 12345678901234',
+      '{{MANUFACTURER}}': 'Sri Venkateswara Organic Foods Pvt. Ltd.',
+      '{{MANUFACTURER_ADDRESS}}': 'Plot No. 123, Food Park, Hyderabad - 500032, Telangana, India',
+      '{{BATCH_NUMBER}}': `Batch: ${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, '0')}${String(new Date().getDate()).padStart(2, '0')}`,
+      '{{MFG_DATE}}': `Mfg: ${new Date().toLocaleDateString('en-IN')}`,
+      '{{EXPIRY_DATE}}': `Best Before: ${new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN')}`,
+      '{{CONSUMER_CARE}}': 'Consumer Care: +91-40-1234-5678 | care@leafyhealth.com',
+      '{{COUNTRY_ORIGIN}}': 'Country of Origin: India',
+      '{{GST_INFO}}': 'GST included in MRP | GSTIN: 36AABCS1234C1Z5',
+      '{{ORGANIC_CERT}}': 'Certified Organic | India Organic Logo',
+      '{{INGREDIENTS}}': 'Ingredients: Listed in descending order by weight',
+      '{{ALLERGEN_INFO}}': 'Allergen Info: May contain traces of nuts',
+      '{{STORAGE_INFO}}': 'Storage: Store in cool, dry place away from direct sunlight'
+    };
+    
+    return placeholders[placeholder as keyof typeof placeholders] || placeholder;
+  };
+
+  // Zoom and pan controls
+  const handleZoomIn = () => {
+    setZoom(prev => Math.min(prev + 25, 500)); // Max 500%
+  };
+
+  const handleZoomOut = () => {
+    setZoom(prev => Math.max(prev - 25, 25)); // Min 25%
+  };
+
+  const handleZoomReset = () => {
+    setZoom(100);
+    setPanOffset({ x: 0, y: 0 });
+  };
+
+  const handleFitToWindow = () => {
+    if (selectedMedia && canvasRef.current) {
+      const container = canvasRef.current.parentElement;
+      if (container) {
+        const containerRect = container.getBoundingClientRect();
+        const canvasWidth = mmToPx(selectedMedia.dimensions.labelWidth);
+        const canvasHeight = mmToPx(selectedMedia.dimensions.labelHeight);
+        
+        // Calculate zoom to fit with padding
+        const padding = 100; // 50px padding on each side
+        const zoomX = ((containerRect.width - padding) / canvasWidth) * 100;
+        const zoomY = ((containerRect.height - padding) / canvasHeight) * 100;
+        const newZoom = Math.min(zoomX, zoomY, 300); // Max 300% for fit
+        
+        setZoom(Math.max(newZoom, 25));
+        setPanOffset({ x: 0, y: 0 });
+      }
+    }
+  };
+
+  const handleZoomChange = (newZoom: number) => {
+    setZoom(Math.max(25, Math.min(500, newZoom)));
+  };
+
+  // Pan functionality
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (e.button === 1 || (e.button === 0 && e.ctrlKey)) { // Middle click or Ctrl+left click
+      e.preventDefault();
+      setIsPanning(true);
+      setLastPanPoint({ x: e.clientX, y: e.clientY });
+    }
+  };
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (isPanning) {
+      const deltaX = e.clientX - lastPanPoint.x;
+      const deltaY = e.clientY - lastPanPoint.y;
+      
+      setPanOffset(prev => ({
+        x: prev.x + deltaX,
+        y: prev.y + deltaY
+      }));
+      
+      setLastPanPoint({ x: e.clientX, y: e.clientY });
+    }
+  }, [isPanning, lastPanPoint]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsPanning(false);
+  }, []);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (e.ctrlKey) {
+      e.preventDefault();
+      const delta = e.deltaY > 0 ? -25 : 25;
+      setZoom(prev => Math.max(25, Math.min(500, prev + delta)));
+    }
+  };
+
+  // Event listeners for pan functionality
+  useEffect(() => {
+    if (isPanning) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'grabbing';
+      
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+        document.body.style.cursor = 'default';
+      };
+    }
+  }, [isPanning, handleMouseMove, handleMouseUp]);
+
+  // Calculate scaled canvas dimensions
+  const scaledCanvasSize = {
+    width: (canvasSize.width * zoom) / 100,
+    height: (canvasSize.height * zoom) / 100
+  };
+
+  // Initialize fit to window on media change
+  useEffect(() => {
+    if (selectedMedia) {
+      // Small delay to allow canvas to render
+      setTimeout(() => {
+        handleFitToWindow();
+      }, 100);
+    }
+  }, [selectedMedia]);
+
+  // Handle enhanced QR code generation
+  const handleEnhancedQRCode = (qrData: { 
+    content: string; 
+    options: any;
+    imageUrl: string;
+    type: string;
+  }) => {
+    console.log('✅ Enhanced QR Code generated:', qrData);
+    
+    const qrElement: CanvasElement = {
+      id: `enhanced-qr-${Date.now()}`,
+      type: 'qr',
+      x: 20 + (canvasElements.length * 10),
+      y: 20 + (canvasElements.length * 10),
+      width: Math.min(qrData.options.size / 4, 80), // Scale down for label
+      height: Math.min(qrData.options.size / 4, 80),
+      content: qrData.content,
+      qrType: qrData.type as any,
+      backgroundColor: qrData.options.backgroundColor,
+      borderColor: qrData.options.foregroundColor,
+      zIndex: canvasElements.length + 1,
+      imageUrl: qrData.imageUrl.startsWith('/api/labels/qr/proxy') ? qrData.imageUrl : `/api/labels/qr/proxy?data=${encodeURIComponent(qrData.content)}&size=${qrData.options.size}&color=${qrData.options.foregroundColor.replace('#', '')}&bgcolor=${qrData.options.backgroundColor.replace('#', '')}&ecc=${qrData.options.errorCorrectionLevel}&margin=${qrData.options.margin}` // Always use proxy URL for CSP compliance
+    };
+    
+    updateUnifiedState({
+      canvasElements: [...canvasElements, qrElement]
+    });
+    toast.success('Enhanced QR code added to label!');
+  };
+
+  // Handle barcode generation
+  const handleBarcodeGenerated = (barcodeData: {
+    type: string;
+    content: string;
+    options: any;
+    imageUrl: string;
+  }) => {
+    console.log('✅ Professional Barcode generated:', barcodeData);
+    
+    const barcodeElement: CanvasElement = {
+      id: `barcode-${Date.now()}`,
+      type: 'barcode',
+      x: 20 + (canvasElements.length * 10),
+      y: 20 + (canvasElements.length * 10),
+      width: barcodeData.options.width / 2, // Scale down for label
+      height: barcodeData.options.height,
+      content: barcodeData.content,
+      backgroundColor: 'white',
+      borderColor: 'black',
+      zIndex: canvasElements.length + 1,
+      imageUrl: barcodeData.imageUrl
+    };
+    
+    updateUnifiedState({
+      canvasElements: [...canvasElements, barcodeElement]
+    });
+    toast.success(`${barcodeData.type} barcode added to label!`);
+  };
+
+  // Handle nutrition facts
+  const handleNutritionData = (nutritionData: any) => {
+    console.log('✅ Nutrition Facts data:', nutritionData);
+    
+    if (nutritionData && selectedProduct) {
+      setProductNutritionData(nutritionData);
+      setPendingNutritionData(nutritionData);
+      setShowNutritionForm(false);
+      setShowTemplateSelector(true);
+    } else {
+      toast.error('❌ No nutrition data or product selected');
+    }
+  };
+
+  // Handle template selection
+  const handleTemplateSelection = (templateType: 'standard' | 'tall-bottle' | 'wide-bag' | 'compact-square' | 'mini-sachet') => {
+    if (pendingNutritionData && selectedProduct) {
+      // Remove any existing nutrition facts tables first to prevent duplicates
+      setCanvasElements(prev => prev.filter(element => element.type !== 'nutrition-table'));
+      
+      // Set dimensions based on template type
+      const getDimensionsForTemplate = (template: string) => {
+        switch (template) {
+          case 'tall-bottle':
+            return { width: 160, height: 320 }; // Tall and narrow for bottles
+          case 'wide-bag':
+            return { width: 300, height: 200 }; // Wide for large bags
+          case 'compact-square':
+            return { width: 180, height: 180 }; // Square for small packages
+          case 'mini-sachet':
+            return { width: 140, height: 160 }; // Very small for sachets
+          default: // standard
+            return { width: 200, height: 280 }; // Standard rectangle
+        }
+      };
+
+      const dimensions = getDimensionsForTemplate(templateType);
+      
+      const nutritionElement: CanvasElement = {
+        id: `nutrition-${Date.now()}`,
+        type: 'nutrition-table',
+        x: 20,
+        y: 20,
+        width: dimensions.width,
+        height: dimensions.height,
+        content: `Nutrition Facts for ${selectedProduct.name}`,
+        nutritionData: pendingNutritionData,
+        nutritionTemplate: templateType,
+        backgroundColor: 'white',
+        borderColor: 'black',
+        zIndex: canvasElements.length + 1
+      };
+      
+      updateUnifiedState({
+        canvasElements: [...canvasElements, nutritionElement]
+      });
+      toast.success(`✅ ${templateType.replace('-', ' ')} nutrition facts template added to canvas`);
+      setShowTemplateSelector(false);
+      setPendingNutritionData(null);
+    }
+  };
+
+  // Add complete product information to canvas
+  const addCompleteProductInfo = () => {
+    if (!selectedProduct) {
+      toast.error('Please select a product first');
+      return;
+    }
+
+    console.log('📦 Adding complete product information for:', selectedProduct.name);
+    
+    const productElements = [
+      {
+        type: 'text',
+        content: selectedProduct.name,
+        placeholder: '{{PRODUCT_NAME}}',
+        x: 20, y: 20, width: 300, height: 40,
+        fontSize: 18, fontWeight: 'bold'
+      },
+      {
+        type: 'text',
+        content: `MRP: ₹${selectedProduct.selling_price || 0} (incl. all taxes)`,
+        placeholder: '{{MRP}}',
+        x: 20, y: 70, width: 250, height: 25,
+        fontSize: 14, fontWeight: 'bold'
+      },
+      {
+        type: 'text',
+        content: `Net Qty: ${selectedProduct.unit || '1 unit'}`,
+        placeholder: '{{NET_QUANTITY}}',
+        x: 20, y: 100, width: 200, height: 20,
+        fontSize: 12
+      },
+      {
+        type: 'text',
+        content: selectedProduct.description || 'Product Description',
+        placeholder: '{{DESCRIPTION}}',
+        x: 20, y: 130, width: 280, height: 30,
+        fontSize: 11
+      }
+    ];
+
+    const newElements = productElements.map((elem, index) => ({
+      id: `product-info-${Date.now()}-${index}`,
+      ...elem,
+      borderColor: '#374151',
+      borderWidth: 0,
+      backgroundColor: 'transparent',
+      rotation: 0,
+      opacity: 1,
+      zIndex: canvasElements.length + index + 1
+    }));
+
+    updateUnifiedState({
+      canvasElements: [...canvasElements, ...newElements]
+    });
+    toast.success('Product information added to canvas!');
+  };
+
+  // Handle automatic label generation
+  const handleAutomaticLabelGenerated = (generatedData: any) => {
+    console.log('📋 Automatic label data generated:', generatedData);
+    
+    // Clear current canvas and apply generated template if needed
+    if (generatedData.type === 'food') {
+      // Auto-apply food label template elements
+      toast.success(`${generatedData.type.charAt(0).toUpperCase() + generatedData.type.slice(1)} label generated for ${generatedData.product.name}`);
+    }
+    
+    setShowAutomaticGenerator(false);
+  };
+
+  // Handle template selection from automatic templates
+  const handleAutomaticTemplateSelected = (template: any) => {
+    console.log('🎨 Template selected:', template);
+    
+    // Replace placeholders with actual data
+    const newElements: CanvasElement[] = template.elements.map((element: any) => ({
+      ...element,
+      id: `${element.type}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    }));
+
+    setCanvasElements(newElements);
+    toast.success(`Applied ${template.name} template`);
+    setShowAutomaticTemplates(false);
+  };
+
+  // Add mandatory Indian label elements
+  const addMandatoryLabelElements = async () => {
+    if (!selectedProduct) {
+      toast.error('Please select a product first');
+      return;
+    }
+
+    try {
+      console.log('🇮🇳 Adding Indian Compliance Block as single grouped component...');
+      
+      // Fetch company data for FSSAI compliance
+      const companyResponse = await fetch('/api/company-management/companies');
+      const companies = companyResponse.ok ? await companyResponse.json() : [];
+      const company = companies[0]; // Use first company as default
+      
+      if (!company) {
+        toast.error('Company data not found for FSSAI compliance');
+        return;
+      }
+
+      // Build complete Indian compliance text block
+      const complianceText = [
+        `FSSAI Lic. No.: ${company.fssai_license || '12345678901234'}`,
+        selectedProduct.name || 'Product Name',
+        `Mfd. by: ${company.name || 'Sri Venkateswara Organic Foods'}`,
+        `MRP: ₹${selectedProduct.mrp || selectedProduct.selling_price || '30'} (incl. all taxes)`,
+        `Net Wt: ${selectedProduct.unit || 'dozen'}`,
+        `Best Before: {EXPIRY_DATE}`,
+        `Batch No.: {BATCH_NUMBER}`,
+        company.address || 'Plot No.123, Food Park, Hyderabad - 500032',
+        'Consumer Care: 91-40-1234-5678 | care@leafyhealth.com',
+        'Country of Origin: India',
+        'GST included in MRP | GSTIN: 36AABC1234C1ZS'
+      ].join('\n');
+
+      // Create single grouped Indian compliance element
+      const indianComplianceElement: CanvasElement = {
+        id: `indian-compliance-block-${Date.now()}`,
+        type: 'indian-compliance',
+        x: 50,
+        y: 100,
+        width: 200,
+        height: 180,
+        content: complianceText,
+        fontSize: 12,
+        fontWeight: 'normal',
+        fontFamily: 'Arial',
+        color: '#000000',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: '#374151',
+        rotation: 0,
+        opacity: 1,
+        zIndex: canvasElements.length + 1,
+        // Group properties for Konva
+        isGroup: true,
+        groupName: 'IndianComplianceBlock',
+        lineHeight: 1.5
+      };
+
+      updateUnifiedState({
+        canvasElements: [...canvasElements, indianComplianceElement]
+      });
+      toast.success('✅ Added Indian Compliance Block as single grouped component');
+      console.log('✅ Indian compliance block added:', indianComplianceElement);
+
+    } catch (error) {
+      console.error('❌ Error adding Indian compliance block:', error);
+      toast.error('Failed to add Indian compliance block');
+    }
+
+  };
+
+  // Canvas mouse handlers for selection rectangle
+  const handleCanvasMouseDown = (e: React.MouseEvent) => {
+    if (editingElementId) return;
+
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const canvasX = (e.clientX - rect.left - panOffset.x) / (zoom / 100);
+    const canvasY = (e.clientY - rect.top - panOffset.y) / (zoom / 100);
+
+    // Start area selection
+    setIsSelectingArea(true);
+    setSelectionStart({ x: canvasX, y: canvasY });
+    setSelectionEnd({ x: canvasX, y: canvasY });
+  };
+
+  const handleCanvasMouseMove = (e: React.MouseEvent) => {
+    if (!isSelectingArea) return;
+
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return;
+
+    const canvasX = (e.clientX - rect.left - panOffset.x) / (zoom / 100);
+    const canvasY = (e.clientY - rect.top - panOffset.y) / (zoom / 100);
+
+    setSelectionEnd({ x: canvasX, y: canvasY });
+  };
+
+  const handleCanvasMouseUp = () => {
+    if (!isSelectingArea) return;
+
+    const selectionRect = {
+      left: Math.min(selectionStart.x, selectionEnd.x),
+      top: Math.min(selectionStart.y, selectionEnd.y),
+      right: Math.max(selectionStart.x, selectionEnd.x),
+      bottom: Math.max(selectionStart.y, selectionEnd.y)
+    };
+
+    // Find elements within selection rectangle
+    const selectedElementIds = canvasElements
+      .filter(element => {
+        const elementRight = element.x + element.width;
+        const elementBottom = element.y + element.height;
+        
+        return element.x < selectionRect.right &&
+               elementRight > selectionRect.left &&
+               element.y < selectionRect.bottom &&
+               elementBottom > selectionRect.top;
+      })
+      .map(element => element.id);
+
+    setSelectedElements(selectedElementIds);
+    setSelectedElement(null);
+    setIsSelectingArea(false);
+
+    if (selectedElementIds.length > 0) {
+      toast.success(`Selected ${selectedElementIds.length} elements`);
+    }
+  };
+
+  // Professional keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't handle shortcuts when editing text
+      if (editingElementId || document.activeElement?.tagName === 'INPUT' || document.activeElement?.tagName === 'TEXTAREA') {
+        return;
+      }
+
+      // Shortcuts with Ctrl/Cmd
+      if (e.ctrlKey || e.metaKey) {
+        switch (e.key) {
+          case '=':
+          case '+':
+            e.preventDefault();
+            handleZoomIn();
+            break;
+          case '-':
+            e.preventDefault();
+            handleZoomOut();
+            break;
+          case '0':
+            e.preventDefault();
+            handleZoomReset();
+            break;
+          case '1':
+            e.preventDefault();
+            handleFitToWindow();
+            break;
+          case 'a':
+          case 'A':
+            e.preventDefault();
+            selectAllElements();
+            break;
+          case 'g':
+          case 'G':
+            e.preventDefault();
+            if (e.shiftKey) {
+              ungroupSelectedElements();
+            } else {
+              groupSelectedElements();
+            }
+            break;
+          case 'c':
+          case 'C':
+            e.preventDefault();
+            copySelectedElements();
+            break;
+          case 'v':
+          case 'V':
+            e.preventDefault();
+            pasteElements();
+            break;
+          case 'd':
+          case 'D':
+            e.preventDefault();
+            if (selectedElement) {
+              duplicateElement(selectedElement);
+            }
+            break;
+          case 'z':
+          case 'Z':
+            e.preventDefault();
+            if (e.shiftKey) {
+              redo();
+            } else {
+              undo();
+            }
+            break;
+          default:
+            break;
+        }
+      }
+      
+      
+      // Element shortcuts (without Ctrl/Cmd)
+      if ((selectedElement || selectedElements.length > 0)) {
+        switch (e.key) {
+          case 'Delete':
+          case 'Backspace':
+            e.preventDefault();
+            if (selectedElements.length > 0) {
+              setCanvasElements(prev => prev.filter(el => !selectedElements.includes(el.id)));
+              toast.success(`Deleted ${selectedElements.length} elements`);
+              setSelectedElements([]);
+            } else if (selectedElement) {
+              deleteElement(selectedElement);
+            }
+            break;
+          case 'Escape':
+            e.preventDefault();
+            clearSelection();
+            break;
+          // Arrow key nudging
+          case 'ArrowLeft':
+            e.preventDefault();
+            nudgeElements(-1, 0);
+            break;
+          case 'ArrowRight':
+            e.preventDefault();
+            nudgeElements(1, 0);
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            nudgeElements(0, -1);
+            break;
+          case 'ArrowDown':
+            e.preventDefault();
+            nudgeElements(0, 1);
+            break;
+          default:
+            break;
+        }
+      }
+      
+      // Grid toggle
+      if (e.key === 'g' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        setShowGrid(!showGrid);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [selectedElement, selectedElements, showGrid]);
+
+  // Element drag handlers
+  const handleElementMouseDown = (e: React.MouseEvent, elementId: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    if (editingElementId) return; // Don't drag while editing
+    
+    const element = canvasElements.find(el => el.id === elementId);
+    if (!element) return;
+    
+    setSelectedElement(elementId);
+    setIsDragging(true);
+    setDragStartPos({ x: e.clientX, y: e.clientY });
+    setDragElementStartPos({ x: element.x, y: element.y });
+    
+    console.log(`🎯 Starting drag for element ${elementId}`);
+  };
+
+  const handleElementMouseMove = useCallback((e: MouseEvent) => {
+    if (!isDragging || !selectedElement) return;
+    
+    const deltaX = (e.clientX - dragStartPos.x) / (zoom / 100);
+    const deltaY = (e.clientY - dragStartPos.y) / (zoom / 100);
+    
+    const newX = dragElementStartPos.x + deltaX;
+    const newY = dragElementStartPos.y + deltaY;
+    
+    setCanvasElements(prev =>
+      prev.map(el =>
+        el.id === selectedElement
+          ? { ...el, x: Math.max(0, newX), y: Math.max(0, newY) }
+          : el
+      )
+    );
+  }, [isDragging, selectedElement, dragStartPos, dragElementStartPos, zoom]);
+
+  const handleElementMouseUp = useCallback(() => {
+    if (isDragging) {
+      console.log(`✅ Drag completed for element ${selectedElement}`);
+      setIsDragging(false);
+    }
+  }, [isDragging, selectedElement]);
+
+  // Drag event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleElementMouseMove);
+      document.addEventListener('mouseup', handleElementMouseUp);
+      document.body.style.cursor = 'grabbing';
+      
+      return () => {
+        document.removeEventListener('mousemove', handleElementMouseMove);
+        document.removeEventListener('mouseup', handleElementMouseUp);
+        document.body.style.cursor = 'default';
+      };
+    }
+  }, [isDragging, handleElementMouseMove, handleElementMouseUp]);
+
+  // Resize handlers
+  const handleResizeStart = (e: React.MouseEvent, elementId: string, handle: string) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    const element = canvasElements.find(el => el.id === elementId);
+    if (!element) return;
+    
+    setIsResizing(true);
+    setResizeHandle(handle);
+    setResizeStartPos({ x: e.clientX, y: e.clientY });
+    setResizeElementStartState({
+      x: element.x,
+      y: element.y,
+      width: element.width,
+      height: element.height
+    });
+    
+    console.log(`🔧 Starting resize for element ${elementId} with handle ${handle}`);
+  };
+  
+  const handleResizeMove = useCallback((e: MouseEvent) => {
+    if (!isResizing || !selectedElement) return;
+    
+    const deltaX = (e.clientX - resizeStartPos.x) / (zoom / 100);
+    const deltaY = (e.clientY - resizeStartPos.y) / (zoom / 100);
+    
+    setCanvasElements(prev =>
+      prev.map(el => {
+        if (el.id !== selectedElement) return el;
+        
+        let newX = resizeElementStartState.x;
+        let newY = resizeElementStartState.y;
+        let newWidth = resizeElementStartState.width;
+        let newHeight = resizeElementStartState.height;
+        
+        switch (resizeHandle) {
+          case 'se': // Bottom Right
+            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+            break;
+          case 'sw': // Bottom Left
+            newX = resizeElementStartState.x + deltaX;
+            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+            break;
+          case 'ne': // Top Right
+            newY = resizeElementStartState.y + deltaY;
+            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+            break;
+          case 'nw': // Top Left
+            newX = resizeElementStartState.x + deltaX;
+            newY = resizeElementStartState.y + deltaY;
+            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+            break;
+          case 'n': // Top
+            newY = resizeElementStartState.y + deltaY;
+            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+            break;
+          case 's': // Bottom
+            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+            break;
+          case 'e': // Right
+            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+            break;
+          case 'w': // Left
+            newX = resizeElementStartState.x + deltaX;
+            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+            break;
+        }
+        
+        // Auto-scale font size for text elements based on new dimensions
+        const updatedElement = { ...el, x: newX, y: newY, width: newWidth, height: newHeight };
+        
+        if (el.type === 'text') {
+          const baseSize = Math.min(newWidth, newHeight);
+          const newFontSize = Math.max(8, Math.min(32, baseSize * 0.12)); // Scale font between 8-32px
+          updatedElement.fontSize = newFontSize;
+          console.log(`📏 Auto-scaling text font: ${newFontSize}px for ${newWidth}x${newHeight}`);
+        }
+        
+        return updatedElement;
+      })
+    );
+  }, [isResizing, selectedElement, resizeStartPos, resizeElementStartState, resizeHandle, zoom]);
+  
+  const handleResizeEnd = useCallback(() => {
+    if (isResizing) {
+      console.log(`✅ Resize completed for element ${selectedElement}`);
+      setIsResizing(false);
+    }
+  }, [isResizing, selectedElement]);
+  
+  // Resize event listeners
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleResizeMove);
+      document.addEventListener('mouseup', handleResizeEnd);
+      document.body.style.cursor = resizeHandle.includes('e') && resizeHandle.includes('w') ? 'ew-resize' :
+        resizeHandle.includes('n') && resizeHandle.includes('s') ? 'ns-resize' :
+        resizeHandle.includes('ne') || resizeHandle.includes('sw') ? 'nesw-resize' :
+        resizeHandle.includes('nw') || resizeHandle.includes('se') ? 'nwse-resize' :
+        resizeHandle === 'n' || resizeHandle === 's' ? 'ns-resize' :
+        resizeHandle === 'e' || resizeHandle === 'w' ? 'ew-resize' : 'default';
+      
+      return () => {
+        document.removeEventListener('mousemove', handleResizeMove);
+        document.removeEventListener('mouseup', handleResizeEnd);
+        document.body.style.cursor = 'default';
+      };
+    }
+  }, [isResizing, handleResizeMove, handleResizeEnd, resizeHandle]);
+
+  // Fix renderElement to properly handle scaling with drag functionality
+  const renderScaledElement = (element: CanvasElement) => {
+    const isSelected = selectedElement === element.id || selectedElements.includes(element.id);
+    const style: React.CSSProperties = {
+      position: 'absolute',
+      left: element.x,
+      top: element.y,
+      width: element.width,
+      height: element.height,
+      transform: element.rotation ? `rotate(${element.rotation}deg)` : undefined,
+      opacity: element.opacity,
+      zIndex: element.zIndex,
+      border: isSelected ? '2px dashed #2563eb' : element.borderWidth ? 
+        `${element.borderWidth}px solid ${element.borderColor}` : 'none',
+      backgroundColor: element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
+      cursor: isDragging ? 'grabbing' : 'move',
+      userSelect: 'none',
+      pointerEvents: 'auto'
+    };
+
+    const content = previewMode && element.placeholder && selectedProduct ? 
+      replaceProductPlaceholder(element.placeholder, selectedProduct) : 
+      element.content;
+
+    return (
+      <div
+        key={element.id}
+        style={style}
+        onMouseDown={(e) => handleElementMouseDown(e, element.id)}
+        onClick={(e) => {
+          e.stopPropagation();
+          toggleElementSelection(element.id, e.ctrlKey || e.metaKey);
+        }}
+        className={`canvas-element ${isSelected ? 'selected' : ''}`}
+      >
+        {element.type === 'text' && (
+          editingElementId === element.id ? (
+            <input
+              type="text"
+              value={element.content || ''}
+              onChange={(e) => {
+                setCanvasElements(prev => 
+                  prev.map(el => 
+                    el.id === element.id 
+                      ? { ...el, content: e.target.value }
+                      : el
+                  )
+                );
+              }}
+              onBlur={() => setEditingElementId(null)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setEditingElementId(null);
+                } else if (e.key === 'Escape') {
+                  setEditingElementId(null);
+                }
+              }}
+              autoFocus
+              style={{
+                fontSize: element.fontSize,
+                fontWeight: element.fontWeight,
+                fontFamily: element.fontFamily,
+                textAlign: element.textAlign as any,
+                width: '100%',
+                height: '100%',
+                padding: '2px',
+                border: 'none',
+                outline: 'none',
+                background: 'white',
+                color: element.color || '#000000'
+              }}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <div
+              style={{
+                fontSize: element.fontSize,
+                fontWeight: element.fontWeight,
+                fontFamily: element.fontFamily,
+                textAlign: element.textAlign as any,
+                color: element.color || '#000000',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '2px',
+                overflow: 'hidden',
+                lineHeight: '1.2',
+                cursor: 'text'
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                setEditingElementId(element.id);
+              }}
+            >
+              {content || 'Click to edit text'}
+            </div>
+          )
+        )}
+        
+        {element.type === 'qr' && (
+          <div className="w-full h-full bg-white flex items-center justify-center relative overflow-hidden">
+            {content ? (
+              <img 
+                src={element.imageUrl || `/api/labels/qr/proxy?data=${encodeURIComponent(content)}&size=300&color=000000&bgcolor=ffffff&ecc=M&margin=0`}
+                alt="QR Code"
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+                onLoad={() => {
+                  console.log('✅ QR code loaded successfully in canvas:', content);
+                }}
+                onError={(e) => {
+                  console.error('QR code generation failed:', content);
+                  console.log('Trying fallback proxy URL for QR code');
+                }}
+              />
+            ) : (
+              <div 
+                className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
+                onDoubleClick={() => setEditingElementId(element.id)}
+              >
+                <div className="text-center">
+                  <QrCodeIcon className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                  <p className="text-xs text-gray-500">Double-click to add QR content</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+        
+        {element.type === 'barcode' && (
+          <div className="w-full h-full bg-white flex items-center justify-center relative overflow-hidden">
+            {element.imageUrl ? (
+              <img 
+                src={element.imageUrl}
+                alt={`${content} barcode`}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'contain',
+                  display: 'block'
+                }}
+                onLoad={() => {
+                  console.log('✅ Barcode loaded successfully in canvas:', content);
+                }}
+                onError={(e) => {
+                  console.error('Barcode generation failed:', content);
+                }}
+              />
+            ) : content ? (
+              <ProfessionalBarcode content={content} width={element.width} height={element.height} />
+            ) : (
+              <div 
+                className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
+                onDoubleClick={() => setEditingElementId(element.id)}
+              >
+                <div className="text-center">
+                  <Square3Stack3DIcon className="w-8 h-8 text-gray-400 mx-auto mb-1" />
+                  <p className="text-xs text-gray-500">Double-click to add barcode</p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {element.type === 'nutrition-table' && (
+          <NutritionFactsTemplates 
+            width={element.width} 
+            height={element.height}
+            nutritionData={element.nutritionData}
+            templateType={element.nutritionTemplate || 'standard'}
+          />
+        )}
+        
+        {element.type === 'rectangle' && (
+          <div className="w-full h-full border border-gray-400 bg-transparent"></div>
+        )}
+        
+        {element.type === 'image' && (
+          <div className="w-full h-full bg-gray-100 flex items-center justify-center border border-gray-400 relative">
+            {element.imageUrl ? (
+              <img 
+                src={element.imageUrl}
+                alt="Label Image"
+                className="max-w-full max-h-full object-contain"
+                style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '100%' }}
+              />
+            ) : (
+              <div className="text-xs text-gray-500 text-center p-2">
+                Double-click to select image
+              </div>
+            )}
+            {isSelected && (
+              <div 
+                className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-10 cursor-pointer"
+                onDoubleClick={() => setActiveToolbar('image-selector')}
+              >
+                <PhotoIcon className="w-6 h-6 text-blue-600" />
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Resize handles */}
+        {isSelected && !editingElementId && (
+          <>
+            {/* Top Left */}
+            <div 
+              className="absolute -top-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-nw-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'nw')}
+            />
+            {/* Top Right */}
+            <div 
+              className="absolute -top-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-ne-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'ne')}
+            />
+            {/* Bottom Left */}
+            <div 
+              className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-sw-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'sw')}
+            />
+            {/* Bottom Right */}
+            <div 
+              className="absolute -bottom-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-se-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'se')}
+            />
+            {/* Top Middle */}
+            <div 
+              className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-n-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'n')}
+            />
+            {/* Bottom Middle */}
+            <div 
+              className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-s-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 's')}
+            />
+            {/* Left Middle */}
+            <div 
+              className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-w-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'w')}
+            />
+            {/* Right Middle */}
+            <div 
+              className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-e-resize hover:scale-125 transition-transform"
+              onMouseDown={(e) => handleResizeStart(e, element.id, 'e')}
+            />
+          </>
+        )}
+      </div>
+    );
+  };
+
+  // Render toolbar
+  const renderToolbar = () => (
+    <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-200/50 p-6 shadow-sm">
+      <div className="flex items-center space-x-3 mb-6">
+        <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">
+          Professional Label Designer
+        </h3>
+        <span className="text-emerald-600/70 font-medium">
+          {selectedMedia ? `${selectedMedia.name} (${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm)` : 'Select Media Type'}
+        </span>
+        
+        {/* Template System Toggle */}
+        <button
+          onClick={() => updateUnifiedState({ 
+            activePanel: unifiedState.activePanel === 'templates' ? 'design' : 'templates' 
+          })}
+          className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            unifiedState.activePanel === 'templates'
+              ? 'bg-emerald-600 text-white shadow-md'
+              : 'bg-white/80 text-emerald-600 border border-emerald-200 hover:bg-emerald-50'
+          }`}
+        >
+          <Cog6ToothIcon className="w-5 h-5 mr-2 inline" />
+          {unifiedState.activePanel === 'templates' ? 'Back to Design' : 'Template System'}
+        </button>
+      </div>
+      
+      {/* Template Status Indicator */}
+      {selectedTemplate && (
+        <div className="mb-4 p-3 bg-emerald-50 border-l-4 border-emerald-500 rounded-r-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-emerald-800">
+                Template Loaded: <span className="font-bold">{selectedTemplate.name}</span>
+              </p>
+              <p className="text-xs text-emerald-600">
+                {selectedTemplate.description || 'Professional label template loaded successfully'}
+              </p>
+            </div>
+            <button
+              onClick={clearTemplate}
+              className="text-emerald-600 hover:text-emerald-800 text-xs underline"
+            >
+              Clear Template
+            </button>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {/* Primary Tools Row */}
+        <div className="flex items-center space-x-2 flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Text button clicked');
+              addElement('text');
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl hover:from-emerald-600 hover:to-emerald-700 transition-all duration-200 shadow-sm font-medium"
+          >
+            <ChatBubbleLeftRightIcon className="w-5 h-5 mr-2" />
+            Text
+          </button>
+          
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Enhanced QR Code button clicked');
+              setShowEnhancedQRGenerator(true);
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-xl hover:from-teal-600 hover:to-teal-700 transition-all duration-200 shadow-sm font-medium"
+          >
+            <QrCodeIcon className="w-5 h-5 mr-2" />
+            QR Code
+          </button>
+          
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Multiple Barcode button clicked');
+              setShowBarcodeGenerator(true);
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all duration-200 shadow-sm font-medium"
+          >
+            <RectangleGroupIcon className="w-5 h-5 mr-2" />
+            Barcode
+          </button>
+          
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Nutrition Facts button clicked');
+              if (selectedProduct) {
+                setShowNutritionForm(true);
+              } else {
+                toast.error('Please select a product first to add nutrition facts');
+              }
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-sm font-medium"
+          >
+            <BeakerIcon className="w-5 h-5 mr-2" />
+            Nutrition
+          </button>
+
+          {/* Product Information Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              addCompleteProductInfo();
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white rounded-xl hover:from-indigo-600 hover:to-indigo-700 transition-all duration-200 shadow-sm font-medium"
+            title="Add Complete Product Information"
+          >
+            <DocumentTextIcon className="w-5 h-5 mr-2" />
+            Product Info
+          </button>
+
+          {/* Automatic Label Generator Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowAutomaticGenerator(true);
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-200 shadow-sm font-medium"
+            title="Generate Complete Labels Automatically"
+          >
+            <SparklesIcon className="w-5 h-5 mr-2" />
+            Auto Generate
+          </button>
+
+          {/* Automatic Templates Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              setShowAutomaticTemplates(true);
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-sm font-medium"
+            title="Professional Label Templates"
+          >
+            <RectangleStackIcon className="w-5 h-5 mr-2" />
+            Templates
+          </button>
+
+          {/* Clear Template Button - Only show when template is loaded */}
+          {selectedTemplate && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                clearTemplate();
+              }}
+              className="flex items-center px-4 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-sm font-medium"
+              title={`Clear Template: ${selectedTemplate.name}`}
+            >
+              <TrashIcon className="w-5 h-5 mr-2" />
+              Clear Template
+            </button>
+          )}
+
+          {/* Mandatory Label Elements Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              addMandatoryLabelElements();
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-sm font-medium"
+            title="Add Mandatory Indian Label Elements (FSSAI/Legal Metrology)"
+          >
+            <ShieldCheckIcon className="w-5 h-5 mr-2" />
+            Indian Compliance
+          </button>
+          
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Image button clicked');
+              addElement('image');
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-xl hover:from-pink-600 hover:to-rose-600 transition-all duration-200 shadow-sm font-medium"
+          >
+            <PhotoIcon className="w-5 h-5 mr-2" />
+            Image
+          </button>
+          
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('🎯 Rectangle button clicked');
+              addElement('rectangle');
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-sm font-medium"
+          >
+            <RectangleGroupIcon className="w-5 h-5 mr-2" />
+            Rectangle
+          </button>
+
+        </div>
+
+        {/* Secondary Tools Row */}
+        <div className="flex items-center space-x-2 flex-wrap gap-2">
+
+          {/* Select All Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              selectAllElements();
+            }}
+            className="flex items-center px-4 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all duration-200 shadow-sm font-medium"
+            title="Select All Elements (Ctrl+A)"
+          >
+            <Square3Stack3DIcon className="w-5 h-5 mr-2" />
+            Select All
+          </button>
+
+          {/* Clear Selection Button */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              clearSelection();
+            }}
+            className="flex items-center px-3 py-3 bg-gradient-to-r from-gray-500 to-gray-600 text-white rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all duration-200 shadow-sm"
+            title="Clear Selection"
+          >
+            <TrashIcon className="w-5 h-5" />
+          </button>
+
+          {/* Grouping Tools */}
+          <div className="flex items-center space-x-1 bg-green-100 rounded-lg px-2 py-1">
+            <button
+              onClick={groupSelectedElements}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Group Selected (Ctrl+G)"
+              disabled={selectedElements.length < 2}
+            >
+              🔗
+            </button>
+            <button
+              onClick={ungroupSelectedElements}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Ungroup (Ctrl+Shift+G)"
+              disabled={selectedElements.length !== 1}
+            >
+              ⚡
+            </button>
+          </div>
+
+          {/* Copy/Paste Tools */}
+          <div className="flex items-center space-x-1 bg-orange-100 rounded-lg px-2 py-1">
+            <button
+              onClick={copySelectedElements}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Copy (Ctrl+C)"
+              disabled={selectedElements.length === 0 && !selectedElement}
+            >
+              📋
+            </button>
+            <button
+              onClick={pasteElements}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Paste (Ctrl+V)"
+              disabled={clipboard.length === 0}
+            >
+              📌
+            </button>
+          </div>
+
+          {/* Alignment Tools */}
+          <div className="flex items-center space-x-1 bg-gray-100 rounded-lg px-2 py-1">
+            <button
+              onClick={() => alignSelectedElements('left')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Left"
+              disabled={selectedElements.length < 2}
+            >
+              ⫤
+            </button>
+            <button
+              onClick={() => alignSelectedElements('center')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Center"
+              disabled={selectedElements.length < 2}
+            >
+              ⫿
+            </button>
+            <button
+              onClick={() => alignSelectedElements('right')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Right"
+              disabled={selectedElements.length < 2}
+            >
+              ⫤
+            </button>
+            <div className="w-px h-4 bg-gray-300"></div>
+            <button
+              onClick={() => alignSelectedElements('top')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Top"
+              disabled={selectedElements.length < 2}
+            >
+              ⫫
+            </button>
+            <button
+              onClick={() => alignSelectedElements('middle')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Middle"
+              disabled={selectedElements.length < 2}
+            >
+              ⫽
+            </button>
+            <button
+              onClick={() => alignSelectedElements('bottom')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Align Bottom"
+              disabled={selectedElements.length < 2}
+            >
+              ⫫
+            </button>
+          </div>
+
+          {/* Distribution Tools */}
+          <div className="flex items-center space-x-1 bg-teal-100 rounded-lg px-2 py-1">
+            <button
+              onClick={() => distributeElements('horizontal')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Distribute Horizontally"
+              disabled={selectedElements.length < 3}
+            >
+              ↔️
+            </button>
+            <button
+              onClick={() => distributeElements('vertical')}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Distribute Vertically"
+              disabled={selectedElements.length < 3}
+            >
+              ↕️
+            </button>
+          </div>
+
+          {/* Resize Tools */}
+          <div className="flex items-center space-x-1 bg-purple-100 rounded-lg px-2 py-1">
+            <button
+              onClick={() => resizeSelectedElements(0.8)}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Resize Smaller"
+              disabled={selectedElements.length === 0}
+            >
+              🔽
+            </button>
+            <button
+              onClick={() => resizeSelectedElements(1.25)}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Resize Larger"
+              disabled={selectedElements.length === 0}
+            >
+              🔼
+            </button>
+          </div>
+
+          {/* Undo/Redo Tools */}
+          <div className="flex items-center space-x-1 bg-red-100 rounded-lg px-2 py-1">
+            <button
+              onClick={undo}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Undo (Ctrl+Z)"
+              disabled={historyIndex <= 0}
+            >
+              ↶
+            </button>
+            <button
+              onClick={redo}
+              className="px-2 py-1 text-xs bg-white hover:bg-gray-50 rounded border"
+              title="Redo (Ctrl+Shift+Z)"
+              disabled={historyIndex >= history.length - 1}
+            >
+              ↷
+            </button>
+          </div>
+
+          {/* Selection Info */}
+          {selectedElements.length > 0 && (
+            <div className="flex items-center px-3 py-2 bg-blue-50 border border-blue-200 rounded-md">
+              <span className="text-sm font-medium text-blue-800">
+                {selectedElements.length} selected
+              </span>
+            </div>
+          )}
+        </div>
+        
+        <div className="flex items-center space-x-4">
+          {/* Zoom Controls */}
+          <div className="flex items-center space-x-2 bg-gray-50 rounded-lg px-3 py-1">
+            <button
+              onClick={handleZoomOut}
+              className="p-1 hover:bg-gray-200 rounded"
+              title="Zoom Out (Ctrl + Scroll)"
+            >
+              <MagnifyingGlassMinusIcon className="w-4 h-4 text-gray-600" />
+            </button>
+            
+            <div className="flex items-center space-x-1">
+              <input
+                type="range"
+                min="25"
+                max="500"
+                step="25"
+                value={zoom}
+                onChange={(e) => handleZoomChange(parseInt(e.target.value))}
+                className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+              />
+              <span className="text-sm font-medium text-gray-700 min-w-[3rem]">{zoom}%</span>
+            </div>
+            
+            <button
+              onClick={handleZoomIn}
+              className="p-1 hover:bg-gray-200 rounded"
+              title="Zoom In (Ctrl + Scroll)"
+            >
+              <MagnifyingGlassPlusIcon className="w-4 h-4 text-gray-600" />
+            </button>
+            
+            <div className="w-px h-4 bg-gray-300"></div>
+            
+            <button
+              onClick={handleZoomReset}
+              className="p-1 hover:bg-gray-200 rounded text-xs font-medium text-gray-600"
+              title="Reset Zoom (100%)"
+            >
+              1:1
+            </button>
+            
+            <button
+              onClick={handleFitToWindow}
+              className="p-1 hover:bg-gray-200 rounded"
+              title="Fit to Window"
+            >
+              <ArrowsPointingOutIcon className="w-4 h-4 text-gray-600" />
+            </button>
+            
+            <button
+              onClick={() => setShowGrid(!showGrid)}
+              className={`p-1 hover:bg-gray-200 rounded ${showGrid ? 'text-blue-600' : 'text-gray-600'}`}
+              title="Toggle Grid"
+            >
+              <Squares2X2Icon className="w-4 h-4" />
+            </button>
+          </div>
+          
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={generatePreview}
+              className="flex items-center px-3 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+            >
+              <EyeIcon className="w-4 h-4 mr-1" />
+              Preview
+            </button>
+            
+            <button
+              onClick={saveTemplate}
+              disabled={loading}
+              className="flex items-center px-3 py-2 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 disabled:opacity-50"
+            >
+              <DocumentArrowDownIcon className="w-4 h-4 mr-1" />
+              Save Template
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Render properties panel
+  const renderPropertiesPanel = () => {
+    const element = canvasElements.find(el => el.id === selectedElement);
+    if (!element) return null;
+
+    return (
+      <div className="w-80 bg-white/90 backdrop-blur-sm border-l border-emerald-200/50 p-6 shadow-sm">
+        <h4 className="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent mb-6">Element Properties</h4>
+        
+        <div className="space-y-6">
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border border-emerald-200/50">
+            <label className="block text-sm font-semibold text-emerald-700 mb-3">Content</label>
+            <input
+              type="text"
+              value={element.content || ''}
+              onChange={(e) => updateElement(element.id, { content: e.target.value })}
+              className="w-full px-4 py-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm font-medium"
+            />
+          </div>
+          
+          {element.type === 'text' && (
+            <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl p-4 border border-teal-200/50">
+              <label className="block text-sm font-semibold text-teal-700 mb-3">Dynamic Placeholder</label>
+              <select
+                value={element.placeholder || ''}
+                onChange={(e) => updateElement(element.id, { placeholder: e.target.value })}
+                className="w-full px-4 py-3 border border-teal-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm font-medium"
+              >
+                <option value="">No placeholder</option>
+                <option value="{{PRODUCT_NAME}}">Product Name</option>
+                <option value="{{SKU}}">SKU</option>
+                <option value="{{PRICE}}">Price</option>
+                <option value="{{CATEGORY}}">Category</option>
+              </select>
+            </div>
+          )}
+          
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">X (mm)</label>
+              <input
+                type="number"
+                value={Math.round(pxToMm(element.x) * 10) / 10}
+                onChange={(e) => updateElement(element.id, { x: mmToPx(parseFloat(e.target.value) || 0) })}
+                className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Y (mm)</label>
+              <input
+                type="number"
+                value={Math.round(pxToMm(element.y) * 10) / 10}
+                onChange={(e) => updateElement(element.id, { y: mmToPx(parseFloat(e.target.value) || 0) })}
+                className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Width (mm)</label>
+              <input
+                type="number"
+                value={Math.round(pxToMm(element.width) * 10) / 10}
+                onChange={(e) => updateElement(element.id, { width: mmToPx(parseFloat(e.target.value) || 0) })}
+                className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Height (mm)</label>
+              <input
+                type="number"
+                value={Math.round(pxToMm(element.height) * 10) / 10}
+                onChange={(e) => updateElement(element.id, { height: mmToPx(parseFloat(e.target.value) || 0) })}
+                className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+              />
+            </div>
+          </div>
+          
+          {element.type === 'text' && (
+            <>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Font Size</label>
+                  <input
+                    type="number"
+                    value={element.fontSize || 12}
+                    onChange={(e) => updateElement(element.id, { fontSize: parseInt(e.target.value) || 12 })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                    min="6"
+                    max="72"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="color"
+                      value={element.color || '#000000'}
+                      onChange={(e) => updateElement(element.id, { color: e.target.value })}
+                      className="w-12 h-9 border border-gray-300 rounded cursor-pointer"
+                    />
+                    <input
+                      type="text"
+                      value={element.color || '#000000'}
+                      onChange={(e) => updateElement(element.id, { color: e.target.value })}
+                      className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-sm"
+                      placeholder="#000000"
+                    />
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Font Family</label>
+                <select
+                  value={element.fontFamily || 'Arial, sans-serif'}
+                  onChange={(e) => updateElement(element.id, { fontFamily: e.target.value })}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                >
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="Verdana, sans-serif">Verdana</option>
+                  <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                  <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                  <option value="Impact, sans-serif">Impact</option>
+                  <option value="'Lucida Console', monospace">Lucida Console</option>
+                  <option value="Tahoma, sans-serif">Tahoma</option>
+                </select>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Font Weight</label>
+                  <select
+                    value={element.fontWeight || 'normal'}
+                    onChange={(e) => updateElement(element.id, { fontWeight: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                    <option value="lighter">Light</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Text Align</label>
+                  <select
+                    value={element.textAlign || 'left'}
+                    onChange={(e) => updateElement(element.id, { textAlign: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  >
+                    <option value="left">Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                  </select>
+                </div>
+              </div>
+            </>
+          )}
+          
+          {/* Background Color for all elements */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Background Color</label>
+            <div className="flex items-center space-x-2">
+              <input
+                type="color"
+                value={element.backgroundColor || '#ffffff'}
+                onChange={(e) => updateElement(element.id, { backgroundColor: e.target.value })}
+                className="w-12 h-9 border border-gray-300 rounded cursor-pointer"
+              />
+              <input
+                type="text"
+                value={element.backgroundColor || '#ffffff'}
+                onChange={(e) => updateElement(element.id, { backgroundColor: e.target.value })}
+                className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-sm"
+                placeholder="#ffffff"
+              />
+            </div>
+          </div>
+          
+          {/* Border settings */}
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Border Width</label>
+              <input
+                type="number"
+                value={element.borderWidth || 0}
+                onChange={(e) => updateElement(element.id, { borderWidth: parseInt(e.target.value) || 0 })}
+                className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
+                min="0"
+                max="10"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Border Color</label>
+              <input
+                type="color"
+                value={element.borderColor || '#000000'}
+                onChange={(e) => updateElement(element.id, { borderColor: e.target.value })}
+                className="w-full h-9 border border-gray-300 rounded cursor-pointer"
+              />
+            </div>
+          </div>
+          
+          <div className="flex space-x-2">
+            <button
+              onClick={() => duplicateElement(element.id)}
+              className="flex-1 flex items-center justify-center px-3 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              <ArrowsRightLeftIcon className="w-4 h-4 mr-1" />
+              Duplicate
+            </button>
+            
+            <button
+              onClick={() => deleteElement(element.id)}
+              className="flex-1 flex items-center justify-center px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+            >
+              <TrashIcon className="w-4 h-4 mr-1" />
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading Label Designer...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen flex flex-col bg-gradient-to-br from-emerald-50 via-white to-teal-50">
+      {/* Modern Toolbar with Emerald Theme */}
+      {renderToolbar()}
+      
+      {/* Error Display */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-md p-4 m-4">
+          <p className="text-red-800">{error}</p>
+          <button
+            onClick={() => setError(null)}
+            className="mt-2 px-3 py-1 bg-red-100 text-red-800 rounded-md hover:bg-red-200"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+      
+      {/* Main Content */}
+      <div className="flex-1 flex">
+        {/* Conditional Content Based on Active Panel */}
+        {unifiedState.activePanel === 'templates' ? (
+          <div className="flex-1">
+            <TwoTemplateSystem
+              onTemplateReady={handleTwoTemplateReady}
+              onDesignStart={handleDesignStart}
+            />
+          </div>
+        ) : (
+          <>
+            {/* Modern Left Sidebar with Emerald Theme */}
+            <div className="w-72 bg-white/90 backdrop-blur-sm border-r border-emerald-200/50 p-6 shadow-sm">
+          <div className="space-y-6">
+            {/* Modern Card Layout */}
+            <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-4 border border-emerald-200/50">
+              <label className="block text-sm font-semibold text-emerald-700 mb-3">Label Media Type</label>
+              <select
+                value={selectedMedia?.id || ''}
+                onChange={(e) => {
+                  const media = mediaTypes.find(m => m.id === parseInt(e.target.value));
+                  setSelectedMedia(media || null);
+                }}
+                className="w-full px-4 py-3 border border-emerald-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white shadow-sm font-medium"
+              >
+                <option value="">Select Media Type</option>
+                {mediaTypes.map((media, index) => (
+                  <option key={`media-${media.id}-${index}`} value={media.id}>
+                    {media.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="bg-gradient-to-r from-teal-50 to-emerald-50 rounded-xl p-4 border border-teal-200/50">
+              <label className="block text-sm font-semibold text-teal-700 mb-3">Product Data Source</label>
+              <select
+                value={selectedProduct?.id || ''}
+                onChange={(e) => {
+                  const product = products.find(p => p.id === parseInt(e.target.value));
+                  setSelectedProduct(product || null);
+                }}
+                className="w-full px-4 py-3 border border-teal-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm font-medium"
+              >
+                <option value="">Select Preview Product</option>
+                {products.map((product, index) => (
+                  <option key={`product-${product.id}-${index}`} value={product.id}>
+                    {product.name} - ₹{product.selling_price || product.price} ({product.unit})
+                  </option>
+                ))}
+              </select>
+              {products.length === 0 && (
+                <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-700 font-medium">
+                    No products available. Database has {products.length} products loaded.
+                  </p>
+                </div>
+              )}
+              {products.length > 0 && (
+                <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                  <p className="text-sm text-emerald-700 font-medium">
+                    {products.length} authentic products loaded from database
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Template Name</label>
+              <input
+                type="text"
+                value={templateName}
+                onChange={(e) => setTemplateName(e.target.value)}
+                placeholder="Enter template name"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <textarea
+                value={templateDescription}
+                onChange={(e) => setTemplateDescription(e.target.value)}
+                placeholder="Enter description"
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Template Type</label>
+              <select
+                value={templateType}
+                onChange={(e) => setTemplateType(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="price_tag">Price Tag</option>
+                <option value="product_label">Product Label</option>
+                <option value="barcode_label">Barcode Label</option>
+                <option value="custom">Custom</option>
+              </select>
+            </div>
+            
+            {/* Smart Data Integration - Modern Card */}
+            <div className="bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl p-5 border border-emerald-300/50">
+              <label className="block text-sm font-bold text-emerald-800 mb-4">Smart Data Integration</label>
+              <div className="space-y-3">
+                <button
+                  onClick={addCompanyLogo}
+                  disabled={!companyData?.logo_url}
+                  className="w-full px-4 py-3 text-sm font-medium bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl hover:from-purple-600 hover:to-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm transition-all duration-200"
+                >
+                  {companyData?.logo_url ? 'Add Company Logo' : 'No Logo Available'}
+                </button>
+                
+                <button
+                  onClick={addCompanyInfo}
+                  disabled={!companyData}
+                  className="w-full px-4 py-3 text-sm font-medium bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl hover:from-emerald-600 hover:to-emerald-700 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm transition-all duration-200"
+                >
+                  {companyData ? 'Add Company Info & License' : 'Loading Company...'}
+                </button>
+                
+                <button
+                  onClick={addProductNutrition}
+                  disabled={!selectedProduct}
+                  className="w-full px-4 py-3 text-sm font-medium bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-xl hover:from-orange-600 hover:to-orange-700 disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm transition-all duration-200"
+                >
+                  Add Product Nutrition
+                </button>
+                
+                <button
+                  onClick={() => setActiveToolbar('image-selector')}
+                  className="w-full px-4 py-3 text-sm font-medium bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 shadow-sm transition-all duration-200"
+                >
+                  Browse Images
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Modern Canvas Area with Emerald Theme */}
+        <div className="flex-1 flex flex-col bg-gradient-to-br from-emerald-50/30 via-white to-teal-50/30 overflow-hidden">
+          {/* Canvas Container with Scroll and Zoom */}
+          <div 
+            className="flex-1 flex items-center justify-center p-8 overflow-auto cursor-grab active:cursor-grabbing"
+            onMouseDown={handleMouseDown}
+            onWheel={handleWheel}
+            style={{
+              cursor: isPanning ? 'grabbing' : 'grab'
+            }}
+          >
+            <div 
+              className="relative"
+              style={{
+                transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
+                transition: isPanning ? 'none' : 'transform 0.1s ease-out'
+              }}
+            >
+              {/* Professional Canvas with Modern Emerald Theme */}
+              <div className="bg-white shadow-2xl rounded-2xl overflow-hidden border-2 border-emerald-200/50 ring-1 ring-emerald-100/50">
+                {/* Canvas with Professional Scaling */}
+                <div
+                  ref={canvasRef}
+                  className="relative bg-white"
+                  style={{
+                    width: scaledCanvasSize.width,
+                    height: scaledCanvasSize.height,
+                    backgroundImage: showGrid ? 
+                      `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)` : 
+                      'none',
+                    backgroundSize: `${(10 * zoom) / 100}px ${(10 * zoom) / 100}px`,
+                    transform: 'translateZ(0)', // Hardware acceleration
+                    imageRendering: 'crisp-edges'
+                  }}
+                >
+                  {/* Render all canvas elements with scaling */}
+                  {canvasElements.map((element) => {
+                    const scaledElement = {
+                      ...element,
+                      x: (element.x * zoom) / 100,
+                      y: (element.y * zoom) / 100,
+                      width: (element.width * zoom) / 100,
+                      height: (element.height * zoom) / 100,
+                      fontSize: element.fontSize ? (element.fontSize * zoom) / 100 : undefined
+                    };
+                    return renderScaledElement(scaledElement);
+                  })}
+
+                  {/* Selection Rectangle */}
+                  {isSelectingArea && (
+                    <div
+                      className="absolute border-2 border-blue-500 border-dashed bg-blue-200 bg-opacity-20 pointer-events-none"
+                      style={{
+                        left: Math.min(selectionStart.x, selectionEnd.x) * zoom / 100,
+                        top: Math.min(selectionStart.y, selectionEnd.y) * zoom / 100,
+                        width: Math.abs(selectionEnd.x - selectionStart.x) * zoom / 100,
+                        height: Math.abs(selectionEnd.y - selectionStart.y) * zoom / 100,
+                        zIndex: 9999
+                      }}
+                    />
+                  )}
+                  
+                  {/* Preview overlay */}
+                  {previewMode && (
+                    <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
+                      <div className="bg-white rounded-lg p-4 shadow-lg">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                        <p className="mt-2 text-sm text-gray-600">Generating Preview...</p>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Canvas Rulers */}
+                  <div className="absolute -top-6 left-0 right-0 h-6 bg-gray-100 border-b border-gray-300 flex items-end text-xs text-gray-500">
+                    {Array.from({ length: Math.ceil(scaledCanvasSize.width / ((10 * zoom) / 100)) }, (_, i) => (
+                      <div 
+                        key={i} 
+                        className="border-l border-gray-400" 
+                        style={{ 
+                          width: (10 * zoom) / 100,
+                          height: i % 5 === 0 ? '100%' : '50%'
+                        }}
+                      >
+                        {i % 5 === 0 && <span className="ml-1">{i * 2}</span>}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="absolute -left-6 top-0 bottom-0 w-6 bg-gray-100 border-r border-gray-300 flex flex-col justify-end text-xs text-gray-500">
+                    {Array.from({ length: Math.ceil(scaledCanvasSize.height / ((10 * zoom) / 100)) }, (_, i) => (
+                      <div 
+                        key={i} 
+                        className="border-t border-gray-400 flex items-start" 
+                        style={{ 
+                          height: (10 * zoom) / 100,
+                          width: i % 5 === 0 ? '100%' : '50%',
+                          marginLeft: i % 5 === 0 ? '0' : '50%'
+                        }}
+                      >
+                        {i % 5 === 0 && <span className="mt-1 -rotate-90 origin-left text-xs">{i * 2}</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Modern Status Bar with Emerald Theme */}
+          <div className="bg-white/90 backdrop-blur-sm border-t border-emerald-200/50 px-8 py-4 shadow-sm">
+            <div className="flex items-center justify-between text-sm text-emerald-700">
+              <div className="flex items-center space-x-4">
+                <span>
+                  Canvas: {selectedMedia ? `${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm` : 'No media selected'}
+                </span>
+                <span className={`font-semibold ${canvasElements.length > 0 ? 'text-emerald-600' : 'text-emerald-400'}`}>
+                  Elements: {canvasElements.length}
+                </span>
+                <span className="text-emerald-500">• Zoom: {zoom}%</span>
+              </div>
+              
+              <div className="flex items-center space-x-4 text-xs">
+                <span>Pan: Ctrl+Click & Drag | Zoom: Ctrl+Scroll | Shortcuts: Ctrl+0 (Reset), Ctrl+1 (Fit), G (Grid)</span>
+                {selectedElement && (
+                  <span className="text-blue-600 font-medium">• Element Selected (Del to delete, Ctrl+D to duplicate)</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Right Sidebar - Properties */}
+        {selectedElement && renderPropertiesPanel()}
+      </div>
+      
+      {/* Image Selector Modal */}
+      {activeToolbar === 'image-selector' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Select Image</h3>
+              <button
+                onClick={() => setActiveToolbar(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4">
+              {availableImages.map((image: any) => (
+                <div
+                  key={image.id}
+                  className="border rounded-lg p-2 cursor-pointer hover:bg-gray-50"
+                  onClick={() => {
+                    if (selectedElement) {
+                      setCanvasElements(prev => 
+                        prev.map(el => 
+                          el.id === selectedElement 
+                            ? { ...el, imageUrl: image.url, content: image.filename }
+                            : el
+                        )
+                      );
+                    } else {
+                      const imageElement: CanvasElement = {
+                        id: `image_${Date.now()}`,
+                        type: 'image',
+                        x: 20,
+                        y: 80,
+                        width: 80,
+                        height: 60,
+                        content: image.filename,
+                        imageUrl: image.url,
+                        imageId: image.id
+                      };
+                      updateUnifiedState({
+                        canvasElements: [...canvasElements, imageElement]
+                      });
+                    }
+                    setActiveToolbar(null);
+                  }}
+                >
+                  <img 
+                    src={image.url}
+                    alt={image.filename}
+                    className="w-full h-20 object-cover rounded"
+                    onError={(e) => {
+                      console.error('Image failed to load:', image.url);
+                      const target = e.target as HTMLImageElement;
+                      // Set a fallback placeholder image
+                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNEwzOCAzNkg0Nkw0MiAyNFoiIGZpbGw9IiNEREREREQiLz4KPC9zdmc+';
+                    }}
+                  />
+                  <p className="text-xs text-gray-600 mt-1 truncate">{image.filename}</p>
+                </div>
+              ))}
+            </div>
+            
+            {availableImages.length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                <PhotoIcon className="w-12 h-12 mx-auto mb-2" />
+                <p>No images available. Upload images through Image Management.</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* QR Code Selector Modal */}
+      {activeToolbar === 'qr-selector' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-lg w-full mx-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Create QR Code</h3>
+              <button
+                onClick={() => setActiveToolbar(null)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* QR Code Type Selector */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                QR Code Type
+              </label>
+              <select
+                value={qrCodeType}
+                onChange={(e) => setQrCodeType(e.target.value as any)}
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="url">🌐 Website URL</option>
+                <option value="text">📝 Plain Text</option>
+                <option value="email">📧 Email Address</option>
+                <option value="phone">📞 Phone Number</option>
+                <option value="sms">💬 SMS Text Message</option>
+                <option value="whatsapp">🟢 WhatsApp Message</option>
+                <option value="wifi">📶 WiFi Network</option>
+                <option value="vcard">👤 Contact Card (vCard)</option>
+              </select>
+            </div>
+
+            {/* Content Input */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                {qrCodeType === 'url' && 'Website URL (e.g., google.com)'}
+                {qrCodeType === 'text' && 'Text Content'}
+                {qrCodeType === 'email' && 'Email Address'}
+                {qrCodeType === 'phone' && 'Phone Number (e.g., +919876543210)'}
+                {qrCodeType === 'sms' && 'Phone Number for SMS'}
+                {qrCodeType === 'whatsapp' && 'WhatsApp Number (e.g., 919876543210)'}
+                {qrCodeType === 'wifi' && 'Network Name | Password (e.g., MyWiFi|password123)'}
+                {qrCodeType === 'vcard' && 'Name | Phone | Email (e.g., John Doe|+919876543210|john@example.com)'}
+              </label>
+              <input
+                type="text"
+                value={qrCodeContent}
+                onChange={(e) => setQrCodeContent(e.target.value)}
+                placeholder={
+                  qrCodeType === 'url' ? 'Enter website URL...' :
+                  qrCodeType === 'text' ? 'Enter text content...' :
+                  qrCodeType === 'email' ? 'Enter email address...' :
+                  qrCodeType === 'phone' ? 'Enter phone number...' :
+                  qrCodeType === 'sms' ? 'Enter phone number...' :
+                  qrCodeType === 'whatsapp' ? 'Enter WhatsApp number...' :
+                  qrCodeType === 'wifi' ? 'Enter network|password...' :
+                  'Enter name|phone|email...'
+                }
+                className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              />
+            </div>
+
+            {/* Industry Standard Format Preview */}
+            <div className="mb-4 p-3 bg-gray-50 rounded-md">
+              <p className="text-sm font-medium text-gray-700 mb-1">Generated QR Content:</p>
+              <code className="text-xs text-gray-600 break-all">
+                {qrCodeContent ? generateQRContent(qrCodeType, qrCodeContent) : 'Enter content above to see preview...'}
+              </code>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setActiveToolbar(null)}
+                className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (qrCodeContent.trim()) {
+                    const qrElement: CanvasElement = {
+                      id: `qr-${Date.now()}`,
+                      type: 'qr',
+                      x: 20,
+                      y: 20,
+                      width: 50,
+                      height: 50,
+                      content: generateQRContent(qrCodeType, qrCodeContent),
+                      qrType: qrCodeType,
+                      zIndex: canvasElements.length + 1
+                    };
+                    updateUnifiedState({
+                      canvasElements: [...canvasElements, qrElement]
+                    });
+                    setActiveToolbar(null);
+                    console.log('✅ QR Code created:', qrElement);
+                  }
+                }}
+                disabled={!qrCodeContent.trim()}
+                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              >
+                Create QR Code
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Enhanced QR Code Generator */}
+      {showEnhancedQRGenerator && (
+        <EnhancedQRCodeGenerator
+          onQRCodeGenerated={handleEnhancedQRCode}
+          onClose={() => setShowEnhancedQRGenerator(false)}
+        />
+      )}
+
+      {/* Multiple Barcode Generator */}
+      {showBarcodeGenerator && (
+        <MultipleBarcodeGenerator
+          onBarcodeGenerated={handleBarcodeGenerated}
+          onClose={() => setShowBarcodeGenerator(false)}
+        />
+      )}
+
+      {/* Nutrition Facts Form */}
+      {showNutritionForm && selectedProduct && (
+        <NutritionFactsForm
+          productName={selectedProduct.name}
+          category={selectedProduct.category?.name?.toLowerCase() || 'fruits'}
+          onNutritionData={handleNutritionData}
+          onClose={() => setShowNutritionForm(false)}
+        />
+      )}
+
+      {/* Template Selector Modal */}
+      {showTemplateSelector && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Choose Nutrition Facts Template</h2>
+              <button
+                onClick={() => {
+                  setShowTemplateSelector(false);
+                  setPendingNutritionData(null);
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <p className="text-gray-600 mb-6">Select the best template for your product packaging:</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Standard Template */}
+              <div className="border rounded-lg p-4 hover:border-blue-500 cursor-pointer" onClick={() => handleTemplateSelection('standard')}>
+                <div className="aspect-[4/5] bg-gray-100 rounded mb-3 p-2 border">
+                  <NutritionFactsTemplates
+                    width={160}
+                    height={200}
+                    nutritionData={pendingNutritionData}
+                    templateType="standard"
+                  />
+                </div>
+                <h3 className="font-semibold">Standard</h3>
+                <p className="text-sm text-gray-600">Regular rectangular labels, boxes, packets</p>
+              </div>
+
+              {/* Tall Bottle Template */}
+              <div className="border rounded-lg p-4 hover:border-blue-500 cursor-pointer" onClick={() => handleTemplateSelection('tall-bottle')}>
+                <div className="aspect-[2/5] bg-gray-100 rounded mb-3 p-2 border mx-auto" style={{width: '120px'}}>
+                  <NutritionFactsTemplates
+                    width={100}
+                    height={200}
+                    nutritionData={pendingNutritionData}
+                    templateType="tall-bottle"
+                  />
+                </div>
+                <h3 className="font-semibold">Tall Bottle</h3>
+                <p className="text-sm text-gray-600">Bottles, tall containers, cylindrical packages</p>
+              </div>
+
+              {/* Wide Bag Template */}
+              <div className="border rounded-lg p-4 hover:border-blue-500 cursor-pointer" onClick={() => handleTemplateSelection('wide-bag')}>
+                <div className="aspect-[5/3] bg-gray-100 rounded mb-3 p-2 border">
+                  <NutritionFactsTemplates
+                    width={200}
+                    height={120}
+                    nutritionData={pendingNutritionData}
+                    templateType="wide-bag"
+                  />
+                </div>
+                <h3 className="font-semibold">Wide Bag</h3>
+                <p className="text-sm text-gray-600">Large bags, 50KG sacks, wide packages</p>
+              </div>
+
+              {/* Compact Square Template */}
+              <div className="border rounded-lg p-4 hover:border-blue-500 cursor-pointer" onClick={() => handleTemplateSelection('compact-square')}>
+                <div className="aspect-square bg-gray-100 rounded mb-3 p-2 border" style={{width: '140px', margin: '0 auto'}}>
+                  <NutritionFactsTemplates
+                    width={120}
+                    height={120}
+                    nutritionData={pendingNutritionData}
+                    templateType="compact-square"
+                  />
+                </div>
+                <h3 className="font-semibold">Compact Square</h3>
+                <p className="text-sm text-gray-600">Small square boxes, cube packages</p>
+              </div>
+
+              {/* Mini Sachet Template */}
+              <div className="border rounded-lg p-4 hover:border-blue-500 cursor-pointer" onClick={() => handleTemplateSelection('mini-sachet')}>
+                <div className="aspect-[4/5] bg-gray-100 rounded mb-3 p-2 border" style={{width: '100px', margin: '0 auto'}}>
+                  <NutritionFactsTemplates
+                    width={80}
+                    height={100}
+                    nutritionData={pendingNutritionData}
+                    templateType="mini-sachet"
+                  />
+                </div>
+                <h3 className="font-semibold">Mini Sachet</h3>
+                <p className="text-sm text-gray-600">Small sachets, tiny packages, samples</p>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <button
+                onClick={() => {
+                  setShowTemplateSelector(false);
+                  setPendingNutritionData(null);
+                }}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Automatic Label Generator Modal */}
+      {showAutomaticGenerator && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Automatic Label Generator</h3>
+              <button
+                onClick={() => setShowAutomaticGenerator(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <AutomaticLabelGenerator 
+              onLabelGenerated={handleAutomaticLabelGenerated}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Automatic Templates Modal */}
+      {showAutomaticTemplates && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-bold text-gray-900">Professional Label Templates</h3>
+              <button
+                onClick={() => setShowAutomaticTemplates(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <AutomaticLabelTemplates 
+              onTemplateSelect={handleAutomaticTemplateSelected}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

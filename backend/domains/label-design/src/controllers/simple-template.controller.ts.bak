@@ -1,0 +1,44 @@
+import { Controller, Get, Post, Put, Delete, Param, Body, ParseIntPipe } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { SimpleTemplateService } from '../services/simple-template.service';
+
+@ApiTags('Simple Templates')
+@Controller('simple-templates')
+export class SimpleTemplateController {
+  constructor(private readonly simpleTemplateService: SimpleTemplateService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all templates' })
+  @ApiResponse({ status: 200, description: 'Returns all templates' })
+  async findAll() {
+    return this.simpleTemplateService.findAll();
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get template by ID' })
+  @ApiResponse({ status: 200, description: 'Returns the template' })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.simpleTemplateService.findOne(id);
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new template' })
+  @ApiResponse({ status: 201, description: 'Template created successfully' })
+  async create(@Body() templateData: any) {
+    return this.simpleTemplateService.create(templateData);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a template' })
+  @ApiResponse({ status: 200, description: 'Template updated successfully' })
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateData: any) {
+    return this.simpleTemplateService.update(id, updateData);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete a template' })
+  @ApiResponse({ status: 200, description: 'Template deleted successfully' })
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return this.simpleTemplateService.remove(id);
+  }
+}

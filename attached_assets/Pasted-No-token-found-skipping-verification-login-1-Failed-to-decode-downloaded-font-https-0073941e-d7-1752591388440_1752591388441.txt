@@ -1,0 +1,26 @@
+No token found, skipping verification
+login:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2
+
+login:1 OTS parsing error: invalid sfntVersion: 1008813135
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+CollapsibleSidebar.tsx:353 Navigation clicked: /image-management products
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+SimpleImageGrid.tsx:80 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 404 (Not Found)
+SimpleImageGrid.tsx:67 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)
+SimpleImageGrid.useQuery	@	SimpleImageGrid.tsx:67
+ProductEcosystemHub.tsx:87 Products data received: 
+{success: true, data: Array(22), branchId: null, total: 22}
+ProductEcosystemHub.tsx:107 Categories data received: 
+{success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+ProductEcosystemHub.tsx:115 Alerts data received: 
+{success: true, data: Array(8), total: 8, critical: 3, warning: 5}
+SimpleImageGrid.tsx:80 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 404 (Not Found)
+SimpleImageGrid.useQuery	@	SimpleImageGrid.tsx:80
+SimpleImageGrid.tsx:67 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)

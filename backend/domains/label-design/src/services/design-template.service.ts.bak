@@ -1,0 +1,169 @@
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import { db } from '../database';
+import { customTemplateDimensions, mediaTypes } from '../../../../../shared/schema';
+import { eq, and } from 'drizzle-orm';
+import { CreateDesignTemplateDto, UpdateDesignTemplateDto, ValidateDesignDto } from '../dto/design-template.dto';
+
+@Injectable()
+export class DesignTemplateService {
+  async findAll(filters: { mediaId?: number; type?: string; active?: boolean }) {
+    try {
+      let queryBuilder = db.select()
+        .from(customTemplateDimensions);
+      
+      const conditions = [];
+      if (filters.active !== undefined) {
+        conditions.push(eq(customTemplateDimensions.isActive, filters.active));
+      }
+      
+      if (conditions.length > 0) {
+        queryBuilder = queryBuilder.where(and(...conditions));
+      }
+      
+      const results = await queryBuilder;
+      
+      return results.map((template) => ({
+        id: template.id,
+        name: template.name,
+        description: template.description,
+        paperSize: template.paperSize,
+        paperWidth: template.paperWidth,
+        paperHeight: template.paperHeight,
+        labelWidth: template.labelWidth,
+        labelHeight: template.labelHeight,
+        horizontalCount: template.horizontalCount,
+        verticalCount: template.verticalCount,
+        createdAt: template.createdAt,
+        updatedAt: template.updatedAt,
+        isActive: template.isActive
+      }));
+    } catch (error) {
+      console.error('Error fetching design templates:', error);
+      throw error;
+    }
+  }
+
+  async findOne(id: number) {
+    const result = await db.select()
+      .from(customTemplateDimensions)
+      .where(eq(customTemplateDimensions.id, id))
+      .limit(1);
+    
+    if (!result || result.length === 0) {
+      throw new NotFoundException(`Design template with ID ${id} not found`);
+    }
+    
+    const template = result[0];
+    return {
+      id: template.id,
+      name: template.name,
+      description: template.description,
+      paperSize: template.paperSize,
+      paperWidth: template.paperWidth,
+      paperHeight: template.paperHeight,
+      labelWidth: template.labelWidth,
+      labelHeight: template.labelHeight,
+      horizontalCount: template.horizontalCount,
+      verticalCount: template.verticalCount,
+      createdAt: template.createdAt,
+      updatedAt: template.updatedAt,
+      isActive: template.isActive
+    };
+  }
+
+  async create(createDto: CreateDesignTemplateDto) {
+    const newTemplate = await db.insert(customTemplateDimensions).values({
+      name: createDto.name,
+      description: createDto.description,
+      paperSize: createDto.paperSize || 'A4',
+      paperWidth: createDto.paperWidth || 210,
+      paperHeight: createDto.paperHeight || 297,
+      labelWidth: createDto.labelWidth || 70,
+      labelHeight: createDto.labelHeight || 37,
+      horizontalCount: createDto.horizontalCount || 3,
+      verticalCount: createDto.verticalCount || 8,
+      marginTop: createDto.marginTop || 15,
+      marginBottom: createDto.marginBottom || 15,
+      marginLeft: createDto.marginLeft || 5,
+      marginRight: createDto.marginRight || 5,
+      horizontalGap: createDto.horizontalGap || 2.5,
+      verticalGap: createDto.verticalGap || 0,
+      cornerRadius: createDto.cornerRadius || 0,
+      isActive: true,
+      createdBy: createDto.createdBy || 1,
+      companyId: createDto.companyId || 1,
+      branchId: createDto.branchId || 1
+    }).returning();
+    
+    return this.findOne(newTemplate[0].id);
+  }
+
+  async update(id: number, updateDto: UpdateDesignTemplateDto) {
+    const updateData: any = {};
+    if (updateDto.name) updateData.name = updateDto.name;
+    if (updateDto.description !== undefined) updateData.description = updateDto.description;
+    if (updateDto.isActive !== undefined) updateData.isActive = updateDto.isActive;
+    
+    updateData.updatedAt = new Date();
+    
+    await db.update(customTemplateDimensions)
+      .set(updateData)
+      .where(eq(customTemplateDimensions.id, id));
+    
+    return this.findOne(id);
+  }
+
+  async remove(id: number) {
+    const result = await db.delete(customTemplateDimensions)
+      .where(eq(customTemplateDimensions.id, id))
+      .returning();
+    
+    if (!result || result.length === 0) {
+      throw new NotFoundException(`Design template with ID ${id} not found`);
+    }
+  }
+
+  async duplicate(id: number, newName: string, newDescription?: string) {
+    const original = await this.findOne(id);
+    
+    const newTemplate = await db.insert(customTemplateDimensions).values({
+      name: newName,
+      description: newDescription || `Copy of ${original.description || original.name}`,
+      paperSize: original.paperSize,
+      paperWidth: original.paperWidth,
+      paperHeight: original.paperHeight,
+      labelWidth: original.labelWidth,
+      labelHeight: original.labelHeight,
+      horizontalCount: original.horizontalCount,
+      verticalCount: original.verticalCount,
+      isActive: true,
+      createdBy: 1,
+      companyId: 1,
+      branchId: 1
+    }).returning();
+    
+    return this.findOne(newTemplate[0].id);
+  }
+
+  async validateDesign(validateDto: ValidateDesignDto) {
+    return {
+      isValid: true,
+      errors: []
+    };
+  }
+
+  private async validateDesignAgainstMedia(templateJson: any, media: any) {
+    return {
+      isValid: true,
+      errors: []
+    };
+  }
+
+  async incrementUsageCount(id: number) {
+    await db.update(customTemplateDimensions)
+      .set({ 
+        updatedAt: new Date()
+      })
+      .where(eq(customTemplateDimensions.id, id));
+  }
+}

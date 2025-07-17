@@ -1,0 +1,84 @@
+Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+login:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85
+connectHMR @ websocket.js:91
+pageBootstrap @ page-bootstrap.js:25
+eval @ next-dev.js:24Understand this error
+operational-dashboard.tsx:111 Operational Dashboard - Rendering with: {activeDomain: 'products', ActiveComponent: 'ProductEcosystemHub', user: 'ops.admin@leafyhealth.com'}
+operational-dashboard.tsx:86 Operational Dashboard - Auth State: {isAuthenticated: true, user: {…}, token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO…zE1fQ.g6ODRXRBa53IC29pUjS_aQnn_B448fE9tnxr3Q_EdeM'}
+ProductEcosystemHub.tsx:77  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:77
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:61
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:78  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:78
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:61
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:111 Operational Dashboard - Rendering with: {activeDomain: 'dashboard', ActiveComponent: 'Unknown', user: 'ops.admin@leafyhealth.com'}
+operational-dashboard.tsx:111 Operational Dashboard - Rendering with: {activeDomain: 'products', ActiveComponent: 'ProductEcosystemHub', user: 'ops.admin@leafyhealth.com'}
+operational-dashboard.tsx:86 Operational Dashboard - Auth State: {isAuthenticated: true, user: {…}, token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO…zE1fQ.g6ODRXRBa53IC29pUjS_aQnn_B448fE9tnxr3Q_EdeM'}
+ProductEcosystemHub.tsx:78  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:78
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:61
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:77  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:77
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:61
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:111 Operational Dashboard - Rendering with: {activeDomain: 'dashboard', ActiveComponent: 'Unknown', user: 'ops.admin@leafyhealth.com'}
+operational-dashboard.tsx:111 Operational Dashboard - Rendering with: {activeDomain: 'dashboard', ActiveComponent: 'Unknown', user: 'ops.admin@leafyhealth.com'}
+operational-dashboard.tsx:86 Operational Dashboard - Auth State: {isAuthenticated: true, user: {…}, token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiO…zE1fQ.g6ODRXRBa53IC29pUjS_aQnn_B448fE9tnxr3Q_EdeM'}
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

@@ -1,0 +1,445 @@
+No token found, skipping verification
+login:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+login:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85
+connectHMR @ websocket.js:91
+pageBootstrap @ page-bootstrap.js:25
+eval @ next-dev.js:24Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:80  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/products 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:80
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:82  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:82
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:81  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:81
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:82  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:82
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:81  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:81
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:80  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/products 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:80
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:92 Fetching categories from /api/categories
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:94  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+CompositeProductForm.useEffect.fetchCategories @ CompositeProductForm.tsx:94
+CompositeProductForm.useEffect @ CompositeProductForm.tsx:126
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+CompositeProductForm.tsx:97 Categories API failed: 502 Bad Gateway
+nextJsHandleConsoleError @ client.js:82
+CompositeProductForm.useEffect.fetchCategories @ CompositeProductForm.tsx:97
+await in CompositeProductForm.useEffect.fetchCategories
+CompositeProductForm.useEffect @ CompositeProductForm.tsx:126
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+CompositeProductForm.tsx:118 Error fetching categories: Error: Failed to fetch categories: 502
+    at CompositeProductForm.useEffect.fetchCategories (CompositeProductForm.tsx:98:17)
+nextJsHandleConsoleError @ client.js:82
+CompositeProductForm.useEffect.fetchCategories @ CompositeProductForm.tsx:118
+await in CompositeProductForm.useEffect.fetchCategories
+CompositeProductForm.useEffect @ CompositeProductForm.tsx:126
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: false, error: 'Failed to fetch categories: 502'}
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+VM38359:1 Uncaught (in promise) SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSONUnderstand this error
+ProductEcosystemHub.tsx:81  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:81
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:82  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:82
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:80  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/products 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:80
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+InventoryManagementCenter.tsx:188  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchAlerts @ InventoryManagementCenter.tsx:188
+initializeData @ InventoryManagementCenter.tsx:123
+InventoryManagementCenter.useEffect @ InventoryManagementCenter.tsx:108
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+InventoryManagementCenter.tsx:148  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory? 502 (Bad Gateway)
+fetchInventory @ InventoryManagementCenter.tsx:148
+initializeData @ InventoryManagementCenter.tsx:121
+InventoryManagementCenter.useEffect @ InventoryManagementCenter.tsx:108
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+InventoryManagementCenter.tsx:130  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/branches 502 (Bad Gateway)
+fetchBranches @ InventoryManagementCenter.tsx:130
+initializeData @ InventoryManagementCenter.tsx:120
+InventoryManagementCenter.useEffect @ InventoryManagementCenter.tsx:108
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+InventoryManagementCenter.tsx:166  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/summary 502 (Bad Gateway)
+fetchSummary @ InventoryManagementCenter.tsx:166
+initializeData @ InventoryManagementCenter.tsx:122
+InventoryManagementCenter.useEffect @ InventoryManagementCenter.tsx:108
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductCRUD.tsx:68  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/products 502 (Bad Gateway)
+fetchData @ ProductCRUD.tsx:68
+ProductCRUD.useEffect @ ProductCRUD.tsx:60
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductCRUD.tsx:81  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchData @ ProductCRUD.tsx:81
+await in fetchData
+ProductCRUD.useEffect @ ProductCRUD.tsx:60
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+client.js:82 Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?
+
+Check the render method of `Primitive.button.SlotClone`.
+    at Button (webpack-internal:///(pages-dir-browser)/./src/components/ui/button.tsx:11:11)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-slot/dist/index.mjs:53:17)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-slot/dist/index.mjs:21:17)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-primitive/dist/index.mjs:39:13)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-dialog/dist/index.mjs:104:13)
+    at Provider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-context/dist/index.mjs:35:15)
+    at Dialog (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-dialog/dist/index.mjs:62:13)
+    at div
+    at div
+    at ProductCRUD (webpack-internal:///(pages-dir-browser)/./src/components/business-domains/ProductCRUD.tsx:38:84)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at ProductCatalog
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+nextJsHandleConsoleError @ client.js:82
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+validateFunctionComponentInDev @ react-dom.development.js:20217
+mountIndeterminateComponent @ react-dom.development.js:20184
+beginWork @ react-dom.development.js:21621
+beginWork$1 @ react-dom.development.js:27460
+performUnitOfWork @ react-dom.development.js:26591
+workLoopSync @ react-dom.development.js:26500
+renderRootSync @ react-dom.development.js:26468
+performConcurrentWorkOnRoot @ react-dom.development.js:25772
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:82  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/inventory/alerts 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:82
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:80  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/products 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:80
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+ProductEcosystemHub.tsx:81  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchProductData @ ProductEcosystemHub.tsx:81
+ProductEcosystemHub.useEffect @ ProductEcosystemHub.tsx:64
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+performSyncWorkOnRoot @ react-dom.development.js:26110
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26993
+commitRoot @ react-dom.development.js:26716
+finishConcurrentRender @ react-dom.development.js:26015
+performConcurrentWorkOnRoot @ react-dom.development.js:25843
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CategoryManagement.tsx:56  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/api/categories 502 (Bad Gateway)
+fetchCategories @ CategoryManagement.tsx:56
+CategoryManagement.useEffect @ CategoryManagement.tsx:46
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

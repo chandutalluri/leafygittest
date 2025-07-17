@@ -1,0 +1,95 @@
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, HttpStatus } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { DesignTemplateService } from '../services/design-template.service';
+import { CreateDesignTemplateDto, UpdateDesignTemplateDto, ValidateDesignDto } from '../dto/design-template.dto';
+
+@ApiTags('Design Templates')
+@Controller('design-templates')
+export class DesignTemplateController {
+  constructor(private readonly designTemplateService: DesignTemplateService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all design templates' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'List of design templates' })
+  async findAll(
+    @Query('mediaId') mediaId?: number,
+    @Query('type') type?: string,
+    @Query('active') active?: boolean
+  ) {
+    const templates = await this.designTemplateService.findAll({ mediaId, type, active });
+    return {
+      success: true,
+      data: templates
+    };
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get design template by ID' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Design template details' })
+  async findOne(@Param('id') id: string) {
+    const template = await this.designTemplateService.findOne(+id);
+    return {
+      success: true,
+      data: template
+    };
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create new design template' })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Design template created' })
+  async create(@Body() createDto: CreateDesignTemplateDto) {
+    const template = await this.designTemplateService.create(createDto);
+    return {
+      success: true,
+      data: template,
+      message: 'Design template created successfully'
+    };
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update design template' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Design template updated' })
+  async update(@Param('id') id: string, @Body() updateDto: UpdateDesignTemplateDto) {
+    const template = await this.designTemplateService.update(+id, updateDto);
+    return {
+      success: true,
+      data: template,
+      message: 'Design template updated successfully'
+    };
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Delete design template' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Design template deleted' })
+  async remove(@Param('id') id: string) {
+    await this.designTemplateService.remove(+id);
+    return {
+      success: true,
+      message: 'Design template deleted successfully'
+    };
+  }
+
+  @Post('validate')
+  @ApiOperation({ summary: 'Validate design template' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'Validation result' })
+  async validate(@Body() validateDto: ValidateDesignDto) {
+    const result = await this.designTemplateService.validateDesign(validateDto);
+    return {
+      success: result.isValid,
+      data: result,
+      message: result.isValid ? 'Design is valid' : 'Design validation failed'
+    };
+  }
+
+  @Post(':id/duplicate')
+  @ApiOperation({ summary: 'Duplicate design template' })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'Template duplicated' })
+  async duplicate(@Param('id') id: string, @Body() body: { name: string; description?: string }) {
+    const template = await this.designTemplateService.duplicate(+id, body.name, body.description);
+    return {
+      success: true,
+      data: template,
+      message: 'Template duplicated successfully'
+    };
+  }
+}

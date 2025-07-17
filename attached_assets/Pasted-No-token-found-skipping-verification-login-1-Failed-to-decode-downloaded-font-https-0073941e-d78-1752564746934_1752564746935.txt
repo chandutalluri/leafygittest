@@ -1,0 +1,170 @@
+No token found, skipping verification
+login:1 Failed to decode downloaded font: https://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/__nextjs_font/geist-latin.woff2Understand this warning
+login:1 OTS parsing error: invalid sfntVersion: 1008813135Understand this warning
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85
+connectHMR @ websocket.js:91
+pageBootstrap @ page-bootstrap.js:25
+eval @ next-dev.js:24Understand this error
+operational-dashboard.tsx:89 Dashboard loaded successfully
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:92 Fetching categories from /api/categories
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:85 Products data received: {success: true, data: Array(22), branchId: null, total: 22}
+CompositeProductForm.tsx:102 Categories API response: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+CompositeProductForm.tsx:106 Categories found (success/data format): 8
+ProductEcosystemHub.tsx:105 Categories data received: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+CompositeProductForm.tsx:130 Categories loading state: {categories: 8, isLoading: false, error: null}
+ProductEcosystemHub.tsx:113 Alerts data received: {success: true, data: Array(20), total: 20, critical: 20, warning: 0}
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:85 Products data received: {success: true, data: Array(22), branchId: null, total: 22}
+ProductEcosystemHub.tsx:105 Categories data received: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+ProductEcosystemHub.tsx:113 Alerts data received: {success: true, data: Array(20), total: 20, critical: 20, warning: 0}
+ProductCRUD.tsx:76 Products data received: {success: true, data: Array(22), branchId: null, total: 22}
+ProductCRUD.tsx:89 Categories data received: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+client.js:82 Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?
+
+Check the render method of `Primitive.button.SlotClone`.
+    at Button (webpack-internal:///(pages-dir-browser)/./src/components/ui/button.tsx:11:11)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-slot/dist/index.mjs:53:17)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-slot/dist/index.mjs:21:17)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-primitive/dist/index.mjs:39:13)
+    at eval (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-dialog/dist/index.mjs:104:13)
+    at Provider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-context/dist/index.mjs:35:15)
+    at Dialog (webpack-internal:///(pages-dir-browser)/../../../node_modules/@radix-ui/react-dialog/dist/index.mjs:62:13)
+    at div
+    at div
+    at ProductCRUD (webpack-internal:///(pages-dir-browser)/./src/components/business-domains/ProductCRUD.tsx:38:84)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at ProductCatalog
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+nextJsHandleConsoleError @ client.js:82
+printWarning @ react-dom.development.js:86
+error @ react-dom.development.js:60
+validateFunctionComponentInDev @ react-dom.development.js:20217
+mountIndeterminateComponent @ react-dom.development.js:20184
+beginWork @ react-dom.development.js:21621
+beginWork$1 @ react-dom.development.js:27460
+performUnitOfWork @ react-dom.development.js:26591
+workLoopSync @ react-dom.development.js:26500
+renderRootSync @ react-dom.development.js:26468
+performConcurrentWorkOnRoot @ react-dom.development.js:25772
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:92 Fetching categories from /api/categories
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:130 Categories loading state: {categories: 0, isLoading: true, error: null}
+CompositeProductForm.tsx:102 Categories API response: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+CompositeProductForm.tsx:106 Categories found (success/data format): 8
+CompositeProductForm.tsx:130 Categories loading state: {categories: 8, isLoading: false, error: null}
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+ProductEcosystemHub.tsx:85 Products data received: {success: true, data: Array(22), branchId: null, total: 22}
+ProductEcosystemHub.tsx:105 Categories data received: {success: true, data: Array(8), total: 8, message: '8 authentic Telugu categories'}
+ProductEcosystemHub.tsx:113 Alerts data received: {success: true, data: Array(20), total: 20, critical: 20, warning: 0}
+ProductEcosystemHub.tsx:204 Warning: Each child in a list should have a unique "key" prop.
+
+Check the render method of `ProductEcosystemHub`. See https://reactjs.org/link/warning-keys for more information.
+    at div
+    at ProductEcosystemHub (webpack-internal:///(pages-dir-browser)/./src/components/business-domains/ProductEcosystemHub.tsx:24:102)
+    at div
+    at div
+    at GlassCard (webpack-internal:///(pages-dir-browser)/./src/components/ui/GlassCard.tsx:13:11)
+    at main
+    at div
+    at div
+    at DashboardLayout (webpack-internal:///(pages-dir-browser)/./src/components/layout/DashboardLayout.tsx:21:11)
+    at CatalogManagement
+    at main
+    at AuthenticatedLayout (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:45:11)
+    at SecurityWrapperClient (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:39:11)
+    at ClientOnly (webpack-internal:///(pages-dir-browser)/./src/components/ClientOnly.tsx:12:11)
+    at SecurityWrapper (webpack-internal:///(pages-dir-browser)/./src/components/SecurityWrapper.tsx:22:11)
+    at ToastProvider (webpack-internal:///(pages-dir-browser)/./src/providers/ToastProvider.tsx:8:11)
+    at AuthProvider (webpack-internal:///(pages-dir-browser)/./src/providers/AuthProvider.tsx:14:11)
+    at QueryClientProvider (webpack-internal:///(pages-dir-browser)/../../../node_modules/@tanstack/react-query/build/modern/QueryClientProvider.js:28:3)
+    at QueryProvider (webpack-internal:///(pages-dir-browser)/./src/providers/QueryProvider.tsx:15:11)
+    at AppWrapper (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:36:11)
+    at App (webpack-internal:///(pages-dir-browser)/./src/pages/_app.tsx:210:11)
+    at PathnameContextProviderAdapter (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/shared/lib/router/adapters.js:81:11)
+    at PagesDevOverlayErrorBoundary (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay-error-boundary.js:32:9)
+    at PagesDevOverlay (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/components/react-dev-overlay/pages/pages-dev-overlay.js:18:11)
+    at Container (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:80:1)
+    at AppContainer (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:188:11)
+    at Root (webpack-internal:///(pages-dir-browser)/../../../node_modules/next/dist/client/index.js:417:11)
+nextJsHandleConsoleError @ client.js:82
+printWarning @ react-jsx-dev-runtime.development.js:87
+error @ react-jsx-dev-runtime.development.js:61
+validateExplicitKey @ react-jsx-dev-runtime.development.js:1078
+validateChildKeys @ react-jsx-dev-runtime.development.js:1105
+jsxWithValidation @ react-jsx-dev-runtime.development.js:1277
+renderOverview @ ProductEcosystemHub.tsx:204
+ProductEcosystemHub @ ProductEcosystemHub.tsx:323
+renderWithHooks @ react-dom.development.js:15486
+updateFunctionComponent @ react-dom.development.js:19612
+beginWork @ react-dom.development.js:21635
+beginWork$1 @ react-dom.development.js:27460
+performUnitOfWork @ react-dom.development.js:26591
+workLoopSync @ react-dom.development.js:26500
+renderRootSync @ react-dom.development.js:26468
+performConcurrentWorkOnRoot @ react-dom.development.js:25772
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 
+init @ websocket.js:85Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-16dnh4l0u6bum.pike.replit.dev:5000/superadmin/_next/webpack-hmr' failed: 

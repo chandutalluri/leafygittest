@@ -1,0 +1,19 @@
+{
+  "name": "@leafyhealth/traditional-orders",
+  "version": "1.0.0",
+  "description": "Traditional Home Supplies Ordering Service",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "dev": "node src/main.js",
+    "build": "echo 'No build needed for JS service'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "axios": "^1.6.0",
+    "pg": "^8.11.3",
+    "drizzle-orm": "^0.29.3"
+  }
+}
