@@ -649,7 +649,7 @@ async function handleRequest(req, res) {
     
     // Other Image Management Service routing to actual service
     if (pathname.startsWith('/api/image-management')) {
-      const targetPath = pathname;
+      const targetPath = pathname.replace('/api', ''); // Remove /api prefix
       console.log(`🖼️  Routing to Image Management service: ${pathname} → http://localhost:3035${targetPath}`);
       proxyRequest(req, res, 3035, targetPath, requestBody);
       return;

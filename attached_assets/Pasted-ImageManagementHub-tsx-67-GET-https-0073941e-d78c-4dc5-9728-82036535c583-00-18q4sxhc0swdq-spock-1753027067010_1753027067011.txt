@@ -1,0 +1,29 @@
+ImageManagementHub.tsx:67 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)
+
+ImageManagementHub.tsx:54 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 404 (Not Found)
+ImageManagementHub.tsx:174 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 404 (Not Found)
+ImageManagementHub.tsx:195 Error fetching image stats: Error: Failed to fetch image stats
+    at ImageManagementHub.useQuery (ImageManagementHub.tsx:176:17)
+stack-frame.js:78 
+ POST https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_original-stack-frames 403 (Forbidden)
+:5000/__nextjs_font/…-mono-latin.woff2:1 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-mono-latin.woff2 net::ERR_ABORTED 400 (Bad Request)
+ImageManagementHub.tsx:67 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)
+ImageManagementHub.tsx:54 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 404 (Not Found)
+AdvancedImageManagement.tsx:409 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 404 (Not Found)
+AdvancedImageManagement.tsx:396 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)
+ImageManagementHub.tsx:54 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 404 (Not Found)
+AdvancedImageManagement.tsx:409 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/stats 404 (Not Found)
+AdvancedImageManagement.tsx:396 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/images 404 (Not Found)
+ImageManagementHub.tsx:54 
+ GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/api/image-management/health 404 (Not Found)
