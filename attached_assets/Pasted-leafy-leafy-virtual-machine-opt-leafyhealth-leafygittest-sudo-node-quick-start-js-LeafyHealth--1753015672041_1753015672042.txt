@@ -1,0 +1,1376 @@
+leafy@leafy-virtual-machine:/opt/leafyhealth/leafygittest$ sudo node quick-start.js
+🚀 LeafyHealth Quick Start for Ubuntu VPS
+==========================================
+📦 Installing dependencies with legacy peer deps...
+
+📋 Installing dependencies...
+💻 npm install --legacy-peer-deps
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated rollup-plugin-terser@7.0.2: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-terser
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated sourcemap-codec@1.4.8: Please use @jridgewell/sourcemap-codec instead
+npm warn deprecated workbox-cacheable-response@6.6.0: workbox-background-sync@6.6.0
+npm warn deprecated workbox-google-analytics@6.6.0: It is not compatible with newer versions of GA starting with v4, as long as you are using GAv3 it should be ok, but the package is not longer being maintained
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+added 1743 packages, and audited 1744 packages in 4m
+280 packages are looking for funding
+  run `npm fund` for details
+13 vulnerabilities (3 low, 10 moderate)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues possible (including breaking changes), run:
+  npm audit fix --force
+
+Some issues need review, and may require choosing
+a different dependency.
+
+Run `npm audit` for details.
+✅ Installing dependencies completed
+
+🎯 Starting LeafyHealth Platform...
+🌐 Application will be available at: http://localhost:5000
+📱 Available routes:
+   • Super Admin: http://localhost:5000/
+   • Customer: http://localhost:5000/customer
+   • Admin: http://localhost:5000/admin
+   • Operations: http://localhost:5000/ops
+
+Press Ctrl+C to stop
+
+
+🌐 Starting Unified Gateway...
+🌐 Gateway starting... Check http://localhost:5000 in a moment
+🚀 Production Gateway running on port 5000
+🔒 Security: Only port 5000 externally accessible
+🌐 All services proxied through localhost
+📊 Managing 31 microservices
+🏥 Health: http://localhost:5000/health
+🌐 Frontend Applications:
+   super-admin: http://localhost:5000/ → :3003
+   ecommerce-web: http://localhost:5000/customer → :3000
+   ecommerce-mobile: http://localhost:5000/mobile → :3001
+   admin-portal: http://localhost:5000/admin → :3002
+   ops-delivery: http://localhost:5000/ops → :3004
+📡 API Service Mappings:
+   /api/identity-access → http://127.0.0.1:3010
+   /api/user-role-management → http://127.0.0.1:3011
+   /api/company-management → http://127.0.0.1:3013
+   /api/accounting-management → http://127.0.0.1:3014
+   /api/analytics-reporting → http://127.0.0.1:3015
+   /api/compliance-audit → http://127.0.0.1:3016
+   /api/content-management → http://127.0.0.1:3017
+   /api/integration-hub → http://127.0.0.1:3018
+   /api/multi-language-management → http://127.0.0.1:3019
+   /api/expense-monitoring → http://127.0.0.1:3021
+   /api/catalog-management → http://127.0.0.1:3022
+   /api/order-management → http://127.0.0.1:3023
+   /api/customer-service → http://127.0.0.1:3024
+   /api/inventory-management → http://127.0.0.1:3025
+   /api/payment-processing → http://127.0.0.1:3026
+   /api/label-design → http://127.0.0.1:3027
+   /api/employee-management → http://127.0.0.1:3028
+   /api/performance-monitor → http://127.0.0.1:3029
+   /api/notification-service → http://127.0.0.1:3031
+   /api/reporting-management → http://127.0.0.1:3032
+   /api/marketplace-management → http://127.0.0.1:3033
+   /api/shipping-delivery → http://127.0.0.1:3034
+   /api/image-management → http://127.0.0.1:3035
+   /api/subscription-management → http://127.0.0.1:3036
+   /api/backup-restore → http://127.0.0.1:3037
+   /api/database-backup-restore → http://127.0.0.1:3045
+   /api/product-orchestrator → http://127.0.0.1:3042
+   /api/traditional-orders → http://127.0.0.1:3050
+   /api/auth → http://127.0.0.1:8085
+   /api/direct-data → http://127.0.0.1:8081
+   /api/traditional → http://127.0.0.1:3050
+🎯 Initializing all 5 frontend applications...
+🚀 Starting super-admin frontend on port 3003
+[super-admin] > @leafyhealth/super-admin@1.0.0 dev
+> next dev -p 3003 --hostname 127.0.0.1 --port 3003 --hostname 0.0.0.0
+[super-admin] ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[super-admin] ▲ Next.js 15.4.2
+   - Local:        http://localhost:3003
+   - Network:      http://0.0.0.0:3003
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+
+ ✓ Starting...
+[super-admin] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[super-admin] This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+[super-admin] ✓ Ready in 2.5s
+[super-admin] ○ Compiling /_not-found ...
+[super-admin] ✓ Compiled /_not-found in 4s (549 modules)
+✅ super-admin is ready and accessible through gateway
+🚀 Starting ecommerce-web frontend on port 3000
+[super-admin] GET / 404 in 1099ms
+[ecommerce-web] > @leafyhealth/ecommerce-web@0.1.0 dev
+> next dev --hostname 127.0.0.1 -p 3000 --port 3000 --hostname 0.0.0.0
+[ecommerce-web] ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[ecommerce-web] ▲ Next.js 15.4.2
+[ecommerce-web] - Local:        http://localhost:3000
+[ecommerce-web] - Network:      http://0.0.0.0:3000
+[ecommerce-web] - Environments: .env.local
+[ecommerce-web] - Experiments (use with caution):
+[ecommerce-web] ✓ externalDir
+[ecommerce-web] ✓ optimizeCss
+[ecommerce-web] · optimizePackageImports
+[ecommerce-web] ✓ Starting...
+[ecommerce-web] ✓ Ready in 1581ms
+[ecommerce-web] ○ Compiling / ...
+[ecommerce-web] Retrying 1/3...
+[ecommerce-web] Retrying 2/3...
+[ecommerce-web] ✓ Compiled / in 5.9s (940 modules)
+[ecommerce-web] ✓ Compiled in 389ms (940 modules)
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages {
+  page: '/'
+}
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages {
+  page: '/'
+}
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages {
+  page: '/'
+}
+[ecommerce-web] ✓ Compiled /_error in 138ms (940 modules)
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] GET / 500 in 2259ms
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages {
+  page: '/'
+}
+[ecommerce-web] GET / 500 in 1982ms
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:123:12)
+  121 |   // Loading screen
+  122 |   if (isLoading || authLoading) {
+> 123 |     return <LoadingScreen />;
+      |            ^
+  124 |   }
+  125 |
+  126 |   // No header/footer for auth pages {
+  page: '/'
+}
+[ecommerce-web] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+[ecommerce-web] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <link rel="manifest" href="/manifest.json" />
+     |         ^
+   9 |         <meta name="theme-color" content="#10b981" />
+  10 |         <meta name="mobile-web-app-capable" content="yes" />
+  11 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+✅ ecommerce-web is ready and accessible through gateway
+🚀 Starting ecommerce-mobile frontend on port 3001
+[ecommerce-web] GET / 500 in 1034ms
+[ecommerce-mobile] > @leafyhealth/ecommerce-mobile@1.0.0 dev
+> next dev -p 3001 --port 3001 --hostname 0.0.0.0
+[ecommerce-mobile] ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[ecommerce-web] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-web] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] ▲ Next.js 15.4.2
+[ecommerce-mobile] - Local:        http://localhost:3001
+[ecommerce-mobile] - Network:      http://0.0.0.0:3001
+[ecommerce-mobile] - Environments: .env.local
+[ecommerce-mobile] - Experiments (use with caution):
+[ecommerce-mobile] ✓ externalDir
+[ecommerce-mobile] ✓ optimizeCss
+[ecommerce-mobile] · optimizePackageImports
+[ecommerce-mobile] ✓ Starting...
+[ecommerce-web] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-web/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] > [PWA] Compile server
+> [PWA] Compile server
+[ecommerce-mobile] > [PWA] Compile client (static)
+> [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] ✓ Ready in 3.9s
+[ecommerce-mobile] ○ Compiling / ...
+[ecommerce-mobile] ⚠ GenerateSW has been called multiple times, perhaps due to running webpack in --watch mode. The precache manifest generated after the first call may be inaccurate! Please see https://github.com/GoogleChrome/workbox/issues/1790 for more information.
+[ecommerce-mobile] ⚠ GenerateSW has been called multiple times, perhaps due to running webpack in --watch mode. The precache manifest generated after the first call may be inaccurate! Please see https://github.com/GoogleChrome/workbox/issues/1790 for more information.
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] ⚠ GenerateSW has been called multiple times, perhaps due to running webpack in --watch mode. The precache manifest generated after the first call may be inaccurate! Please see https://github.com/GoogleChrome/workbox/issues/1790 for more information.
+[ecommerce-mobile] GET / 500 in 1963ms
+[ecommerce-mobile] ⚠ GenerateSW has been called multiple times, perhaps due to running webpack in --watch mode. The precache manifest generated after the first call may be inaccurate! Please see https://github.com/GoogleChrome/workbox/issues/1790 for more information.
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] > [PWA] Compile client (static)
+> [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] > [PWA] Compile client (static)
+> [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+> [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+[ecommerce-mobile] > [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+[ecommerce-mobile] > [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+[ecommerce-mobile] > [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] GET / 500 in 1749ms
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] GET / 500 in 1393ms
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] > [PWA] Compile client (static)
+[ecommerce-mobile] > [PWA] Auto register service worker with: /opt/leafyhealth/leafygittest/node_modules/next-pwa/register.js
+> [PWA] Service worker: /opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/public/sw.js
+> [PWA]   url: /sw.js
+> [PWA]   scope: /
+[ecommerce-mobile] > [PWA] Build in develop mode, cache and precache are mostly disabled. This means offline support is disabled, but you can continue developing other functions in service worker.
+[ecommerce-mobile] GET / 500 in 1915ms
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:70:13)
+  68 |         <AuthProvider>
+  69 |           <ToastProvider>
+> 70 |             <PWAUpdateNotification />
+     |             ^
+  71 |             <PWAOfflineIndicator />
+  72 |             <Component {...pageProps} />
+  73 |             <PWAInstallBanner /> {
+  page: '/'
+}
+[ecommerce-mobile] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+[ecommerce-mobile] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at Document (src/pages/_document.tsx:8:9)
+    at new Promise (<anonymous>)
+   6 |       <Head>
+   7 |         {/* PWA Meta Tags */}
+>  8 |         <meta name="application-name" content="LeafyHealth" />
+     |         ^
+   9 |         <meta name="apple-mobile-web-app-capable" content="yes" />
+  10 |         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  11 |         <meta name="apple-mobile-web-app-title" content="LeafyHealth" />
+✅ ecommerce-mobile is ready and accessible through gateway
+🚀 Starting admin-portal frontend on port 3002
+[ecommerce-mobile] GET / 500 in 1466ms
+[admin-portal] > @leafyhealth/admin-portal@1.0.0 dev
+> next dev -p 3002 --port 3002 --hostname 0.0.0.0
+[admin-portal] ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[admin-portal] ▲ Next.js 15.4.2
+   - Local:        http://localhost:3002
+   - Network:      http://0.0.0.0:3002
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+
+ ✓ Starting...
+[admin-portal] ✓ Ready in 2s
+[admin-portal] ○ Compiling / ...
+[admin-portal] ✓ Compiled / in 6.8s (425 modules)
+[admin-portal] ✓ Compiled in 460ms (425 modules)
+[admin-portal] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider> {
+  page: '/'
+}
+[admin-portal] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider> {
+  page: '/'
+}
+[admin-portal] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider> {
+  page: '/'
+}
+[admin-portal] GET / 500 in 1708ms
+[admin-portal] ○ Compiling /_error ...
+[admin-portal] ✓ Compiled /_error in 3s (563 modules)
+[admin-portal] GET / 200 in 2167ms
+[admin-portal] Time 3.713703
+[admin-portal] Time 0.690242
+[admin-portal] Time 0.449172
+[admin-portal] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+[admin-portal] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider> {
+  page: '/'
+}
+[admin-portal] Time 2.344598
+[admin-portal] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider>
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at AdminPortalApp (src/pages/_app.tsx:56:17)
+  54 |             <ToastProvider>
+  55 |               <div className="min-h-screen">
+> 56 |                 <Component {...pageProps} />
+     |                 ^
+  57 |               </div>
+  58 |             </ToastProvider>
+  59 |           </AuthProvider> {
+  page: '/'
+}
+[admin-portal] Time 3.011541
+✅ admin-portal is ready and accessible through gateway
+🚀 Starting ops-delivery frontend on port 3004
+[admin-portal] GET / 500 in 425ms
+[ops-delivery] > @leafyhealth/ops-delivery@1.0.0 dev
+> next dev -p 3004 --port 3004 --hostname 0.0.0.0
+[ops-delivery] ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+[ops-delivery] ▲ Next.js 15.4.2
+[ops-delivery] - Local:        http://localhost:3004
+[ops-delivery] - Network:      http://0.0.0.0:3004
+[ops-delivery] - Environments: .env.local
+[ops-delivery] - Experiments (use with caution):
+[ops-delivery] ✓ externalDir
+[ops-delivery] ✓ optimizeCss
+[ops-delivery] ✓ Starting...
+[ops-delivery] ✓ Ready in 2.1s
+[ops-delivery] ○ Compiling / ...
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ecommerce-mobile] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz_' -> '/opt/leafyhealth/leafygittest/frontend/apps/ecommerce-mobile/.next/cache/webpack/client-development-fallback/0.pack.gz'
+[ops-delivery] ✓ Compiled / in 8.8s (417 modules)
+[ops-delivery] ✓ Compiled in 256ms (417 modules)
+[ops-delivery] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider> {
+  page: '/'
+}
+[ops-delivery] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider> {
+  page: '/'
+}
+[ops-delivery] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider> {
+  page: '/'
+}
+[ops-delivery] TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+[ops-delivery] ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider>
+ ⨯ TypeError: (0 , react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV) is not a function
+    at App (src/pages/_app.tsx:33:13)
+  31 |         <AuthProvider>
+  32 |           <ToastProvider>
+> 33 |             <Component {...pageProps} />
+     |             ^
+  34 |           </ToastProvider>
+  35 |         </AuthProvider>
+  36 |       </QueryProvider> {
+  page: '/'
+}
+[ops-delivery] ✓ Compiled /_error in 431ms (509 modules)
+[ops-delivery] Time 3.567052
+[ops-delivery] Time 0.692742
+[ops-delivery] Time 0.409421
+[ops-delivery] Time 0.475442
+✅ ops-delivery is ready and accessible through gateway
+🎯 All frontend applications initialized and verified
+✅ All services ready - Gateway fully operational
+[ops-delivery] GET / 500 in 1383ms
