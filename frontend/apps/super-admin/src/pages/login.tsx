@@ -27,7 +27,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
-    
+
     if (!email || !password) {
       return;
     }
@@ -106,10 +106,9 @@ export default function LoginPage() {
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-gray-500">
-                  {adminType === 'global' 
+                  {adminType === 'global'
                     ? 'Full system control and configuration access for all branches'
-                    : 'Operational oversight and organic grocery business management'
-                  }
+                    : 'Operational oversight and organic grocery business management'}
                 </p>
               </div>
 
@@ -124,7 +123,7 @@ export default function LoginPage() {
                   autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                   placeholder="Email address"
                 />
@@ -140,7 +139,7 @@ export default function LoginPage() {
                   autoComplete="current-password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10"
                   placeholder="Password"
                 />

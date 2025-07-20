@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingCart, 
-  Users, 
-  BarChart3, 
-  Settings, 
-  Building, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingCart,
+  Users,
+  BarChart3,
+  Settings,
+  Building,
   Globe,
   ChevronDown,
   Menu,
-  X
+  X,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -31,43 +31,58 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       href: '/products',
       icon: Package,
       description: 'Catalog • Inventory • Images • Categories',
-      services: ['catalog-management', 'inventory-management', 'image-management']
+      services: ['catalog-management', 'inventory-management', 'image-management'],
     },
     {
       name: 'Order Operations',
       href: '/orders',
       icon: ShoppingCart,
       description: 'Orders • Payments • Shipping • Support',
-      services: ['order-management', 'payment-processing', 'shipping-delivery', 'customer-service']
+      services: ['order-management', 'payment-processing', 'shipping-delivery', 'customer-service'],
     },
     {
       name: 'Customer Relationship Hub',
       href: '/customers',
       icon: Users,
       description: 'Customers • Subscriptions • Notifications • Roles',
-      services: ['customer-service', 'subscription-management', 'notification-service', 'user-role-management']
+      services: [
+        'customer-service',
+        'subscription-management',
+        'notification-service',
+        'user-role-management',
+      ],
     },
     {
       name: 'Financial Control Center',
       href: '/finance',
       icon: BarChart3,
       description: 'Accounting • Expenses • Analytics • Reporting',
-      services: ['accounting-management', 'expense-monitoring', 'analytics-reporting', 'reporting-management']
+      services: [
+        'accounting-management',
+        'expense-monitoring',
+        'analytics-reporting',
+        'reporting-management',
+      ],
     },
     {
       name: 'Organization Management',
       href: '/organization',
       icon: Building,
       description: 'Company • Branches • Employees • Compliance',
-      services: ['company-management', 'employee-management', 'compliance-audit']
+      services: ['company-management', 'employee-management', 'compliance-audit'],
     },
     {
       name: 'Business Intelligence',
       href: '/intelligence',
       icon: Globe,
       description: 'Performance • Integration • Multi-Language • Content',
-      services: ['performance-monitor', 'integration-hub', 'multi-language-management', 'content-management']
-    }
+      services: [
+        'performance-monitor',
+        'integration-hub',
+        'multi-language-management',
+        'content-management',
+      ],
+    },
   ];
 
   const globalAdminNavigation = [
@@ -82,9 +97,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar */}
-      <div className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? '' : 'pointer-events-none'}`}>
-        <div className={`fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity ${sidebarOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setSidebarOpen(false)} />
-        <div className={`relative flex-1 flex flex-col max-w-xs w-full bg-white transform transition-transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div
+        className={`fixed inset-0 flex z-40 md:hidden ${sidebarOpen ? '' : 'pointer-events-none'}`}
+      >
+        <div
+          className={`fixed inset-0 bg-gray-600 bg-opacity-75 transition-opacity ${sidebarOpen ? 'opacity-100' : 'opacity-0'}`}
+          onClick={() => setSidebarOpen(false)}
+        />
+        <div
+          className={`relative flex-1 flex flex-col max-w-xs w-full bg-white transform transition-transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        >
           <div className="absolute top-0 right-0 -mr-12 pt-2">
             <button
               type="button"
@@ -94,13 +116,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <X className="h-6 w-6 text-white" />
             </button>
           </div>
-          <SidebarContent adminMode={adminMode} setAdminMode={setAdminMode} businessDomains={businessDomains} globalAdminNavigation={globalAdminNavigation} isActive={isActive} />
+          <SidebarContent
+            adminMode={adminMode}
+            setAdminMode={setAdminMode}
+            businessDomains={businessDomains}
+            globalAdminNavigation={globalAdminNavigation}
+            isActive={isActive}
+          />
         </div>
       </div>
 
       {/* Desktop sidebar */}
       <div className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
-        <SidebarContent adminMode={adminMode} setAdminMode={setAdminMode} businessDomains={businessDomains} globalAdminNavigation={globalAdminNavigation} isActive={isActive} />
+        <SidebarContent
+          adminMode={adminMode}
+          setAdminMode={setAdminMode}
+          businessDomains={businessDomains}
+          globalAdminNavigation={globalAdminNavigation}
+          isActive={isActive}
+        />
       </div>
 
       {/* Main content */}
@@ -116,9 +150,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
         <main className="flex-1">
           <div className="py-6">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-              {children}
-            </div>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">{children}</div>
           </div>
         </main>
       </div>
@@ -126,7 +158,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   );
 };
 
-const SidebarContent = ({ adminMode, setAdminMode, businessDomains, globalAdminNavigation, isActive }: any) => {
+const SidebarContent = ({
+  adminMode,
+  setAdminMode,
+  businessDomains,
+  globalAdminNavigation,
+  isActive,
+}: any) => {
   return (
     <div className="flex-1 flex flex-col min-h-0 bg-white border-r border-gray-200">
       <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -176,7 +214,7 @@ const SidebarContent = ({ adminMode, setAdminMode, businessDomains, globalAdminN
                   Business Domains
                 </h3>
               </div>
-              {businessDomains.map((domain) => {
+              {businessDomains.map(domain => {
                 const Icon = domain.icon;
                 return (
                   <a
@@ -195,7 +233,7 @@ const SidebarContent = ({ adminMode, setAdminMode, businessDomains, globalAdminN
                     <div className="mt-1 ml-8">
                       <p className="text-xs text-gray-500">{domain.description}</p>
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {domain.services.slice(0, 2).map((service) => (
+                        {domain.services.slice(0, 2).map(service => (
                           <Badge key={service} variant="outline" className="text-xs">
                             {service.split('-')[0]}
                           </Badge>
@@ -218,7 +256,7 @@ const SidebarContent = ({ adminMode, setAdminMode, businessDomains, globalAdminN
                   Global Administration
                 </h3>
               </div>
-              {globalAdminNavigation.map((item) => {
+              {globalAdminNavigation.map(item => {
                 const Icon = item.icon;
                 return (
                   <a
@@ -239,7 +277,7 @@ const SidebarContent = ({ adminMode, setAdminMode, businessDomains, globalAdminN
           )}
         </nav>
       </div>
-      
+
       <div className="flex-shrink-0 flex border-t border-gray-200 p-4">
         <div className="flex items-center">
           <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">

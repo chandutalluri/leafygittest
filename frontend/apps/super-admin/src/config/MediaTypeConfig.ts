@@ -26,7 +26,7 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 3,
     labelsPerPage: 30,
     paddingMM: 2,
-    printType: 'sheet'
+    printType: 'sheet',
   },
   'a4-medium': {
     name: 'a4-medium',
@@ -37,7 +37,7 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 3,
     labelsPerPage: 12,
     paddingMM: 2,
-    printType: 'sheet'
+    printType: 'sheet',
   },
   'a4-large': {
     name: 'a4-large',
@@ -48,9 +48,9 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 2,
     labelsPerPage: 6,
     paddingMM: 2,
-    printType: 'sheet'
+    printType: 'sheet',
   },
-  
+
   // Thermal Roll formats
   'thermal-small': {
     name: 'thermal-small',
@@ -61,7 +61,7 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 1,
     labelsPerPage: 1,
     paddingMM: 0,
-    printType: 'roll'
+    printType: 'roll',
   },
   'thermal-medium': {
     name: 'thermal-medium',
@@ -72,7 +72,7 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 1,
     labelsPerPage: 1,
     paddingMM: 0,
-    printType: 'roll'
+    printType: 'roll',
   },
   'thermal-large': {
     name: 'thermal-large',
@@ -83,8 +83,8 @@ export const mediaTypes: Record<string, MediaTypeConfig> = {
     cols: 1,
     labelsPerPage: 1,
     paddingMM: 0,
-    printType: 'roll'
-  }
+    printType: 'roll',
+  },
 };
 
 // Utility functions
@@ -96,16 +96,16 @@ export const getMediaTypeConfig = (mediaTypeName: string): MediaTypeConfig => {
 };
 
 export const calculateLabelDimensions = (mediaType: MediaTypeConfig, zoom: number = 100) => {
-  const labelWidthPx = mmToPx(mediaType.labelSizeMM.width) * zoom / 100;
-  const labelHeightPx = mmToPx(mediaType.labelSizeMM.height) * zoom / 100;
-  const pageWidthPx = mmToPx(mediaType.pageSizeMM.width) * zoom / 100;
-  const pageHeightPx = mmToPx(mediaType.pageSizeMM.height) * zoom / 100;
-  
+  const labelWidthPx = (mmToPx(mediaType.labelSizeMM.width) * zoom) / 100;
+  const labelHeightPx = (mmToPx(mediaType.labelSizeMM.height) * zoom) / 100;
+  const pageWidthPx = (mmToPx(mediaType.pageSizeMM.width) * zoom) / 100;
+  const pageHeightPx = (mmToPx(mediaType.pageSizeMM.height) * zoom) / 100;
+
   return {
     label: { width: labelWidthPx, height: labelHeightPx },
     page: { width: pageWidthPx, height: pageHeightPx },
     grid: { rows: mediaType.rows, cols: mediaType.cols },
-    labelsPerPage: mediaType.labelsPerPage
+    labelsPerPage: mediaType.labelsPerPage,
   };
 };
 

@@ -4,8 +4,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { CreditCard, DollarSign, TrendingUp, AlertCircle, CheckCircle, XCircle, RefreshCw } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  CreditCard,
+  DollarSign,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  RefreshCw,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 
 interface Payment {
@@ -16,7 +31,13 @@ interface Payment {
   customerName: string;
   amount: number;
   currency: string;
-  paymentMethod: 'credit_card' | 'debit_card' | 'upi' | 'wallet' | 'bank_transfer' | 'cash_on_delivery';
+  paymentMethod:
+    | 'credit_card'
+    | 'debit_card'
+    | 'upi'
+    | 'wallet'
+    | 'bank_transfer'
+    | 'cash_on_delivery';
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'refunded' | 'cancelled';
   gatewayTransactionId?: string;
   gatewayResponse?: any;
@@ -56,9 +77,9 @@ export default function PaymentProcessing() {
         apiClient.get('/api/direct-data/payments', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
           method: methodFilter !== 'all' ? methodFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/payment-attempts')
+        apiClient.get('/api/direct-data/payment-attempts'),
       ]);
       setPayments(paymentsData || []);
       setPaymentAttempts(attemptsData || []);
@@ -81,7 +102,7 @@ export default function PaymentProcessing() {
   const refundPayment = async (paymentId: string, amount?: number) => {
     try {
       await apiClient.post(`/api/direct-data/payments/${paymentId}/refund`, {
-        amount
+        amount,
       });
       fetchPaymentData();
     } catch (error) {
@@ -100,25 +121,39 @@ export default function PaymentProcessing() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'default';
-      case 'pending': return 'secondary';
-      case 'processing': return 'secondary';
-      case 'failed': return 'destructive';
-      case 'refunded': return 'outline';
-      case 'cancelled': return 'destructive';
-      default: return 'secondary';
+      case 'completed':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'processing':
+        return 'secondary';
+      case 'failed':
+        return 'destructive';
+      case 'refunded':
+        return 'outline';
+      case 'cancelled':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="h-4 w-4" />;
-      case 'pending': return <AlertCircle className="h-4 w-4" />;
-      case 'processing': return <RefreshCw className="h-4 w-4" />;
-      case 'failed': return <XCircle className="h-4 w-4" />;
-      case 'refunded': return <RefreshCw className="h-4 w-4" />;
-      case 'cancelled': return <XCircle className="h-4 w-4" />;
-      default: return <CreditCard className="h-4 w-4" />;
+      case 'completed':
+        return <CheckCircle className="h-4 w-4" />;
+      case 'pending':
+        return <AlertCircle className="h-4 w-4" />;
+      case 'processing':
+        return <RefreshCw className="h-4 w-4" />;
+      case 'failed':
+        return <XCircle className="h-4 w-4" />;
+      case 'refunded':
+        return <RefreshCw className="h-4 w-4" />;
+      case 'cancelled':
+        return <XCircle className="h-4 w-4" />;
+      default:
+        return <CreditCard className="h-4 w-4" />;
     }
   };
 
@@ -132,10 +167,11 @@ export default function PaymentProcessing() {
     }
   };
 
-  const filteredPayments = payments.filter(payment =>
-    payment.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    payment.gatewayTransactionId?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredPayments = payments.filter(
+    payment =>
+      payment.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payment.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      payment.gatewayTransactionId?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalRevenue = payments
@@ -143,11 +179,17 @@ export default function PaymentProcessing() {
     .reduce((sum, p) => sum + p.amount, 0);
 
   const todayRevenue = payments
-    .filter(p => p.status === 'completed' && new Date(p.createdAt).toDateString() === new Date().toDateString())
+    .filter(
+      p =>
+        p.status === 'completed' &&
+        new Date(p.createdAt).toDateString() === new Date().toDateString()
+    )
     .reduce((sum, p) => sum + p.amount, 0);
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading payment processing...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading payment processing...</div>
+    );
   }
 
   return (
@@ -167,7 +209,9 @@ export default function PaymentProcessing() {
             <DollarSign className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">₹{totalRevenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-green-600">
+              ₹{totalRevenue.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -197,7 +241,12 @@ export default function PaymentProcessing() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
-              {payments.length > 0 ? Math.round((payments.filter(p => p.status === 'completed').length / payments.length) * 100) : 0}%
+              {payments.length > 0
+                ? Math.round(
+                    (payments.filter(p => p.status === 'completed').length / payments.length) * 100
+                  )
+                : 0}
+              %
             </div>
           </CardContent>
         </Card>
@@ -213,11 +262,11 @@ export default function PaymentProcessing() {
             <Input
               placeholder="Search payments..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <select
               value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
+              onChange={e => setStatusFilter(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="all">All Status</option>
@@ -230,7 +279,7 @@ export default function PaymentProcessing() {
             </select>
             <select
               value={methodFilter}
-              onChange={(e) => setMethodFilter(e.target.value)}
+              onChange={e => setMethodFilter(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2"
             >
               <option value="all">All Methods</option>
@@ -266,7 +315,7 @@ export default function PaymentProcessing() {
                 </tr>
               </thead>
               <tbody>
-                {filteredPayments.map((payment) => (
+                {filteredPayments.map(payment => (
                   <tr key={payment.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4 font-mono text-sm">{payment.orderNumber}</td>
                     <td className="py-3 px-4">
@@ -294,10 +343,13 @@ export default function PaymentProcessing() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Dialog open={isPaymentDialogOpen && selectedPayment?.id === payment.id} onOpenChange={(open) => {
-                          setIsPaymentDialogOpen(open);
-                          if (!open) setSelectedPayment(null);
-                        }}>
+                        <Dialog
+                          open={isPaymentDialogOpen && selectedPayment?.id === payment.id}
+                          onOpenChange={open => {
+                            setIsPaymentDialogOpen(open);
+                            if (!open) setSelectedPayment(null);
+                          }}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -370,16 +422,16 @@ function PaymentDetails({ payment }: { payment: Payment }) {
         </div>
         <div>
           <Label>Amount</Label>
-          <div className="font-semibold">₹{payment.amount.toLocaleString()} {payment.currency}</div>
+          <div className="font-semibold">
+            ₹{payment.amount.toLocaleString()} {payment.currency}
+          </div>
         </div>
         <div>
           <Label>Status</Label>
-          <Badge variant={getStatusColor(payment.status)}>
-            {payment.status.toUpperCase()}
-          </Badge>
+          <Badge variant={getStatusColor(payment.status)}>{payment.status.toUpperCase()}</Badge>
         </div>
       </div>
-      
+
       {payment.gatewayResponse && (
         <div>
           <Label>Gateway Response</Label>
@@ -394,12 +446,19 @@ function PaymentDetails({ payment }: { payment: Payment }) {
 
 function getStatusColor(status: string) {
   switch (status) {
-    case 'completed': return 'default';
-    case 'pending': return 'secondary';
-    case 'processing': return 'secondary';
-    case 'failed': return 'destructive';
-    case 'refunded': return 'outline';
-    case 'cancelled': return 'destructive';
-    default: return 'secondary';
+    case 'completed':
+      return 'default';
+    case 'pending':
+      return 'secondary';
+    case 'processing':
+      return 'secondary';
+    case 'failed':
+      return 'destructive';
+    case 'refunded':
+      return 'outline';
+    case 'cancelled':
+      return 'destructive';
+    default:
+      return 'secondary';
   }
 }

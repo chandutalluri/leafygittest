@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Bell, Mail, MessageSquare, Phone, Send, Users, Plus, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -62,7 +69,9 @@ export default function NotificationService() {
   const [templates, setTemplates] = useState<NotificationTemplate[]>([]);
   const [preferences, setPreferences] = useState<NotificationPreference[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'notifications' | 'templates' | 'preferences'>('notifications');
+  const [activeTab, setActiveTab] = useState<'notifications' | 'templates' | 'preferences'>(
+    'notifications'
+  );
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -79,10 +88,10 @@ export default function NotificationService() {
         apiClient.get('/api/direct-data/notifications', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
           type: typeFilter !== 'all' ? typeFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
         apiClient.get('/api/direct-data/notification-templates'),
-        apiClient.get('/api/direct-data/notification-preferences')
+        apiClient.get('/api/direct-data/notification-preferences'),
       ]);
       setNotifications(notificationsData || []);
       setTemplates(templatesData || []);
@@ -124,49 +133,70 @@ export default function NotificationService() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'sent': return 'default';
-      case 'delivered': return 'default';
-      case 'pending': return 'secondary';
-      case 'failed': return 'destructive';
-      case 'read': return 'outline';
-      default: return 'secondary';
+      case 'sent':
+        return 'default';
+      case 'delivered':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'failed':
+        return 'destructive';
+      case 'read':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'email': return <Mail className="h-4 w-4" />;
-      case 'sms': return <MessageSquare className="h-4 w-4" />;
-      case 'phone': return <Phone className="h-4 w-4" />;
+      case 'email':
+        return <Mail className="h-4 w-4" />;
+      case 'sms':
+        return <MessageSquare className="h-4 w-4" />;
+      case 'phone':
+        return <Phone className="h-4 w-4" />;
       case 'push':
       case 'in_app':
         return <Bell className="h-4 w-4" />;
-      default: return <Send className="h-4 w-4" />;
+      default:
+        return <Send className="h-4 w-4" />;
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'secondary';
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'secondary';
+      case 'low':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredNotifications = notifications.filter(notification =>
-    notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    notification.message.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredNotifications = notifications.filter(
+    notification =>
+      notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      notification.message.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalNotifications = notifications.length;
-  const sentNotifications = notifications.filter(n => n.status === 'sent' || n.status === 'delivered').length;
+  const sentNotifications = notifications.filter(
+    n => n.status === 'sent' || n.status === 'delivered'
+  ).length;
   const failedNotifications = notifications.filter(n => n.status === 'failed').length;
-  const deliveryRate = totalNotifications > 0 ? Math.round((sentNotifications / totalNotifications) * 100) : 0;
+  const deliveryRate =
+    totalNotifications > 0 ? Math.round((sentNotifications / totalNotifications) * 100) : 0;
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading notification service...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading notification service...</div>
+    );
   }
 
   return (
@@ -189,7 +219,10 @@ export default function NotificationService() {
                 <DialogTitle>Send New Notification</DialogTitle>
                 <DialogDescription>Create and send a notification to users</DialogDescription>
               </DialogHeader>
-              <NotificationForm onSubmit={sendNotification} onCancel={() => setIsNotificationDialogOpen(false)} />
+              <NotificationForm
+                onSubmit={sendNotification}
+                onCancel={() => setIsNotificationDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -237,7 +270,7 @@ export default function NotificationService() {
 
       {/* Tabs */}
       <div className="flex space-x-4 border-b">
-        {['notifications', 'templates', 'preferences'].map((tab) => (
+        {['notifications', 'templates', 'preferences'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -265,7 +298,7 @@ export default function NotificationService() {
             <Input
               placeholder="Search notifications..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -319,7 +352,7 @@ export default function NotificationService() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredNotifications.map((notification) => (
+                  {filteredNotifications.map(notification => (
                     <tr key={notification.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{notification.title}</div>
@@ -378,7 +411,7 @@ export default function NotificationService() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {templates.map((template) => (
+              {templates.map(template => (
                 <Card key={template.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -428,7 +461,9 @@ export default function NotificationService() {
                         <Button
                           size="sm"
                           variant={template.isActive ? 'destructive' : 'default'}
-                          onClick={() => updateTemplate(template.id, { isActive: !template.isActive })}
+                          onClick={() =>
+                            updateTemplate(template.id, { isActive: !template.isActive })
+                          }
                         >
                           {template.isActive ? 'Deactivate' : 'Activate'}
                         </Button>
@@ -462,7 +497,7 @@ export default function NotificationService() {
                   </tr>
                 </thead>
                 <tbody>
-                  {preferences.map((preference) => (
+                  {preferences.map(preference => (
                     <tr key={preference.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 font-medium">{preference.userName}</td>
                       <td className="py-3 px-4">
@@ -508,10 +543,10 @@ export default function NotificationService() {
   );
 }
 
-function NotificationForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function NotificationForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<Notification>) => void;
   onCancel: () => void;
 }) {
@@ -520,7 +555,7 @@ function NotificationForm({
     message: '',
     type: 'email' as const,
     priority: 'medium' as const,
-    recipientType: 'all_users' as const
+    recipientType: 'all_users' as const,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -535,7 +570,7 @@ function NotificationForm({
         <Input
           id="title"
           value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          onChange={e => setFormData({ ...formData, title: e.target.value })}
           required
         />
       </div>
@@ -545,7 +580,7 @@ function NotificationForm({
         <Textarea
           id="message"
           value={formData.message}
-          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+          onChange={e => setFormData({ ...formData, message: e.target.value })}
           rows={4}
           required
         />
@@ -554,7 +589,10 @@ function NotificationForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="type">Notification Type</Label>
-          <Select value={formData.type} onValueChange={(value: any) => setFormData({ ...formData, type: value })}>
+          <Select
+            value={formData.type}
+            onValueChange={(value: any) => setFormData({ ...formData, type: value })}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -569,7 +607,10 @@ function NotificationForm({
         </div>
         <div>
           <Label htmlFor="priority">Priority</Label>
-          <Select value={formData.priority} onValueChange={(value: any) => setFormData({ ...formData, priority: value })}>
+          <Select
+            value={formData.priority}
+            onValueChange={(value: any) => setFormData({ ...formData, priority: value })}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -585,7 +626,10 @@ function NotificationForm({
 
       <div>
         <Label htmlFor="recipientType">Recipients</Label>
-        <Select value={formData.recipientType} onValueChange={(value: any) => setFormData({ ...formData, recipientType: value })}>
+        <Select
+          value={formData.recipientType}
+          onValueChange={(value: any) => setFormData({ ...formData, recipientType: value })}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -603,9 +647,7 @@ function NotificationForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Send Notification
-        </Button>
+        <Button type="submit">Send Notification</Button>
       </div>
     </form>
   );

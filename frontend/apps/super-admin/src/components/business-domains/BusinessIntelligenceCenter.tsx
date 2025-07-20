@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { 
-  ChartBarIcon, 
-  PresentationChartLineIcon, 
-  DocumentChartBarIcon, 
+import {
+  ChartBarIcon,
+  PresentationChartLineIcon,
+  DocumentChartBarIcon,
   EyeIcon,
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon
+  ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline';
 
 interface AnalyticsData {
@@ -38,7 +38,7 @@ export function BusinessIntelligenceCenter() {
   const fetchAnalyticsData = async () => {
     try {
       setLoading(true);
-      
+
       const response = await fetch('/api/direct-data/analytics/sales');
       if (response.ok) {
         const data = await response.json();
@@ -56,7 +56,7 @@ export function BusinessIntelligenceCenter() {
     { id: 'analytics', name: 'Analytics & Reporting', icon: PresentationChartLineIcon },
     { id: 'performance', name: 'Performance Monitor', icon: ArrowTrendingUpIcon },
     { id: 'reporting', name: 'Custom Reporting', icon: DocumentChartBarIcon },
-    { id: 'visualization', name: 'Data Visualization', icon: EyeIcon }
+    { id: 'visualization', name: 'Data Visualization', icon: EyeIcon },
   ];
 
   const renderOverview = () => (
@@ -140,9 +140,7 @@ export function BusinessIntelligenceCenter() {
                       <p className="text-sm font-medium text-gray-900">{product.name}</p>
                     </div>
                   </div>
-                  <div className="text-sm text-gray-500">
-                    {product.sales} sales
-                  </div>
+                  <div className="text-sm text-gray-500">{product.sales} sales</div>
                 </div>
               )) || (
                 <div className="text-center py-8">
@@ -208,7 +206,7 @@ export function BusinessIntelligenceCenter() {
 
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button

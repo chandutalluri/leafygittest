@@ -32,8 +32,8 @@ export const UserManagement: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [newPassword, setNewPassword] = useState('');
   const [showPasswordReset, setShowPasswordReset] = useState(false);
-  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
-  
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
   const { token, user } = useAuthStore();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export const UserManagement: React.FC = () => {
       const apiGateway = process.env.NEXT_PUBLIC_API_GATEWAY || 'http://localhost:8080';
       const response = await fetch(`${apiGateway}/api/auth/admin/users`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -85,7 +85,10 @@ export const UserManagement: React.FC = () => {
 
       const data = await response.json();
       if (data.success) {
-        setMessage({ type: 'success', text: `Password reset successfully for ${selectedUser.email}` });
+        setMessage({
+          type: 'success',
+          text: `Password reset successfully for ${selectedUser.email}`,
+        });
         setShowPasswordReset(false);
         setSelectedUser(null);
         setNewPassword('');
@@ -131,10 +134,13 @@ export const UserManagement: React.FC = () => {
       </div>
 
       {message && (
-        <div className={`mb-6 p-4 rounded-lg ${
-          message.type === 'success' ? 'bg-green-100 border border-green-400 text-green-700' 
-          : 'bg-red-100 border border-red-400 text-red-700'
-        }`}>
+        <div
+          className={`mb-6 p-4 rounded-lg ${
+            message.type === 'success'
+              ? 'bg-green-100 border border-green-400 text-green-700'
+              : 'bg-red-100 border border-red-400 text-red-700'
+          }`}
+        >
           {message.text}
         </div>
       )}
@@ -161,15 +167,25 @@ export const UserManagement: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    User
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Branch
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {users.internalUsers.map((user) => (
+                {users.internalUsers.map(user => (
                   <tr key={user.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -180,12 +196,17 @@ export const UserManagement: React.FC = () => {
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.role === 'super_admin' ? 'bg-purple-100 text-purple-800' :
-                        user.role === 'admin' ? 'bg-blue-100 text-blue-800' :
-                        user.role === 'manager' ? 'bg-green-100 text-green-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          user.role === 'super_admin'
+                            ? 'bg-purple-100 text-purple-800'
+                            : user.role === 'admin'
+                              ? 'bg-blue-100 text-blue-800'
+                              : user.role === 'manager'
+                                ? 'bg-green-100 text-green-800'
+                                : 'bg-gray-100 text-gray-800'
+                        }`}
+                      >
                         {user.role.replace('_', ' ')}
                       </span>
                     </td>
@@ -193,9 +214,11 @@ export const UserManagement: React.FC = () => {
                       {user.branch_name || 'All Branches'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                        }`}
+                      >
                         {user.is_active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
@@ -222,14 +245,22 @@ export const UserManagement: React.FC = () => {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Customer
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Branch
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {users.customers.slice(0, 10).map((customer) => (
+                {users.customers.slice(0, 10).map(customer => (
                   <tr key={customer.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div>
@@ -243,9 +274,13 @@ export const UserManagement: React.FC = () => {
                       {customer.branch_name || 'No Branch'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        customer.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      }`}>
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          customer.is_active
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
                         {customer.is_active ? 'Active' : 'Inactive'}
                       </span>
                     </td>
@@ -271,9 +306,7 @@ export const UserManagement: React.FC = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
               Reset Password for {selectedUser.first_name} {selectedUser.last_name}
             </h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Email: {selectedUser.email}
-            </p>
+            <p className="text-sm text-gray-600 mb-4">Email: {selectedUser.email}</p>
             <div className="mb-4">
               <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-2">
                 New Password
@@ -282,7 +315,7 @@ export const UserManagement: React.FC = () => {
                 type="password"
                 id="newPassword"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={e => setNewPassword(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter new password (min 6 characters)"
                 minLength={6}

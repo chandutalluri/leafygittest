@@ -4,8 +4,25 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { MessageSquare, Phone, Mail, User, Clock, CheckCircle, AlertCircle, XCircle, Plus } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  MessageSquare,
+  Phone,
+  Mail,
+  User,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  XCircle,
+  Plus,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -56,7 +73,7 @@ export default function CustomerService() {
       const ticketsData = await apiClient.get('/api/direct-data/customer-service/tickets', {
         status: statusFilter !== 'all' ? statusFilter : undefined,
         priority: priorityFilter !== 'all' ? priorityFilter : undefined,
-        search: searchTerm
+        search: searchTerm,
       });
       setTickets(ticketsData || []);
     } catch (error) {
@@ -68,7 +85,9 @@ export default function CustomerService() {
 
   const updateTicketStatus = async (ticketId: string, newStatus: string) => {
     try {
-      await apiClient.put(`/api/direct-data/customer-service/tickets/${ticketId}`, { status: newStatus });
+      await apiClient.put(`/api/direct-data/customer-service/tickets/${ticketId}`, {
+        status: newStatus,
+      });
       fetchTickets();
     } catch (error) {
       console.error('Failed to update ticket status:', error);
@@ -77,7 +96,9 @@ export default function CustomerService() {
 
   const assignTicket = async (ticketId: string, assigneeId: string) => {
     try {
-      await apiClient.put(`/api/direct-data/customer-service/tickets/${ticketId}/assign`, { assignedTo: assigneeId });
+      await apiClient.put(`/api/direct-data/customer-service/tickets/${ticketId}/assign`, {
+        assignedTo: assigneeId,
+      });
       fetchTickets();
     } catch (error) {
       console.error('Failed to assign ticket:', error);
@@ -88,7 +109,7 @@ export default function CustomerService() {
     try {
       await apiClient.post(`/api/direct-data/customer-service/tickets/${ticketId}/responses`, {
         message,
-        isFromCustomer: false
+        isFromCustomer: false,
       });
       fetchTickets();
       setIsResponseDialogOpen(false);
@@ -99,38 +120,54 @@ export default function CustomerService() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'destructive';
-      case 'in_progress': return 'secondary';
-      case 'resolved': return 'default';
-      case 'closed': return 'outline';
-      default: return 'secondary';
+      case 'open':
+        return 'destructive';
+      case 'in_progress':
+        return 'secondary';
+      case 'resolved':
+        return 'default';
+      case 'closed':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'secondary';
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'secondary';
+      case 'low':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'open': return <AlertCircle className="h-4 w-4" />;
-      case 'in_progress': return <Clock className="h-4 w-4" />;
-      case 'resolved': return <CheckCircle className="h-4 w-4" />;
-      case 'closed': return <XCircle className="h-4 w-4" />;
-      default: return <MessageSquare className="h-4 w-4" />;
+      case 'open':
+        return <AlertCircle className="h-4 w-4" />;
+      case 'in_progress':
+        return <Clock className="h-4 w-4" />;
+      case 'resolved':
+        return <CheckCircle className="h-4 w-4" />;
+      case 'closed':
+        return <XCircle className="h-4 w-4" />;
+      default:
+        return <MessageSquare className="h-4 w-4" />;
     }
   };
 
-  const filteredTickets = tickets.filter(ticket =>
-    ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    ticket.ticketNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTickets = tickets.filter(
+    ticket =>
+      ticket.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      ticket.ticketNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -202,7 +239,7 @@ export default function CustomerService() {
             <Input
               placeholder="Search tickets..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -253,7 +290,7 @@ export default function CustomerService() {
                 </tr>
               </thead>
               <tbody>
-                {filteredTickets.map((ticket) => (
+                {filteredTickets.map(ticket => (
                   <tr key={ticket.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4 font-mono text-sm">{ticket.ticketNumber}</td>
                     <td className="py-3 px-4">
@@ -281,10 +318,13 @@ export default function CustomerService() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Dialog open={isTicketDialogOpen && selectedTicket?.id === ticket.id} onOpenChange={(open) => {
-                          setIsTicketDialogOpen(open);
-                          if (!open) setSelectedTicket(null);
-                        }}>
+                        <Dialog
+                          open={isTicketDialogOpen && selectedTicket?.id === ticket.id}
+                          onOpenChange={open => {
+                            setIsTicketDialogOpen(open);
+                            if (!open) setSelectedTicket(null);
+                          }}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="outline"
@@ -301,12 +341,15 @@ export default function CustomerService() {
                             </DialogHeader>
                             <TicketDetails
                               ticket={ticket}
-                              onStatusChange={(status) => updateTicketStatus(ticket.id, status)}
-                              onAddResponse={(message) => addResponse(ticket.id, message)}
+                              onStatusChange={status => updateTicketStatus(ticket.id, status)}
+                              onAddResponse={message => addResponse(ticket.id, message)}
                             />
                           </DialogContent>
                         </Dialog>
-                        <Select value={ticket.status} onValueChange={(status) => updateTicketStatus(ticket.id, status)}>
+                        <Select
+                          value={ticket.status}
+                          onValueChange={status => updateTicketStatus(ticket.id, status)}
+                        >
                           <SelectTrigger className="w-32">
                             <SelectValue />
                           </SelectTrigger>
@@ -330,12 +373,12 @@ export default function CustomerService() {
   );
 }
 
-function TicketDetails({ 
-  ticket, 
-  onStatusChange, 
-  onAddResponse 
-}: { 
-  ticket: SupportTicket; 
+function TicketDetails({
+  ticket,
+  onStatusChange,
+  onAddResponse,
+}: {
+  ticket: SupportTicket;
   onStatusChange: (status: string) => void;
   onAddResponse: (message: string) => void;
 }) {
@@ -360,26 +403,25 @@ function TicketDetails({
         </div>
         <div>
           <Label>Priority</Label>
-          <Badge variant={getPriorityColor(ticket.priority)}>
-            {ticket.priority.toUpperCase()}
-          </Badge>
+          <Badge variant={getPriorityColor(ticket.priority)}>{ticket.priority.toUpperCase()}</Badge>
         </div>
       </div>
 
       {/* Description */}
       <div>
         <Label>Description</Label>
-        <div className="mt-2 p-4 bg-gray-50 rounded-lg">
-          {ticket.description}
-        </div>
+        <div className="mt-2 p-4 bg-gray-50 rounded-lg">{ticket.description}</div>
       </div>
 
       {/* Responses */}
       <div>
         <Label>Conversation</Label>
         <div className="mt-2 space-y-4 max-h-96 overflow-y-auto">
-          {ticket.responses.map((response) => (
-            <div key={response.id} className={`p-4 rounded-lg ${response.isFromCustomer ? 'bg-blue-50 ml-8' : 'bg-gray-50 mr-8'}`}>
+          {ticket.responses.map(response => (
+            <div
+              key={response.id}
+              className={`p-4 rounded-lg ${response.isFromCustomer ? 'bg-blue-50 ml-8' : 'bg-gray-50 mr-8'}`}
+            >
               <div className="flex justify-between items-start mb-2">
                 <div className="font-medium">
                   {response.isFromCustomer ? ticket.customerName : response.respondedBy}
@@ -401,7 +443,7 @@ function TicketDetails({
           <Textarea
             id="response"
             value={responseMessage}
-            onChange={(e) => setResponseMessage(e.target.value)}
+            onChange={e => setResponseMessage(e.target.value)}
             placeholder="Type your response here..."
             rows={4}
           />
@@ -419,10 +461,15 @@ function TicketDetails({
 
 function getPriorityColor(priority: string) {
   switch (priority) {
-    case 'urgent': return 'destructive';
-    case 'high': return 'destructive';
-    case 'medium': return 'secondary';
-    case 'low': return 'outline';
-    default: return 'secondary';
+    case 'urgent':
+      return 'destructive';
+    case 'high':
+      return 'destructive';
+    case 'medium':
+      return 'secondary';
+    case 'low':
+      return 'outline';
+    default:
+      return 'secondary';
   }
 }

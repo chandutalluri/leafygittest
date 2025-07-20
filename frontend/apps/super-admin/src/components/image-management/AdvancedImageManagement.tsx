@@ -1,10 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
-import { 
-  PhotoIcon, 
-  TrashIcon, 
-  EyeIcon, 
+import {
+  PhotoIcon,
+  TrashIcon,
+  EyeIcon,
   CloudArrowUpIcon,
   MagnifyingGlassIcon,
   AdjustmentsHorizontalIcon,
@@ -13,7 +13,7 @@ import {
   ArrowDownTrayIcon,
   FolderIcon,
   TagIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -60,18 +60,18 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         throw new Error('Upload failed');
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
       toast.success('Image uploaded successfully!');
       onUploadSuccess();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Upload failed: ${error.message}`);
     },
   });
@@ -90,7 +90,7 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
-    
+
     const files = Array.from(e.dataTransfer.files);
     handleFiles(files);
   }, []);
@@ -103,7 +103,7 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
         formData.append('altText', file.name.replace(/\.[^/.]+$/, ''));
         formData.append('description', `Uploaded image: ${file.name}`);
         formData.append('entityType', 'product');
-        
+
         setIsUploading(true);
         uploadMutation.mutate(formData, {
           onSettled: () => setIsUploading(false),
@@ -121,9 +121,7 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
     <div className="mb-6">
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-          dragActive 
-            ? 'border-blue-400 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400'
+          dragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -140,10 +138,8 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
             browse to upload
           </button>
         </p>
-        <p className="text-xs text-gray-500 mt-1">
-          Supports JPG, PNG, GIF, WebP up to 10MB
-        </p>
-        
+        <p className="text-xs text-gray-500 mt-1">Supports JPG, PNG, GIF, WebP up to 10MB</p>
+
         <input
           ref={fileInputRef}
           type="file"
@@ -153,7 +149,7 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
           className="hidden"
         />
       </div>
-      
+
       {isUploading && (
         <div className="mt-4 text-center">
           <div className="inline-flex items-center">
@@ -166,14 +162,14 @@ function ImageUpload({ onUploadSuccess }: ImageUploadProps) {
   );
 }
 
-function ImagePreviewModal({ 
-  image, 
-  isOpen, 
-  onClose 
-}: { 
-  image: AdvancedImage | null; 
-  isOpen: boolean; 
-  onClose: () => void; 
+function ImagePreviewModal({
+  image,
+  isOpen,
+  onClose,
+}: {
+  image: AdvancedImage | null;
+  isOpen: boolean;
+  onClose: () => void;
 }) {
   if (!isOpen || !image) return null;
 
@@ -191,21 +187,14 @@ function ImagePreviewModal({
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           className="bg-white rounded-lg p-6 max-w-4xl max-h-[90vh] overflow-auto"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <div className="flex justify-between items-start mb-4">
             <div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                {image.originalFilename}
-              </h3>
-              <p className="text-sm text-gray-600 mt-1">
-                {image.description || 'No description'}
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900">{image.originalFilename}</h3>
+              <p className="text-sm text-gray-600 mt-1">{image.description || 'No description'}</p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 text-2xl"
-            >
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-2xl">
               ×
             </button>
           </div>
@@ -230,9 +219,7 @@ function ImagePreviewModal({
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Size:</span>
-                    <span className="font-medium">
-                      {(image.sizeBytes / 1024).toFixed(1)} KB
-                    </span>
+                    <span className="font-medium">{(image.sizeBytes / 1024).toFixed(1)} KB</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Type:</span>
@@ -290,9 +277,12 @@ function ImagePreviewModal({
   );
 }
 
-function ImageGrid({ images, onImageClick }: { 
-  images: AdvancedImage[]; 
-  onImageClick: (image: AdvancedImage) => void; 
+function ImageGrid({
+  images,
+  onImageClick,
+}: {
+  images: AdvancedImage[];
+  onImageClick: (image: AdvancedImage) => void;
 }) {
   const queryClient = useQueryClient();
 
@@ -301,25 +291,25 @@ function ImageGrid({ images, onImageClick }: {
       const response = await fetch(`/api/image-management/images/${imageId}`, {
         method: 'DELETE',
       });
-      
+
       if (!response.ok) {
         throw new Error('Delete failed');
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
       toast.success('Image deleted successfully!');
       queryClient.invalidateQueries({ queryKey: ['advanced-images'] });
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Delete failed: ${error.message}`);
     },
   });
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {images.map((image) => (
+      {images.map(image => (
         <motion.div
           key={image.id}
           initial={{ opacity: 0, scale: 0.9 }}
@@ -331,12 +321,13 @@ function ImageGrid({ images, onImageClick }: {
               src={image.path}
               alt={image.altText || image.filename}
               className="w-full h-full object-cover"
-              onError={(e) => {
+              onError={e => {
                 const target = e.target as HTMLImageElement;
-                target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
+                target.src =
+                  'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
               }}
             />
-            
+
             {/* Hover overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
               <div className="flex space-x-2">
@@ -357,13 +348,12 @@ function ImageGrid({ images, onImageClick }: {
               </div>
             </div>
           </div>
-          
+
           <div className="p-3">
-            <h4 className="font-medium text-gray-900 text-sm truncate">
-              {image.originalFilename}
-            </h4>
+            <h4 className="font-medium text-gray-900 text-sm truncate">{image.originalFilename}</h4>
             <p className="text-xs text-gray-600 mt-1">
-              {(image.sizeBytes / 1024).toFixed(1)} KB • {image.mimeType.split('/')[1].toUpperCase()}
+              {(image.sizeBytes / 1024).toFixed(1)} KB •{' '}
+              {image.mimeType.split('/')[1].toUpperCase()}
             </p>
             {image.tags && image.tags.length > 0 && (
               <div className="flex flex-wrap gap-1 mt-2">
@@ -396,7 +386,11 @@ export default function AdvancedImageManagement() {
   const queryClient = useQueryClient();
 
   // Fetch images
-  const { data: images = [], isLoading, error } = useQuery<AdvancedImage[]>({
+  const {
+    data: images = [],
+    isLoading,
+    error,
+  } = useQuery<AdvancedImage[]>({
     queryKey: ['advanced-images'],
     queryFn: async () => {
       const response = await fetch('/api/image-management/images');
@@ -422,12 +416,13 @@ export default function AdvancedImageManagement() {
 
   // Filter images
   const filteredImages = images.filter(image => {
-    const matchesSearch = image.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.altText?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         image.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+    const matchesSearch =
+      image.filename.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      image.altText?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      image.description?.toLowerCase().includes(searchTerm.toLowerCase());
+
     const matchesFilter = filterType === 'all' || image.entityType === filterType;
-    
+
     return matchesSearch && matchesFilter;
   });
 
@@ -468,7 +463,7 @@ export default function AdvancedImageManagement() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
               <FolderIcon className="h-8 w-8 text-green-600" />
@@ -478,7 +473,7 @@ export default function AdvancedImageManagement() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
               <TagIcon className="h-8 w-8 text-purple-600" />
@@ -490,7 +485,7 @@ export default function AdvancedImageManagement() {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center">
               <DocumentDuplicateIcon className="h-8 w-8 text-orange-600" />
@@ -520,14 +515,14 @@ export default function AdvancedImageManagement() {
               type="text"
               placeholder="Search images..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-          
+
           <select
             value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
+            onChange={e => setFilterType(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">All Types</option>
@@ -542,11 +537,9 @@ export default function AdvancedImageManagement() {
       {/* Images Grid */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-medium text-gray-900">
-            Images ({filteredImages.length})
-          </h3>
+          <h3 className="text-lg font-medium text-gray-900">Images ({filteredImages.length})</h3>
         </div>
-        
+
         {filteredImages.length === 0 ? (
           <div className="text-center py-8">
             <PhotoIcon className="mx-auto h-12 w-12 text-gray-400 mb-4" />

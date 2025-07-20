@@ -4,8 +4,8 @@ import ProductCRUD from '../components/business-domains/ProductCRUD';
 
 export default function ProductCatalog() {
   return (
-    <DashboardLayout 
-      title="Product Catalog" 
+    <DashboardLayout
+      title="Product Catalog"
       description="Manage product catalog and inventory"
       activeDomain="products"
     >

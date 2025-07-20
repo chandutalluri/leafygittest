@@ -18,11 +18,7 @@ export function LoadingSkeleton({
 
   return (
     <div
-      className={cn(
-        'animate-pulse bg-gray-200/60 backdrop-blur-sm',
-        variants[variant],
-        className
-      )}
+      className={cn('animate-pulse bg-gray-200/60 backdrop-blur-sm', variants[variant], className)}
       {...props}
     />
   );

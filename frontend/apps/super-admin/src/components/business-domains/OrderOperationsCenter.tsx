@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { 
-  TruckIcon, 
-  CreditCardIcon, 
-  ClipboardDocumentListIcon, 
+import {
+  TruckIcon,
+  CreditCardIcon,
+  ClipboardDocumentListIcon,
   ChatBubbleLeftEllipsisIcon,
   CheckCircleIcon,
   ClockIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 interface Order {
@@ -49,16 +49,16 @@ export function OrderOperationsCenter() {
     { id: 'orders', name: 'Order Management', icon: ClipboardDocumentListIcon },
     { id: 'payments', name: 'Payment Processing', icon: CreditCardIcon },
     { id: 'shipping', name: 'Shipping & Delivery', icon: TruckIcon },
-    { id: 'support', name: 'Customer Support', icon: ChatBubbleLeftEllipsisIcon }
+    { id: 'support', name: 'Customer Support', icon: ChatBubbleLeftEllipsisIcon },
   ];
 
   const getStatusColor = (status: string) => {
     const colors = {
-      'pending': 'bg-yellow-100 text-yellow-800',
-      'processing': 'bg-blue-100 text-blue-800',
-      'shipped': 'bg-purple-100 text-purple-800',
-      'delivered': 'bg-green-100 text-green-800',
-      'cancelled': 'bg-red-100 text-red-800'
+      pending: 'bg-yellow-100 text-yellow-800',
+      processing: 'bg-blue-100 text-blue-800',
+      shipped: 'bg-purple-100 text-purple-800',
+      delivered: 'bg-green-100 text-green-800',
+      cancelled: 'bg-red-100 text-red-800',
     };
     return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
@@ -147,7 +147,7 @@ export function OrderOperationsCenter() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {orders.slice(0, 10).map((order) => (
+              {orders.slice(0, 10).map(order => (
                 <tr key={order.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     #{order.id.substring(0, 8)}
@@ -159,7 +159,9 @@ export function OrderOperationsCenter() {
                     ₹{order.total_amount.toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}
+                    >
                       {order.status}
                     </span>
                   </td>
@@ -194,7 +196,7 @@ export function OrderOperationsCenter() {
 
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button

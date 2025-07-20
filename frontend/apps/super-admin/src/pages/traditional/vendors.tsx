@@ -3,16 +3,7 @@ import Head from 'next/head';
 import Layout from '../../components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Store, 
-  Star, 
-  Package,
-  DollarSign,
-  TrendingUp,
-  Edit,
-  Plus,
-  MapPin
-} from 'lucide-react';
+import { Store, Star, Package, DollarSign, TrendingUp, Edit, Plus, MapPin } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -41,7 +32,7 @@ export default function TraditionalVendorsPage() {
     phone: '',
     email: '',
     address: '',
-    quality_tiers: [] as string[]
+    quality_tiers: [] as string[],
   });
 
   useEffect(() => {
@@ -61,7 +52,7 @@ export default function TraditionalVendorsPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       if (editingVendor) {
         await axios.put(`/api/traditional/vendors/${editingVendor.id}`, formData);
@@ -70,7 +61,7 @@ export default function TraditionalVendorsPage() {
         await axios.post('/api/traditional/vendors', formData);
         toast.success('Vendor added successfully');
       }
-      
+
       fetchVendors();
       resetForm();
     } catch (error) {
@@ -82,7 +73,7 @@ export default function TraditionalVendorsPage() {
   const toggleVendorStatus = async (vendor: Vendor) => {
     try {
       await axios.patch(`/api/traditional/vendors/${vendor.id}/status`, {
-        is_active: !vendor.is_active
+        is_active: !vendor.is_active,
       });
       toast.success(`Vendor ${vendor.is_active ? 'deactivated' : 'activated'}`);
       fetchVendors();
@@ -99,7 +90,7 @@ export default function TraditionalVendorsPage() {
       phone: '',
       email: '',
       address: '',
-      quality_tiers: []
+      quality_tiers: [],
     });
     setEditingVendor(null);
     setShowAddModal(false);
@@ -113,7 +104,7 @@ export default function TraditionalVendorsPage() {
       phone: vendor.phone,
       email: vendor.email,
       address: vendor.address,
-      quality_tiers: vendor.quality_tiers
+      quality_tiers: vendor.quality_tiers,
     });
     setShowAddModal(true);
   };
@@ -161,27 +152,24 @@ export default function TraditionalVendorsPage() {
           <Card className="p-12 text-center">
             <Store className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-600">No vendors found</p>
-            <Button
-              onClick={() => setShowAddModal(true)}
-              className="mt-4"
-            >
+            <Button onClick={() => setShowAddModal(true)} className="mt-4">
               Add First Vendor
             </Button>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {vendors.map((vendor) => (
+            {vendors.map(vendor => (
               <Card key={vendor.id} className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-lg font-semibold">{vendor.name}</h3>
                     <p className="text-sm text-gray-600">{vendor.contact_person}</p>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    vendor.is_active 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs ${
+                      vendor.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                    }`}
+                  >
                     {vendor.is_active ? 'Active' : 'Inactive'}
                   </span>
                 </div>
@@ -194,7 +182,7 @@ export default function TraditionalVendorsPage() {
                   <div className="flex items-center gap-2">
                     <span className="text-gray-600">Quality Tiers:</span>
                     <div className="flex gap-1">
-                      {vendor.quality_tiers.map((tier) => (
+                      {vendor.quality_tiers.map(tier => (
                         <span key={tier} className="font-semibold text-emerald-600">
                           {getQualityTierDisplay(tier)}
                         </span>
@@ -233,7 +221,7 @@ export default function TraditionalVendorsPage() {
                   </Button>
                   <Button
                     size="sm"
-                    variant={vendor.is_active ? "secondary" : "default"}
+                    variant={vendor.is_active ? 'secondary' : 'default'}
                     onClick={() => toggleVendorStatus(vendor)}
                     className="flex-1"
                   >
@@ -258,7 +246,7 @@ export default function TraditionalVendorsPage() {
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={e => setFormData({ ...formData, name: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                   />
@@ -268,7 +256,7 @@ export default function TraditionalVendorsPage() {
                   <input
                     type="text"
                     value={formData.contact_person}
-                    onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
+                    onChange={e => setFormData({ ...formData, contact_person: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                   />
@@ -278,7 +266,7 @@ export default function TraditionalVendorsPage() {
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={e => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                   />
@@ -288,7 +276,7 @@ export default function TraditionalVendorsPage() {
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={e => setFormData({ ...formData, email: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg"
                     required
                   />
@@ -297,7 +285,7 @@ export default function TraditionalVendorsPage() {
                   <label className="block text-sm font-medium mb-1">Address</label>
                   <textarea
                     value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    onChange={e => setFormData({ ...formData, address: e.target.value })}
                     className="w-full px-3 py-2 border rounded-lg"
                     rows={2}
                     required
@@ -306,16 +294,22 @@ export default function TraditionalVendorsPage() {
                 <div>
                   <label className="block text-sm font-medium mb-1">Quality Tiers</label>
                   <div className="flex gap-3">
-                    {['ordinary', 'medium', 'best'].map((tier) => (
+                    {['ordinary', 'medium', 'best'].map(tier => (
                       <label key={tier} className="flex items-center">
                         <input
                           type="checkbox"
                           checked={formData.quality_tiers.includes(tier)}
-                          onChange={(e) => {
+                          onChange={e => {
                             if (e.target.checked) {
-                              setFormData({ ...formData, quality_tiers: [...formData.quality_tiers, tier] });
+                              setFormData({
+                                ...formData,
+                                quality_tiers: [...formData.quality_tiers, tier],
+                              });
                             } else {
-                              setFormData({ ...formData, quality_tiers: formData.quality_tiers.filter(t => t !== tier) });
+                              setFormData({
+                                ...formData,
+                                quality_tiers: formData.quality_tiers.filter(t => t !== tier),
+                              });
                             }
                           }}
                           className="mr-2"

@@ -3,7 +3,17 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Package, Search, Edit, Trash2, AlertTriangle, Save, Plus, Minus, BarChart3 } from 'lucide-react';
+import {
+  Package,
+  Search,
+  Edit,
+  Trash2,
+  AlertTriangle,
+  Save,
+  Plus,
+  Minus,
+  BarChart3,
+} from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -57,7 +67,7 @@ export default function InventoryCRUD() {
     adjustmentType: 'increase' as 'increase' | 'decrease',
     quantity: 0,
     reason: '',
-    newStock: 0
+    newStock: 0,
   });
 
   useEffect(() => {
@@ -67,17 +77,17 @@ export default function InventoryCRUD() {
   const fetchInventoryData = async () => {
     try {
       setLoading(true);
-      
+
       const [inventoryResponse, branchesResponse, summaryResponse] = await Promise.all([
         fetch('/api/inventory', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }),
         fetch('/api/branches', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         }),
         fetch('/api/inventory/summary', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        })
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        }),
       ]);
 
       if (inventoryResponse.ok) {
@@ -107,17 +117,17 @@ export default function InventoryCRUD() {
   const updateInventory = async (productId: number, newStock: number, reason?: string) => {
     try {
       console.log('Updating inventory for product:', productId, 'new stock:', newStock);
-      
+
       const response = await fetch(`/api/inventory/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           stockLevel: newStock,
-          reason: reason || 'Manual adjustment'
-        })
+          reason: reason || 'Manual adjustment',
+        }),
       });
 
       if (!response.ok) {
@@ -130,7 +140,9 @@ export default function InventoryCRUD() {
       return true;
     } catch (error) {
       console.error('Failed to update inventory:', error);
-      alert('Failed to update inventory: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update inventory: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
       return false;
     }
   };
@@ -138,14 +150,14 @@ export default function InventoryCRUD() {
   const updateStockSettings = async (productId: number, reorderLevel: number, maxStock: number) => {
     try {
       console.log('Updating stock settings for product:', productId);
-      
+
       const response = await fetch(`/api/inventory/${productId}/settings`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ reorderLevel, maxStock })
+        body: JSON.stringify({ reorderLevel, maxStock }),
       });
 
       if (!response.ok) {
@@ -160,16 +172,19 @@ export default function InventoryCRUD() {
       return true;
     } catch (error) {
       console.error('Failed to update stock settings:', error);
-      alert('Failed to update settings: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update settings: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
       return false;
     }
   };
 
   const makeStockAdjustment = async () => {
     try {
-      const newStock = adjustmentData.adjustmentType === 'increase' 
-        ? adjustmentData.newStock + adjustmentData.quantity
-        : adjustmentData.newStock - adjustmentData.quantity;
+      const newStock =
+        adjustmentData.adjustmentType === 'increase'
+          ? adjustmentData.newStock + adjustmentData.quantity
+          : adjustmentData.newStock - adjustmentData.quantity;
 
       if (newStock < 0) {
         alert('Stock cannot be negative');
@@ -177,8 +192,8 @@ export default function InventoryCRUD() {
       }
 
       const success = await updateInventory(
-        adjustmentData.productId, 
-        newStock, 
+        adjustmentData.productId,
+        newStock,
         `${adjustmentData.adjustmentType.toUpperCase()}: ${adjustmentData.quantity} units - ${adjustmentData.reason}`
       );
 
@@ -189,28 +204,32 @@ export default function InventoryCRUD() {
           adjustmentType: 'increase',
           quantity: 0,
           reason: '',
-          newStock: 0
+          newStock: 0,
         });
       }
     } catch (error) {
       console.error('Failed to make stock adjustment:', error);
-      alert('Failed to adjust stock: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to adjust stock: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const deleteProduct = async (productId: number, productName: string) => {
     try {
-      if (!confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)) {
+      if (
+        !confirm(`Are you sure you want to delete "${productName}"? This action cannot be undone.`)
+      ) {
         return;
       }
 
       console.log('Deleting product:', productId);
-      
+
       const response = await fetch(`/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
 
       if (!response.ok) {
@@ -222,17 +241,24 @@ export default function InventoryCRUD() {
       await fetchInventoryData();
     } catch (error) {
       console.error('Failed to delete product:', error);
-      alert('Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const getStockStatusColor = (status: string) => {
     switch (status) {
-      case 'normal': return 'default';
-      case 'low': return 'secondary';
-      case 'critical': return 'destructive';
-      case 'out_of_stock': return 'destructive';
-      default: return 'default';
+      case 'normal':
+        return 'default';
+      case 'low':
+        return 'secondary';
+      case 'critical':
+        return 'destructive';
+      case 'out_of_stock':
+        return 'destructive';
+      default:
+        return 'default';
     }
   };
 
@@ -247,22 +273,23 @@ export default function InventoryCRUD() {
       adjustmentType: 'increase',
       quantity: 0,
       reason: '',
-      newStock: item.currentStock
+      newStock: item.currentStock,
     });
     setIsAdjustDialogOpen(true);
   };
 
   // Get unique categories for filter dropdown
-  const availableCategories = Array.from(new Set(
-    inventory.map(item => item.categoryName).filter(Boolean)
-  ));
+  const availableCategories = Array.from(
+    new Set(inventory.map(item => item.categoryName).filter(Boolean))
+  );
 
   const filteredInventory = inventory.filter(item => {
-    const matchesSearch = item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.sku.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.sku.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesBranch = branchFilter === 'all' || item.branchId.toString() === branchFilter;
     const matchesCategory = categoryFilter === 'all' || item.categoryName === categoryFilter;
-    
+
     // Determine stock status based on current stock and reorder level
     let currentStatus = 'normal';
     if (item.currentStock === 0) {
@@ -272,14 +299,16 @@ export default function InventoryCRUD() {
     } else if (item.currentStock <= item.reorderLevel) {
       currentStatus = 'low';
     }
-    
+
     const matchesStatus = statusFilter === 'all' || currentStatus === statusFilter;
-    
+
     return matchesSearch && matchesBranch && matchesCategory && matchesStatus;
   });
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading Inventory Management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading Inventory Management...</div>
+    );
   }
 
   return (
@@ -374,7 +403,7 @@ export default function InventoryCRUD() {
               <Input
                 placeholder="Search products or SKU..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
@@ -388,13 +417,16 @@ export default function InventoryCRUD() {
                 <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500">
                   <SelectValue placeholder="All Branches" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg" style={{ zIndex: 9999 }}>
+                <SelectContent
+                  className="bg-white border border-gray-200 shadow-lg"
+                  style={{ zIndex: 9999 }}
+                >
                   <SelectItem value="all" className="text-gray-900 hover:bg-gray-100">
                     All Branches
                   </SelectItem>
-                  {branches.map((branch) => (
-                    <SelectItem 
-                      key={branch.id} 
+                  {branches.map(branch => (
+                    <SelectItem
+                      key={branch.id}
                       value={branch.id.toString()}
                       className="text-gray-900 hover:bg-gray-100"
                     >
@@ -414,13 +446,16 @@ export default function InventoryCRUD() {
                 <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500">
                   <SelectValue placeholder="All Categories" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg" style={{ zIndex: 9999 }}>
+                <SelectContent
+                  className="bg-white border border-gray-200 shadow-lg"
+                  style={{ zIndex: 9999 }}
+                >
                   <SelectItem value="all" className="text-gray-900 hover:bg-gray-100">
                     All Categories
                   </SelectItem>
-                  {availableCategories.map((category) => (
-                    <SelectItem 
-                      key={category} 
+                  {availableCategories.map(category => (
+                    <SelectItem
+                      key={category}
                       value={category!}
                       className="text-gray-900 hover:bg-gray-100"
                     >
@@ -440,7 +475,10 @@ export default function InventoryCRUD() {
                 <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500">
                   <SelectValue placeholder="All Status" />
                 </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 shadow-lg" style={{ zIndex: 9999 }}>
+                <SelectContent
+                  className="bg-white border border-gray-200 shadow-lg"
+                  style={{ zIndex: 9999 }}
+                >
                   <SelectItem value="all" className="text-gray-900 hover:bg-gray-100">
                     All Status
                   </SelectItem>
@@ -466,7 +504,7 @@ export default function InventoryCRUD() {
             {searchTerm && (
               <Badge variant="secondary" className="bg-blue-100 text-blue-800">
                 Search: "{searchTerm}"
-                <button 
+                <button
                   onClick={() => setSearchTerm('')}
                   className="ml-2 text-blue-600 hover:text-blue-800"
                 >
@@ -477,7 +515,7 @@ export default function InventoryCRUD() {
             {branchFilter !== 'all' && (
               <Badge variant="secondary" className="bg-green-100 text-green-800">
                 Branch: {branches.find(b => b.id.toString() === branchFilter)?.name}
-                <button 
+                <button
                   onClick={() => setBranchFilter('all')}
                   className="ml-2 text-green-600 hover:text-green-800"
                 >
@@ -488,7 +526,7 @@ export default function InventoryCRUD() {
             {categoryFilter !== 'all' && (
               <Badge variant="secondary" className="bg-purple-100 text-purple-800">
                 Category: {categoryFilter}
-                <button 
+                <button
                   onClick={() => setCategoryFilter('all')}
                   className="ml-2 text-purple-600 hover:text-purple-800"
                 >
@@ -499,7 +537,7 @@ export default function InventoryCRUD() {
             {statusFilter !== 'all' && (
               <Badge variant="secondary" className="bg-orange-100 text-orange-800">
                 Status: {statusFilter.replace('_', ' ')}
-                <button 
+                <button
                   onClick={() => setStatusFilter('all')}
                   className="ml-2 text-orange-600 hover:text-orange-800"
                 >
@@ -533,7 +571,10 @@ export default function InventoryCRUD() {
               </thead>
               <tbody>
                 {filteredInventory.map((item, index) => (
-                  <tr key={`${item.productId}-${item.branchId}-${index}`} className="border-b hover:bg-gray-50">
+                  <tr
+                    key={`${item.productId}-${item.branchId}-${index}`}
+                    className="border-b hover:bg-gray-50"
+                  >
                     <td className="py-3 px-4">
                       <div>
                         <div className="font-medium">{item.productName}</div>
@@ -550,7 +591,11 @@ export default function InventoryCRUD() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2">
-                        <span className={item.currentStock <= item.reorderLevel ? 'text-red-600 font-bold' : ''}>
+                        <span
+                          className={
+                            item.currentStock <= item.reorderLevel ? 'text-red-600 font-bold' : ''
+                          }
+                        >
                           {item.currentStock}
                         </span>
                         {item.currentStock <= item.reorderLevel && (
@@ -567,31 +612,29 @@ export default function InventoryCRUD() {
                     <td className="py-3 px-4">₹{item.stockValue}</td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => openAdjustmentDialog(item)}
                         >
                           <Plus className="h-4 w-4 mr-1" />
                           Adjust
                         </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => openEditDialog(item)}
-                        >
+                        <Button size="sm" variant="outline" onClick={() => openEditDialog(item)}>
                           <Edit className="h-4 w-4 mr-1" />
                           Settings
                         </Button>
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
-                          onClick={() => updateInventory(item.productId, item.reorderLevel + 50, 'Quick restock')}
+                          onClick={() =>
+                            updateInventory(item.productId, item.reorderLevel + 50, 'Quick restock')
+                          }
                         >
                           Restock
                         </Button>
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => deleteProduct(item.productId, item.productName)}
                           className="text-red-600 hover:text-red-800 hover:bg-red-50"
@@ -625,15 +668,17 @@ export default function InventoryCRUD() {
               <Label>Current Stock</Label>
               <div className="text-2xl font-bold text-blue-600">{adjustmentData.newStock}</div>
             </div>
-            
+
             <div>
               <Label>Adjustment Type</Label>
-              <Select 
-                value={adjustmentData.adjustmentType} 
-                onValueChange={(value) => setAdjustmentData({
-                  ...adjustmentData, 
-                  adjustmentType: value as 'increase' | 'decrease'
-                })}
+              <Select
+                value={adjustmentData.adjustmentType}
+                onValueChange={value =>
+                  setAdjustmentData({
+                    ...adjustmentData,
+                    adjustmentType: value as 'increase' | 'decrease',
+                  })
+                }
               >
                 <SelectTrigger>
                   <SelectValue />
@@ -650,10 +695,12 @@ export default function InventoryCRUD() {
               <Input
                 type="number"
                 value={adjustmentData.quantity}
-                onChange={(e) => setAdjustmentData({
-                  ...adjustmentData, 
-                  quantity: parseInt(e.target.value) || 0
-                })}
+                onChange={e =>
+                  setAdjustmentData({
+                    ...adjustmentData,
+                    quantity: parseInt(e.target.value) || 0,
+                  })
+                }
               />
             </div>
 
@@ -661,10 +708,12 @@ export default function InventoryCRUD() {
               <Label>Reason</Label>
               <Input
                 value={adjustmentData.reason}
-                onChange={(e) => setAdjustmentData({
-                  ...adjustmentData, 
-                  reason: e.target.value
-                })}
+                onChange={e =>
+                  setAdjustmentData({
+                    ...adjustmentData,
+                    reason: e.target.value,
+                  })
+                }
                 placeholder="Reason for adjustment..."
               />
             </div>
@@ -672,10 +721,9 @@ export default function InventoryCRUD() {
             <div className="p-3 bg-gray-50 rounded">
               <div className="text-sm text-gray-600">New Stock Level:</div>
               <div className="text-xl font-bold">
-                {adjustmentData.adjustmentType === 'increase' 
+                {adjustmentData.adjustmentType === 'increase'
                   ? adjustmentData.newStock + adjustmentData.quantity
-                  : adjustmentData.newStock - adjustmentData.quantity
-                }
+                  : adjustmentData.newStock - adjustmentData.quantity}
               </div>
             </div>
 
@@ -705,9 +753,9 @@ export default function InventoryCRUD() {
                 <Input
                   type="number"
                   value={editingItem.reorderLevel}
-                  onChange={(e) => {
+                  onChange={e => {
                     const newLevel = parseInt(e.target.value) || 0;
-                    setEditingItem({...editingItem, reorderLevel: newLevel});
+                    setEditingItem({ ...editingItem, reorderLevel: newLevel });
                   }}
                 />
               </div>
@@ -717,9 +765,9 @@ export default function InventoryCRUD() {
                 <Input
                   type="number"
                   value={editingItem.maxStock}
-                  onChange={(e) => {
+                  onChange={e => {
                     const newMax = parseInt(e.target.value) || 0;
-                    setEditingItem({...editingItem, maxStock: newMax});
+                    setEditingItem({ ...editingItem, maxStock: newMax });
                   }}
                 />
               </div>
@@ -728,7 +776,15 @@ export default function InventoryCRUD() {
                 <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
                   Cancel
                 </Button>
-                <Button onClick={() => updateStockSettings(editingItem.productId, editingItem.reorderLevel, editingItem.maxStock)}>
+                <Button
+                  onClick={() =>
+                    updateStockSettings(
+                      editingItem.productId,
+                      editingItem.reorderLevel,
+                      editingItem.maxStock
+                    )
+                  }
+                >
                   <Save className="h-4 w-4 mr-2" />
                   Update Settings
                 </Button>

@@ -3,7 +3,7 @@
  * Critical security component to prevent information disclosure
  */
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuthStore } from '../stores/authStore';
 import ClientOnly from './ClientOnly';
@@ -22,7 +22,7 @@ export function SecurityWrapper({ children }: SecurityWrapperProps) {
 
 function SecurityWrapperClient({ children }: SecurityWrapperProps) {
   const [isSecurityChecked, setIsSecurityChecked] = useState(false);
-  const { isAuthenticated, isLoading, token } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {

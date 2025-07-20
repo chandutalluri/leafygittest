@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { 
-  CurrencyDollarIcon, 
-  BanknotesIcon, 
-  ChartBarIcon, 
+import {
+  CurrencyDollarIcon,
+  BanknotesIcon,
+  ChartBarIcon,
   DocumentTextIcon,
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon
+  ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline';
 
 interface Payment {
@@ -46,7 +46,7 @@ export function FinancialControlCenter() {
     { id: 'accounting', name: 'Accounting', icon: BanknotesIcon },
     { id: 'expenses', name: 'Expense Monitoring', icon: ArrowTrendingDownIcon },
     { id: 'analytics', name: 'Payment Analytics', icon: ChartBarIcon },
-    { id: 'reports', name: 'Financial Reports', icon: DocumentTextIcon }
+    { id: 'reports', name: 'Financial Reports', icon: DocumentTextIcon },
   ];
 
   const totalRevenue = payments.reduce((sum, payment) => sum + payment.amount, 0);
@@ -63,7 +63,9 @@ export function FinancialControlCenter() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{totalRevenue.toLocaleString()}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                ₹{totalRevenue.toLocaleString()}
+              </p>
             </div>
           </div>
         </div>
@@ -99,7 +101,9 @@ export function FinancialControlCenter() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Avg Transaction</p>
-              <p className="text-2xl font-semibold text-gray-900">₹{Math.round(avgTransactionValue)}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                ₹{Math.round(avgTransactionValue)}
+              </p>
             </div>
           </div>
         </div>
@@ -131,7 +135,7 @@ export function FinancialControlCenter() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {payments.slice(0, 10).map((payment) => (
+              {payments.slice(0, 10).map(payment => (
                 <tr key={payment.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     #{payment.id.substring(0, 8)}
@@ -143,13 +147,15 @@ export function FinancialControlCenter() {
                     {payment.method}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      payment.status === 'completed' 
-                        ? 'bg-green-100 text-green-800' 
-                        : payment.status === 'pending'
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        payment.status === 'completed'
+                          ? 'bg-green-100 text-green-800'
+                          : payment.status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {payment.status}
                     </span>
                   </td>
@@ -184,7 +190,7 @@ export function FinancialControlCenter() {
 
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button

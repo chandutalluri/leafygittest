@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { EyeIcon, DocumentDuplicateIcon, PrinterIcon, CogIcon, TrashIcon, PlusIcon, ArrowPathIcon, PencilIcon } from '@heroicons/react/24/outline';
+import {
+  EyeIcon,
+  DocumentDuplicateIcon,
+  PrinterIcon,
+  CogIcon,
+  TrashIcon,
+  PlusIcon,
+  ArrowPathIcon,
+  PencilIcon,
+} from '@heroicons/react/24/outline';
 import { useTemplateRefresh } from '../../hooks/useTemplateRefresh';
 
 interface LabelTemplate {
@@ -60,10 +69,18 @@ interface TemplatePreviewProps {
   onRefreshComplete?: () => void;
 }
 
-export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, onRefreshComplete }: TemplatePreviewProps = {}) {
+export default function TemplatePreview({
+  onTemplateLoad,
+  needsRefresh = false,
+  onRefreshComplete,
+}: TemplatePreviewProps = {}) {
   // Use the template refresh hook for real-time updates
-  const { templates: hookTemplates, refresh: refreshTemplates, templateCount } = useTemplateRefresh();
-  
+  const {
+    templates: hookTemplates,
+    refresh: refreshTemplates,
+    templateCount,
+  } = useTemplateRefresh();
+
   const [selectedTemplate, setSelectedTemplate] = useState<LabelTemplate | null>(null);
   const [loading, setLoading] = useState(false);
   const [previewMode, setPreviewMode] = useState<'single' | 'sheet'>('single');
@@ -110,19 +127,29 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
             dimensions: {
               pageWidth: parseFloat(media.paper_width || media.dimensions?.pageWidth || 210),
               pageHeight: parseFloat(media.paper_height || media.dimensions?.pageHeight || 297),
-              labelWidth: parseFloat(media.label_width_mm || media.label_width || media.dimensions?.labelWidth || 63.5),
-              labelHeight: parseFloat(media.label_height_mm || media.label_height || media.dimensions?.labelHeight || 38.1),
-              columns: parseInt(media.horizontal_count || media.columns || media.dimensions?.columns || 3),
+              labelWidth: parseFloat(
+                media.label_width_mm || media.label_width || media.dimensions?.labelWidth || 63.5
+              ),
+              labelHeight: parseFloat(
+                media.label_height_mm || media.label_height || media.dimensions?.labelHeight || 38.1
+              ),
+              columns: parseInt(
+                media.horizontal_count || media.columns || media.dimensions?.columns || 3
+              ),
               rows: parseInt(media.vertical_count || media.rows || media.dimensions?.rows || 7),
               marginTop: parseFloat(media.margin_top || media.dimensions?.marginTop || 0),
               marginLeft: parseFloat(media.margin_left || media.dimensions?.marginLeft || 0),
-              spacingX: parseFloat(media.horizontal_gap || media.spacing_x || media.dimensions?.spacingX || 0),
-              spacingY: parseFloat(media.vertical_gap || media.spacing_y || media.dimensions?.spacingY || 0)
+              spacingX: parseFloat(
+                media.horizontal_gap || media.spacing_x || media.dimensions?.spacingX || 0
+              ),
+              spacingY: parseFloat(
+                media.vertical_gap || media.spacing_y || media.dimensions?.spacingY || 0
+              ),
             },
             orientation: media.orientation || 'portrait',
             description: media.description,
             manufacturer: media.manufacturer || 'Avery',
-            isActive: media.is_active !== false
+            isActive: media.is_active !== false,
           }));
           setMediaTypes(formattedMediaTypes);
         } else {
@@ -154,17 +181,19 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
   const loadTemplateIntoDesigner = (template: LabelTemplate) => {
     if (onTemplateLoad) {
       console.log('🎨 Loading template into Professional Label Designer:', template.name);
-      
+
       // Extract template data and elements for loading into canvas
       const templateData = getTemplateData(template);
       const templateWithElements = {
         ...template,
         template_data: templateData,
-        elements: templateData.elements || []
+        elements: templateData.elements || [],
       };
-      
+
       onTemplateLoad(templateWithElements);
-      toast.success(`Template "${template.name}" loaded into designer with ${templateData.elements.length} elements!`);
+      toast.success(
+        `Template "${template.name}" loaded into designer with ${templateData.elements.length} elements!`
+      );
     } else {
       toast.error('Template loading not available - designer not connected');
     }
@@ -173,12 +202,14 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
   const loadMediaTemplateIntoDesigner = (media: MediaType) => {
     if (onTemplateLoad) {
       console.log('🎨 Loading media template into Professional Label Designer:', media.name);
-      
+
       // Convert media template to label template format
       const templateFromMedia: LabelTemplate = {
         id: `media-${media.id}`,
         name: media.name,
-        description: media.description || `${media.code} - ${media.dimensions.columns}×${media.dimensions.rows} labels`,
+        description:
+          media.description ||
+          `${media.code} - ${media.dimensions.columns}×${media.dimensions.rows} labels`,
         paper_size: media.orientation === 'portrait' ? 'A4' : 'A4-landscape',
         label_width: media.dimensions.labelWidth,
         label_height: media.dimensions.labelHeight,
@@ -197,10 +228,10 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
           labelHeight: media.dimensions.labelHeight,
           horizontalCount: media.dimensions.columns,
           verticalCount: media.dimensions.rows,
-          elements: []
-        }
+          elements: [],
+        },
       };
-      
+
       onTemplateLoad(templateFromMedia);
       toast.success(`Media template "${media.name}" loaded into designer!`);
     } else {
@@ -215,13 +246,17 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
   };
 
   const handleDeleteTemplate = async (template: LabelTemplate) => {
-    if (!confirm(`Are you sure you want to delete template "${template.name}"? This action cannot be undone.`)) {
+    if (
+      !confirm(
+        `Are you sure you want to delete template "${template.name}"? This action cannot be undone.`
+      )
+    ) {
       return;
     }
 
     try {
       const response = await fetch(`/api/labels/custom-templates/${template.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       if (response.ok) {
@@ -255,7 +290,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
       verticalCount: data.verticalCount || template.vertical_count || 1,
       paperSize: data.paperSize || template.paper_size || 'A4',
       orientation: data.orientation || template.orientation || 'portrait',
-      elements: data.elements || template.elements || []
+      elements: data.elements || template.elements || [],
     };
   };
 
@@ -266,7 +301,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
     const height = templateData.labelHeight * scale;
 
     return (
-      <div 
+      <div
         className="bg-white border-2 border-gray-300 rounded-lg shadow-lg"
         style={{ width: `${width}px`, height: `${height}px` }}
       >
@@ -300,7 +335,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
       for (let col = 0; col < template.horizontal_count; col++) {
         const left = marginLeft + col * (labelWidth + hGap);
         const top = marginTop + row * (labelHeight + vGap);
-        
+
         labels.push(
           <div
             key={`${row}-${col}`}
@@ -324,11 +359,11 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
     const sheetHeight = template.paper_size === 'A4' ? 297 : 279;
 
     return (
-      <div 
+      <div
         className="relative bg-gray-50 border-2 border-gray-400 shadow-xl"
-        style={{ 
-          width: `${sheetWidth * scale}px`, 
-          height: `${sheetHeight * scale}px` 
+        style={{
+          width: `${sheetWidth * scale}px`,
+          height: `${sheetHeight * scale}px`,
         }}
       >
         {labels}
@@ -338,24 +373,28 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
 
   const renderMediaPreview = (media: MediaType) => {
     const scale = Math.min(400 / media.dimensions.pageWidth, 550 / media.dimensions.pageHeight);
-    
+
     const labels = [];
     for (let row = 0; row < media.dimensions.rows; row++) {
       for (let col = 0; col < media.dimensions.columns; col++) {
-        const x = media.dimensions.marginLeft + col * (media.dimensions.labelWidth + media.dimensions.spacingX);
-        const y = media.dimensions.marginTop + row * (media.dimensions.labelHeight + media.dimensions.spacingY);
+        const x =
+          media.dimensions.marginLeft +
+          col * (media.dimensions.labelWidth + media.dimensions.spacingX);
+        const y =
+          media.dimensions.marginTop +
+          row * (media.dimensions.labelHeight + media.dimensions.spacingY);
         labels.push({ x, y, row, col });
       }
     }
 
     return (
       <div className="flex flex-col items-center">
-        <div 
+        <div
           className="relative bg-white shadow-xl"
           style={{
             width: media.dimensions.pageWidth * scale,
             height: media.dimensions.pageHeight * scale,
-            border: '2px solid #e5e7eb'
+            border: '2px solid #e5e7eb',
           }}
         >
           {/* Margin guides */}
@@ -365,10 +404,10 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
               left: 0,
               top: 0,
               width: media.dimensions.marginLeft * scale,
-              height: media.dimensions.marginTop * scale
+              height: media.dimensions.marginTop * scale,
             }}
           />
-          
+
           {/* Labels */}
           {labels.map((label, idx) => (
             <div
@@ -378,20 +417,32 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
                 left: label.x * scale,
                 top: label.y * scale,
                 width: media.dimensions.labelWidth * scale,
-                height: media.dimensions.labelHeight * scale
+                height: media.dimensions.labelHeight * scale,
               }}
             >
               {label.row + 1},{label.col + 1}
             </div>
           ))}
         </div>
-        
+
         <div className="mt-4 text-center text-sm text-gray-600 space-y-1">
-          <div>Page: {media.dimensions.pageWidth} × {media.dimensions.pageHeight}mm</div>
-          <div>Labels: {media.dimensions.columns} × {media.dimensions.rows} = {media.dimensions.columns * media.dimensions.rows} labels</div>
-          <div>Label size: {media.dimensions.labelWidth} × {media.dimensions.labelHeight}mm</div>
-          <div>Margins: {media.dimensions.marginTop}mm top, {media.dimensions.marginLeft}mm left</div>
-          <div>Spacing: {media.dimensions.spacingX}mm horizontal, {media.dimensions.spacingY}mm vertical</div>
+          <div>
+            Page: {media.dimensions.pageWidth} × {media.dimensions.pageHeight}mm
+          </div>
+          <div>
+            Labels: {media.dimensions.columns} × {media.dimensions.rows} ={' '}
+            {media.dimensions.columns * media.dimensions.rows} labels
+          </div>
+          <div>
+            Label size: {media.dimensions.labelWidth} × {media.dimensions.labelHeight}mm
+          </div>
+          <div>
+            Margins: {media.dimensions.marginTop}mm top, {media.dimensions.marginLeft}mm left
+          </div>
+          <div>
+            Spacing: {media.dimensions.spacingX}mm horizontal, {media.dimensions.spacingY}mm
+            vertical
+          </div>
         </div>
       </div>
     );
@@ -412,7 +463,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
         <div className="bg-white rounded-lg shadow p-4">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-medium">
-              {templateType === 'custom' 
+              {templateType === 'custom'
                 ? `Custom Templates (${hookTemplates.length})`
                 : `Media Templates (${mediaTypes.length})`}
             </h3>
@@ -434,7 +485,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
               )}
             </div>
           </div>
-          
+
           {/* Template Type Toggle */}
           <div className="flex gap-2 mb-4">
             <button
@@ -458,92 +509,87 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
               Media Templates
             </button>
           </div>
-          
+
           <div className="space-y-2">
             {templateType === 'custom' ? (
               hookTemplates.length === 0 ? (
                 <p className="text-gray-500 text-sm">No custom templates available</p>
               ) : (
-                hookTemplates.map((template) => {
-                const templateData = getTemplateData(template);
-                return (
-                  <div
-                    key={template.id}
-                    className={`p-3 rounded-lg border transition-colors ${
-                      selectedTemplate?.id === template.id
-                        ? 'border-emerald-500 bg-emerald-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div 
-                      onClick={() => setSelectedTemplate(template)}
-                      className="cursor-pointer"
+                hookTemplates.map(template => {
+                  const templateData = getTemplateData(template);
+                  return (
+                    <div
+                      key={template.id}
+                      className={`p-3 rounded-lg border transition-colors ${
+                        selectedTemplate?.id === template.id
+                          ? 'border-emerald-500 bg-emerald-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
                     >
-                      <div className="font-medium">{template.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {templateData.paperSize} - {templateData.horizontalCount}×{templateData.verticalCount} labels
-                      </div>
-                      <div className="text-xs text-gray-400 mt-1">
-                        {templateData.labelWidth}×{templateData.labelHeight}mm per label
-                      </div>
-                      {templateData.elements.length > 0 && (
-                        <div className="text-xs text-emerald-600 mt-1">
-                          {templateData.elements.length} design elements
+                      <div onClick={() => setSelectedTemplate(template)} className="cursor-pointer">
+                        <div className="font-medium">{template.name}</div>
+                        <div className="text-sm text-gray-500">
+                          {templateData.paperSize} - {templateData.horizontalCount}×
+                          {templateData.verticalCount} labels
                         </div>
-                      )}
+                        <div className="text-xs text-gray-400 mt-1">
+                          {templateData.labelWidth}×{templateData.labelHeight}mm per label
+                        </div>
+                        {templateData.elements.length > 0 && (
+                          <div className="text-xs text-emerald-600 mt-1">
+                            {templateData.elements.length} design elements
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={e => {
+                          e.stopPropagation();
+                          loadTemplateIntoDesigner(template);
+                        }}
+                        className="mt-2 w-full px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                      >
+                        Load Template
+                      </button>
                     </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        loadTemplateIntoDesigner(template);
-                      }}
-                      className="mt-2 w-full px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700"
-                    >
-                      Load Template
-                    </button>
-                  </div>
-                );
-              })
-            )) : (
-              mediaTypes.length === 0 ? (
-                <p className="text-gray-500 text-sm">No media templates available</p>
-              ) : (
-                mediaTypes.map((media) => (
-                  <div
-                    key={media.id}
-                    className={`p-3 rounded-lg border transition-colors ${
-                      selectedMedia?.id === media.id
-                        ? 'border-emerald-500 bg-emerald-50'
-                        : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                  >
-                    <div 
-                      onClick={() => setSelectedMedia(media)}
-                      className="cursor-pointer"
-                    >
-                      <div className="font-medium">{media.name}</div>
-                      <div className="text-sm text-gray-500">
-                        {media.code} - {media.dimensions.columns}×{media.dimensions.rows} labels
-                      </div>
-                      <div className="text-xs text-gray-400 mt-1">
-                        {media.dimensions.labelWidth}×{media.dimensions.labelHeight}mm per label
-                      </div>
-                      <div className="text-xs text-gray-400">
-                        {media.dimensions.pageWidth}×{media.dimensions.pageHeight}mm {media.orientation}
-                      </div>
-                    </div>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        loadMediaTemplateIntoDesigner(media);
-                      }}
-                      className="mt-2 w-full px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700"
-                    >
-                      Use This Format
-                    </button>
-                  </div>
-                ))
+                  );
+                })
               )
+            ) : mediaTypes.length === 0 ? (
+              <p className="text-gray-500 text-sm">No media templates available</p>
+            ) : (
+              mediaTypes.map(media => (
+                <div
+                  key={media.id}
+                  className={`p-3 rounded-lg border transition-colors ${
+                    selectedMedia?.id === media.id
+                      ? 'border-emerald-500 bg-emerald-50'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <div onClick={() => setSelectedMedia(media)} className="cursor-pointer">
+                    <div className="font-medium">{media.name}</div>
+                    <div className="text-sm text-gray-500">
+                      {media.code} - {media.dimensions.columns}×{media.dimensions.rows} labels
+                    </div>
+                    <div className="text-xs text-gray-400 mt-1">
+                      {media.dimensions.labelWidth}×{media.dimensions.labelHeight}mm per label
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {media.dimensions.pageWidth}×{media.dimensions.pageHeight}mm{' '}
+                      {media.orientation}
+                    </div>
+                  </div>
+                  <button
+                    onClick={e => {
+                      e.stopPropagation();
+                      loadMediaTemplateIntoDesigner(media);
+                    }}
+                    className="mt-2 w-full px-2 py-1 text-xs bg-emerald-600 text-white rounded hover:bg-emerald-700"
+                  >
+                    Use This Format
+                  </button>
+                </div>
+              ))
             )}
           </div>
         </div>
@@ -608,9 +654,7 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
                     Use This Format
                   </button>
                 )}
-                <button
-                  className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
+                <button className="flex items-center px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
                   <PrinterIcon className="w-4 h-4 mr-2" />
                   Test Print
                 </button>
@@ -626,17 +670,16 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
                     <span className="text-gray-500">Paper Size:</span> {selectedTemplate.paper_size}
                   </div>
                   <div>
-                    <span className="text-gray-500">Orientation:</span> {selectedTemplate.orientation}
+                    <span className="text-gray-500">Orientation:</span>{' '}
+                    {selectedTemplate.orientation}
                   </div>
                   <div>
-                    <span className="text-gray-500">Labels per Sheet:</span> {
-                      selectedTemplate.horizontal_count * selectedTemplate.vertical_count
-                    }
+                    <span className="text-gray-500">Labels per Sheet:</span>{' '}
+                    {selectedTemplate.horizontal_count * selectedTemplate.vertical_count}
                   </div>
                   <div>
-                    <span className="text-gray-500">Label Size:</span> {
-                      selectedTemplate.label_width
-                    }×{selectedTemplate.label_height}mm
+                    <span className="text-gray-500">Label Size:</span>{' '}
+                    {selectedTemplate.label_width}×{selectedTemplate.label_height}mm
                   </div>
                 </div>
               </div>
@@ -648,19 +691,25 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
                     <span className="text-gray-500">Format Code:</span> {selectedMedia.code}
                   </div>
                   <div>
-                    <span className="text-gray-500">Manufacturer:</span> {selectedMedia.manufacturer || 'Standard'}
+                    <span className="text-gray-500">Manufacturer:</span>{' '}
+                    {selectedMedia.manufacturer || 'Standard'}
                   </div>
                   <div>
-                    <span className="text-gray-500">Page Size:</span> {selectedMedia.dimensions.pageWidth}×{selectedMedia.dimensions.pageHeight}mm
+                    <span className="text-gray-500">Page Size:</span>{' '}
+                    {selectedMedia.dimensions.pageWidth}×{selectedMedia.dimensions.pageHeight}mm
                   </div>
                   <div>
-                    <span className="text-gray-500">Label Size:</span> {selectedMedia.dimensions.labelWidth}×{selectedMedia.dimensions.labelHeight}mm
+                    <span className="text-gray-500">Label Size:</span>{' '}
+                    {selectedMedia.dimensions.labelWidth}×{selectedMedia.dimensions.labelHeight}mm
                   </div>
                   <div>
-                    <span className="text-gray-500">Labels per Sheet:</span> {selectedMedia.dimensions.columns * selectedMedia.dimensions.rows}
+                    <span className="text-gray-500">Labels per Sheet:</span>{' '}
+                    {selectedMedia.dimensions.columns * selectedMedia.dimensions.rows}
                   </div>
                   <div>
-                    <span className="text-gray-500">Layout:</span> {selectedMedia.dimensions.columns}×{selectedMedia.dimensions.rows} {selectedMedia.orientation}
+                    <span className="text-gray-500">Layout:</span>{' '}
+                    {selectedMedia.dimensions.columns}×{selectedMedia.dimensions.rows}{' '}
+                    {selectedMedia.orientation}
                   </div>
                 </div>
               </div>
@@ -668,13 +717,13 @@ export default function TemplatePreview({ onTemplateLoad, needsRefresh = false, 
 
             {/* Preview */}
             <div className="flex justify-center items-center p-8 bg-gray-100 rounded-lg overflow-auto">
-              {templateType === 'custom' && selectedTemplate ? (
-                previewMode === 'single' 
+              {templateType === 'custom' && selectedTemplate
+                ? previewMode === 'single'
                   ? renderLabelPreview(selectedTemplate)
                   : renderSheetPreview(selectedTemplate)
-              ) : templateType === 'media' && selectedMedia ? (
-                renderMediaPreview(selectedMedia)
-              ) : null}
+                : templateType === 'media' && selectedMedia
+                  ? renderMediaPreview(selectedMedia)
+                  : null}
             </div>
           </div>
         ) : (

@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
-import { 
-  ShoppingBagIcon, 
-  CubeIcon, 
-  PhotoIcon, 
-  TagIcon, 
+import {
+  ShoppingBagIcon,
+  CubeIcon,
+  PhotoIcon,
+  TagIcon,
   DocumentTextIcon,
   PlusIcon,
   PencilIcon,
@@ -13,7 +13,7 @@ import {
   ExclamationTriangleIcon,
   EyeIcon,
   PrinterIcon,
-  ChartBarIcon
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
 import CompositeProductForm from '../../modules/products/CompositeProductForm';
 import ProductCRUD from './ProductCRUD';
@@ -65,7 +65,7 @@ export function ProductEcosystemHub() {
   }, []);
 
   // Template loading function - simplified for StreamlinedLabelDesign
-  const handleTemplateLoad = (template) => {
+  const handleTemplateLoad = (template: any) => {
     console.log('🎨 Template loading request received in ProductEcosystemHub:', template.name);
     setSelectedTemplate(template);
     // Toast notification will be handled by StreamlinedLabelDesign component
@@ -79,7 +79,7 @@ export function ProductEcosystemHub() {
       const [productsResponse, categoriesResponse, alertsResponse] = await Promise.all([
         fetch('/api/products'),
         fetch('/api/categories'),
-        fetch('/api/inventory/alerts')
+        fetch('/api/inventory/alerts'),
       ]);
 
       if (productsResponse.ok) {
@@ -87,7 +87,7 @@ export function ProductEcosystemHub() {
         console.log('Products data received:', productsData);
         if (productsData.success && productsData.data) {
           // Convert products to expected format
-          const formattedProducts = productsData.data.map(item => ({
+          const formattedProducts = productsData.data.map((item: any) => ({
             id: item.id,
             name: item.name,
             price: parseFloat(item.price || 0),
@@ -96,7 +96,7 @@ export function ProductEcosystemHub() {
             status: item.status || 'active',
             images: item.images || [],
             description: item.description || '',
-            created_at: item.created_at || new Date().toISOString()
+            created_at: item.created_at || new Date().toISOString(),
           }));
           setProducts(formattedProducts);
         }
@@ -135,7 +135,7 @@ export function ProductEcosystemHub() {
         <h3 className="text-lg font-medium text-gray-900">Product Overview</h3>
         <p className="text-sm text-gray-500">Use sidebar "Add Product" to create new products</p>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
           <div className="flex items-center">
@@ -144,7 +144,9 @@ export function ProductEcosystemHub() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Products</p>
-              <p className="text-2xl font-semibold text-gray-900">{Array.isArray(products) ? products.length : 0}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                {Array.isArray(products) ? products.length : 0}
+              </p>
             </div>
           </div>
         </div>
@@ -170,7 +172,9 @@ export function ProductEcosystemHub() {
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Low Stock Alerts</p>
-              <p className="text-2xl font-semibold text-gray-900">{Array.isArray(alerts) ? alerts.length : 0}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                {Array.isArray(alerts) ? alerts.length : 0}
+              </p>
             </div>
           </div>
         </div>
@@ -199,20 +203,23 @@ export function ProductEcosystemHub() {
           <div className="p-6">
             <div className="space-y-4">
               {alerts.slice(0, 5).map((alert, index) => (
-                <div key={alert.productId || index} className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div
+                  key={alert.product_id || index}
+                  className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg"
+                >
                   <div className="flex items-center">
                     <ExclamationTriangleIcon className="w-5 h-5 text-red-600 mr-3" />
                     <div>
-                      <p className="font-medium text-gray-900">{alert.productName}</p>
+                      <p className="font-medium text-gray-900">{alert.product_name}</p>
                       <p className="text-sm text-gray-600">
-                        Current stock: {alert.currentStock} | Minimum: {alert.minimumStock}
+                        Current stock: {alert.current_stock} | Minimum: {alert.min_threshold}
                       </p>
                       <p className="text-xs text-gray-500">
-                        Branch: {alert.branchName} | Status: {alert.severity}
+                        Alert Type: {alert.alert_type}
                       </p>
                     </div>
                   </div>
-                  <button 
+                  <button
                     onClick={() => router.push('/inventory-management')}
                     className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700"
                   >
@@ -260,14 +267,16 @@ export function ProductEcosystemHub() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {products.map((product) => (
+              {products.map(product => (
                 <tr key={product.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="w-10 h-10 bg-gray-200 rounded-lg mr-4"></div>
                       <div>
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                        <div className="text-sm text-gray-500">{product.description?.substring(0, 50)}...</div>
+                        <div className="text-sm text-gray-500">
+                          {product.description?.substring(0, 50)}...
+                        </div>
                       </div>
                     </div>
                   </td>
@@ -281,11 +290,13 @@ export function ProductEcosystemHub() {
                     {product.category}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      product.status === 'active' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        product.status === 'active'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {product.status}
                     </span>
                   </td>

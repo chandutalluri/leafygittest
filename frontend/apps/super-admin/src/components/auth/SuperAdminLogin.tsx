@@ -11,17 +11,17 @@ export const SuperAdminLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { loginInternal, isLoading, error, clearError } = useAuthStore();
+  const { login, isLoading, error, clearError } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
-    
+
     if (!email || !password) {
       return;
     }
 
-    await loginInternal(email, password);
+    await login(email, password);
   };
 
   return (
@@ -58,7 +58,7 @@ export const SuperAdminLogin: React.FC = () => {
                 autoComplete="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
               />
@@ -74,7 +74,7 @@ export const SuperAdminLogin: React.FC = () => {
                 autoComplete="current-password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pr-10"
                 placeholder="Password"
               />
@@ -122,9 +122,7 @@ export const SuperAdminLogin: React.FC = () => {
         </form>
 
         <div className="text-center">
-          <p className="text-xs text-gray-500">
-            LeafyHealth Multi-Branch ERP System v1.0
-          </p>
+          <p className="text-xs text-gray-500">LeafyHealth Multi-Branch ERP System v1.0</p>
           <p className="text-xs text-gray-400 mt-1">
             24 Microservices • Enterprise Security • Branch Isolation
           </p>

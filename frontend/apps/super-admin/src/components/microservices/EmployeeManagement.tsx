@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Users, UserPlus, Calendar, Clock, Phone, Mail, Plus, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
@@ -27,13 +34,13 @@ interface Employee {
   salary: number;
   status: 'active' | 'inactive' | 'terminated' | 'on_leave';
   workSchedule: {
-    monday: { start: string; end: string; };
-    tuesday: { start: string; end: string; };
-    wednesday: { start: string; end: string; };
-    thursday: { start: string; end: string; };
-    friday: { start: string; end: string; };
-    saturday?: { start: string; end: string; };
-    sunday?: { start: string; end: string; };
+    monday: { start: string; end: string };
+    tuesday: { start: string; end: string };
+    wednesday: { start: string; end: string };
+    thursday: { start: string; end: string };
+    friday: { start: string; end: string };
+    saturday?: { start: string; end: string };
+    sunday?: { start: string; end: string };
   };
   createdAt: string;
 }
@@ -72,9 +79,9 @@ export default function EmployeeManagement() {
         apiClient.get('/api/direct-data/employees', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
           department: departmentFilter !== 'all' ? departmentFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/attendance')
+        apiClient.get('/api/direct-data/attendance'),
       ]);
       setEmployees(employeesData || []);
       setAttendance(attendanceData || []);
@@ -111,7 +118,7 @@ export default function EmployeeManagement() {
         date: new Date().toISOString().split('T')[0],
         status,
         notes,
-        checkInTime: status === 'present' ? new Date().toISOString() : undefined
+        checkInTime: status === 'present' ? new Date().toISOString() : undefined,
       });
       fetchEmployeeData();
     } catch (error) {
@@ -121,30 +128,42 @@ export default function EmployeeManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'default';
-      case 'inactive': return 'secondary';
-      case 'terminated': return 'destructive';
-      case 'on_leave': return 'outline';
-      default: return 'secondary';
+      case 'active':
+        return 'default';
+      case 'inactive':
+        return 'secondary';
+      case 'terminated':
+        return 'destructive';
+      case 'on_leave':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getAttendanceColor = (status: string) => {
     switch (status) {
-      case 'present': return 'default';
-      case 'late': return 'secondary';
-      case 'absent': return 'destructive';
-      case 'half_day': return 'secondary';
-      case 'holiday': return 'outline';
-      default: return 'secondary';
+      case 'present':
+        return 'default';
+      case 'late':
+        return 'secondary';
+      case 'absent':
+        return 'destructive';
+      case 'half_day':
+        return 'secondary';
+      case 'holiday':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredEmployees = employees.filter(employee =>
-    employee.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    employee.employeeNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredEmployees = employees.filter(
+    employee =>
+      employee.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      employee.employeeNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalEmployees = employees.length;
@@ -154,7 +173,9 @@ export default function EmployeeManagement() {
   const attendanceRate = totalEmployees > 0 ? Math.round((presentToday / totalEmployees) * 100) : 0;
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading employee management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading employee management...</div>
+    );
   }
 
   return (
@@ -177,7 +198,10 @@ export default function EmployeeManagement() {
                 <DialogTitle>Add New Employee</DialogTitle>
                 <DialogDescription>Enter employee details and work information</DialogDescription>
               </DialogHeader>
-              <EmployeeForm onSubmit={createEmployee} onCancel={() => setIsEmployeeDialogOpen(false)} />
+              <EmployeeForm
+                onSubmit={createEmployee}
+                onCancel={() => setIsEmployeeDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -260,7 +284,7 @@ export default function EmployeeManagement() {
             <Input
               placeholder="Search employees..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -315,10 +339,12 @@ export default function EmployeeManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredEmployees.map((employee) => (
+                  {filteredEmployees.map(employee => (
                     <tr key={employee.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
-                        <div className="font-medium">{employee.firstName} {employee.lastName}</div>
+                        <div className="font-medium">
+                          {employee.firstName} {employee.lastName}
+                        </div>
                         <div className="text-sm text-gray-500">{employee.employeeNumber}</div>
                       </td>
                       <td className="py-3 px-4">
@@ -351,9 +377,9 @@ export default function EmployeeManagement() {
                           >
                             Mark Present
                           </Button>
-                          <Select 
-                            value={employee.status} 
-                            onValueChange={(status) => updateEmployeeStatus(employee.id, status)}
+                          <Select
+                            value={employee.status}
+                            onValueChange={status => updateEmployeeStatus(employee.id, status)}
                           >
                             <SelectTrigger className="w-28">
                               <SelectValue />
@@ -395,17 +421,21 @@ export default function EmployeeManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {attendance.slice(0, 50).map((record) => (
+                  {attendance.slice(0, 50).map(record => (
                     <tr key={record.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 font-medium">{record.employeeName}</td>
                       <td className="py-3 px-4 text-sm">
                         {new Date(record.date).toLocaleDateString()}
                       </td>
                       <td className="py-3 px-4 text-sm">
-                        {record.checkInTime ? new Date(record.checkInTime).toLocaleTimeString() : '-'}
+                        {record.checkInTime
+                          ? new Date(record.checkInTime).toLocaleTimeString()
+                          : '-'}
                       </td>
                       <td className="py-3 px-4 text-sm">
-                        {record.checkOutTime ? new Date(record.checkOutTime).toLocaleTimeString() : '-'}
+                        {record.checkOutTime
+                          ? new Date(record.checkOutTime).toLocaleTimeString()
+                          : '-'}
                       </td>
                       <td className="py-3 px-4">{record.totalHours}h</td>
                       <td className="py-3 px-4">
@@ -413,9 +443,7 @@ export default function EmployeeManagement() {
                           {record.status.replace('_', ' ').toUpperCase()}
                         </Badge>
                       </td>
-                      <td className="py-3 px-4 text-sm text-gray-500">
-                        {record.notes || '-'}
-                      </td>
+                      <td className="py-3 px-4 text-sm text-gray-500">{record.notes || '-'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -428,10 +456,10 @@ export default function EmployeeManagement() {
   );
 }
 
-function EmployeeForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function EmployeeForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<Employee>) => void;
   onCancel: () => void;
 }) {
@@ -443,7 +471,7 @@ function EmployeeForm({
     department: '',
     position: '',
     hireDate: new Date().toISOString().split('T')[0],
-    salary: 0
+    salary: 0,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -451,7 +479,7 @@ function EmployeeForm({
     onSubmit({
       ...formData,
       employeeNumber: `EMP${Date.now()}`,
-      status: 'active' as const
+      status: 'active' as const,
     });
   };
 
@@ -463,7 +491,7 @@ function EmployeeForm({
           <Input
             id="firstName"
             value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            onChange={e => setFormData({ ...formData, firstName: e.target.value })}
             required
           />
         </div>
@@ -472,7 +500,7 @@ function EmployeeForm({
           <Input
             id="lastName"
             value={formData.lastName}
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+            onChange={e => setFormData({ ...formData, lastName: e.target.value })}
             required
           />
         </div>
@@ -485,7 +513,7 @@ function EmployeeForm({
             id="email"
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={e => setFormData({ ...formData, email: e.target.value })}
             required
           />
         </div>
@@ -494,7 +522,7 @@ function EmployeeForm({
           <Input
             id="phone"
             value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            onChange={e => setFormData({ ...formData, phone: e.target.value })}
             required
           />
         </div>
@@ -503,7 +531,10 @@ function EmployeeForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="department">Department</Label>
-          <Select value={formData.department} onValueChange={(value) => setFormData({ ...formData, department: value })}>
+          <Select
+            value={formData.department}
+            onValueChange={value => setFormData({ ...formData, department: value })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select department" />
             </SelectTrigger>
@@ -523,7 +554,7 @@ function EmployeeForm({
           <Input
             id="position"
             value={formData.position}
-            onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+            onChange={e => setFormData({ ...formData, position: e.target.value })}
             required
           />
         </div>
@@ -536,7 +567,7 @@ function EmployeeForm({
             id="hireDate"
             type="date"
             value={formData.hireDate}
-            onChange={(e) => setFormData({ ...formData, hireDate: e.target.value })}
+            onChange={e => setFormData({ ...formData, hireDate: e.target.value })}
             required
           />
         </div>
@@ -546,7 +577,7 @@ function EmployeeForm({
             id="salary"
             type="number"
             value={formData.salary}
-            onChange={(e) => setFormData({ ...formData, salary: parseFloat(e.target.value) || 0 })}
+            onChange={e => setFormData({ ...formData, salary: parseFloat(e.target.value) || 0 })}
             required
           />
         </div>
@@ -556,9 +587,7 @@ function EmployeeForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Add Employee
-        </Button>
+        <Button type="submit">Add Employee</Button>
       </div>
     </form>
   );

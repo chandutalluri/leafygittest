@@ -1,0 +1,645 @@
+Run # Build super-admin
+  
+> @leafyhealth/super-admin@1.0.0 build
+> next build
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+   Linting and checking validity of types ...
+ ⚠ The Next.js plugin was not detected in your ESLint configuration. See https://nextjs.org/docs/app/api-reference/config/eslint#migrating-existing-config
+Failed to compile.
+./src/components/AuthWrapper.tsx
+3:44  Error: Insert `;`  prettier/prettier
+6:13  Error: 'React' is not defined.  no-undef
+6:28  Error: Insert `;`  prettier/prettier
+10:64  Error: Insert `;`  prettier/prettier
+11:51  Error: Insert `;`  prettier/prettier
+14:26  Error: Insert `;`  prettier/prettier
+15:9  Error: Insert `;`  prettier/prettier
+19:62  Error: Insert `;`  prettier/prettier
+20:63  Error: Insert `;`  prettier/prettier
+21:1  Error: Delete `······`  prettier/prettier
+23:26  Error: Insert `;`  prettier/prettier
+24:15  Error: Insert `;`  prettier/prettier
+32:45  Error: Insert `,`  prettier/prettier
+34:40  Error: Insert `,`  prettier/prettier
+35:9  Error: Insert `;`  prettier/prettier
+37:41  Error: Insert `;`  prettier/prettier
+38:1  Error: Delete `······`  prettier/prettier
+40:41  Error: Insert `;`  prettier/prettier
+41:1  Error: Delete `········`  prettier/prettier
+45:61  Error: Insert `;`  prettier/prettier
+46:48  Error: Insert `;`  prettier/prettier
+47:17  Error: Insert `;`  prettier/prettier
+53:61  Error: Insert `;`  prettier/prettier
+54:48  Error: Insert `;`  prettier/prettier
+55:17  Error: Insert `;`  prettier/prettier
+58:33  Error: Insert `;`  prettier/prettier
+61:26  Error: Insert `;`  prettier/prettier
+64:7  Warning: Unexpected console statement.  no-console
+64:59  Error: Insert `;`  prettier/prettier
+65:24  Error: Insert `;`  prettier/prettier
+67:26  Error: Insert `;`  prettier/prettier
+69:4  Error: Insert `;`  prettier/prettier
+72:49  Error: Insert `;`  prettier/prettier
+73:48  Error: Insert `;`  prettier/prettier
+75:49  Error: Insert `;`  prettier/prettier
+76:4  Error: Insert `;`  prettier/prettier
+82:7  Error: Replace `'admin'` with `admin`  prettier/prettier
+83:7  Error: Replace `'manager'` with `manager`  prettier/prettier
+84:7  Error: Replace `'analyst'` with `analyst`  prettier/prettier
+85:7  Error: Replace `'customer'` with `customer`  prettier/prettier
+86:7  Error: Replace `'staff'` with `staff`  prettier/prettier
+87:7  Error: Replace `'cashier'` with `cashier`  prettier/prettier
+88:7  Error: Replace `'delivery':·`${baseUrl}:3001`` with `delivery:·`${baseUrl}:3001`,`  prettier/prettier
+89:6  Error: Insert `;`  prettier/prettier
+90:1  Error: Delete `····`  prettier/prettier
+91:54  Error: Insert `;`  prettier/prettier
+92:4  Error: Insert `;`  prettier/prettier
+102:6  Error: Insert `;`  prettier/prettier
+112:6  Error: Insert `;`  prettier/prettier
+115:25  Error: Insert `;`  prettier/prettier
+116:2  Error: Insert `⏎`  prettier/prettier
+./src/components/ClientOnly.tsx
+4:13  Error: 'React' is not defined.  no-undef
+5:14  Error: 'React' is not defined.  no-undef
+20:2  Error: Insert `⏎`  prettier/prettier
+./src/components/ErrorBoundary.tsx
+24:5  Warning: Unexpected console statement.  no-console
+29:14  Error: Insert `(⏎········`  prettier/prettier
+30:1  Error: Insert `··`  prettier/prettier
+31:11  Error: Insert `··`  prettier/prettier
+32:1  Error: Insert `··`  prettier/prettier
+33:13  Error: Insert `··`  prettier/prettier
+34:11  Error: Insert `··`  prettier/prettier
+35:1  Error: Replace `········</div>` with `··········</div>⏎········)`  prettier/prettier
+./src/components/SecurityWrapper.tsx
+12:13  Error: 'React' is not defined.  no-undef
+25:39  Warning: 'token' is assigned a value but never used.  no-unused-vars
+68:2  Error: Insert `⏎`  prettier/prettier
+./src/components/admin/UserManagement.tsx
+35:43  Error: Replace `type:·'success'·|·'error',·text:·string` with `·type:·'success'·|·'error';·text:·string·`  prettier/prettier
+36:1  Error: Delete `··`  prettier/prettier
+51:11  Error: Replace `'Authorization'` with `Authorization`  prettier/prettier
+88:21  Error: Replace `·type:·'success',·text:·`Password·reset·successfully·for·${selectedUser.email}`` with `⏎··········type:·'success',⏎··········text:·`Password·reset·successfully·for·${selectedUser.email}`,⏎·······`  prettier/prettier
+134:13  Error: Insert `⏎·········`  prettier/prettier
+135:11  Error: Replace `message.type·===·'success'·?·'bg-green-100·border·border-green-400·text-green-700'·` with `··message.type·===·'success'⏎··············?·'bg-green-100·border·border-green-400·text-green-700'`  prettier/prettier
+136:1  Error: Replace `··········` with `··············`  prettier/prettier
+137:9  Error: Replace `}`}` with `··}`}⏎········`  prettier/prettier
+164:114  Error: Replace `User` with `⏎····················User⏎··················`  prettier/prettier
+165:114  Error: Replace `Role` with `⏎····················Role⏎··················`  prettier/prettier
+166:114  Error: Replace `Branch` with `⏎····················Branch⏎··················`  prettier/prettier
+167:114  Error: Replace `Status` with `⏎····················Status⏎··················`  prettier/prettier
+168:114  Error: Replace `Actions` with `⏎····················Actions⏎··················`  prettier/prettier
+172:42  Error: Replace `(user)` with `user`  prettier/prettier
+183:28  Error: Insert `⏎·······················`  prettier/prettier
+184:25  Error: Replace `user.role·===·'super_admin'·?·'bg-purple-100·text-purple-800'·:⏎························user.role·===·'admin'·?·'bg-blue-100·text-blue-800'·:` with `··user.role·===·'super_admin'⏎····························?·'bg-purple-100·text-purple-800'⏎····························:·user.role·===·'admin'⏎······························?·'bg-blue-100·text-blue-800'`  prettier/prettier
+186:1  Error: Replace `························user.role·===·'manager'·?·'bg-green-100·text-green-800'·:` with `······························:·user.role·===·'manager'⏎································?·'bg-green-100·text-green-800'`  prettier/prettier
+187:24  Error: Insert `·········:`  prettier/prettier
+188:23  Error: Replace `}`}` with `··}`}⏎······················`  prettier/prettier
+196:28  Error: Insert `⏎·······················`  prettier/prettier
+197:1  Error: Insert `··`  prettier/prettier
+198:23  Error: Replace `}`}` with `··}`}⏎······················`  prettier/prettier
+225:114  Error: Replace `Customer` with `⏎····················Customer⏎··················`  prettier/prettier
+226:114  Error: Replace `Branch` with `⏎····················Branch⏎··················`  prettier/prettier
+227:114  Error: Replace `Status` with `⏎····················Status⏎··················`  prettier/prettier
+228:114  Error: Replace `Actions` with `⏎····················Actions⏎··················`  prettier/prettier
+232:51  Error: Replace `(customer)` with `customer`  prettier/prettier
+246:28  Error: Insert `⏎·······················`  prettier/prettier
+247:25  Error: Replace `customer.is_active·?·'bg-green-100·text-green-800'` with `··customer.is_active⏎····························?·'bg-green-100·text-green-800'⏎···························`  prettier/prettier
+248:23  Error: Replace `}`}` with `··}`}⏎······················`  prettier/prettier
+274:55  Error: Replace `⏎··············Email:·{selectedUser.email}⏎············` with `Email:·{selectedUser.email}`  prettier/prettier
+285:27  Error: Replace `(e)` with `e`  prettier/prettier
+315:3  Error: Insert `⏎`  prettier/prettier
+./src/components/auth/SuperAdminLogin.tsx
+19:1  Error: Delete `····`  prettier/prettier
+61:27  Error: Replace `(e)` with `e`  prettier/prettier
+77:27  Error: Replace `(e)` with `e`  prettier/prettier
+125:48  Error: Replace `⏎············LeafyHealth·Multi-Branch·ERP·System·v1.0⏎··········` with `LeafyHealth·Multi-Branch·ERP·System·v1.0`  prettier/prettier
+135:3  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/BusinessIntelligenceCenter.tsx
+2:9  Error: Delete `·`  prettier/prettier
+3:16  Error: Delete `·`  prettier/prettier
+4:29  Error: Delete `·`  prettier/prettier
+5:24  Error: Delete `·`  prettier/prettier
+8:24  Error: Insert `,`  prettier/prettier
+41:1  Error: Delete `······`  prettier/prettier
+48:7  Warning: Unexpected console statement.  no-console
+59:71  Error: Insert `,`  prettier/prettier
+143:58  Error: Replace `⏎····················{product.sales}·sales⏎··················` with `{product.sales}·sales`  prettier/prettier
+211:21  Error: Replace `(tab)` with `tab`  prettier/prettier
+250:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/CreateProductForm.tsx
+7:23  Warning: 'product' is defined but never used.  no-unused-vars
+50:15  Error: Insert `,`  prettier/prettier
+71:7  Warning: Unexpected console statement.  no-console
+83:7  Warning: Unexpected console statement.  no-console
+94:60  Error: Insert `⏎·····`  prettier/prettier
+95:68  Error: Insert `⏎·····`  prettier/prettier
+96:67  Error: Insert `⏎·····`  prettier/prettier
+122:1  Error: Delete `····`  prettier/prettier
+148:53  Error: Insert `,`  prettier/prettier
+157:1  Error: Delete `······`  prettier/prettier
+161:1  Error: Delete `······`  prettier/prettier
+164:7  Warning: Unexpected console statement.  no-console
+179:18  Error: Replace `⏎············onClick={onClose}⏎············className="p-2·hover:bg-gray-100·rounded-full"⏎··········` with `·onClick={onClose}·className="p-2·hover:bg-gray-100·rounded-full"`  prettier/prettier
+191:79  Error: Replace `⏎················Product·Name·*⏎··············` with `Product·Name·*`  prettier/prettier
+197:27  Error: Replace `(e)` with `e`  prettier/prettier
+207:79  Error: Replace `⏎················SKU·*⏎··············` with `SKU·*`  prettier/prettier
+214:29  Error: Replace `(e)` with `e`  prettier/prettier
+234:77  Error: Replace `⏎··············Description·*⏎············` with `Description·*`  prettier/prettier
+239:25  Error: Replace `(e)` with `e`  prettier/prettier
+246:36  Error: Replace `<p·className="text-red-500·text-xs·mt-1">{errors.description}</p>` with `(⏎··············<p·className="text-red-500·text-xs·mt-1">{errors.description}</p>⏎············)`  prettier/prettier
+252:79  Error: Replace `⏎················Category·*⏎··············` with `Category·*`  prettier/prettier
+257:27  Error: Replace `(e)` with `e`  prettier/prettier
+263:33  Error: Replace `(category)` with `category`  prettier/prettier
+269:37  Error: Replace `<p·className="text-red-500·text-xs·mt-1">{errors.categoryId}</p>` with `(⏎················<p·className="text-red-500·text-xs·mt-1">{errors.categoryId}</p>⏎··············)`  prettier/prettier
+273:79  Error: Replace `⏎················Branch·*⏎··············` with `Branch·*`  prettier/prettier
+278:27  Error: Replace `(e)` with `e`  prettier/prettier
+284:31  Error: Replace `(branch)` with `branch`  prettier/prettier
+304:27  Error: Replace `(e)` with `e`  prettier/prettier
+321:27  Error: Replace `(e)` with `e`  prettier/prettier
+341:27  Error: Replace `(e)` with `e`  prettier/prettier
+348:79  Error: Replace `⏎················Unit⏎··············` with `Unit`  prettier/prettier
+353:27  Error: Replace `(e)` with `e`  prettier/prettier
+375:27  Error: Replace `(e)` with `e`  prettier/prettier
+381:37  Error: Replace `<p·className="text-red-500·text-xs·mt-1">{errors.stockLevel}</p>` with `(⏎················<p·className="text-red-500·text-xs·mt-1">{errors.stockLevel}</p>⏎··············)`  prettier/prettier
+391:27  Error: Replace `(e)` with `e`  prettier/prettier
+422:27  Error: Replace `<div·className="animate-spin·rounded-full·h-4·w-4·border-b-2·border-white"></div>` with `(⏎················<div·className="animate-spin·rounded-full·h-4·w-4·border-b-2·border-white"></div>⏎··············)`  prettier/prettier
+431:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/CustomerRelationshipHub.tsx
+2:9  Error: Delete `·`  prettier/prettier
+3:17  Error: Delete `·`  prettier/prettier
+4:12  Error: Delete `·`  prettier/prettier
+5:18  Error: Delete `·`  prettier/prettier
+8:15  Error: Insert `,`  prettier/prettier
+41:7  Warning: Unexpected console statement.  no-console
+52:81  Error: Insert `,`  prettier/prettier
+92:18  Error: Replace `{customers.length·>·0·?·Math.round(customers.reduce((sum,·c)·=>·sum·+·c.total_spent,·0)·/·customers.reduce((sum,·c)·=>·sum·+·c.total_orders,·0)·||·0)` with `⏎················{customers.length·>·0⏎··················?·Math.round(⏎······················customers.reduce((sum,·c)·=>·sum·+·c.total_spent,·0)·/⏎························customers.reduce((sum,·c)·=>·sum·+·c.total_orders,·0)·||·0⏎····················)⏎·················`  prettier/prettier
+106:18  Error: Insert `⏎··················`  prettier/prettier
+107:1  Error: Replace `··················` with `····················`  prettier/prettier
+108:1  Error: Insert `··`  prettier/prettier
+109:19  Error: Replace `return·created.getMonth()·===·now.getMonth()·&&·created.getFullYear()·===·now.getFullYear()` with `··return·(⏎······················created.getMonth()·===·now.getMonth()·&&⏎······················created.getFullYear()·===·now.getFullYear()⏎····················)`  prettier/prettier
+110:1  Error: Replace `················}).length` with `··················}).length⏎················`  prettier/prettier
+146:22  Error: Replace `(customer)` with `customer`  prettier/prettier
+147:1  Error: Insert `··`  prettier/prettier
+148:1  Error: Insert `··`  prettier/prettier
+149:1  Error: Replace `····················` with `······················`  prettier/prettier
+150:1  Error: Insert `··`  prettier/prettier
+151:21  Error: Insert `··`  prettier/prettier
+152:1  Error: Insert `··`  prettier/prettier
+153:19  Error: Insert `··`  prettier/prettier
+154:1  Error: Insert `··`  prettier/prettier
+155:21  Error: Insert `··`  prettier/prettier
+156:1  Error: Replace `··················` with `····················`  prettier/prettier
+157:1  Error: Insert `··`  prettier/prettier
+158:21  Error: Insert `··`  prettier/prettier
+159:1  Error: Insert `··`  prettier/prettier
+160:19  Error: Insert `··`  prettier/prettier
+161:21  Error: Insert `··`  prettier/prettier
+162:1  Error: Insert `··`  prettier/prettier
+163:19  Error: Insert `··`  prettier/prettier
+164:21  Error: Replace `<span` with `··<span⏎·······················`  prettier/prettier
+165:23  Error: Replace `customer.status·===·'active'·⏎························?·'bg-green-100·text-green-800'·⏎` with `····customer.status·===·'active'⏎····························?·'bg-green-100·text-green-800'⏎····`  prettier/prettier
+168:21  Error: Replace `}`}` with `····}`}⏎······················`  prettier/prettier
+169:23  Error: Insert `··`  prettier/prettier
+170:21  Error: Insert `··`  prettier/prettier
+171:1  Error: Replace `··················` with `····················`  prettier/prettier
+172:1  Error: Insert `··`  prettier/prettier
+173:1  Error: Insert `··`  prettier/prettier
+200:21  Error: Replace `(tab)` with `tab`  prettier/prettier
+239:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/FinancialControlCenter.tsx
+2:9  Error: Delete `·`  prettier/prettier
+3:22  Error: Delete `·`  prettier/prettier
+4:17  Error: Delete `·`  prettier/prettier
+5:16  Error: Delete `·`  prettier/prettier
+8:24  Error: Insert `,`  prettier/prettier
+38:7  Warning: Unexpected console statement.  no-console
+49:73  Error: Insert `,`  prettier/prettier
+66:67  Error: Replace `₹{totalRevenue.toLocaleString()}` with `⏎················₹{totalRevenue.toLocaleString()}⏎··············`  prettier/prettier
+102:67  Error: Replace `₹{Math.round(avgTransactionValue)}` with `⏎················₹{Math.round(avgTransactionValue)}⏎··············`  prettier/prettier
+134:42  Error: Replace `(payment)` with `payment`  prettier/prettier
+146:26  Error: Insert `⏎·····················`  prettier/prettier
+147:1  Error: Replace `······················payment.status·===·'completed'·⏎························?·'bg-green-100·text-green-800'·⏎` with `························payment.status·===·'completed'⏎··························?·'bg-green-100·text-green-800'⏎··`  prettier/prettier
+150:25  Error: Insert `····`  prettier/prettier
+151:1  Error: Insert `····`  prettier/prettier
+152:21  Error: Replace `}`}` with `··}`}⏎····················`  prettier/prettier
+187:21  Error: Replace `(tab)` with `tab`  prettier/prettier
+226:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/InventoryCRUD.tsx
+6:9  Error: Replace `·Package,·Search,·Edit,·Trash2,·AlertTriangle,·Save,·Plus,·Minus,·BarChart3·` with `⏎··Package,⏎··Search,⏎··Edit,⏎··Trash2,⏎··AlertTriangle,⏎··Save,⏎··Plus,⏎··Minus,⏎··BarChart3,⏎`  prettier/prettier
+6:68  Warning: 'Minus' is defined but never used.  no-unused-vars
+7:60  Warning: 'DialogTrigger' is defined but never used.  no-unused-vars
+60:16  Error: Insert `,`  prettier/prettier
+70:1  Error: Delete `······`  prettier/prettier
+73:22  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`·}` with `Authorization:·`Bearer·${localStorage.getItem('token')}`·},`  prettier/prettier
+76:22  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`·}` with `Authorization:·`Bearer·${localStorage.getItem('token')}`·},`  prettier/prettier
+79:22  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`·}` with `Authorization:·`Bearer·${localStorage.getItem('token')}`·},`  prettier/prettier
+80:11  Error: Insert `,`  prettier/prettier
+85:9  Warning: Unexpected console statement.  no-console
+91:9  Warning: Unexpected console statement.  no-console
+97:9  Warning: Unexpected console statement.  no-console
+101:7  Warning: Unexpected console statement.  no-console
+109:7  Warning: Unexpected console statement.  no-console
+110:1  Error: Delete `······`  prettier/prettier
+115:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+117:31  Error: Delete `·`  prettier/prettier
+119:48  Error: Insert `,`  prettier/prettier
+120:11  Error: Insert `,`  prettier/prettier
+128:7  Warning: Unexpected console statement.  no-console
+132:7  Warning: Unexpected console statement.  no-console
+133:13  Error: Replace `'Failed·to·update·inventory:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·update·inventory:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+140:7  Warning: Unexpected console statement.  no-console
+141:1  Error: Delete `······`  prettier/prettier
+146:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+148:57  Error: Insert `,`  prettier/prettier
+156:7  Warning: Unexpected console statement.  no-console
+162:7  Warning: Unexpected console statement.  no-console
+163:13  Error: Replace `'Failed·to·update·settings:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·update·settings:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+170:23  Error: Replace `·adjustmentData.adjustmentType·===·'increase'·⏎` with `⏎········adjustmentData.adjustmentType·===·'increase'⏎··`  prettier/prettier
+172:1  Error: Insert `··`  prettier/prettier
+180:34  Error: Delete `·`  prettier/prettier
+181:18  Error: Delete `·`  prettier/prettier
+192:22  Error: Insert `,`  prettier/prettier
+196:7  Warning: Unexpected console statement.  no-console
+197:13  Error: Replace `'Failed·to·adjust·stock:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·adjust·stock:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+203:11  Error: Replace `!confirm(`Are·you·sure·you·want·to·delete·"${productName}"?·This·action·cannot·be·undone.`)` with `⏎········!confirm(`Are·you·sure·you·want·to·delete·"${productName}"?·This·action·cannot·be·undone.`)⏎······`  prettier/prettier
+207:7  Warning: Unexpected console statement.  no-console
+208:1  Error: Delete `······`  prettier/prettier
+212:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+213:10  Error: Insert `,`  prettier/prettier
+221:7  Warning: Unexpected console statement.  no-console
+224:7  Warning: Unexpected console statement.  no-console
+225:13  Error: Replace `'Failed·to·delete·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·delete·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+231:21  Error: Insert `⏎·······`  prettier/prettier
+232:18  Error: Insert `⏎·······`  prettier/prettier
+233:23  Error: Insert `⏎·······`  prettier/prettier
+234:27  Error: Insert `⏎·······`  prettier/prettier
+235:15  Error: Insert `⏎·······`  prettier/prettier
+250:34  Error: Insert `,`  prettier/prettier
+256:42  Error: Replace `new·Set(⏎····inventory.map(item·=>·item.categoryName).filter(Boolean)` with `⏎····new·Set(inventory.map(item·=>·item.categoryName).filter(Boolean))`  prettier/prettier
+258:3  Error: Delete `)`  prettier/prettier
+261:26  Error: Insert `⏎·····`  prettier/prettier
+262:7  Error: Delete `···················`  prettier/prettier
+265:1  Error: Delete `····`  prettier/prettier
+275:1  Error: Delete `····`  prettier/prettier
+277:1  Error: Delete `····`  prettier/prettier
+282:12  Error: Replace `<div·className="flex·items-center·justify-center·p-8">Loading·Inventory·Management...</div>` with `(⏎······<div·className="flex·items-center·justify-center·p-8">Loading·Inventory·Management...</div>⏎····)`  prettier/prettier
+377:27  Error: Replace `(e)` with `e`  prettier/prettier
+391:31  Error: Replace `·className="bg-white·border·border-gray-200·shadow-lg"·style={{·zIndex:·9999·}}` with `⏎··················className="bg-white·border·border-gray-200·shadow-lg"⏎··················style={{·zIndex:·9999·}}⏎················`  prettier/prettier
+395:33  Error: Replace `(branch)` with `branch`  prettier/prettier
+396:32  Error: Delete `·`  prettier/prettier
+397:38  Error: Delete `·`  prettier/prettier
+417:31  Error: Replace `·className="bg-white·border·border-gray-200·shadow-lg"·style={{·zIndex:·9999·}}` with `⏎··················className="bg-white·border·border-gray-200·shadow-lg"⏎··················style={{·zIndex:·9999·}}⏎················`  prettier/prettier
+421:44  Error: Replace `(category)` with `category`  prettier/prettier
+422:32  Error: Delete `·`  prettier/prettier
+423:37  Error: Delete `·`  prettier/prettier
+443:31  Error: Replace `·className="bg-white·border·border-gray-200·shadow-lg"·style={{·zIndex:·9999·}}` with `⏎··················className="bg-white·border·border-gray-200·shadow-lg"⏎··················style={{·zIndex:·9999·}}⏎················`  prettier/prettier
+469:24  Error: Delete `·`  prettier/prettier
+480:24  Error: Delete `·`  prettier/prettier
+491:24  Error: Delete `·`  prettier/prettier
+502:24  Error: Delete `·`  prettier/prettier
+536:22  Error: Replace `·key={`${item.productId}-${item.branchId}-${index}`}·className="border-b·hover:bg-gray-50"` with `⏎····················key={`${item.productId}-${item.branchId}-${index}`}⏎····················className="border-b·hover:bg-gray-50"⏎··················`  prettier/prettier
+553:30  Error: Replace `·className={item.currentStock·<=·item.reorderLevel·?·'text-red-600·font-bold'·:·''}` with `⏎··························className={⏎····························item.currentStock·<=·item.reorderLevel·?·'text-red-600·font-bold'·:·''⏎··························}⏎························`  prettier/prettier
+570:32  Error: Delete `·`  prettier/prettier
+571:36  Error: Delete `·`  prettier/prettier
+578:33  Error: Replace `⏎··························size="sm"·⏎··························variant="outline"⏎··························onClick={()·=>·openEditDialog(item)}⏎························` with `size="sm"·variant="outline"·onClick={()·=>·openEditDialog(item)}`  prettier/prettier
+586:32  Error: Delete `·`  prettier/prettier
+587:36  Error: Delete `·`  prettier/prettier
+589:41  Error: Replace `·updateInventory(item.productId,·item.reorderLevel·+·50,·'Quick·restock')` with `⏎····························updateInventory(item.productId,·item.reorderLevel·+·50,·'Quick·restock')⏎··························`  prettier/prettier
+593:32  Error: Delete `·`  prettier/prettier
+594:36  Error: Delete `·`  prettier/prettier
+628:1  Error: Delete `············`  prettier/prettier
+631:22  Error: Delete `·`  prettier/prettier
+632:54  Error: Delete `·`  prettier/prettier
+633:32  Error: Replace `(value)·=>` with `value·=>⏎·················`  prettier/prettier
+634:19  Error: Replace `...adjustmentData,·⏎··················adjustmentType:·value·as·'increase'·|·'decrease'` with `··...adjustmentData,⏎····················adjustmentType:·value·as·'increase'·|·'decrease',`  prettier/prettier
+636:1  Error: Replace `················})` with `··················})⏎················`  prettier/prettier
+653:27  Error: Replace `(e)·=>` with `e·=>⏎·················`  prettier/prettier
+654:19  Error: Replace `...adjustmentData,·⏎··················quantity:·parseInt(e.target.value)·||·0` with `··...adjustmentData,⏎····················quantity:·parseInt(e.target.value)·||·0,`  prettier/prettier
+656:1  Error: Replace `················})` with `··················})⏎················`  prettier/prettier
+664:27  Error: Replace `(e)·=>` with `e·=>⏎·················`  prettier/prettier
+665:19  Error: Replace `...adjustmentData,·⏎··················reason:·e.target.value` with `··...adjustmentData,⏎····················reason:·e.target.value,`  prettier/prettier
+667:17  Error: Replace `})` with `··})⏎················`  prettier/prettier
+675:62  Error: Delete `·`  prettier/prettier
+677:70  Error: Delete `⏎················`  prettier/prettier
+708:29  Error: Replace `(e)` with `e`  prettier/prettier
+710:37  Error: Replace `...editingItem,·reorderLevel:·newLevel` with `·...editingItem,·reorderLevel:·newLevel·`  prettier/prettier
+720:29  Error: Replace `(e)` with `e`  prettier/prettier
+722:37  Error: Replace `...editingItem,·maxStock:·newMax` with `·...editingItem,·maxStock:·newMax·`  prettier/prettier
+731:24  Error: Replace `·onClick={()·=>·updateStockSettings(editingItem.productId,·editingItem.reorderLevel,·editingItem.maxStock)}` with `⏎··················onClick={()·=>⏎····················updateStockSettings(⏎······················editingItem.productId,⏎······················editingItem.reorderLevel,⏎······················editingItem.maxStock⏎····················)⏎··················}⏎················`  prettier/prettier
+742:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/OrderOperations.tsx
+7:9  Error: Replace `·ShoppingCart,·CreditCard,·Truck,·HeadphonesIcon,·Search,·Eye,·RefreshCw,·AlertCircle·` with `⏎··ShoppingCart,⏎··CreditCard,⏎··Truck,⏎··HeadphonesIcon,⏎··Search,⏎··Eye,⏎··RefreshCw,⏎··AlertCircle,⏎`  prettier/prettier
+8:9  Error: Replace `·Dialog,·DialogContent,·DialogDescription,·DialogHeader,·DialogTitle,·DialogTrigger·` with `⏎··Dialog,⏎··DialogContent,⏎··DialogDescription,⏎··DialogHeader,⏎··DialogTitle,⏎··DialogTrigger,⏎`  prettier/prettier
+8:79  Warning: 'DialogTrigger' is defined but never used.  no-unused-vars
+80:46  Error: Replace `'overview'·|·'orders'·|·'payments'·|·'delivery'·|·'support'` with `⏎····'overview'·|·'orders'·|·'payments'·|·'delivery'·|·'support'⏎··`  prettier/prettier
+95:68  Error: Insert `,`  prettier/prettier
+99:58  Error: Insert `,`  prettier/prettier
+101:1  Error: Delete `······`  prettier/prettier
+107:7  Warning: Unexpected console statement.  no-console
+116:1  Error: Delete `······`  prettier/prettier
+121:1  Error: Delete `······`  prettier/prettier
+126:34  Error: Insert `,`  prettier/prettier
+129:1  Error: Delete `······`  prettier/prettier
+132:7  Warning: Unexpected console statement.  no-console
+141:7  Warning: Unexpected console statement.  no-console
+151:27  Error: Insert `,`  prettier/prettier
+155:7  Warning: Unexpected console statement.  no-console
+161:24  Error: Insert `⏎·······`  prettier/prettier
+162:22  Error: Insert `⏎·······`  prettier/prettier
+163:24  Error: Insert `⏎·······`  prettier/prettier
+164:25  Error: Insert `⏎·······`  prettier/prettier
+165:22  Error: Insert `⏎·······`  prettier/prettier
+166:24  Error: Insert `⏎·······`  prettier/prettier
+167:15  Error: Insert `⏎·······`  prettier/prettier
+173:24  Error: Insert `⏎·······`  prettier/prettier
+174:25  Error: Insert `⏎·······`  prettier/prettier
+175:22  Error: Insert `⏎·······`  prettier/prettier
+176:21  Error: Insert `⏎·······`  prettier/prettier
+177:23  Error: Insert `⏎·······`  prettier/prettier
+178:15  Error: Insert `⏎·······`  prettier/prettier
+184:21  Error: Insert `⏎·······`  prettier/prettier
+185:19  Error: Insert `⏎·······`  prettier/prettier
+186:21  Error: Insert `⏎·······`  prettier/prettier
+187:18  Error: Insert `⏎·······`  prettier/prettier
+188:15  Error: Insert `⏎·······`  prettier/prettier
+192:40  Error: Insert `⏎····`  prettier/prettier
+193:1  Error: Insert `··`  prettier/prettier
+194:5  Error: Insert `··`  prettier/prettier
+198:39  Error: Replace `o·=>·o.status·===·'pending'·||·o.status·===·'confirmed'` with `⏎····o·=>·o.status·===·'pending'·||·o.status·===·'confirmed'⏎··`  prettier/prettier
+241:64  Error: Replace `₹{totalRevenue.toLocaleString()}` with `⏎··············₹{totalRevenue.toLocaleString()}⏎············`  prettier/prettier
+284:72  Error: Replace `(tab)` with `tab`  prettier/prettier
+312:25  Error: Replace `(e)` with `e`  prettier/prettier
+355:39  Error: Replace `(order)` with `order`  prettier/prettier
+368:50  Error: Replace `⏎··························{order.items.length}·items⏎························` with `{order.items.length}·items`  prettier/prettier
+386:34  Error: Replace `·size="sm"·variant="outline"·onClick={()·=>·setSelectedOrder(order)}` with `⏎····························size="sm"⏎····························variant="outline"⏎····························onClick={()·=>·setSelectedOrder(order)}⏎··························`  prettier/prettier
+390:50  Error: Replace `(status)` with `status`  prettier/prettier
+435:33  Error: Replace `(payment)` with `payment`  prettier/prettier
+456:34  Error: Delete `·`  prettier/prettier
+457:38  Error: Delete `·`  prettier/prettier
+482:34  Error: Replace `((route)` with `(route`  prettier/prettier
+547:39  Error: Replace `(ticket)` with `ticket`  prettier/prettier
+615:44  Error: Replace `(item)` with `item`  prettier/prettier
+649:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/OrderOperationsCenter.tsx
+2:9  Error: Delete `·`  prettier/prettier
+3:13  Error: Delete `·`  prettier/prettier
+4:18  Error: Delete `·`  prettier/prettier
+5:29  Error: Delete `·`  prettier/prettier
+9:3  Warning: 'ExclamationTriangleIcon' is defined but never used.  no-unused-vars
+9:26  Error: Insert `,`  prettier/prettier
+41:7  Warning: Unexpected console statement.  no-console
+52:82  Error: Insert `,`  prettier/prettier
+57:7  Error: Replace `'pending'` with `pending`  prettier/prettier
+58:7  Error: Replace `'processing'` with `processing`  prettier/prettier
+59:7  Error: Replace `'shipped'` with `shipped`  prettier/prettier
+60:7  Error: Replace `'delivered'` with `delivered`  prettier/prettier
+61:7  Error: Replace `'cancelled':·'bg-red-100·text-red-800'` with `cancelled:·'bg-red-100·text-red-800',`  prettier/prettier
+150:40  Error: Replace `(order)` with `order`  prettier/prettier
+162:26  Error: Replace `·className={`inline-flex·px-2·py-1·text-xs·font-semibold·rounded-full·${getStatusColor(order.status)}`}` with `⏎······················className={`inline-flex·px-2·py-1·text-xs·font-semibold·rounded-full·${getStatusColor(order.status)}`}⏎····················`  prettier/prettier
+197:21  Error: Replace `(tab)` with `tab`  prettier/prettier
+236:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/OrganizationHub.tsx
+2:9  Error: Delete `·`  prettier/prettier
+3:22  Error: Delete `·`  prettier/prettier
+4:13  Error: Delete `·`  prettier/prettier
+5:3  Warning: 'UserIcon' is defined but never used.  no-unused-vars
+5:12  Error: Delete `·`  prettier/prettier
+8:16  Error: Insert `,`  prettier/prettier
+35:1  Error: Delete `······`  prettier/prettier
+48:7  Warning: Unexpected console statement.  no-console
+59:68  Error: Insert `,`  prettier/prettier
+144:29  Error: Replace `(branch)` with `branch`  prettier/prettier
+160:26  Error: Insert `⏎·····················`  prettier/prettier
+161:23  Error: Replace `branch.status·===·'active'·⏎························?·'bg-green-100·text-green-800'·` with `··branch.status·===·'active'⏎··························?·'bg-green-100·text-green-800'`  prettier/prettier
+163:1  Error: Replace `························` with `··························`  prettier/prettier
+164:21  Error: Replace `}`}` with `··}`}⏎····················`  prettier/prettier
+196:21  Error: Replace `(tab)` with `tab`  prettier/prettier
+235:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/ProductCRUD.tsx
+6:10  Warning: 'Package' is defined but never used.  no-unused-vars
+6:41  Warning: 'AlertTriangle' is defined but never used.  no-unused-vars
+7:33  Warning: 'DialogHeader' is defined but never used.  no-unused-vars
+7:47  Warning: 'DialogTitle' is defined but never used.  no-unused-vars
+7:60  Warning: 'DialogDescription' is defined but never used.  no-unused-vars
+53:1  Error: Delete `······`  prettier/prettier
+58:1  Error: Delete `······`  prettier/prettier
+63:15  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+64:14  Error: Insert `,`  prettier/prettier
+66:1  Error: Delete `··········`  prettier/prettier
+71:13  Warning: Unexpected console statement.  no-console
+71:25  Error: Replace ``Service·unavailable,·retrying·in·3·seconds...·(attempt·${attempt·+·1}/${maxRetries})`` with `⏎··············`Service·unavailable,·retrying·in·3·seconds...·(attempt·${attempt·+·1}/${maxRetries})`⏎············`  prettier/prettier
+80:11  Warning: Unexpected console statement.  no-console
+88:1  Error: Delete `······`  prettier/prettier
+91:9  Warning: Unexpected console statement.  no-console
+98:11  Warning: Unexpected console statement.  no-console
+102:9  Warning: Unexpected console statement.  no-console
+109:1  Error: Delete `······`  prettier/prettier
+114:15  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+115:14  Error: Insert `,`  prettier/prettier
+117:1  Error: Delete `··········`  prettier/prettier
+122:13  Warning: Unexpected console statement.  no-console
+122:25  Error: Replace ``Categories·service·unavailable,·retrying·in·3·seconds...·(attempt·${attempt·+·1}/${maxRetries})`` with `⏎··············`Categories·service·unavailable,·retrying·in·3·seconds...·(attempt·${attempt·+·1}/${maxRetries})`⏎············`  prettier/prettier
+131:11  Warning: Unexpected console statement.  no-console
+139:1  Error: Delete `······`  prettier/prettier
+142:9  Warning: Unexpected console statement.  no-console
+149:11  Warning: Unexpected console statement.  no-console
+153:9  Warning: Unexpected console statement.  no-console
+157:7  Warning: Unexpected console statement.  no-console
+163:9  Warning: 'createProduct' is assigned a value but never used.  no-unused-vars
+163:52  Error: 'formData' is not defined.  no-undef
+165:7  Warning: Unexpected console statement.  no-console
+166:1  Error: Delete `······`  prettier/prettier
+171:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+184:32  Error: Insert `,`  prettier/prettier
+185:11  Error: Insert `,`  prettier/prettier
+194:7  Warning: Unexpected console statement.  no-console
+195:1  Error: Delete `······`  prettier/prettier
+197:7  Error: 'setIsProductDialogOpen' is not defined.  no-undef
+198:7  Error: 'resetForm' is not defined.  no-undef
+199:1  Error: Delete `······`  prettier/prettier
+202:7  Warning: Unexpected console statement.  no-console
+203:13  Error: Replace `'Failed·to·create·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·create·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+207:9  Warning: 'updateProduct' is assigned a value but never used.  no-unused-vars
+209:7  Warning: Unexpected console statement.  no-console
+210:1  Error: Delete `······`  prettier/prettier
+215:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+217:42  Error: Insert `,`  prettier/prettier
+226:7  Warning: Unexpected console statement.  no-console
+227:1  Error: Delete `······`  prettier/prettier
+231:1  Error: Delete `······`  prettier/prettier
+234:7  Warning: Unexpected console statement.  no-console
+235:13  Error: Replace `'Failed·to·update·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·update·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+245:7  Warning: Unexpected console statement.  no-console
+246:1  Error: Delete `······`  prettier/prettier
+250:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+251:10  Error: Insert `,`  prettier/prettier
+259:7  Warning: Unexpected console statement.  no-console
+262:7  Warning: Unexpected console statement.  no-console
+263:13  Error: Replace `'Failed·to·delete·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·delete·product:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+269:7  Warning: Unexpected console statement.  no-console
+270:1  Error: Delete `······`  prettier/prettier
+275:1  Error: Delete `······`  prettier/prettier
+279:11  Error: Replace `'Authorization':·`Bearer·${localStorage.getItem('token')}`` with `Authorization:·`Bearer·${localStorage.getItem('token')}`,`  prettier/prettier
+281:23  Error: Insert `,`  prettier/prettier
+289:7  Warning: Unexpected console statement.  no-console
+292:7  Warning: Unexpected console statement.  no-console
+293:13  Error: Replace `'Failed·to·upload·image:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')` with `⏎········'Failed·to·upload·image:·'·+·(error·instanceof·Error·?·error.message·:·'Unknown·error')⏎······`  prettier/prettier
+295:5  Error: Delete `⏎⏎`  prettier/prettier
+305:26  Error: Insert `⏎·····`  prettier/prettier
+306:1  Error: Delete `···················`  prettier/prettier
+307:28  Error: Insert `⏎·····`  prettier/prettier
+308:26  Error: Replace `·statusFilter·===·'all'·||·` with `⏎······statusFilter·===·'all'·||`  prettier/prettier
+309:1  Error: Delete `···················`  prettier/prettier
+310:7  Error: Delete `···················`  prettier/prettier
+341:25  Error: Replace `(e)` with `e`  prettier/prettier
+349:33  Error: Replace `(category)` with `category`  prettier/prettier
+390:39  Error: Replace `(product)` with `product`  prettier/prettier
+395:31  Error: Delete `·`  prettier/prettier
+396:87  Error: Delete `·`  prettier/prettier
+426:33  Error: Replace `⏎··························size="sm"·⏎··························variant="outline"⏎··························onClick={()·=>·openEditDialog(product)}⏎························` with `size="sm"·variant="outline"·onClick={()·=>·openEditDialog(product)}`  prettier/prettier
+437:37  Error: Replace `(e)` with `e`  prettier/prettier
+444:32  Error: Delete `·`  prettier/prettier
+445:36  Error: Delete `·`  prettier/prettier
+446:44  Error: Delete `·`  prettier/prettier
+451:32  Error: Delete `·`  prettier/prettier
+452:36  Error: Delete `·`  prettier/prettier
+495:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/ProductEcosystem.tsx
+615:18  Error: Replace `·value={formData.category}·onValueChange={(value)·=>·setFormData({·...formData,·category:·value·})}` with `⏎············value={formData.category}⏎············onValueChange={value·=>·setFormData({·...formData,·category:·value·})}⏎··········`  prettier/prettier
+633:23  Error: Replace `(e)` with `e`  prettier/prettier
+642:23  Error: Replace `(e)·=>·setFormData({·...formData,·lowStockThreshold:·parseInt(e.target.value)·})` with `e·=>⏎··············setFormData({·...formData,·lowStockThreshold:·parseInt(e.target.value)·})⏎············`  prettier/prettier
+651:31  Error: Replace `⏎··········Create·Product⏎········` with `Create·Product`  prettier/prettier
+657:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/ProductEcosystemHub.tsx
+3:8  Warning: 'toast' is defined but never used.  no-unused-vars
+4:9  Error: Delete `·`  prettier/prettier
+5:3  Warning: 'ShoppingBagIcon' is defined but never used.  no-unused-vars
+5:19  Error: Delete `·`  prettier/prettier
+6:12  Error: Delete `·`  prettier/prettier
+7:3  Warning: 'PhotoIcon' is defined but never used.  no-unused-vars
+7:13  Error: Delete `·`  prettier/prettier
+8:11  Error: Delete `·`  prettier/prettier
+9:3  Warning: 'DocumentTextIcon' is defined but never used.  no-unused-vars
+10:3  Warning: 'PlusIcon' is defined but never used.  no-unused-vars
+14:3  Warning: 'EyeIcon' is defined but never used.  no-unused-vars
+15:3  Warning: 'PrinterIcon' is defined but never used.  no-unused-vars
+16:3  Warning: 'ChartBarIcon' is defined but never used.  no-unused-vars
+16:15  Error: Insert `,`  prettier/prettier
+18:8  Warning: 'CompositeProductForm' is defined but never used.  no-unused-vars
+19:8  Warning: 'ProductCRUD' is defined but never used.  no-unused-vars
+20:10  Warning: 'CategoryManagement' is defined but never used.  no-unused-vars
+21:10  Warning: 'InventoryManagementCenter' is defined but never used.  no-unused-vars
+22:8  Warning: 'SimpleImageGrid' is defined but never used.  no-unused-vars
+23:8  Warning: 'SimpleImageUpload' is defined but never used.  no-unused-vars
+25:10  Warning: 'StreamlinedLabelDesign' is defined but never used.  no-unused-vars
+26:8  Warning: 'TemplatePreview' is defined but never used.  no-unused-vars
+27:8  Warning: 'PrintManagement' is defined but never used.  no-unused-vars
+28:8  Warning: 'LabelAnalytics' is defined but never used.  no-unused-vars
+59:10  Warning: 'selectedTemplate' is assigned a value but never used.  no-unused-vars
+60:10  Warning: 'templateRefreshKey' is assigned a value but never used.  no-unused-vars
+60:30  Warning: 'setTemplateRefreshKey' is assigned a value but never used.  no-unused-vars
+61:10  Warning: 'templatesNeedRefresh' is assigned a value but never used.  no-unused-vars
+61:32  Warning: 'setTemplatesNeedRefresh' is assigned a value but never used.  no-unused-vars
+68:9  Warning: 'handleTemplateLoad' is assigned a value but never used.  no-unused-vars
+68:30  Error: Replace `(template)` with `template`  prettier/prettier
+69:5  Warning: Unexpected console statement.  no-console
+82:39  Error: Insert `,`  prettier/prettier
+87:9  Warning: Unexpected console statement.  no-console
+99:68  Error: Insert `,`  prettier/prettier
+107:9  Warning: Unexpected console statement.  no-console
+115:9  Warning: Unexpected console statement.  no-console
+121:7  Warning: Unexpected console statement.  no-console
+138:1  Error: Delete `······`  prettier/prettier
+147:67  Error: Replace `{Array.isArray(products)·?·products.length·:·0}` with `⏎················{Array.isArray(products)·?·products.length·:·0}⏎··············`  prettier/prettier
+173:67  Error: Replace `{Array.isArray(alerts)·?·alerts.length·:·0}` with `⏎················{Array.isArray(alerts)·?·alerts.length·:·0}⏎··············`  prettier/prettier
+202:21  Error: Replace `·key={alert.productId·||·index}·className="flex·items-center·justify-between·p-4·bg-red-50·border·border-red-200·rounded-lg"` with `⏎··················key={alert.productId·||·index}⏎··················className="flex·items-center·justify-between·p-4·bg-red-50·border·border-red-200·rounded-lg"⏎················`  prettier/prettier
+215:26  Error: Delete `·`  prettier/prettier
+230:9  Warning: 'renderProductCatalog' is assigned a value but never used.  no-unused-vars
+263:29  Error: Replace `(product)` with `product`  prettier/prettier
+270:64  Error: Replace `{product.description?.substring(0,·50)}...` with `⏎··························{product.description?.substring(0,·50)}...⏎························`  prettier/prettier
+284:26  Error: Insert `⏎·····················`  prettier/prettier
+285:23  Error: Replace `product.status·===·'active'·⏎························?·'bg-green-100·text-green-800'·⏎` with `··product.status·===·'active'⏎··························?·'bg-green-100·text-green-800'⏎··`  prettier/prettier
+288:21  Error: Replace `}`}` with `··}`}⏎····················`  prettier/prettier
+325:2  Error: Insert `⏎`  prettier/prettier
+./src/components/business-domains/index.ts
+7:75  Error: Insert `⏎`  prettier/prettier
+./src/components/image-management/AdvancedImageManagement.tsx
+4:9  Error: Delete `·`  prettier/prettier
+5:13  Error: Delete `·`  prettier/prettier
+6:13  Error: Delete `·`  prettier/prettier
+7:11  Error: Delete `·`  prettier/prettier
+10:3  Warning: 'AdjustmentsHorizontalIcon' is defined but never used.  no-unused-vars
+12:3  Warning: 'PencilIcon' is defined but never used.  no-unused-vars
+13:3  Warning: 'ArrowDownTrayIcon' is defined but never used.  no-unused-vars
+16:24  Error: Insert `,`  prettier/prettier
+63:1  Error: Delete `······`  prettier/prettier
+67:1  Error: Delete `······`  prettier/prettier
+74:14  Error: Replace `(error)` with `error`  prettier/prettier
+93:1  Error: Delete `····`  prettier/prettier
+106:1  Error: Delete `········`  prettier/prettier
+124:22  Error: Replace `⏎············?·'border-blue-400·bg-blue-50'·⏎···········` with `?·'border-blue-400·bg-blue-50'`  prettier/prettier
+143:51  Error: Replace `⏎··········Supports·JPG,·PNG,·GIF,·WebP·up·to·10MB⏎········` with `Supports·JPG,·PNG,·GIF,·WebP·up·to·10MB`  prettier/prettier
+146:1  Error: Delete `········`  prettier/prettier
+156:1  Error: Delete `······`  prettier/prettier
+169:29  Error: Delete `·`  prettier/prettier
+170:9  Error: Delete `·`  prettier/prettier
+171:10  Error: Delete `·`  prettier/prettier
+172:10  Error: Replace `·` with `,`  prettier/prettier
+173:5  Error: Delete `·`  prettier/prettier
+174:31  Error: Delete `·`  prettier/prettier
+175:19  Error: Delete `·`  prettier/prettier
+176:23  Error: Delete `·`  prettier/prettier
+194:20  Error: Replace `(e)` with `e`  prettier/prettier
+198:67  Error: Replace `⏎················{image.originalFilename}⏎··············` with `{image.originalFilename}`  prettier/prettier
+201:57  Error: Replace `⏎················{image.description·||·'No·description'}⏎··············` with `{image.description·||·'No·description'}`  prettier/prettier
+205:20  Error: Replace `⏎··············onClick={onClose}⏎··············className="text-gray-400·hover:text-gray-600·text-2xl"⏎············` with `·onClick={onClose}·className="text-gray-400·hover:text-gray-600·text-2xl"`  prettier/prettier
+233:51  Error: Replace `⏎······················{(image.sizeBytes·/·1024).toFixed(1)}·KB⏎····················` with `{(image.sizeBytes·/·1024).toFixed(1)}·KB`  prettier/prettier
+293:21  Error: Replace `·images,·onImageClick·}:·{·` with `⏎··images,⏎··onImageClick,⏎}:·{`  prettier/prettier
+294:27  Error: Delete `·`  prettier/prettier
+295:18  Warning: 'image' is defined but never used.  no-unused-vars
+295:48  Error: Delete `·`  prettier/prettier
+304:1  Error: Delete `······`  prettier/prettier
+308:1  Error: Delete `······`  prettier/prettier
+315:14  Error: Replace `(error)` with `error`  prettier/prettier
+322:19  Error: Replace `(image)` with `image`  prettier/prettier
+334:24  Error: Replace `(e)` with `e`  prettier/prettier
+336:29  Error: Insert `⏎·················`  prettier/prettier
+339:1  Error: Delete `············`  prettier/prettier
+360:1  Error: Delete `··········`  prettier/prettier
+362:72  Error: Replace `⏎··············{image.originalFilename}⏎············` with `{image.originalFilename}`  prettier/prettier
+366:57  Error: Insert `{'·'}⏎·············`  prettier/prettier
+399:10  Error: Replace `·data:·images·=·[],·isLoading,·error` with `⏎····data:·images·=·[],⏎····isLoading,⏎····error,⏎·`  prettier/prettier
+425:26  Error: Insert `⏎·····`  prettier/prettier
+426:7  Error: Delete `···················`  prettier/prettier
+427:1  Error: Delete `···················`  prettier/prettier
+428:1  Error: Delete `····`  prettier/prettier
+430:1  Error: Delete `····`  prettier/prettier
+471:1  Error: Delete `··········`  prettier/prettier
+481:1  Error: Delete `··········`  prettier/prettier
+493:1  Error: Delete `··········`  prettier/prettier
+523:25  Error: Replace `(e)` with `e`  prettier/prettier
+527:1  Error: Delete `··········`  prettier/prettier
+530:23  Error: Replace `(e)` with `e`  prettier/prettier
+545:61  Error: Replace `⏎············Images·({filteredImages.length})⏎··········` with `Images·({filteredImages.length})`  prettier/prettier
+549:1  Error: Delete `········`  prettier/prettier
+568:2  Error: Insert `⏎`  prettier/prettier
+./src/components/image-management/ImageLibraryModal.tsx
+4:18  Warning: 'AnimatePresence' is defined but never used.  no-unused-vars
+10:20  Warning: 'images' is defined but never used.  no-unused-vars
+20:19  Error: Insert `,`  prettier/prettier
+40:19  Error: Insert `⏎··········`  prettier/prettier
+41:11  Error: Insert `··`  prettier/prettier
+42:1  Error: Insert `··`  prettier/prettier
+43:1  Error: Replace `············` npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path /home/runner/work/leafygittest/leafygittest/frontend/apps/super-admin
+npm error workspace @leafyhealth/super-admin@1.0.0
+npm error location /home/runner/work/leafygittest/leafygittest/frontend/apps/super-admin
+npm error command failed
+npm error command sh -c next build
+Error: Process completed with exit code 1.

@@ -5,14 +5,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../../stores/authStore';
-import { 
-  CubeIcon, 
+import {
+  CubeIcon,
   ExclamationTriangleIcon,
   ArrowUpIcon,
   ArrowDownIcon,
   MagnifyingGlassIcon as SearchIcon,
   PlusIcon,
-  MinusIcon
+  MinusIcon,
 } from '@heroicons/react/24/outline';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
@@ -53,16 +53,17 @@ export function InventoryManagement() {
       setLoading(true);
       const response = await fetch('/api/direct-data/inventory', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
       if (response.ok) {
         const data = await response.json();
-        const inventoryData = data.inventory?.map((item: any) => ({
-          ...item,
-          stock_status: getStockStatus(item.current_stock, item.reorder_level)
-        })) || [];
+        const inventoryData =
+          data.inventory?.map((item: any) => ({
+            ...item,
+            stock_status: getStockStatus(item.current_stock, item.reorder_level),
+          })) || [];
         setInventory(inventoryData);
       }
     } catch (error) {
@@ -72,7 +73,10 @@ export function InventoryManagement() {
     }
   };
 
-  const getStockStatus = (currentStock: number, reorderLevel: number): 'low' | 'normal' | 'high' => {
+  const getStockStatus = (
+    currentStock: number,
+    reorderLevel: number
+  ): 'low' | 'normal' | 'high' => {
     if (currentStock <= reorderLevel) return 'low';
     if (currentStock <= reorderLevel * 2) return 'normal';
     return 'high';
@@ -102,7 +106,7 @@ export function InventoryManagement() {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ adjustment: stockAdjustment }),
       });
@@ -111,10 +115,13 @@ export function InventoryManagement() {
         setInventory(prev =>
           prev.map(item =>
             item.id === itemId
-              ? { 
-                  ...item, 
+              ? {
+                  ...item,
                   current_stock: item.current_stock + stockAdjustment,
-                  stock_status: getStockStatus(item.current_stock + stockAdjustment, item.reorder_level)
+                  stock_status: getStockStatus(
+                    item.current_stock + stockAdjustment,
+                    item.reorder_level
+                  ),
                 }
               : item
           )
@@ -129,19 +136,27 @@ export function InventoryManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'low': return 'bg-red-100 text-red-800';
-      case 'normal': return 'bg-yellow-100 text-yellow-800';
-      case 'high': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'low':
+        return 'bg-red-100 text-red-800';
+      case 'normal':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'high':
+        return 'bg-green-100 text-green-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'low': return <ExclamationTriangleIcon className="h-4 w-4" />;
-      case 'normal': return <MinusIcon className="h-4 w-4" />;
-      case 'high': return <ArrowUpIcon className="h-4 w-4" />;
-      default: return <CubeIcon className="h-4 w-4" />;
+      case 'low':
+        return <ExclamationTriangleIcon className="h-4 w-4" />;
+      case 'normal':
+        return <MinusIcon className="h-4 w-4" />;
+      case 'high':
+        return <ArrowUpIcon className="h-4 w-4" />;
+      default:
+        return <CubeIcon className="h-4 w-4" />;
     }
   };
 
@@ -161,7 +176,9 @@ export function InventoryManagement() {
           <CubeIcon className="h-8 w-8 text-indigo-600" />
           <div>
             <h2 className="text-2xl font-bold text-gray-900">Inventory Management</h2>
-            <p className="text-sm text-gray-600">Track and manage stock levels across all products</p>
+            <p className="text-sm text-gray-600">
+              Track and manage stock levels across all products
+            </p>
           </div>
         </div>
       </div>
@@ -215,7 +232,10 @@ export function InventoryManagement() {
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Total Value</p>
                 <p className="text-xl font-semibold text-gray-900">
-                  ₹{inventory.reduce((sum, item) => sum + (item.current_stock * item.price), 0).toFixed(0)}
+                  ₹
+                  {inventory
+                    .reduce((sum, item) => sum + item.current_stock * item.price, 0)
+                    .toFixed(0)}
                 </p>
               </div>
             </div>
@@ -234,7 +254,7 @@ export function InventoryManagement() {
                   type="text"
                   placeholder="Search products..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -242,7 +262,7 @@ export function InventoryManagement() {
             <div className="flex gap-4">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onChange={e => setStatusFilter(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 <option value="all">All Status</option>
@@ -274,7 +294,7 @@ export function InventoryManagement() {
                 </tr>
               </thead>
               <tbody>
-                {filteredInventory.map((item) => (
+                {filteredInventory.map(item => (
                   <tr key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
                     <td className="py-3 px-4">
                       <div>
@@ -288,7 +308,7 @@ export function InventoryManagement() {
                           <input
                             type="number"
                             value={stockAdjustment}
-                            onChange={(e) => setStockAdjustment(parseInt(e.target.value) || 0)}
+                            onChange={e => setStockAdjustment(parseInt(e.target.value) || 0)}
                             className="w-20 px-2 py-1 border border-gray-300 rounded text-sm"
                             placeholder="±"
                           />
@@ -314,7 +334,9 @@ export function InventoryManagement() {
                     </td>
                     <td className="py-3 px-4">{item.reorder_level}</td>
                     <td className="py-3 px-4">
-                      <span className={`px-2 py-1 text-xs rounded-full flex items-center space-x-1 ${getStatusColor(item.stock_status)}`}>
+                      <span
+                        className={`px-2 py-1 text-xs rounded-full flex items-center space-x-1 ${getStatusColor(item.stock_status)}`}
+                      >
                         {getStatusIcon(item.stock_status)}
                         <span className="capitalize">{item.stock_status}</span>
                       </span>
@@ -341,7 +363,9 @@ export function InventoryManagement() {
               <CubeIcon className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">No inventory items found</h3>
               <p className="mt-1 text-sm text-gray-500">
-                {searchTerm ? 'Try adjusting your search terms.' : 'Inventory will appear here once products are created.'}
+                {searchTerm
+                  ? 'Try adjusting your search terms.'
+                  : 'Inventory will appear here once products are created.'}
               </p>
             </div>
           )}

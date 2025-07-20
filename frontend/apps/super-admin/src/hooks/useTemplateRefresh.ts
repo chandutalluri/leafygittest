@@ -20,13 +20,13 @@ export const useTemplateRefresh = () => {
       if (response.ok) {
         const data = await response.json();
         const templatesArray = data.data || data.templates || data || [];
-        
+
         // Check if count changed
         if (templatesArray.length !== lastCount) {
           console.log(`📊 Template count changed: ${lastCount} → ${templatesArray.length}`);
           setLastCount(templatesArray.length);
         }
-        
+
         setTemplates(templatesArray);
         return templatesArray;
       }
@@ -61,6 +61,6 @@ export const useTemplateRefresh = () => {
     templates,
     loading,
     refresh,
-    templateCount: templates.length
+    templateCount: templates.length,
   };
 };

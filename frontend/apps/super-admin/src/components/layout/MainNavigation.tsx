@@ -4,12 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAuthStore } from '../../stores/authStore';
 
-import { 
-  Shield, 
-  Users, 
-  Globe, 
-  Zap, 
-  Network, 
+import {
+  Shield,
+  Users,
+  Globe,
+  Zap,
+  Network,
   Home,
   Settings,
   BarChart3,
@@ -34,7 +34,7 @@ import {
   FileBarChart,
   LogOut,
   UserCircle,
-  Database
+  Database,
 } from 'lucide-react';
 
 function SecureLogoutButton() {
@@ -84,7 +84,7 @@ const navigationItems: NavigationItem[] = [
     href: '/',
     icon: Home,
     description: 'System overview and status',
-    category: 'core'
+    category: 'core',
   },
   {
     name: 'Database Backup & Restore',
@@ -92,7 +92,7 @@ const navigationItems: NavigationItem[] = [
     icon: Database,
     description: 'Professional PostgreSQL backup and restore with Google Cloud Storage',
     category: 'core',
-    port: 3045
+    port: 3045,
   },
   {
     name: 'System Monitoring',
@@ -100,7 +100,7 @@ const navigationItems: NavigationItem[] = [
     icon: BarChart3,
     description: 'Real-time system performance and health monitoring',
     category: 'core',
-    port: 3029
+    port: 3029,
   },
   {
     name: 'Company Management',
@@ -108,7 +108,7 @@ const navigationItems: NavigationItem[] = [
     icon: Building2,
     description: 'Manage business entities and companies',
     category: 'core',
-    port: 3013
+    port: 3013,
   },
   {
     name: 'Image Management',
@@ -116,7 +116,7 @@ const navigationItems: NavigationItem[] = [
     icon: Image,
     description: 'Self-hosted image management with variants',
     category: 'core',
-    port: 8080
+    port: 8080,
   },
 
   // Security & Access Control
@@ -125,9 +125,8 @@ const navigationItems: NavigationItem[] = [
     href: '/security',
     icon: Shield,
     description: 'Complete user & permission control system',
-    category: 'security'
+    category: 'security',
   },
-
 
   // Business Operations
   {
@@ -136,7 +135,7 @@ const navigationItems: NavigationItem[] = [
     icon: Package,
     description: 'Product catalog and categories',
     category: 'business',
-    port: 3020
+    port: 3020,
   },
   {
     name: 'Inventory Management',
@@ -144,7 +143,7 @@ const navigationItems: NavigationItem[] = [
     icon: Warehouse,
     description: 'Stock and inventory tracking',
     category: 'business',
-    port: 3021
+    port: 3021,
   },
   {
     name: 'Order Management',
@@ -152,7 +151,7 @@ const navigationItems: NavigationItem[] = [
     icon: ShoppingBag,
     description: 'Order processing and fulfillment',
     category: 'business',
-    port: 3022
+    port: 3022,
   },
   {
     name: 'Customer Service',
@@ -160,7 +159,7 @@ const navigationItems: NavigationItem[] = [
     icon: HeadphonesIcon,
     description: 'Customer support and service management',
     category: 'business',
-    port: 3031
+    port: 3031,
   },
   {
     name: 'Marketplace Management',
@@ -168,7 +167,7 @@ const navigationItems: NavigationItem[] = [
     icon: Store,
     description: 'Multi-vendor marketplace operations',
     category: 'business',
-    port: 3032
+    port: 3032,
   },
   {
     name: 'Traditional Orders',
@@ -176,7 +175,7 @@ const navigationItems: NavigationItem[] = [
     icon: Package,
     description: 'Traditional home supplies order management',
     category: 'business',
-    port: 3050
+    port: 3050,
   },
   {
     name: 'Traditional Vendors',
@@ -184,7 +183,7 @@ const navigationItems: NavigationItem[] = [
     icon: Store,
     description: 'Vendor management for traditional supplies',
     category: 'business',
-    port: 3050
+    port: 3050,
   },
 
   // Financial Management
@@ -194,7 +193,7 @@ const navigationItems: NavigationItem[] = [
     icon: CreditCard,
     description: 'Payment gateway and transactions',
     category: 'financial',
-    port: 3023
+    port: 3023,
   },
   {
     name: 'Accounting Management',
@@ -202,7 +201,7 @@ const navigationItems: NavigationItem[] = [
     icon: Calculator,
     description: 'Financial accounting and bookkeeping',
     category: 'financial',
-    port: 3028
+    port: 3028,
   },
   {
     name: 'Expense Monitoring',
@@ -210,7 +209,7 @@ const navigationItems: NavigationItem[] = [
     icon: DollarSign,
     description: 'Business expense tracking and control',
     category: 'financial',
-    port: 3034
+    port: 3034,
   },
 
   // Operations & Logistics
@@ -220,7 +219,7 @@ const navigationItems: NavigationItem[] = [
     icon: Truck,
     description: 'Logistics and delivery management',
     category: 'operations',
-    port: 3026
+    port: 3026,
   },
   {
     name: 'Employee Management',
@@ -228,7 +227,7 @@ const navigationItems: NavigationItem[] = [
     icon: UserCheck,
     description: 'HR and workforce management',
     category: 'operations',
-    port: 3029
+    port: 3029,
   },
   {
     name: 'Label Design',
@@ -236,7 +235,7 @@ const navigationItems: NavigationItem[] = [
     icon: Tag,
     description: 'Product labeling and design system',
     category: 'operations',
-    port: 3035
+    port: 3035,
   },
 
   // Analytics & Reporting
@@ -246,7 +245,7 @@ const navigationItems: NavigationItem[] = [
     icon: TrendingUp,
     description: 'Business intelligence and analytics',
     category: 'analytics',
-    port: 3025
+    port: 3025,
   },
   {
     name: 'Reporting Management',
@@ -254,7 +253,7 @@ const navigationItems: NavigationItem[] = [
     icon: FileBarChart,
     description: 'Report generation and management',
     category: 'analytics',
-    port: 3036
+    port: 3036,
   },
 
   // Content & Communication
@@ -264,7 +263,7 @@ const navigationItems: NavigationItem[] = [
     icon: FileText,
     description: 'Digital content and media management',
     category: 'content',
-    port: 3037
+    port: 3037,
   },
   {
     name: 'Notification Service',
@@ -272,7 +271,7 @@ const navigationItems: NavigationItem[] = [
     icon: Bell,
     description: 'Multi-channel notifications and alerts',
     category: 'content',
-    port: 3024
+    port: 3024,
   },
   {
     name: 'Multi-Language Management',
@@ -280,7 +279,7 @@ const navigationItems: NavigationItem[] = [
     icon: Languages,
     description: 'Internationalization and localization',
     category: 'content',
-    port: 3038
+    port: 3038,
   },
 
   // System Administration
@@ -290,7 +289,7 @@ const navigationItems: NavigationItem[] = [
     icon: Zap,
     description: 'System performance monitoring',
     category: 'system',
-    port: 3030
+    port: 3030,
   },
   {
     name: 'Integration Hub',
@@ -298,7 +297,7 @@ const navigationItems: NavigationItem[] = [
     icon: Network,
     description: 'Third-party integrations and APIs',
     category: 'system',
-    port: 3033
+    port: 3033,
   },
   {
     name: 'Compliance Audit',
@@ -306,8 +305,8 @@ const navigationItems: NavigationItem[] = [
     icon: FileCheck,
     description: 'Regulatory compliance and auditing',
     category: 'system',
-    port: 3027
-  }
+    port: 3027,
+  },
 ];
 
 const categories = [
@@ -318,7 +317,7 @@ const categories = [
   { id: 'operations', name: 'Operations & Logistics', color: 'bg-purple-500' },
   { id: 'analytics', name: 'Analytics & Reporting', color: 'bg-indigo-500' },
   { id: 'content', name: 'Content & Communication', color: 'bg-pink-500' },
-  { id: 'system', name: 'System Administration', color: 'bg-gray-500' }
+  { id: 'system', name: 'System Administration', color: 'bg-gray-500' },
 ];
 
 export function MainNavigation() {
@@ -342,8 +341,8 @@ export function MainNavigation() {
         name: 'Business Overview',
         href: '/operational-dashboard',
         icon: Home,
-        description: 'Business domain management'
-      }
+        description: 'Business domain management',
+      },
     ];
 
     return (
@@ -355,7 +354,7 @@ export function MainNavigation() {
                 src="/api/image-management/serve/leafyhealthlogo_copy_25991930-2a1c-4593-95db-1965eea84310.png"
                 alt="LeafyHealth Logo"
                 className="w-full h-full object-contain"
-                onError={(e) => {
+                onError={e => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                   target.nextElementSibling?.classList.remove('hidden');
@@ -366,9 +365,7 @@ export function MainNavigation() {
               </div>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-800">
-                LeafyHealth Operations
-              </h2>
+              <h2 className="text-xl font-bold text-gray-800">LeafyHealth Operations</h2>
               <p className="text-xs text-gray-500">Business Domain Management</p>
             </div>
           </div>
@@ -382,40 +379,47 @@ export function MainNavigation() {
                 Business Domains
               </h3>
             </div>
-            
+
             <div className="space-y-1">
-              {businessDomains.map((item) => {
+              {businessDomains.map(item => {
                 const Icon = item.icon;
                 const isActive = isActiveRoute(item.href);
-                
+
                 return (
                   <Link
                     key={item.href}
                     href={item.href}
                     className={`
                       group flex items-center px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer
-                      ${isActive 
-                        ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-[1.02]' 
-                        : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                      ${
+                        isActive
+                          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-[1.02]'
+                          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                       }
                     `}
                   >
-                    <Icon className={`
+                    <Icon
+                      className={`
                       h-5 w-5 mr-3 transition-transform duration-200
                       ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}
                       ${isActive ? 'scale-110' : 'group-hover:scale-105'}
-                    `} />
+                    `}
+                    />
                     <div className="flex-1">
-                      <div className={`
+                      <div
+                        className={`
                         font-medium text-sm
                         ${isActive ? 'text-white' : 'text-gray-900'}
-                      `}>
+                      `}
+                      >
                         {item.name}
                       </div>
-                      <div className={`
+                      <div
+                        className={`
                         text-xs mt-0.5
                         ${isActive ? 'text-indigo-100' : 'text-gray-500'}
-                      `}>
+                      `}
+                      >
                         {item.description}
                       </div>
                     </div>
@@ -432,9 +436,7 @@ export function MainNavigation() {
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-gray-50 to-transparent">
           <SecureLogoutButton />
           <div className="text-center mt-4">
-            <p className="text-xs text-gray-500">
-              Operations Admin
-            </p>
+            <p className="text-xs text-gray-500">Operations Admin</p>
             <p className="text-xs text-gray-400">6 Business Domains</p>
           </div>
         </div>
@@ -452,7 +454,7 @@ export function MainNavigation() {
               src="/api/image-management/serve/leafyhealthlogo_copy_25991930-2a1c-4593-95db-1965eea84310.png"
               alt="LeafyHealth Logo"
               className="w-full h-full object-contain"
-              onError={(e) => {
+              onError={e => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
                 target.nextElementSibling?.classList.remove('hidden');
@@ -463,18 +465,16 @@ export function MainNavigation() {
             </div>
           </div>
           <div>
-            <h2 className="text-xl font-bold text-gray-800">
-              LeafyHealth Super Admin
-            </h2>
+            <h2 className="text-xl font-bold text-gray-800">LeafyHealth Super Admin</h2>
             <p className="text-xs text-gray-500">System Administration</p>
           </div>
         </div>
       </div>
 
       <div className="p-4">
-        {categories.map((category) => {
+        {categories.map(category => {
           const categoryItems = navigationItems.filter(item => item.category === category.id);
-          
+
           if (categoryItems.length === 0) return null;
 
           return (
@@ -485,40 +485,47 @@ export function MainNavigation() {
                   {category.name}
                 </h3>
               </div>
-              
+
               <div className="space-y-1">
-                {categoryItems.map((item) => {
+                {categoryItems.map(item => {
                   const Icon = item.icon;
                   const isActive = isActiveRoute(item.href);
-                  
+
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
                       className={`
                         group flex items-center px-4 py-3 rounded-xl transition-all duration-200 cursor-pointer
-                        ${isActive 
-                          ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-[1.02]' 
-                          : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                        ${
+                          isActive
+                            ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg transform scale-[1.02]'
+                            : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
                         }
                       `}
                     >
-                      <Icon className={`
+                      <Icon
+                        className={`
                         h-5 w-5 mr-3 transition-transform duration-200
                         ${isActive ? 'text-white' : 'text-gray-400 group-hover:text-gray-600'}
                         ${isActive ? 'scale-110' : 'group-hover:scale-105'}
-                      `} />
+                      `}
+                      />
                       <div className="flex-1">
-                        <div className={`
+                        <div
+                          className={`
                           font-medium text-sm
                           ${isActive ? 'text-white' : 'text-gray-900'}
-                        `}>
+                        `}
+                        >
                           {item.name}
                         </div>
-                        <div className={`
+                        <div
+                          className={`
                           text-xs mt-0.5
                           ${isActive ? 'text-indigo-100' : 'text-gray-500'}
-                        `}>
+                        `}
+                        >
                           {item.description}
                         </div>
                       </div>
@@ -537,9 +544,7 @@ export function MainNavigation() {
       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-gray-50 to-transparent">
         <SecureLogoutButton />
         <div className="text-center mt-4">
-          <p className="text-xs text-gray-500">
-            LeafyHealth Super Admin v1.0
-          </p>
+          <p className="text-xs text-gray-500">LeafyHealth Super Admin v1.0</p>
           <p className="text-xs text-gray-400">23 Microservices Connected</p>
         </div>
       </div>

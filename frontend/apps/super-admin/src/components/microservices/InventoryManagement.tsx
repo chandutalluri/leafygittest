@@ -4,8 +4,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Package, Plus, Search, Edit, Trash2, AlertTriangle, TrendingUp, TrendingDown } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Package,
+  Plus,
+  Search,
+  Edit,
+  Trash2,
+  AlertTriangle,
+  TrendingUp,
+  TrendingDown,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
@@ -56,9 +72,9 @@ export default function InventoryManagement() {
         apiClient.get('/api/direct-data/inventory', {
           search: searchTerm,
           status: statusFilter !== 'all' ? statusFilter : undefined,
-          branch: branchFilter !== 'all' ? branchFilter : undefined
+          branch: branchFilter !== 'all' ? branchFilter : undefined,
         }),
-        apiClient.get('/api/direct-data/inventory/adjustments')
+        apiClient.get('/api/direct-data/inventory/adjustments'),
       ]);
       setInventory(inventoryData || []);
       setAdjustments(adjustmentsData || []);
@@ -73,7 +89,7 @@ export default function InventoryManagement() {
     try {
       await apiClient.post(`/api/direct-data/inventory/${itemId}/adjust`, {
         newQuantity,
-        reason
+        reason,
       });
       fetchInventoryData();
       setIsAdjustDialogOpen(false);
@@ -85,30 +101,42 @@ export default function InventoryManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'in_stock': return 'default';
-      case 'low_stock': return 'secondary';
-      case 'out_of_stock': return 'destructive';
-      case 'overstock': return 'secondary';
-      default: return 'secondary';
+      case 'in_stock':
+        return 'default';
+      case 'low_stock':
+        return 'secondary';
+      case 'out_of_stock':
+        return 'destructive';
+      case 'overstock':
+        return 'secondary';
+      default:
+        return 'secondary';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'low_stock': return <AlertTriangle className="h-4 w-4" />;
-      case 'out_of_stock': return <TrendingDown className="h-4 w-4" />;
-      case 'overstock': return <TrendingUp className="h-4 w-4" />;
-      default: return <Package className="h-4 w-4" />;
+      case 'low_stock':
+        return <AlertTriangle className="h-4 w-4" />;
+      case 'out_of_stock':
+        return <TrendingDown className="h-4 w-4" />;
+      case 'overstock':
+        return <TrendingUp className="h-4 w-4" />;
+      default:
+        return <Package className="h-4 w-4" />;
     }
   };
 
-  const filteredInventory = inventory.filter(item =>
-    item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.branchName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredInventory = inventory.filter(
+    item =>
+      item.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.branchName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading inventory management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading inventory management...</div>
+    );
   }
 
   return (
@@ -132,7 +160,7 @@ export default function InventoryManagement() {
               <Input
                 placeholder="Search products or branches..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={e => setSearchTerm(e.target.value)}
                 className="pl-10"
               />
             </div>
@@ -201,7 +229,9 @@ export default function InventoryManagement() {
             <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">₹{inventory.reduce((sum, item) => sum + (item.quantity * 100), 0).toLocaleString()}</div>
+            <div className="text-2xl font-bold">
+              ₹{inventory.reduce((sum, item) => sum + item.quantity * 100, 0).toLocaleString()}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -227,7 +257,7 @@ export default function InventoryManagement() {
                 </tr>
               </thead>
               <tbody>
-                {filteredInventory.map((item) => (
+                {filteredInventory.map(item => (
                   <tr key={item.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">
                       <div className="font-medium">{item.productName}</div>
@@ -248,16 +278,15 @@ export default function InventoryManagement() {
                       {new Date(item.lastUpdated).toLocaleDateString()}
                     </td>
                     <td className="py-3 px-4">
-                      <Dialog open={isAdjustDialogOpen && selectedItem?.id === item.id} onOpenChange={(open) => {
-                        setIsAdjustDialogOpen(open);
-                        if (!open) setSelectedItem(null);
-                      }}>
+                      <Dialog
+                        open={isAdjustDialogOpen && selectedItem?.id === item.id}
+                        onOpenChange={open => {
+                          setIsAdjustDialogOpen(open);
+                          if (!open) setSelectedItem(null);
+                        }}
+                      >
                         <DialogTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setSelectedItem(item)}
-                          >
+                          <Button variant="outline" size="sm" onClick={() => setSelectedItem(item)}>
                             <Edit className="h-4 w-4 mr-1" />
                             Adjust
                           </Button>
@@ -271,7 +300,9 @@ export default function InventoryManagement() {
                           </DialogHeader>
                           <InventoryAdjustForm
                             item={item}
-                            onSubmit={(newQuantity, reason) => adjustInventory(item.id, newQuantity, reason)}
+                            onSubmit={(newQuantity, reason) =>
+                              adjustInventory(item.id, newQuantity, reason)
+                            }
                             onCancel={() => {
                               setIsAdjustDialogOpen(false);
                               setSelectedItem(null);
@@ -296,8 +327,11 @@ export default function InventoryManagement() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {adjustments.slice(0, 5).map((adjustment) => (
-              <div key={adjustment.id} className="flex items-center justify-between p-4 border rounded-lg">
+            {adjustments.slice(0, 5).map(adjustment => (
+              <div
+                key={adjustment.id}
+                className="flex items-center justify-between p-4 border rounded-lg"
+              >
                 <div>
                   <div className="font-medium">{adjustment.productName}</div>
                   <div className="text-sm text-gray-500">{adjustment.branchName}</div>
@@ -322,12 +356,12 @@ export default function InventoryManagement() {
   );
 }
 
-function InventoryAdjustForm({ 
-  item, 
-  onSubmit, 
-  onCancel 
-}: { 
-  item: InventoryItem; 
+function InventoryAdjustForm({
+  item,
+  onSubmit,
+  onCancel,
+}: {
+  item: InventoryItem;
   onSubmit: (newQuantity: number, reason: string) => void;
   onCancel: () => void;
 }) {
@@ -351,7 +385,7 @@ function InventoryAdjustForm({
           id="newQuantity"
           type="number"
           value={newQuantity}
-          onChange={(e) => setNewQuantity(parseInt(e.target.value))}
+          onChange={e => setNewQuantity(parseInt(e.target.value))}
           required
         />
       </div>
@@ -376,9 +410,7 @@ function InventoryAdjustForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Adjust Inventory
-        </Button>
+        <Button type="submit">Adjust Inventory</Button>
       </div>
     </form>
   );

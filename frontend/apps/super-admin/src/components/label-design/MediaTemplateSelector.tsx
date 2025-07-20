@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
@@ -30,7 +30,7 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
       setLoading(true);
       const response = await fetch('/api/labels/media-types');
       const result = await response.json();
-      
+
       if (result.success) {
         // Transform the data to match our interface
         const transformedData: MediaTemplate[] = result.data.map((item: any) => ({
@@ -38,8 +38,8 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
           name: item.name,
           dimensions: {
             labelWidth: item.dimensions.labelWidth,
-            labelHeight: item.dimensions.labelHeight
-          }
+            labelHeight: item.dimensions.labelHeight,
+          },
         }));
         setMediaTypes(transformedData);
       } else {
@@ -85,7 +85,7 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
   return (
     <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mediaTypes.map((template) => (
+        {mediaTypes.map(template => (
           <div
             key={template.id}
             className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow cursor-pointer"
@@ -97,7 +97,7 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
                 {template.dimensions.labelWidth} × {template.dimensions.labelHeight}mm
               </div>
             </div>
-            
+
             <div className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">Width:</span>
@@ -108,7 +108,7 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
                 <span className="font-medium">{template.dimensions.labelHeight}mm</span>
               </div>
             </div>
-            
+
             <div className="mt-4 pt-4 border-t border-gray-100">
               <button className="w-full py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-700 transition-colors">
                 Select This Media
@@ -117,7 +117,7 @@ export function MediaTemplateSelector({ onSelect }: MediaTemplateProps) {
           </div>
         ))}
       </div>
-      
+
       {mediaTypes.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-600">No media templates available</p>

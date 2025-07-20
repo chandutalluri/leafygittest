@@ -1,56 +1,55 @@
-
 /**
  * Professional Label Template Configuration System
  * Supports real-world label sheets and thermal rolls
  */
 
 export interface LabelDimensions {
-  width: number;  // mm
+  width: number; // mm
   height: number; // mm
 }
 
 export interface MediaMargins {
-  top: number;    // mm
+  top: number; // mm
   bottom: number; // mm
-  left: number;   // mm
-  right: number;  // mm
+  left: number; // mm
+  right: number; // mm
 }
 
 export interface LabelSpacing {
   horizontal: number; // mm between labels horizontally
-  vertical: number;   // mm between labels vertically
+  vertical: number; // mm between labels vertically
 }
 
 export interface LabelTemplate {
   id: string;
   name: string;
   description: string;
-  
+
   // Media type
   mediaType: 'sheet' | 'roll';
-  
+
   // Paper dimensions (for sheets)
-  paperWidth?: number;  // mm (e.g., 210 for A4)
+  paperWidth?: number; // mm (e.g., 210 for A4)
   paperHeight?: number; // mm (e.g., 297 for A4)
-  
+
   // Roll specifications (for thermal printers)
-  rollWidth?: number;   // mm (e.g., 58mm thermal roll)
-  
+  rollWidth?: number; // mm (e.g., 58mm thermal roll)
+
   // Individual label dimensions
   labelDimensions: LabelDimensions;
-  
+
   // Layout grid (calculated for sheets, 1x continuous for rolls)
   rows: number;
   columns: number;
-  
+
   // Spacing and margins
   margins: MediaMargins;
   spacing: LabelSpacing;
-  
+
   // Print specifications
-  printDPI: number;     // 203, 300, 600 DPI
+  printDPI: number; // 203, 300, 600 DPI
   printerType: 'thermal' | 'inkjet' | 'laser';
-  
+
   // Metadata
   isActive: boolean;
   createdAt: string;
@@ -76,7 +75,7 @@ export const STANDARD_TEMPLATES: LabelTemplate[] = [
     printerType: 'laser',
     isActive: true,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'avery-l7163',
@@ -94,7 +93,7 @@ export const STANDARD_TEMPLATES: LabelTemplate[] = [
     printerType: 'laser',
     isActive: true,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'custom-a4-30up',
@@ -112,9 +111,9 @@ export const STANDARD_TEMPLATES: LabelTemplate[] = [
     printerType: 'laser',
     isActive: true,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   },
-  
+
   // Thermal Roll Templates
   {
     id: 'thermal-58mm-continuous',
@@ -131,7 +130,7 @@ export const STANDARD_TEMPLATES: LabelTemplate[] = [
     printerType: 'thermal',
     isActive: true,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    updatedAt: new Date().toISOString(),
   },
   {
     id: 'thermal-102mm-shipping',
@@ -148,8 +147,8 @@ export const STANDARD_TEMPLATES: LabelTemplate[] = [
     printerType: 'thermal',
     isActive: true,
     createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
+    updatedAt: new Date().toISOString(),
+  },
 ];
 
 // Utility functions
@@ -158,7 +157,10 @@ export const calculateLabelsPerSheet = (template: LabelTemplate): number => {
   return template.rows * template.columns;
 };
 
-export const calculateCanvasScale = (labelDimensions: LabelDimensions, canvasSize: { width: number, height: number }): number => {
+export const calculateCanvasScale = (
+  labelDimensions: LabelDimensions,
+  canvasSize: { width: number; height: number }
+): number => {
   const scaleX = canvasSize.width / labelDimensions.width;
   const scaleY = canvasSize.height / labelDimensions.height;
   return Math.min(scaleX, scaleY, 3); // Max 3x scale for clarity

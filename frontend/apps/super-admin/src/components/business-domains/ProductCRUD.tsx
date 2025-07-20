@@ -33,6 +33,16 @@ interface Category {
   description: string;
 }
 
+interface ProductFormData {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  status: string;
+  stockLevel: number;
+  lowStockThreshold: number;
+}
+
 export default function ProductCRUD() {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -42,6 +52,7 @@ export default function ProductCRUD() {
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -50,25 +61,27 @@ export default function ProductCRUD() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      
+
       // Fetch products with retry logic
       const maxRetries = 5;
       let attempt = 0;
       let productsResponse;
-      
+
       while (attempt < maxRetries) {
         try {
           productsResponse = await fetch('/api/products', {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           });
-          
+
           if (productsResponse.ok) {
             break; // Success, exit retry loop
           } else if (productsResponse.status === 502) {
             // Service unavailable, wait and retry
-            console.log(`Service unavailable, retrying in 3 seconds... (attempt ${attempt + 1}/${maxRetries})`);
+            console.log(
+              `Service unavailable, retrying in 3 seconds... (attempt ${attempt + 1}/${maxRetries})`
+            );
             await new Promise(resolve => setTimeout(resolve, 3000));
             attempt++;
             continue;
@@ -85,7 +98,7 @@ export default function ProductCRUD() {
           attempt++;
         }
       }
-      
+
       if (productsResponse && productsResponse.ok) {
         const productsData = await productsResponse.json();
         console.log('Products data received:', productsData);
@@ -106,20 +119,22 @@ export default function ProductCRUD() {
       // Fetch categories with retry logic
       let categoriesResponse;
       attempt = 0;
-      
+
       while (attempt < maxRetries) {
         try {
           categoriesResponse = await fetch('/api/categories', {
             headers: {
-              'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
           });
-          
+
           if (categoriesResponse.ok) {
             break; // Success, exit retry loop
           } else if (categoriesResponse.status === 502) {
             // Service unavailable, wait and retry
-            console.log(`Categories service unavailable, retrying in 3 seconds... (attempt ${attempt + 1}/${maxRetries})`);
+            console.log(
+              `Categories service unavailable, retrying in 3 seconds... (attempt ${attempt + 1}/${maxRetries})`
+            );
             await new Promise(resolve => setTimeout(resolve, 3000));
             attempt++;
             continue;
@@ -136,7 +151,7 @@ export default function ProductCRUD() {
           attempt++;
         }
       }
-      
+
       if (categoriesResponse && categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
         console.log('Categories data received:', categoriesData);
@@ -160,15 +175,15 @@ export default function ProductCRUD() {
     }
   };
 
-  const createProduct = async (productData: typeof formData) => {
+  const createProduct = async (productData: ProductFormData) => {
     try {
       console.log('Creating product:', productData);
-      
+
       const response = await fetch('/api/products/create-composite', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
           name: productData.name,
@@ -181,8 +196,8 @@ export default function ProductCRUD() {
           isAvailable: true,
           initialStock: productData.stockLevel || 0,
           lowStockThreshold: productData.lowStockThreshold || 10,
-          branchSpecific: false
-        })
+          branchSpecific: false,
+        }),
       });
 
       if (!response.ok) {
@@ -192,29 +207,31 @@ export default function ProductCRUD() {
 
       const result = await response.json();
       console.log('Product created successfully:', result);
-      
+
       await fetchData();
       setIsProductDialogOpen(false);
-      resetForm();
-      
+      // resetForm(); // Function not defined, remove call
+
       return result;
     } catch (error) {
       console.error('Failed to create product:', error);
-      alert('Failed to create product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to create product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const updateProduct = async (productId: number, productData: Partial<Product>) => {
     try {
       console.log('Updating product:', productId, productData);
-      
+
       const response = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(productData)
+        body: JSON.stringify(productData),
       });
 
       if (!response.ok) {
@@ -224,15 +241,17 @@ export default function ProductCRUD() {
 
       const result = await response.json();
       console.log('Product updated successfully:', result);
-      
+
       await fetchData();
       setIsEditDialogOpen(false);
       setEditingProduct(null);
-      
+
       return result;
     } catch (error) {
       console.error('Failed to update product:', error);
-      alert('Failed to update product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
@@ -243,12 +262,12 @@ export default function ProductCRUD() {
       }
 
       console.log('Deleting product:', productId);
-      
+
       const response = await fetch(`/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
 
       if (!response.ok) {
@@ -260,25 +279,27 @@ export default function ProductCRUD() {
       await fetchData();
     } catch (error) {
       console.error('Failed to delete product:', error);
-      alert('Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const uploadProductImage = async (productId: number, file: File) => {
     try {
       console.log('Uploading image for product:', productId);
-      
+
       const formData = new FormData();
       formData.append('files', file);
       formData.append('entityType', 'product');
       formData.append('entityId', productId.toString());
-      
+
       const response = await fetch('/api/image-management/upload', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: formData
+        body: formData,
       });
 
       if (!response.ok) {
@@ -290,11 +311,11 @@ export default function ProductCRUD() {
       await fetchData();
     } catch (error) {
       console.error('Failed to upload product image:', error);
-      alert('Failed to upload image: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to upload image: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
-
-
 
   const openEditDialog = (product: Product) => {
     setEditingProduct(product);
@@ -302,12 +323,15 @@ export default function ProductCRUD() {
   };
 
   const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = categoryFilter === 'all' || product.category.id.toString() === categoryFilter;
-    const matchesStatus = statusFilter === 'all' || 
-                         (statusFilter === 'active' && product.isActive) ||
-                         (statusFilter === 'inactive' && !product.isActive);
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory =
+      categoryFilter === 'all' || product.category.id.toString() === categoryFilter;
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'active' && product.isActive) ||
+      (statusFilter === 'inactive' && !product.isActive);
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
@@ -338,7 +362,7 @@ export default function ProductCRUD() {
             <Input
               placeholder="Search products..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger>
@@ -346,7 +370,7 @@ export default function ProductCRUD() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.name}
                   </SelectItem>
@@ -387,13 +411,13 @@ export default function ProductCRUD() {
                 </tr>
               </thead>
               <tbody>
-                {filteredProducts.map((product) => (
+                {filteredProducts.map(product => (
                   <tr key={product.id} className="border-b hover:bg-gray-50">
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         {product.images.length > 0 && (
-                          <img 
-                            src={product.images[0]?.url || '/placeholder-product.jpg'} 
+                          <img
+                            src={product.images[0]?.url || '/placeholder-product.jpg'}
                             alt={product.name}
                             className="w-10 h-10 rounded-lg object-cover"
                           />
@@ -423,33 +447,29 @@ export default function ProductCRUD() {
                     </td>
                     <td className="py-3 px-4">
                       <div className="flex gap-2">
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => openEditDialog(product)}
-                        >
+                        <Button size="sm" variant="outline" onClick={() => openEditDialog(product)}>
                           <Edit className="h-4 w-4 mr-1" />
                           Edit
                         </Button>
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
+                          onChange={e => {
                             const file = e.target.files?.[0];
                             if (file) uploadProductImage(product.id, file);
                           }}
                           className="hidden"
                           id={`image-${product.id}`}
                         />
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
+                        <Button
+                          size="sm"
+                          variant="outline"
                           onClick={() => document.getElementById(`image-${product.id}`)?.click()}
                         >
                           Upload Image
                         </Button>
-                        <Button 
-                          size="sm" 
+                        <Button
+                          size="sm"
                           variant="destructive"
                           onClick={() => deleteProduct(product.id)}
                         >

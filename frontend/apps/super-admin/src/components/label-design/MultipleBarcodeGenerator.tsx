@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { QrCodeIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
@@ -24,7 +24,7 @@ interface MultipleBarcodeGeneratorProps {
 
 const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
   onBarcodeGenerated,
-  onClose
+  onClose,
 }) => {
   const [options, setOptions] = useState<BarcodeOptions>({
     type: 'UPC-A',
@@ -32,9 +32,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
     width: 200,
     height: 80,
     fontSize: 12,
-    showText: true
+    showText: true,
   });
-  
+
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [error, setError] = useState<string>('');
@@ -45,26 +45,27 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
       description: 'Universal Product Code (12 digits)',
       pattern: '123456789012',
       validation: (content: string) => /^\d{12}$/.test(content),
-      errorMessage: 'UPC-A requires exactly 12 digits'
+      errorMessage: 'UPC-A requires exactly 12 digits',
     },
     'EAN-13': {
       description: 'European Article Number (13 digits)',
       pattern: '1234567890123',
       validation: (content: string) => /^\d{13}$/.test(content),
-      errorMessage: 'EAN-13 requires exactly 13 digits'
+      errorMessage: 'EAN-13 requires exactly 13 digits',
     },
-    'Code128': {
+    Code128: {
       description: 'Variable length alphanumeric',
       pattern: 'ABC123def456',
       validation: (content: string) => content.length > 0 && content.length <= 80,
-      errorMessage: 'Code128 supports up to 80 characters'
+      errorMessage: 'Code128 supports up to 80 characters',
     },
-    'Code39': {
+    Code39: {
       description: 'Alphanumeric with limited symbols',
       pattern: 'PRODUCT123',
-      validation: (content: string) => /^[A-Z0-9\-\.\$\/\+\%\s]*$/.test(content) && content.length <= 43,
-      errorMessage: 'Code39 supports A-Z, 0-9, and symbols (-.$/+% space) up to 43 characters'
-    }
+      validation: (content: string) =>
+        /^[A-Z0-9\-\.\$\/\+\%\s]*$/.test(content) && content.length <= 43,
+      errorMessage: 'Code39 supports A-Z, 0-9, and symbols (-.$/+% space) up to 43 characters',
+    },
   };
 
   // Generate barcode patterns using canvas
@@ -82,9 +83,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
 
     // Set barcode drawing properties
     ctx.fillStyle = 'black';
-    
+
     let bars: number[] = [];
-    
+
     switch (type) {
       case 'UPC-A':
         bars = generateUPCABars(content);
@@ -102,13 +103,13 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
 
     // Draw bars with proper quiet zones
     const quietZone = Math.max(10, canvas.width * 0.05);
-    const barcodeWidth = canvas.width - (quietZone * 2);
+    const barcodeWidth = canvas.width - quietZone * 2;
     const barWidth = barcodeWidth / bars.length;
     const barcodeHeight = options.showText ? canvas.height - 20 : canvas.height - 10;
 
     bars.forEach((bar, index) => {
       if (bar === 1) {
-        const x = quietZone + (index * barWidth);
+        const x = quietZone + index * barWidth;
         ctx.fillRect(x, 5, Math.max(1, barWidth), barcodeHeight);
       }
     });
@@ -126,14 +127,14 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
 
   // UPC-A barcode generation (simplified)
   const generateUPCABars = (content: string): number[] => {
-    const startPattern = [1,0,1];
-    const endPattern = [1,0,1];
-    const middlePattern = [0,1,0,1,0];
-    
+    const startPattern = [1, 0, 1];
+    const endPattern = [1, 0, 1];
+    const middlePattern = [0, 1, 0, 1, 0];
+
     // This is a simplified representation
     // In production, use proper UPC-A encoding tables
     const bars: number[] = [...startPattern];
-    
+
     for (let i = 0; i < content.length; i++) {
       const digit = parseInt(content[i]);
       // Add encoded digit (simplified pattern)
@@ -142,19 +143,19 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
       }
       if (i === 5) bars.push(...middlePattern);
     }
-    
+
     bars.push(...endPattern);
     return bars;
   };
 
   // EAN-13 barcode generation (simplified)
   const generateEAN13Bars = (content: string): number[] => {
-    const startPattern = [1,0,1];
-    const endPattern = [1,0,1];
-    const middlePattern = [0,1,0,1,0];
-    
+    const startPattern = [1, 0, 1];
+    const endPattern = [1, 0, 1];
+    const middlePattern = [0, 1, 0, 1, 0];
+
     const bars: number[] = [...startPattern];
-    
+
     for (let i = 0; i < content.length; i++) {
       // Add encoded digit patterns
       for (let j = 0; j < 7; j++) {
@@ -162,36 +163,36 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
       }
       if (i === 5) bars.push(...middlePattern);
     }
-    
+
     bars.push(...endPattern);
     return bars;
   };
 
   // Code 128 barcode generation (simplified)
   const generateCode128Bars = (content: string): number[] => {
-    const startPattern = [1,1,0,1,0,1,1,0,0];
-    const endPattern = [1,1,0,0,0,1,1,1,0,1,0,1];
-    
+    const startPattern = [1, 1, 0, 1, 0, 1, 1, 0, 0];
+    const endPattern = [1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1];
+
     const bars: number[] = [...startPattern];
-    
+
     // Simplified encoding - each character gets 11 bars
     for (let i = 0; i < content.length; i++) {
       for (let j = 0; j < 11; j++) {
         bars.push(Math.random() > 0.5 ? 1 : 0);
       }
     }
-    
+
     bars.push(...endPattern);
     return bars;
   };
 
   // Code 39 barcode generation (simplified)
   const generateCode39Bars = (content: string): number[] => {
-    const startStopPattern = [1,0,1,1,0,1,0,1,0];
+    const startStopPattern = [1, 0, 1, 1, 0, 1, 0, 1, 0];
     const intercharGap = [0];
-    
+
     const bars: number[] = [...startStopPattern, ...intercharGap];
-    
+
     // Each character in Code 39 has 9 bars (5 black, 4 white)
     for (let i = 0; i < content.length; i++) {
       for (let j = 0; j < 9; j++) {
@@ -199,7 +200,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
       }
       bars.push(...intercharGap);
     }
-    
+
     bars.push(...startStopPattern);
     return bars;
   };
@@ -215,7 +216,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
     if (options.content && validateContent(options.type, options.content)) {
       setIsGenerating(true);
       setError('');
-      
+
       try {
         const imageUrl = generateBarcodePattern(options.type, options.content);
         setPreviewUrl(imageUrl);
@@ -233,7 +234,14 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
       setError('');
       setPreviewUrl('');
     }
-  }, [options.type, options.content, options.width, options.height, options.fontSize, options.showText]);
+  }, [
+    options.type,
+    options.content,
+    options.width,
+    options.height,
+    options.fontSize,
+    options.showText,
+  ]);
 
   const handleGenerate = () => {
     if (!options.content || !validateContent(options.type, options.content)) {
@@ -241,14 +249,14 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
     }
 
     const imageUrl = generateBarcodePattern(options.type, options.content);
-    
+
     onBarcodeGenerated({
       type: options.type,
       content: options.content,
       options,
-      imageUrl
+      imageUrl,
     });
-    
+
     onClose();
   };
 
@@ -261,10 +269,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
               <QrCodeIcon className="h-6 w-6 mr-2" />
               Professional Barcode Generator
             </h2>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
-            >
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
               ✕
             </button>
           </div>
@@ -273,18 +278,18 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
         <div className="p-6">
           {/* Barcode Type Selection */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Barcode Type
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Barcode Type</label>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(barcodeSpecs).map(([type, spec]) => (
                 <button
                   key={type}
-                  onClick={() => setOptions(prev => ({ 
-                    ...prev, 
-                    type: type as BarcodeOptions['type'],
-                    content: type === options.type ? prev.content : spec.pattern
-                  }))}
+                  onClick={() =>
+                    setOptions(prev => ({
+                      ...prev,
+                      type: type as BarcodeOptions['type'],
+                      content: type === options.type ? prev.content : spec.pattern,
+                    }))
+                  }
                   className={`p-3 border rounded-lg text-left transition-colors ${
                     options.type === type
                       ? 'border-blue-500 bg-blue-50'
@@ -301,26 +306,22 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
 
           {/* Content Input */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Barcode Content
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Barcode Content</label>
             <input
               type="text"
               value={options.content}
-              onChange={(e) => setOptions(prev => ({ ...prev, content: e.target.value.toUpperCase() }))}
+              onChange={e =>
+                setOptions(prev => ({ ...prev, content: e.target.value.toUpperCase() }))
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-md"
               placeholder={barcodeSpecs[options.type].pattern}
             />
-            {error && (
-              <p className="mt-1 text-sm text-red-600">{error}</p>
-            )}
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
           </div>
 
           {/* Preview */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Preview
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Preview</label>
             <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 min-h-[120px] flex items-center justify-center">
               {isGenerating ? (
                 <div className="text-center">
@@ -328,11 +329,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
                   <p className="mt-2 text-sm text-gray-500">Generating barcode...</p>
                 </div>
               ) : previewUrl ? (
-                <img 
-                  src={previewUrl} 
-                  alt="Barcode preview" 
-                  className="max-w-full max-h-full"
-                />
+                <img src={previewUrl} alt="Barcode preview" className="max-w-full max-h-full" />
               ) : (
                 <p className="text-gray-400">Enter valid content to see preview</p>
               )}
@@ -343,9 +340,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
           <div className="mb-6">
             <div className="flex items-center mb-3">
               <Cog6ToothIcon className="h-5 w-5 mr-2" />
-              <label className="text-sm font-medium text-gray-700">
-                Advanced Options
-              </label>
+              <label className="text-sm font-medium text-gray-700">Advanced Options</label>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -353,7 +348,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
                 <input
                   type="number"
                   value={options.width}
-                  onChange={(e) => setOptions(prev => ({ ...prev, width: parseInt(e.target.value) || 200 }))}
+                  onChange={e =>
+                    setOptions(prev => ({ ...prev, width: parseInt(e.target.value) || 200 }))
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                   min="100"
                   max="400"
@@ -364,7 +361,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
                 <input
                   type="number"
                   value={options.height}
-                  onChange={(e) => setOptions(prev => ({ ...prev, height: parseInt(e.target.value) || 80 }))}
+                  onChange={e =>
+                    setOptions(prev => ({ ...prev, height: parseInt(e.target.value) || 80 }))
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                   min="40"
                   max="200"
@@ -375,7 +374,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
                 <input
                   type="number"
                   value={options.fontSize}
-                  onChange={(e) => setOptions(prev => ({ ...prev, fontSize: parseInt(e.target.value) || 12 }))}
+                  onChange={e =>
+                    setOptions(prev => ({ ...prev, fontSize: parseInt(e.target.value) || 12 }))
+                  }
                   className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
                   min="8"
                   max="20"
@@ -386,7 +387,7 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
                   type="checkbox"
                   id="showText"
                   checked={options.showText}
-                  onChange={(e) => setOptions(prev => ({ ...prev, showText: e.target.checked }))}
+                  onChange={e => setOptions(prev => ({ ...prev, showText: e.target.checked }))}
                   className="mr-2"
                 />
                 <label htmlFor="showText" className="text-xs text-gray-600">
@@ -399,8 +400,9 @@ const MultipleBarcodeGenerator: React.FC<MultipleBarcodeGeneratorProps> = ({
           {/* Industry Standards Note */}
           <div className="mb-6 p-3 bg-blue-50 border border-blue-200 rounded-md">
             <p className="text-sm text-blue-800">
-              <strong>Industry Standards:</strong> This generator follows industry specifications for quiet zones, 
-              bar ratios, and dimensions. All barcodes are optimized for retail scanning systems.
+              <strong>Industry Standards:</strong> This generator follows industry specifications
+              for quiet zones, bar ratios, and dimensions. All barcodes are optimized for retail
+              scanning systems.
             </p>
           </div>
 

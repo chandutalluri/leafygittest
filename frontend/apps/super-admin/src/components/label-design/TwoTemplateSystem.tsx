@@ -45,7 +45,10 @@ interface TwoTemplateSystemProps {
   onDesignStart?: (media: MediaType) => void;
 }
 
-export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: TwoTemplateSystemProps) {
+export default function TwoTemplateSystem({
+  onTemplateReady,
+  onDesignStart,
+}: TwoTemplateSystemProps) {
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<MediaType | null>(null);
   const [currentStep, setCurrentStep] = useState<'media' | 'template' | 'design'>('media');
@@ -76,12 +79,12 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
               marginTop: media.physicalProperties.marginTop,
               marginLeft: media.physicalProperties.marginLeft,
               spacingX: media.physicalProperties.horizontalSpacing, // Map horizontalSpacing to spacingX
-              spacingY: media.physicalProperties.verticalSpacing // Map verticalSpacing to spacingY
+              spacingY: media.physicalProperties.verticalSpacing, // Map verticalSpacing to spacingY
             },
             orientation: media.orientation,
             description: media.description,
             manufacturer: media.manufacturer,
-            isActive: media.isActive
+            isActive: media.isActive,
           }));
           setMediaTypes(mappedMediaTypes);
           console.log('🏷️ TwoTemplateSystem media types loaded:', mappedMediaTypes.length);
@@ -98,7 +101,9 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
     setSelectedMedia(media);
     setCurrentStep('template');
     setShowLabelTemplates(true);
-    console.log(`📄 Media selected: ${media.name} (${media.dimensions.labelWidth}×${media.dimensions.labelHeight}mm)`);
+    console.log(
+      `📄 Media selected: ${media.name} (${media.dimensions.labelWidth}×${media.dimensions.labelHeight}mm)`
+    );
   };
 
   const handleTemplateLoad = (template: LabelTemplate) => {
@@ -106,16 +111,16 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
       // Handle both template_data and templateJson formats
       const templateData = template.templateJson || (template as any).template_data;
       const elementsCount = templateData?.elements?.length || 0;
-      
+
       console.log(`🎨 Template selected: ${template.name} with ${elementsCount} elements`);
       console.log('🔍 Passing selectedMedia to onTemplateReady:', selectedMedia);
-      
+
       // Ensure template has the correct structure
       const normalizedTemplate = {
         ...template,
-        templateJson: templateData || { elements: [], labelSettings: {} }
+        templateJson: templateData || { elements: [], labelSettings: {} },
       };
-      
+
       setCurrentStep('design');
       onTemplateReady?.(selectedMedia, normalizedTemplate);
       toast.success(`Ready to design: ${template.name} on ${selectedMedia.name}`);
@@ -135,7 +140,8 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
   const getStepStatus = (step: 'media' | 'template' | 'design') => {
     if (currentStep === step) return 'current';
     if (step === 'media') return 'completed';
-    if (step === 'template' && selectedMedia) return currentStep === 'design' ? 'completed' : 'current';
+    if (step === 'template' && selectedMedia)
+      return currentStep === 'design' ? 'completed' : 'current';
     if (step === 'design' && currentStep === 'design') return 'current';
     return 'pending';
   };
@@ -158,7 +164,9 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
         <div className="flex items-center justify-center space-x-8">
           {/* Step 1: Media Selection */}
           <div className="flex items-center">
-            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('media'))}`}>
+            <div
+              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('media'))}`}
+            >
               1
             </div>
             <div className="ml-3">
@@ -171,7 +179,9 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
 
           {/* Step 2: Template Selection */}
           <div className="flex items-center">
-            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('template'))}`}>
+            <div
+              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('template'))}`}
+            >
               2
             </div>
             <div className="ml-3">
@@ -184,7 +194,9 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
 
           {/* Step 3: Design */}
           <div className="flex items-center">
-            <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('design'))}`}>
+            <div
+              className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-semibold ${getStepClasses(getStepStatus('design'))}`}
+            >
               3
             </div>
             <div className="ml-3">
@@ -202,9 +214,17 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
             <div>
               <h3 className="font-semibold text-gray-900">Selected Media: {selectedMedia.name}</h3>
               <div className="text-sm text-gray-600 flex items-center space-x-4">
-                <span>Label: {selectedMedia.dimensions.labelWidth} × {selectedMedia.dimensions.labelHeight}mm</span>
-                <span>Sheet: {selectedMedia.dimensions.columns} × {selectedMedia.dimensions.rows} layout</span>
-                <span>{selectedMedia.dimensions.columns * selectedMedia.dimensions.rows} labels per sheet</span>
+                <span>
+                  Label: {selectedMedia.dimensions.labelWidth} ×{' '}
+                  {selectedMedia.dimensions.labelHeight}mm
+                </span>
+                <span>
+                  Sheet: {selectedMedia.dimensions.columns} × {selectedMedia.dimensions.rows} layout
+                </span>
+                <span>
+                  {selectedMedia.dimensions.columns * selectedMedia.dimensions.rows} labels per
+                  sheet
+                </span>
               </div>
             </div>
             <button
@@ -239,7 +259,7 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
               selectedMediaId={selectedMedia.id}
               mediaTypes={mediaTypes}
             />
-            
+
             {/* Quick Start Options */}
             <div className="bg-gray-50 rounded-lg p-6 border-2 border-dashed border-gray-300">
               <div className="text-center">
@@ -269,7 +289,8 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
               Your design workspace is being prepared with the selected media format.
             </p>
             <div className="text-sm text-gray-500">
-              The Professional Label Designer will show a single label canvas sized for your chosen format.
+              The Professional Label Designer will show a single label canvas sized for your chosen
+              format.
             </div>
           </div>
         )}
@@ -279,10 +300,22 @@ export default function TwoTemplateSystem({ onTemplateReady, onDesignStart }: Tw
       <div className="mt-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
         <h4 className="font-semibold text-blue-900 mb-2">Two-Template System Architecture</h4>
         <div className="text-sm text-blue-800 space-y-1">
-          <div><strong>Media Templates:</strong> Define paper dimensions, label layout, and Avery format specifications</div>
-          <div><strong>Label Templates:</strong> Contain the actual design elements (text, images, QR codes) for single labels</div>
-          <div><strong>Designer Canvas:</strong> Shows only the single label dimensions for precise design work</div>
-          <div><strong>Print Preview:</strong> Will show how the single design replicates across the full sheet layout</div>
+          <div>
+            <strong>Media Templates:</strong> Define paper dimensions, label layout, and Avery
+            format specifications
+          </div>
+          <div>
+            <strong>Label Templates:</strong> Contain the actual design elements (text, images, QR
+            codes) for single labels
+          </div>
+          <div>
+            <strong>Designer Canvas:</strong> Shows only the single label dimensions for precise
+            design work
+          </div>
+          <div>
+            <strong>Print Preview:</strong> Will show how the single design replicates across the
+            full sheet layout
+          </div>
         </div>
       </div>
     </div>

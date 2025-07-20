@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  QrCodeIcon, 
+import {
+  QrCodeIcon,
   PhotoIcon,
   SwatchIcon,
   AdjustmentsHorizontalIcon,
   DocumentArrowDownIcon,
-  EyeIcon
+  EyeIcon,
 } from '@heroicons/react/24/outline';
 
 interface QRCodeOptions {
@@ -28,8 +28,8 @@ interface QRCodeData {
 }
 
 interface EnhancedQRCodeGeneratorProps {
-  onQRCodeGenerated: (qrCode: { 
-    content: string; 
+  onQRCodeGenerated: (qrCode: {
+    content: string;
     options: QRCodeOptions;
     imageUrl: string;
     type: string;
@@ -38,15 +38,15 @@ interface EnhancedQRCodeGeneratorProps {
   initialData?: QRCodeData;
 }
 
-export function EnhancedQRCodeGenerator({ 
-  onQRCodeGenerated, 
-  onClose, 
-  initialData 
+export function EnhancedQRCodeGenerator({
+  onQRCodeGenerated,
+  onClose,
+  initialData,
 }: EnhancedQRCodeGeneratorProps) {
   const [qrData, setQrData] = useState<QRCodeData>(
     initialData || { type: 'url', content: 'leafyhealth.com' }
   );
-  
+
   const [options, setOptions] = useState<QRCodeOptions>({
     size: 300,
     errorCorrectionLevel: 'H', // High error correction for logo support
@@ -56,14 +56,14 @@ export function EnhancedQRCodeGenerator({
     logoSize: 25, // 25% of QR code area for optimal scanning
     margin: 10,
     borderRadius: 0,
-    style: 'square'
+    style: 'square',
   });
 
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'content' | 'design' | 'logo'>('content');
   const [imageLoading, setImageLoading] = useState(false);
   const [imageError, setImageError] = useState<string>('');
-  
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Generate QR code content based on type
@@ -94,9 +94,9 @@ export function EnhancedQRCodeGenerator({
   // Generate QR code URL using server-side proxy to bypass CORS
   const generateQRCodeUrl = () => {
     if (!qrData.content) return '';
-    
+
     const qrContent = generateQRContent(qrData.type, qrData.content);
-    
+
     // Use unified gateway QR proxy endpoint with logo support
     const params = new URLSearchParams({
       data: qrContent,
@@ -104,7 +104,7 @@ export function EnhancedQRCodeGenerator({
       color: options.foregroundColor.replace('#', ''),
       bgcolor: options.backgroundColor.replace('#', ''),
       ecc: options.errorCorrectionLevel,
-      margin: options.margin.toString()
+      margin: options.margin.toString(),
     });
 
     // Note: Logo embedding will be handled client-side for now
@@ -118,7 +118,11 @@ export function EnhancedQRCodeGenerator({
   };
 
   // Create QR code with logo overlay using canvas
-  const createQRWithLogo = async (qrImageUrl: string, logoImage: string, logoSize: number): Promise<string> => {
+  const createQRWithLogo = async (
+    qrImageUrl: string,
+    logoImage: string,
+    logoSize: number
+  ): Promise<string> => {
     return new Promise((resolve, reject) => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
@@ -129,14 +133,14 @@ export function EnhancedQRCodeGenerator({
 
       const qrImg = new Image();
       qrImg.crossOrigin = 'anonymous';
-      
+
       qrImg.onload = () => {
         canvas.width = qrImg.width;
         canvas.height = qrImg.height;
-        
+
         // Draw QR code
         ctx.drawImage(qrImg, 0, 0);
-        
+
         if (logoImage) {
           const logoImg = new Image();
           logoImg.onload = () => {
@@ -144,16 +148,16 @@ export function EnhancedQRCodeGenerator({
             const logoPixelSize = (qrImg.width * logoSize) / 100;
             const logoX = (qrImg.width - logoPixelSize) / 2;
             const logoY = (qrImg.height - logoPixelSize) / 2;
-            
+
             // Add white background circle for logo
             ctx.fillStyle = 'white';
             ctx.beginPath();
-            ctx.arc(qrImg.width / 2, qrImg.height / 2, (logoPixelSize / 2) + 5, 0, 2 * Math.PI);
+            ctx.arc(qrImg.width / 2, qrImg.height / 2, logoPixelSize / 2 + 5, 0, 2 * Math.PI);
             ctx.fill();
-            
+
             // Draw logo
             ctx.drawImage(logoImg, logoX, logoY, logoPixelSize, logoPixelSize);
-            
+
             resolve(canvas.toDataURL('image/png'));
           };
           logoImg.onerror = () => {
@@ -165,7 +169,7 @@ export function EnhancedQRCodeGenerator({
           resolve(canvas.toDataURL('image/png'));
         }
       };
-      
+
       qrImg.onerror = () => {
         reject('Failed to load QR code image');
       };
@@ -178,11 +182,11 @@ export function EnhancedQRCodeGenerator({
     if (qrData.content.trim()) {
       setImageLoading(true);
       setImageError('');
-      
+
       // Build QR content and use proxy to bypass CSP restrictions
       const qrContent = generateQRContent(qrData.type, qrData.content);
       const proxyUrl = `/api/labels/qr/proxy?data=${encodeURIComponent(qrContent)}&size=${options.size}&color=${options.foregroundColor.replace('#', '')}&bgcolor=${options.backgroundColor.replace('#', '')}&ecc=${options.errorCorrectionLevel}&margin=${options.margin}`;
-      
+
       // If logo is present, create composite image
       if (options.logoImage) {
         createQRWithLogo(proxyUrl, options.logoImage, options.logoSize)
@@ -210,27 +214,37 @@ export function EnhancedQRCodeGenerator({
       setImageError('');
       setImageLoading(false);
     }
-  }, [qrData.content, qrData.type, options.size, options.errorCorrectionLevel, options.foregroundColor, options.backgroundColor, options.margin, options.logoImage, options.logoSize]);
+  }, [
+    qrData.content,
+    qrData.type,
+    options.size,
+    options.errorCorrectionLevel,
+    options.foregroundColor,
+    options.backgroundColor,
+    options.margin,
+    options.logoImage,
+    options.logoSize,
+  ]);
 
   // Handle QR code generation
   const handleGenerate = async () => {
     if (!qrData.content.trim()) return;
-    
+
     const qrContent = generateQRContent(qrData.type, qrData.content);
     let finalImageUrl = generateQRCodeUrl();
-    
+
     // If logo is present, generate composite image for final output
     if (options.logoImage && previewUrl && previewUrl.startsWith('data:')) {
       finalImageUrl = previewUrl; // Use the composite image with logo
     }
-    
+
     onQRCodeGenerated({
       content: qrContent,
       options,
       imageUrl: finalImageUrl,
-      type: qrData.type
+      type: qrData.type,
     });
-    
+
     onClose();
   };
 
@@ -243,15 +257,19 @@ export function EnhancedQRCodeGenerator({
             <QrCodeIcon className="w-8 h-8 text-blue-600" />
             <div>
               <h2 className="text-xl font-bold text-gray-900">Enhanced QR Code Generator</h2>
-              <p className="text-sm text-gray-600">Professional QR code creation with advanced styling</p>
+              <p className="text-sm text-gray-600">
+                Professional QR code creation with advanced styling
+              </p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -264,8 +282,8 @@ export function EnhancedQRCodeGenerator({
               <button
                 onClick={() => setActiveTab('content')}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'content' 
-                    ? 'bg-white text-blue-600 shadow-sm' 
+                  activeTab === 'content'
+                    ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -274,8 +292,8 @@ export function EnhancedQRCodeGenerator({
               <button
                 onClick={() => setActiveTab('design')}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'design' 
-                    ? 'bg-white text-blue-600 shadow-sm' 
+                  activeTab === 'design'
+                    ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -284,8 +302,8 @@ export function EnhancedQRCodeGenerator({
               <button
                 onClick={() => setActiveTab('logo')}
                 className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                  activeTab === 'logo' 
-                    ? 'bg-white text-blue-600 shadow-sm' 
+                  activeTab === 'logo'
+                    ? 'bg-white text-blue-600 shadow-sm'
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
@@ -302,7 +320,7 @@ export function EnhancedQRCodeGenerator({
                   </label>
                   <select
                     value={qrData.type}
-                    onChange={(e) => setQrData({ ...qrData, type: e.target.value as any })}
+                    onChange={e => setQrData({ ...qrData, type: e.target.value as any })}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="url">🌐 Website URL</option>
@@ -329,16 +347,23 @@ export function EnhancedQRCodeGenerator({
                   </label>
                   <textarea
                     value={qrData.content}
-                    onChange={(e) => setQrData({ ...qrData, content: e.target.value })}
+                    onChange={e => setQrData({ ...qrData, content: e.target.value })}
                     placeholder={
-                      qrData.type === 'url' ? 'Enter website URL...' :
-                      qrData.type === 'text' ? 'Enter your text content...' :
-                      qrData.type === 'email' ? 'Enter email address...' :
-                      qrData.type === 'phone' ? 'Enter phone number...' :
-                      qrData.type === 'sms' ? 'Enter phone number...' :
-                      qrData.type === 'whatsapp' ? 'Enter WhatsApp number...' :
-                      qrData.type === 'wifi' ? 'NetworkName|Password' :
-                      'John Doe|+919876543210|john@example.com'
+                      qrData.type === 'url'
+                        ? 'Enter website URL...'
+                        : qrData.type === 'text'
+                          ? 'Enter your text content...'
+                          : qrData.type === 'email'
+                            ? 'Enter email address...'
+                            : qrData.type === 'phone'
+                              ? 'Enter phone number...'
+                              : qrData.type === 'sms'
+                                ? 'Enter phone number...'
+                                : qrData.type === 'whatsapp'
+                                  ? 'Enter WhatsApp number...'
+                                  : qrData.type === 'wifi'
+                                    ? 'NetworkName|Password'
+                                    : 'John Doe|+919876543210|john@example.com'
                     }
                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 min-h-[100px] resize-none"
                   />
@@ -347,7 +372,9 @@ export function EnhancedQRCodeGenerator({
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <p className="text-sm font-medium text-blue-800 mb-1">Generated QR Content:</p>
                   <code className="text-xs text-blue-700 break-all bg-blue-100 p-2 rounded block">
-                    {qrData.content ? generateQRContent(qrData.type, qrData.content) : 'Enter content above...'}
+                    {qrData.content
+                      ? generateQRContent(qrData.type, qrData.content)
+                      : 'Enter content above...'}
                   </code>
                 </div>
               </div>
@@ -366,7 +393,7 @@ export function EnhancedQRCodeGenerator({
                       min="150"
                       max="500"
                       value={options.size}
-                      onChange={(e) => setOptions({ ...options, size: parseInt(e.target.value) })}
+                      onChange={e => setOptions({ ...options, size: parseInt(e.target.value) })}
                       className="w-full"
                     />
                     <span className="text-sm text-gray-600">{options.size}px</span>
@@ -378,7 +405,9 @@ export function EnhancedQRCodeGenerator({
                     </label>
                     <select
                       value={options.errorCorrectionLevel}
-                      onChange={(e) => setOptions({ ...options, errorCorrectionLevel: e.target.value as any })}
+                      onChange={e =>
+                        setOptions({ ...options, errorCorrectionLevel: e.target.value as any })
+                      }
                       className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="L">Low (7%)</option>
@@ -398,13 +427,13 @@ export function EnhancedQRCodeGenerator({
                       <input
                         type="color"
                         value={options.foregroundColor}
-                        onChange={(e) => setOptions({ ...options, foregroundColor: e.target.value })}
+                        onChange={e => setOptions({ ...options, foregroundColor: e.target.value })}
                         className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
                       />
                       <input
                         type="text"
                         value={options.foregroundColor}
-                        onChange={(e) => setOptions({ ...options, foregroundColor: e.target.value })}
+                        onChange={e => setOptions({ ...options, foregroundColor: e.target.value })}
                         className="flex-1 p-2 border border-gray-300 rounded-md"
                         placeholder="#000000"
                       />
@@ -419,13 +448,13 @@ export function EnhancedQRCodeGenerator({
                       <input
                         type="color"
                         value={options.backgroundColor}
-                        onChange={(e) => setOptions({ ...options, backgroundColor: e.target.value })}
+                        onChange={e => setOptions({ ...options, backgroundColor: e.target.value })}
                         className="w-12 h-10 border border-gray-300 rounded cursor-pointer"
                       />
                       <input
                         type="text"
                         value={options.backgroundColor}
-                        onChange={(e) => setOptions({ ...options, backgroundColor: e.target.value })}
+                        onChange={e => setOptions({ ...options, backgroundColor: e.target.value })}
                         className="flex-1 p-2 border border-gray-300 rounded-md"
                         placeholder="#ffffff"
                       />
@@ -442,7 +471,7 @@ export function EnhancedQRCodeGenerator({
                     min="0"
                     max="50"
                     value={options.margin}
-                    onChange={(e) => setOptions({ ...options, margin: parseInt(e.target.value) })}
+                    onChange={e => setOptions({ ...options, margin: parseInt(e.target.value) })}
                     className="w-full"
                   />
                   <span className="text-sm text-gray-600">{options.margin}px</span>
@@ -458,20 +487,22 @@ export function EnhancedQRCodeGenerator({
                       { name: 'Black & White', fg: '#000000', bg: '#ffffff' },
                       { name: 'Blue & White', fg: '#1e40af', bg: '#ffffff' },
                       { name: 'Green & White', fg: '#059669', bg: '#ffffff' },
-                      { name: 'Red & White', fg: '#dc2626', bg: '#ffffff' }
-                    ].map((preset) => (
+                      { name: 'Red & White', fg: '#dc2626', bg: '#ffffff' },
+                    ].map(preset => (
                       <button
                         key={preset.name}
-                        onClick={() => setOptions({ 
-                          ...options, 
-                          foregroundColor: preset.fg, 
-                          backgroundColor: preset.bg 
-                        })}
+                        onClick={() =>
+                          setOptions({
+                            ...options,
+                            foregroundColor: preset.fg,
+                            backgroundColor: preset.bg,
+                          })
+                        }
                         className="p-2 border border-gray-300 rounded-md hover:bg-gray-50 text-xs"
-                        style={{ 
-                          backgroundColor: preset.bg, 
+                        style={{
+                          backgroundColor: preset.bg,
                           color: preset.fg,
-                          border: `2px solid ${preset.fg}` 
+                          border: `2px solid ${preset.fg}`,
                         }}
                       >
                         {preset.name}
@@ -490,14 +521,14 @@ export function EnhancedQRCodeGenerator({
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Logo Upload
                   </label>
-                  
+
                   {/* Logo Upload Area */}
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-gray-400 transition-colors">
                     {options.logoImage ? (
                       <div className="space-y-3">
-                        <img 
-                          src={options.logoImage} 
-                          alt="Logo Preview" 
+                        <img
+                          src={options.logoImage}
+                          alt="Logo Preview"
                           className="max-w-16 max-h-16 mx-auto rounded-md shadow-sm"
                         />
                         <div className="space-x-2">
@@ -513,11 +544,11 @@ export function EnhancedQRCodeGenerator({
                               type="file"
                               accept="image/*"
                               className="hidden"
-                              onChange={(e) => {
+                              onChange={e => {
                                 const file = e.target.files?.[0];
                                 if (file) {
                                   const reader = new FileReader();
-                                  reader.onload = (e) => {
+                                  reader.onload = e => {
                                     const result = e.target?.result as string;
                                     setOptions({ ...options, logoImage: result });
                                   };
@@ -532,7 +563,9 @@ export function EnhancedQRCodeGenerator({
                       <div>
                         <PhotoIcon className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                         <p className="text-gray-600 mb-2">Upload your logo for center placement</p>
-                        <p className="text-xs text-gray-500 mb-4">PNG, JPG up to 2MB. Logo will be 25% of QR code size.</p>
+                        <p className="text-xs text-gray-500 mb-4">
+                          PNG, JPG up to 2MB. Logo will be 25% of QR code size.
+                        </p>
                         <label className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors">
                           <PhotoIcon className="w-4 h-4 mr-2" />
                           Choose Logo File
@@ -540,11 +573,11 @@ export function EnhancedQRCodeGenerator({
                             type="file"
                             accept="image/*"
                             className="hidden"
-                            onChange={(e) => {
+                            onChange={e => {
                               const file = e.target.files?.[0];
                               if (file) {
                                 const reader = new FileReader();
-                                reader.onload = (e) => {
+                                reader.onload = e => {
                                   const result = e.target?.result as string;
                                   setOptions({ ...options, logoImage: result });
                                 };
@@ -568,7 +601,7 @@ export function EnhancedQRCodeGenerator({
                     min="15"
                     max="30"
                     value={options.logoSize}
-                    onChange={(e) => setOptions({ ...options, logoSize: parseInt(e.target.value) })}
+                    onChange={e => setOptions({ ...options, logoSize: parseInt(e.target.value) })}
                     className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                   />
                   <div className="flex justify-between text-xs text-gray-500 mt-1">
@@ -577,13 +610,16 @@ export function EnhancedQRCodeGenerator({
                     <span>Max (30%)</span>
                   </div>
                   <p className="text-xs text-gray-600 mt-2">
-                    ⚠️ Larger logos may affect scanning reliability. 25% is recommended for best results.
+                    ⚠️ Larger logos may affect scanning reliability. 25% is recommended for best
+                    results.
                   </p>
                 </div>
 
                 {/* Error Correction Level Info */}
                 <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <h4 className="font-medium text-blue-900 mb-2">Professional Logo Implementation</h4>
+                  <h4 className="font-medium text-blue-900 mb-2">
+                    Professional Logo Implementation
+                  </h4>
                   <ul className="text-sm text-blue-800 space-y-1">
                     <li>• Error correction level set to High (30% recovery)</li>
                     <li>• Logo automatically centered for optimal scanning</li>
@@ -599,7 +635,7 @@ export function EnhancedQRCodeGenerator({
                   </label>
                   <select
                     value={options.style}
-                    onChange={(e) => setOptions({ ...options, style: e.target.value as any })}
+                    onChange={e => setOptions({ ...options, style: e.target.value as any })}
                     className="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="square">Square (Classic)</option>
@@ -630,7 +666,7 @@ export function EnhancedQRCodeGenerator({
                     <QrCodeIcon className="w-16 h-16 mx-auto mb-2 text-red-300" />
                     <p className="text-sm">Failed to load QR code</p>
                     <p className="text-xs text-gray-500 mt-1">{imageError}</p>
-                    <button 
+                    <button
                       onClick={() => {
                         setImageError('');
                         setImageLoading(true);
@@ -651,15 +687,15 @@ export function EnhancedQRCodeGenerator({
                       src={previewUrl}
                       alt="QR Code Preview"
                       className="max-w-full max-h-full object-contain shadow-lg rounded-lg mx-auto"
-                      style={{ 
+                      style={{
                         maxWidth: `${Math.min(options.size, 250)}px`,
-                        maxHeight: `${Math.min(options.size, 250)}px`
+                        maxHeight: `${Math.min(options.size, 250)}px`,
                       }}
                       onLoad={() => {
                         console.log('✅ QR Code preview loaded successfully via blob!');
                         setImageError('');
                       }}
-                      onError={(e) => {
+                      onError={e => {
                         console.error('❌ QR Code blob preview failed:', e);
                         setImageError('Failed to display QR code');
                       }}
@@ -681,16 +717,34 @@ export function EnhancedQRCodeGenerator({
                 <div className="bg-white rounded-lg p-4 border text-sm">
                   <h4 className="font-medium text-gray-900 mb-2">QR Code Details</h4>
                   <div className="space-y-1 text-gray-600">
-                    <div>Type: <span className="font-medium">{qrData.type.toUpperCase()}</span></div>
-                    <div>Size: <span className="font-medium">{options.size}×{options.size}px</span></div>
-                    <div>Error Correction: <span className="font-medium">{options.errorCorrectionLevel}</span></div>
-                    <div>Estimated Capacity: <span className="font-medium">
-                      {options.errorCorrectionLevel === 'L' ? '2953' : 
-                       options.errorCorrectionLevel === 'M' ? '2331' :
-                       options.errorCorrectionLevel === 'Q' ? '1663' : '1273'} chars
-                    </span></div>
+                    <div>
+                      Type: <span className="font-medium">{qrData.type.toUpperCase()}</span>
+                    </div>
+                    <div>
+                      Size:{' '}
+                      <span className="font-medium">
+                        {options.size}×{options.size}px
+                      </span>
+                    </div>
+                    <div>
+                      Error Correction:{' '}
+                      <span className="font-medium">{options.errorCorrectionLevel}</span>
+                    </div>
+                    <div>
+                      Estimated Capacity:{' '}
+                      <span className="font-medium">
+                        {options.errorCorrectionLevel === 'L'
+                          ? '2953'
+                          : options.errorCorrectionLevel === 'M'
+                            ? '2331'
+                            : options.errorCorrectionLevel === 'Q'
+                              ? '1663'
+                              : '1273'}{' '}
+                        chars
+                      </span>
+                    </div>
                   </div>
-                  
+
                   {/* Debug Tools */}
                   <div className="mt-3 pt-3 border-t">
                     <button

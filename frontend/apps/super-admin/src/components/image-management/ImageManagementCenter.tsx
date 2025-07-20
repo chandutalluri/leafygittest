@@ -23,8 +23,16 @@ interface ImageMetadata {
   filename: string;
   originalName: string;
   size: number;
+  sizeBytes?: number;
+  width?: number;
+  height?: number;
   uploadedAt: string;
   url: string;
+  entityType?: string;
+  altText?: string;
+  description?: string;
+  tags?: string[];
+  mimeType?: string;
   variants: Array<{
     name: string;
     url: string;
@@ -53,11 +61,11 @@ export default function ImageManagementCenter() {
     dateRange: 'all',
     sizeRange: 'all',
     format: 'all',
-    quality: 'all'
+    quality: 'all',
   });
   const [sortBy, setSortBy] = useState('uploadedAt');
   const [sortOrder, setSortOrder] = useState('desc');
-  
+
   const queryClient = useQueryClient();
 
   // Fetch image statistics
@@ -71,7 +79,7 @@ export default function ImageManagementCenter() {
           console.error('Stats API error:', errorText);
           throw new Error(`Failed to fetch image stats: ${response.status}`);
         }
-        
+
         const responseText = await response.text();
         let data;
         try {
@@ -80,7 +88,7 @@ export default function ImageManagementCenter() {
           console.error('JSON parse error for stats:', parseError, 'Response:', responseText);
           throw new Error('Invalid JSON response from stats API');
         }
-        
+
         return {
           total: data.totalImages || 0,
           totalSize: data.totalSizeFormatted || '0 B',
@@ -89,7 +97,7 @@ export default function ImageManagementCenter() {
             banner: 0,
             brand: 0,
             icon: 0,
-          }
+          },
         };
       } catch (error) {
         console.error('Stats fetch error:', error);
@@ -99,7 +107,11 @@ export default function ImageManagementCenter() {
   });
 
   // Fetch images with advanced filtering
-  const { data: images = [], isLoading, refetch } = useQuery<ImageMetadata[]>({
+  const {
+    data: images = [],
+    isLoading,
+    refetch,
+  } = useQuery<ImageMetadata[]>({
     queryKey: ['images', selectedCategory, searchTerm, filterOptions, sortBy, sortOrder],
     queryFn: async () => {
       const params = new URLSearchParams();
@@ -111,11 +123,11 @@ export default function ImageManagementCenter() {
       params.append('sortBy', sortBy);
       params.append('sortOrder', sortOrder);
       params.append('limit', '50');
-      
+
       const response = await fetch(`/api/image-management/images?${params}`);
       if (!response.ok) throw new Error('Failed to fetch images');
       const data = await response.json();
-      
+
       // The API returns { images: [...], total: N, message: "..." }
       return (data.images || []).map((img: any) => ({
         id: img.id,
@@ -124,7 +136,7 @@ export default function ImageManagementCenter() {
         size: img.size,
         uploadedAt: img.uploadedAt,
         url: img.url,
-        variants: img.variants || []
+        variants: img.variants || [],
       }));
     },
   });
@@ -143,7 +155,7 @@ export default function ImageManagementCenter() {
       queryClient.invalidateQueries({ queryKey: ['images'] });
       queryClient.invalidateQueries({ queryKey: ['image-stats'] });
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Failed to delete image: ${error.message}`);
     },
   });
@@ -157,13 +169,13 @@ export default function ImageManagementCenter() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imageIds }),
         });
-        
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Bulk delete API error:', errorText);
           throw new Error(`Failed to delete images: ${response.status}`);
         }
-        
+
         const responseText = await response.text();
         let data;
         try {
@@ -172,20 +184,20 @@ export default function ImageManagementCenter() {
           console.error('JSON parse error for bulk delete:', parseError, 'Response:', responseText);
           throw new Error('Invalid JSON response from bulk delete API');
         }
-        
+
         return data;
       } catch (error) {
         console.error('Bulk delete error:', error);
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       toast.success(`${data.deleted || selectedImages.size} images deleted successfully`);
       setSelectedImages(new Set());
       queryClient.invalidateQueries({ queryKey: ['images'] });
       queryClient.invalidateQueries({ queryKey: ['image-stats'] });
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message);
     },
   });
@@ -198,13 +210,13 @@ export default function ImageManagementCenter() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ imageIds }),
         });
-        
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Optimize API error:', errorText);
           throw new Error(`Failed to optimize images: ${response.status}`);
         }
-        
+
         const responseText = await response.text();
         let data;
         try {
@@ -213,20 +225,20 @@ export default function ImageManagementCenter() {
           console.error('JSON parse error for optimize:', parseError, 'Response:', responseText);
           throw new Error('Invalid JSON response from optimize API');
         }
-        
+
         return data;
       } catch (error) {
         console.error('Optimize error:', error);
         throw error;
       }
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       toast.success(`${data.optimized || selectedImages.size} images optimized successfully`);
       setSelectedImages(new Set());
       queryClient.invalidateQueries({ queryKey: ['images'] });
       queryClient.invalidateQueries({ queryKey: ['image-stats'] });
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message);
     },
   });
@@ -287,7 +299,7 @@ export default function ImageManagementCenter() {
               </div>
             </div>
           </GlassCard>
-          
+
           <GlassCard className="p-4">
             <div className="flex items-center">
               <DocumentIcon className="h-8 w-8 text-green-600" />
@@ -297,17 +309,19 @@ export default function ImageManagementCenter() {
               </div>
             </div>
           </GlassCard>
-          
+
           <GlassCard className="p-4">
             <div className="flex items-center">
               <FolderIcon className="h-8 w-8 text-purple-600" />
               <div className="ml-3">
                 <p className="text-sm font-medium text-gray-600">Product Images</p>
-                <p className="text-2xl font-bold text-gray-900">{images?.filter(img => img.entityType === 'product').length || 0}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {images?.filter(img => img.entityType === 'product').length || 0}
+                </p>
               </div>
             </div>
           </GlassCard>
-          
+
           <GlassCard className="p-4">
             <div className="flex items-center">
               <PhotoIcon className="h-8 w-8 text-orange-600" />
@@ -334,14 +348,14 @@ export default function ImageManagementCenter() {
                   type="text"
                   placeholder="Search by filename, tags, or description..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
-              
+
               <select
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={e => setSelectedCategory(e.target.value)}
                 className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
               >
                 <option value="all">All Categories</option>
@@ -353,7 +367,7 @@ export default function ImageManagementCenter() {
 
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                onChange={e => setSortBy(e.target.value)}
                 className="px-4 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
               >
                 <option value="uploadedAt">Upload Date</option>
@@ -369,7 +383,7 @@ export default function ImageManagementCenter() {
                 {sortOrder === 'desc' ? '↓' : '↑'}
               </button>
             </div>
-            
+
             {/* Bulk Actions */}
             {selectedImages.size > 0 && (
               <div className="flex gap-2">
@@ -395,7 +409,7 @@ export default function ImageManagementCenter() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-white/20">
             <select
               value={filterOptions.format}
-              onChange={(e) => setFilterOptions(prev => ({ ...prev, format: e.target.value }))}
+              onChange={e => setFilterOptions(prev => ({ ...prev, format: e.target.value }))}
               className="px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
             >
               <option value="all">All Formats</option>
@@ -407,7 +421,7 @@ export default function ImageManagementCenter() {
 
             <select
               value={filterOptions.sizeRange}
-              onChange={(e) => setFilterOptions(prev => ({ ...prev, sizeRange: e.target.value }))}
+              onChange={e => setFilterOptions(prev => ({ ...prev, sizeRange: e.target.value }))}
               className="px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
             >
               <option value="all">All Sizes</option>
@@ -418,7 +432,7 @@ export default function ImageManagementCenter() {
 
             <select
               value={filterOptions.dateRange}
-              onChange={(e) => setFilterOptions(prev => ({ ...prev, dateRange: e.target.value }))}
+              onChange={e => setFilterOptions(prev => ({ ...prev, dateRange: e.target.value }))}
               className="px-3 py-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 text-sm"
             >
               <option value="all">All Dates</option>
@@ -429,7 +443,14 @@ export default function ImageManagementCenter() {
             </select>
 
             <button
-              onClick={() => setFilterOptions({ dateRange: 'all', sizeRange: 'all', format: 'all', quality: 'all' })}
+              onClick={() =>
+                setFilterOptions({
+                  dateRange: 'all',
+                  sizeRange: 'all',
+                  format: 'all',
+                  quality: 'all',
+                })
+              }
               className="px-3 py-2 bg-gray-500/20 backdrop-blur-sm border border-white/30 rounded-lg hover:bg-gray-500/30 transition-colors text-sm"
             >
               Clear Filters
@@ -445,20 +466,19 @@ export default function ImageManagementCenter() {
             {images.length} images {selectedImages.size > 0 && `(${selectedImages.size} selected)`}
           </span>
           {images.length > 0 && (
-            <button
-              onClick={handleSelectAll}
-              className="text-sm text-blue-600 hover:text-blue-800"
-            >
+            <button onClick={handleSelectAll} className="text-sm text-blue-600 hover:text-blue-800">
               {selectedImages.size === images.length ? 'Deselect All' : 'Select All'}
             </button>
           )}
         </div>
-        
+
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode('grid')}
             className={`p-2 rounded-lg transition-colors ${
-              viewMode === 'grid' ? 'bg-green-100 text-green-600' : 'text-gray-400 hover:text-gray-600'
+              viewMode === 'grid'
+                ? 'bg-green-100 text-green-600'
+                : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             <Squares2X2Icon className="h-5 w-5" />
@@ -466,7 +486,9 @@ export default function ImageManagementCenter() {
           <button
             onClick={() => setViewMode('list')}
             className={`p-2 rounded-lg transition-colors ${
-              viewMode === 'list' ? 'bg-green-100 text-green-600' : 'text-gray-400 hover:text-gray-600'
+              viewMode === 'list'
+                ? 'bg-green-100 text-green-600'
+                : 'text-gray-400 hover:text-gray-600'
             }`}
           >
             <ListBulletIcon className="h-5 w-5" />
@@ -484,22 +506,20 @@ export default function ImageManagementCenter() {
           <PhotoIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">No images found</h3>
           <p className="text-gray-600 mb-6">
-            {searchTerm || selectedCategory !== 'all' 
+            {searchTerm || selectedCategory !== 'all'
               ? 'Try adjusting your search criteria or filters'
               : 'Upload your first image to get started'}
           </p>
-          <GlassButton onClick={() => setShowUploadModal(true)}>
-            Upload Images
-          </GlassButton>
+          <GlassButton onClick={() => setShowUploadModal(true)}>Upload Images</GlassButton>
         </GlassCard>
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {images.map((image) => (
+          {images.map(image => (
             <div
               key={image.id}
               className={`relative group cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                selectedImages.has(image.id) 
-                  ? 'border-green-500 ring-2 ring-green-200' 
+                selectedImages.has(image.id)
+                  ? 'border-green-500 ring-2 ring-green-200'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
               onClick={() => handleImageSelect(image.id)}
@@ -509,19 +529,20 @@ export default function ImageManagementCenter() {
                   src={`/api/image-management/serve/${image.filename}`}
                   alt={image.altText || image.description || image.originalName || 'Product image'}
                   className="w-full h-full object-cover"
-                  onError={(e) => {
+                  onError={e => {
                     console.error('Image load error for:', image.filename);
                     const target = e.target as HTMLImageElement;
-                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik04NS41IDU1LjVMMTE0LjUgOTQuNUgxNDQuNUw5NS41IDU1LjVaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEyIj5JbWFnZSBub3QgZm91bmQ8L3RleHQ+Cjwvc3ZnPg==';
+                    target.src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik04NS41IDU1LjVMMTE0LjUgOTQuNUgxNDQuNUw5NS41IDU1LjVaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjEyIj5JbWFnZSBub3QgZm91bmQ8L3RleHQ+Cjwvc3ZnPg==';
                   }}
                 />
-                
+
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                
+
                 <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex gap-1">
                     <button
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         setPreviewImage(image);
                       }}
@@ -530,7 +551,7 @@ export default function ImageManagementCenter() {
                       <EyeIcon className="h-4 w-4 text-gray-700" />
                     </button>
                     <button
-                      onClick={(e) => {
+                      onClick={e => {
                         e.stopPropagation();
                         deleteImageMutation.mutate(image.id);
                       }}
@@ -540,18 +561,22 @@ export default function ImageManagementCenter() {
                     </button>
                   </div>
                 </div>
-                
+
                 {selectedImages.has(image.id) && (
                   <div className="absolute top-2 left-2">
                     <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                       <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                   </div>
                 )}
               </div>
-              
+
               <div className="p-2">
                 <p className="text-xs text-gray-600 truncate" title={image.originalName}>
                   {image.originalName}
@@ -565,12 +590,12 @@ export default function ImageManagementCenter() {
         </div>
       ) : (
         <div className="space-y-2">
-          {images.map((image) => (
+          {images.map(image => (
             <div
               key={image.id}
               className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                selectedImages.has(image.id) 
-                  ? 'border-green-500 bg-green-50' 
+                selectedImages.has(image.id)
+                  ? 'border-green-500 bg-green-50'
                   : 'border-gray-200 hover:border-gray-300'
               }`}
               onClick={() => handleImageSelect(image.id)}
@@ -583,15 +608,17 @@ export default function ImageManagementCenter() {
                   onError={(e: any) => {
                     console.error('Image load error for:', image.filename);
                     const target = e.target as HTMLImageElement;
-                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNEwzOCAzNkg0Nkw0MiAyNFoiIGZpbGw9IiNEREREREQiLz4KPHR4dCB4PSIzMiIgeT0iNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiIGZvbnQtc2l6ZT0iOCI+Tm8gaW1hZ2U8L3R4dD4KPC9zdmc+';
+                    target.src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNEwzOCAzNkg0Nkw0MiAyNFoiIGZpbGw9IiNEREREREQiLz4KPHR4dCB4PSIzMiIgeT0iNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5OTkiIGZvbnQtc2l6ZT0iOCI+Tm8gaW1hZ2U8L3R4dD4KPC9zdmc+';
                   }}
                 />
               </div>
-              
+
               <div className="ml-4 flex-1">
                 <h3 className="font-medium text-gray-900">{image.originalName}</h3>
                 <p className="text-sm text-gray-500">
-                  {image.entityType} • {image.sizeBytes ? formatFileSize(image.sizeBytes) : '0 B'} • {new Date(image.uploadedAt).toLocaleDateString()}
+                  {image.entityType} • {image.sizeBytes ? formatFileSize(image.sizeBytes) : '0 B'} •{' '}
+                  {new Date(image.uploadedAt).toLocaleDateString()}
                 </p>
                 {image.description && (
                   <p className="text-sm text-gray-600 mt-1">{image.description}</p>
@@ -599,17 +626,20 @@ export default function ImageManagementCenter() {
                 {image.tags && image.tags.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
                     {image.tags.map((tag, index) => (
-                      <span key={index} className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                      <span
+                        key={index}
+                        className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded"
+                      >
                         {tag}
                       </span>
                     ))}
                   </div>
                 )}
               </div>
-              
+
               <div className="flex gap-2 ml-4">
                 <button
-                  onClick={async (e) => {
+                  onClick={async e => {
                     e.stopPropagation();
                     try {
                       const response = await fetch(`/api/image-management/images/${image.id}`);
@@ -628,7 +658,7 @@ export default function ImageManagementCenter() {
                   <EyeIcon className="h-4 w-4" />
                 </button>
                 <button
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     deleteImageMutation.mutate(image.id);
                   }}
@@ -643,10 +673,7 @@ export default function ImageManagementCenter() {
       )}
 
       {/* Upload Modal */}
-      <ImageUploadModal
-        isOpen={showUploadModal}
-        onClose={() => setShowUploadModal(false)}
-      />
+      <ImageUploadModal isOpen={showUploadModal} onClose={() => setShowUploadModal(false)} />
 
       {/* Preview Modal */}
       {previewImage && (
@@ -660,48 +687,77 @@ export default function ImageManagementCenter() {
                   className="text-gray-400 hover:text-gray-600"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
-              
+
               <div className="relative mb-4">
                 <img
                   src={`/api/image-management/serve/${previewImage.filename}`}
-                  alt={previewImage.altText || previewImage.description || previewImage.originalName || 'Product image'}
+                  alt={
+                    previewImage.altText ||
+                    previewImage.description ||
+                    previewImage.originalName ||
+                    'Product image'
+                  }
                   className="rounded-lg w-full h-auto max-h-[70vh] object-contain"
                   onError={(e: any) => {
                     console.error('Preview image load error for:', previewImage.filename);
                     const target = e.target as HTMLImageElement;
-                    target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgdmlld0JveD0iMCAwIDgwMCA2MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zNDAgMjIwTDQ2MCAzODBINTgwTDM4MCAyMjBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjQwMCIgeT0iNDgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjI0Ij5JbWFnZSBub3QgZm91bmQ8L3RleHQ+Cjwvc3ZnPg==';
+                    target.src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjYwMCIgdmlld0JveD0iMCAwIDgwMCA2MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iNjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0zNDAgMjIwTDQ2MCAzODBINTgwTDM4MCAyMjBaIiBmaWxsPSIjREREREREIi8+Cjx0ZXh0IHg9IjQwMCIgeT0iNDgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOTk5IiBmb250LXNpemU9IjI0Ij5JbWFnZSBub3QgZm91bmQ8L3RleHQ+Cjwvc3ZnPg==';
                   }}
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <p><strong>Type:</strong> {previewImage.entityType}</p>
-                  <p><strong>Size:</strong> {formatFileSize(previewImage.sizeBytes)}</p>
-                  <p><strong>Dimensions:</strong> {previewImage.width} × {previewImage.height}</p>
+                  <p>
+                    <strong>Type:</strong> {previewImage.entityType}
+                  </p>
+                  <p>
+                    <strong>Size:</strong> {formatFileSize(previewImage.sizeBytes)}
+                  </p>
+                  <p>
+                    <strong>Dimensions:</strong> {previewImage.width} × {previewImage.height}
+                  </p>
                 </div>
                 <div>
-                  <p><strong>Format:</strong> {previewImage.mimeType}</p>
-                  <p><strong>Uploaded:</strong> {new Date(previewImage.uploadedAt).toLocaleDateString()}</p>
+                  <p>
+                    <strong>Format:</strong> {previewImage.mimeType}
+                  </p>
+                  <p>
+                    <strong>Uploaded:</strong>{' '}
+                    {new Date(previewImage.uploadedAt).toLocaleDateString()}
+                  </p>
                 </div>
               </div>
-              
+
               {previewImage.description && (
                 <div className="mt-4">
-                  <p><strong>Description:</strong> {previewImage.description}</p>
+                  <p>
+                    <strong>Description:</strong> {previewImage.description}
+                  </p>
                 </div>
               )}
-              
+
               {previewImage.tags && previewImage.tags.length > 0 && (
                 <div className="mt-4">
-                  <p><strong>Tags:</strong></p>
+                  <p>
+                    <strong>Tags:</strong>
+                  </p>
                   <div className="flex flex-wrap gap-2 mt-2">
                     {previewImage.tags.map((tag, index) => (
-                      <span key={index} className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+                      <span
+                        key={index}
+                        className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full"
+                      >
                         {tag}
                       </span>
                     ))}

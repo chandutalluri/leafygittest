@@ -53,7 +53,7 @@ export default function CompanyManagement() {
       setLoading(true);
       const [companiesData, branchesData] = await Promise.all([
         apiClient.get('/api/direct-data/companies'),
-        apiClient.get('/api/direct-data/branches')
+        apiClient.get('/api/direct-data/branches'),
       ]);
       setCompanies(companiesData || []);
       setBranches(branchesData || []);
@@ -103,7 +103,9 @@ export default function CompanyManagement() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading company management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading company management...</div>
+    );
   }
 
   return (
@@ -112,14 +114,22 @@ export default function CompanyManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Company & Branch Management</h2>
-          <p className="text-muted-foreground">Manage companies, branches, and organizational hierarchy</p>
+          <p className="text-muted-foreground">
+            Manage companies, branches, and organizational hierarchy
+          </p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setActiveTab('companies')} variant={activeTab === 'companies' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('companies')}
+            variant={activeTab === 'companies' ? 'default' : 'outline'}
+          >
             <Building className="w-4 h-4 mr-2" />
             Companies ({companies.length})
           </Button>
-          <Button onClick={() => setActiveTab('branches')} variant={activeTab === 'branches' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('branches')}
+            variant={activeTab === 'branches' ? 'default' : 'outline'}
+          >
             <MapPin className="w-4 h-4 mr-2" />
             Branches ({branches.length})
           </Button>
@@ -136,7 +146,7 @@ export default function CompanyManagement() {
               Add Company
             </Button>
           </div>
-          
+
           {isCreateDialogOpen && (
             <Card className="mb-4">
               <CardHeader>
@@ -148,9 +158,9 @@ export default function CompanyManagement() {
               </CardContent>
             </Card>
           )}
-          
+
           <div className="grid gap-4 md:grid-cols-2">
-            {companies.map((company) => (
+            {companies.map(company => (
               <Card key={company.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -203,7 +213,7 @@ export default function CompanyManagement() {
               Add Branch
             </Button>
           </div>
-          
+
           {isCreateDialogOpen && (
             <Card className="mb-4">
               <CardHeader>
@@ -215,9 +225,9 @@ export default function CompanyManagement() {
               </CardContent>
             </Card>
           )}
-          
+
           <div className="grid gap-4">
-            {branches.map((branch) => (
+            {branches.map(branch => (
               <Card key={branch.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -258,7 +268,7 @@ function CreateCompanyForm({ onSubmit }: { onSubmit: (data: Partial<Company>) =>
     address: '',
     phone: '',
     email: '',
-    website: ''
+    website: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -270,68 +280,76 @@ function CreateCompanyForm({ onSubmit }: { onSubmit: (data: Partial<Company>) =>
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Label htmlFor="name">Company Name</Label>
-        <Input 
-          id="name" 
+        <Input
+          id="name"
           value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
-          required 
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
+          required
         />
       </div>
       <div>
         <Label htmlFor="description">Description</Label>
-        <Textarea 
-          id="description" 
+        <Textarea
+          id="description"
           value={formData.description}
-          onChange={(e) => setFormData({...formData, description: e.target.value})}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
         />
       </div>
       <div>
         <Label htmlFor="address">Address</Label>
-        <Textarea 
-          id="address" 
+        <Textarea
+          id="address"
           value={formData.address}
-          onChange={(e) => setFormData({...formData, address: e.target.value})}
+          onChange={e => setFormData({ ...formData, address: e.target.value })}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="phone">Phone</Label>
-          <Input 
-            id="phone" 
+          <Input
+            id="phone"
             value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+            onChange={e => setFormData({ ...formData, phone: e.target.value })}
           />
         </div>
         <div>
           <Label htmlFor="email">Email</Label>
-          <Input 
-            id="email" 
+          <Input
+            id="email"
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({...formData, email: e.target.value})}
+            onChange={e => setFormData({ ...formData, email: e.target.value })}
           />
         </div>
       </div>
       <div>
         <Label htmlFor="website">Website</Label>
-        <Input 
-          id="website" 
+        <Input
+          id="website"
           value={formData.website}
-          onChange={(e) => setFormData({...formData, website: e.target.value})}
+          onChange={e => setFormData({ ...formData, website: e.target.value })}
         />
       </div>
-      <Button type="submit" className="w-full">Create Company</Button>
+      <Button type="submit" className="w-full">
+        Create Company
+      </Button>
     </form>
   );
 }
 
-function CreateBranchForm({ companies, onSubmit }: { companies: Company[], onSubmit: (data: Partial<Branch>) => void }) {
+function CreateBranchForm({
+  companies,
+  onSubmit,
+}: {
+  companies: Company[];
+  onSubmit: (data: Partial<Branch>) => void;
+}) {
   const [formData, setFormData] = useState({
     name: '',
     companyId: '',
     address: '',
     phone: '',
-    managerName: ''
+    managerName: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -343,55 +361,59 @@ function CreateBranchForm({ companies, onSubmit }: { companies: Company[], onSub
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Label htmlFor="branchName">Branch Name</Label>
-        <Input 
-          id="branchName" 
+        <Input
+          id="branchName"
           value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
-          required 
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
+          required
         />
       </div>
       <div>
         <Label htmlFor="companyId">Company</Label>
-        <select 
+        <select
           id="companyId"
           value={formData.companyId}
-          onChange={(e) => setFormData({...formData, companyId: e.target.value})}
+          onChange={e => setFormData({ ...formData, companyId: e.target.value })}
           className="w-full p-2 border rounded"
           required
         >
           <option value="">Select Company</option>
           {companies.map(company => (
-            <option key={company.id} value={company.id}>{company.name}</option>
+            <option key={company.id} value={company.id}>
+              {company.name}
+            </option>
           ))}
         </select>
       </div>
       <div>
         <Label htmlFor="branchAddress">Address</Label>
-        <Textarea 
-          id="branchAddress" 
+        <Textarea
+          id="branchAddress"
           value={formData.address}
-          onChange={(e) => setFormData({...formData, address: e.target.value})}
+          onChange={e => setFormData({ ...formData, address: e.target.value })}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="branchPhone">Phone</Label>
-          <Input 
-            id="branchPhone" 
+          <Input
+            id="branchPhone"
             value={formData.phone}
-            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+            onChange={e => setFormData({ ...formData, phone: e.target.value })}
           />
         </div>
         <div>
           <Label htmlFor="managerName">Manager Name</Label>
-          <Input 
-            id="managerName" 
+          <Input
+            id="managerName"
             value={formData.managerName}
-            onChange={(e) => setFormData({...formData, managerName: e.target.value})}
+            onChange={e => setFormData({ ...formData, managerName: e.target.value })}
           />
         </div>
       </div>
-      <Button type="submit" className="w-full">Create Branch</Button>
+      <Button type="submit" className="w-full">
+        Create Branch
+      </Button>
     </form>
   );
 }

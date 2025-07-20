@@ -8,7 +8,7 @@ import {
   PhotoIcon,
   XMarkIcon,
   TrashIcon,
-  CheckCircleIcon
+  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 import { GlassCard } from '../ui/GlassCard';
 import { GlassButton } from '../ui/GlassButton';
@@ -35,14 +35,14 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
   const queryClient = useQueryClient();
 
   const uploadMutation = useMutation({
-    mutationFn: async (uploadData: { files: File[], metadata: any }) => {
+    mutationFn: async (uploadData: { files: File[]; metadata: any }) => {
       console.log('Upload mutation called with files:', uploadData.files.length);
-      
+
       // Upload files one by one for better error handling
       const results = [];
       for (const file of uploadData.files) {
         console.log('Uploading file:', file.name, 'Size:', file.size, 'Type:', file.type);
-        
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('entityType', uploadData.metadata.entityType);
@@ -56,7 +56,7 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
         });
 
         console.log('Upload response status:', response.status);
-        
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error('Upload failed for file:', file.name, 'Error:', errorText);
@@ -67,12 +67,14 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
         console.log('Upload success for file:', file.name, result);
         results.push(result);
       }
-      
+
       return results;
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       const uploadedCount = Array.isArray(data) ? data.length : 1;
-      toast.success(`Successfully uploaded ${uploadedCount} image${uploadedCount > 1 ? 's' : ''} with automatic variants`);
+      toast.success(
+        `Successfully uploaded ${uploadedCount} image${uploadedCount > 1 ? 's' : ''} with automatic variants`
+      );
       queryClient.invalidateQueries({ queryKey: ['images'] });
       queryClient.invalidateQueries({ queryKey: ['image-stats'] });
       setFiles([]);
@@ -81,13 +83,13 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
       setAltText('');
       handleClose();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(`Upload failed: ${error.message}`);
     },
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newFiles = acceptedFiles.map((file) => {
+    const newFiles = acceptedFiles.map(file => {
       // Create a proper UploadFile that extends File
       const uploadFile = file as UploadFile;
       uploadFile.id = Math.random().toString(36).substr(2, 9);
@@ -96,17 +98,17 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
       uploadFile.progress = 0;
       return uploadFile;
     });
-    
+
     setFiles(prev => [...prev, ...newFiles]);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.gif']
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.gif'],
     },
     maxSize: 10 * 1024 * 1024, // 10MB
-    multiple: true
+    multiple: true,
   });
 
   const removeFile = (fileId: string) => {
@@ -128,13 +130,20 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
     // Use the files directly as they are File objects with additional properties
     const actualFiles = files.filter(f => f instanceof File || (f as any).stream);
 
-    console.log('Starting upload with files:', actualFiles.map(f => ({name: f.name, size: f.size, type: f.type})));
+    console.log(
+      'Starting upload with files:',
+      actualFiles.map(f => ({ name: f.name, size: f.size, type: f.type }))
+    );
 
     const metadata = {
       entityType: entityType.toLowerCase().replace(' ', '-'),
       description,
       altText,
-      tags: tags.split(',').map(tag => tag.trim()).filter(Boolean).join(',')
+      tags: tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(Boolean)
+        .join(','),
     };
 
     console.log('Upload metadata:', metadata);
@@ -205,12 +214,10 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
             {/* Metadata Form */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Image Type
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Image Type</label>
                 <select
                   value={entityType}
-                  onChange={(e) => setEntityType(e.target.value)}
+                  onChange={e => setEntityType(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="product">Product Image</option>
@@ -221,25 +228,21 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Alt Text
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Alt Text</label>
                 <input
                   type="text"
                   value={altText}
-                  onChange={(e) => setAltText(e.target.value)}
+                  onChange={e => setAltText(e.target.value)}
                   placeholder="Image description for accessibility"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
                 <textarea
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                   placeholder="Detailed description of the images"
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
@@ -247,13 +250,11 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tags
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
                 <input
                   type="text"
                   value={tags}
-                  onChange={(e) => setTags(e.target.value)}
+                  onChange={e => setTags(e.target.value)}
                   placeholder="Enter tags separated by commas (e.g., organic, fresh, vegetables)"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
@@ -267,7 +268,7 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
                   Selected Images ({files.length})
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-60 overflow-y-auto">
-                  {files.map((file) => (
+                  {files.map(file => (
                     <div key={file.id} className="relative group">
                       <div className="aspect-square rounded-lg overflow-hidden bg-gray-100">
                         <img
@@ -285,7 +286,9 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
                       <div className="absolute bottom-0 left-0 right-0 bg-black/75 text-white p-2">
                         <p className="text-xs truncate">{file.name}</p>
                         <p className="text-xs text-gray-300">
-                          {file.size && !isNaN(file.size) ? (file.size / 1024 / 1024).toFixed(2) + ' MB' : '0 MB'}
+                          {file.size && !isNaN(file.size)
+                            ? (file.size / 1024 / 1024).toFixed(2) + ' MB'
+                            : '0 MB'}
                         </p>
                       </div>
                     </div>
@@ -296,10 +299,7 @@ export default function ImageUploadModal({ isOpen, onClose }: ImageUploadModalPr
 
             {/* Action Buttons */}
             <div className="flex justify-end gap-4 pt-4 border-t">
-              <GlassButton
-                onClick={handleClose}
-                className="bg-gray-500 hover:bg-gray-600"
-              >
+              <GlassButton onClick={handleClose} className="bg-gray-500 hover:bg-gray-600">
                 Cancel
               </GlassButton>
               <GlassButton

@@ -26,11 +26,11 @@ const LiveLabelPreview = ({
   marginTop,
   marginLeft,
   spacingX,
-  spacingY
+  spacingY,
 }: LiveLabelPreviewProps) => {
   // Scale for visualization (A4 at 210x297mm should fit nicely)
   const scale = Math.min(400 / pageWidth, 550 / pageHeight);
-  
+
   const labels = [];
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < columns; col++) {
@@ -42,12 +42,12 @@ const LiveLabelPreview = ({
 
   return (
     <div className="flex flex-col items-center">
-      <div 
+      <div
         className="relative bg-white shadow-xl"
         style={{
           width: pageWidth * scale,
           height: pageHeight * scale,
-          border: '2px solid #e5e7eb'
+          border: '2px solid #e5e7eb',
         }}
       >
         {/* Margin guides */}
@@ -57,10 +57,10 @@ const LiveLabelPreview = ({
             left: 0,
             top: 0,
             width: marginLeft * scale,
-            height: marginTop * scale
+            height: marginTop * scale,
           }}
         />
-        
+
         {/* Labels */}
         {labels.map((label, idx) => (
           <div
@@ -70,20 +70,30 @@ const LiveLabelPreview = ({
               left: label.x * scale,
               top: label.y * scale,
               width: labelWidth * scale,
-              height: labelHeight * scale
+              height: labelHeight * scale,
             }}
           >
             {label.row + 1},{label.col + 1}
           </div>
         ))}
       </div>
-      
+
       <div className="mt-4 text-center text-sm text-gray-600 space-y-1">
-        <div>Page: {pageWidth} × {pageHeight}mm</div>
-        <div>Labels: {columns} × {rows} = {columns * rows} labels</div>
-        <div>Label size: {labelWidth} × {labelHeight}mm</div>
-        <div>Margins: {marginTop}mm top, {marginLeft}mm left</div>
-        <div>Spacing: {spacingX}mm horizontal, {spacingY}mm vertical</div>
+        <div>
+          Page: {pageWidth} × {pageHeight}mm
+        </div>
+        <div>
+          Labels: {columns} × {rows} = {columns * rows} labels
+        </div>
+        <div>
+          Label size: {labelWidth} × {labelHeight}mm
+        </div>
+        <div>
+          Margins: {marginTop}mm top, {marginLeft}mm left
+        </div>
+        <div>
+          Spacing: {spacingX}mm horizontal, {spacingY}mm vertical
+        </div>
       </div>
     </div>
   );
@@ -116,7 +126,10 @@ interface MediaTemplateManagerProps {
   selectedMediaId?: number;
 }
 
-export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }: MediaTemplateManagerProps) {
+export default function MediaTemplateManager({
+  onMediaSelect,
+  selectedMediaId,
+}: MediaTemplateManagerProps) {
   const [mediaTypes, setMediaTypes] = useState<MediaType[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -136,7 +149,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
     spacingY: 0,
     orientation: 'portrait' as 'portrait' | 'landscape',
     description: '',
-    manufacturer: 'Avery'
+    manufacturer: 'Avery',
   });
 
   useEffect(() => {
@@ -164,12 +177,12 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
               marginTop: media.physicalProperties.marginTop,
               marginLeft: media.physicalProperties.marginLeft,
               spacingX: media.physicalProperties.horizontalSpacing, // Map horizontalSpacing to spacingX
-              spacingY: media.physicalProperties.verticalSpacing // Map verticalSpacing to spacingY
+              spacingY: media.physicalProperties.verticalSpacing, // Map verticalSpacing to spacingY
             },
             orientation: media.orientation,
             description: media.description,
             manufacturer: media.manufacturer,
-            isActive: media.isActive
+            isActive: media.isActive,
           }));
           setMediaTypes(mappedMediaTypes);
           console.log('🏷️ Media types loaded:', mappedMediaTypes.length);
@@ -185,14 +198,14 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
-      const url = editingMedia 
+      const url = editingMedia
         ? `/api/labels/media-types/${editingMedia.id}`
         : '/api/labels/media-types';
-      
+
       const method = editingMedia ? 'PUT' : 'POST';
-      
+
       const response = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
@@ -212,14 +225,15 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
             marginRight: formData.marginTop,
             marginBottom: formData.marginLeft,
             horizontalSpacing: formData.spacingX, // Map spacingX to horizontalSpacing
-            verticalSpacing: formData.spacingY // Map spacingY to verticalSpacing
+            verticalSpacing: formData.spacingY, // Map spacingY to verticalSpacing
           },
-          mediaType: "sheet",
+          mediaType: 'sheet',
           orientation: formData.orientation,
-          description: formData.description || `${formData.columns}×${formData.rows} labels per sheet`,
+          description:
+            formData.description || `${formData.columns}×${formData.rows} labels per sheet`,
           manufacturer: formData.manufacturer,
-          isActive: true
-        })
+          isActive: true,
+        }),
       });
 
       if (response.ok) {
@@ -239,12 +253,12 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
 
   const handleDelete = async (media: MediaType) => {
     if (!confirm(`Delete media type "${media.name}"?`)) return;
-    
+
     try {
       const response = await fetch(`/api/labels/media-types/${media.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      
+
       if (response.ok) {
         toast.success('Media type deleted');
         fetchMediaTypes();
@@ -275,7 +289,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
       spacingY: media.dimensions.spacingY,
       orientation: media.orientation,
       description: media.description || '',
-      manufacturer: media.manufacturer || 'Avery'
+      manufacturer: media.manufacturer || 'Avery',
     });
     setShowAddModal(true);
     console.log('✅ Edit modal should now be visible');
@@ -297,7 +311,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
       spacingY: 0,
       orientation: 'portrait',
       description: '',
-      manufacturer: 'Avery'
+      manufacturer: 'Avery',
     });
   };
 
@@ -306,7 +320,11 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
   };
 
   if (loading) {
-    return <div className="flex justify-center py-8"><div className="animate-spin h-8 w-8 border-2 border-blue-600 border-t-transparent rounded-full"></div></div>;
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin h-8 w-8 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+      </div>
+    );
   }
 
   return (
@@ -331,7 +349,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
 
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mediaTypes.map((media) => (
+          {mediaTypes.map(media => (
             <div
               key={media.id}
               className={`border rounded-lg p-4 cursor-pointer transition-all ${
@@ -348,7 +366,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                 <h4 className="font-medium">{media.name}</h4>
                 <div className="flex space-x-1">
                   <button
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       e.preventDefault();
                       handleEdit(media);
@@ -359,7 +377,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                     <PencilIcon className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       e.preventDefault();
                       handleDelete(media);
@@ -371,12 +389,19 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                   </button>
                 </div>
               </div>
-              
+
               <div className="text-sm text-gray-600 space-y-1">
                 <div className="font-mono text-xs bg-gray-100 px-2 py-1 rounded">{media.code}</div>
-                <div>Label: {media.dimensions.labelWidth} × {media.dimensions.labelHeight}mm</div>
-                <div>Sheet: {media.dimensions.pageWidth} × {media.dimensions.pageHeight}mm</div>
-                <div>Layout: {media.dimensions.columns} × {media.dimensions.rows} ({calculateLabelsPerSheet(media)} labels/sheet)</div>
+                <div>
+                  Label: {media.dimensions.labelWidth} × {media.dimensions.labelHeight}mm
+                </div>
+                <div>
+                  Sheet: {media.dimensions.pageWidth} × {media.dimensions.pageHeight}mm
+                </div>
+                <div>
+                  Layout: {media.dimensions.columns} × {media.dimensions.rows} (
+                  {calculateLabelsPerSheet(media)} labels/sheet)
+                </div>
                 <div className="text-xs text-gray-500">{media.manufacturer}</div>
               </div>
             </div>
@@ -393,16 +418,19 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                 {editingMedia ? 'Edit Media Type' : 'Add New Media Type'}
               </h3>
             </div>
-            
+
             <div className="flex h-[calc(90vh-80px)]">
-              <form onSubmit={handleSubmit} className="w-1/2 p-6 space-y-4 overflow-y-auto border-r border-gray-200">
+              <form
+                onSubmit={handleSubmit}
+                className="w-1/2 p-6 space-y-4 overflow-y-auto border-r border-gray-200"
+              >
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                     <input
                       type="text"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={e => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g., J8160 - 21 Address Labels"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       required
@@ -413,7 +441,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                     <input
                       type="text"
                       value={formData.code}
-                      onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+                      onChange={e => setFormData({ ...formData, code: e.target.value })}
                       placeholder="e.g., J8160"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       required
@@ -422,11 +450,13 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Manufacturer</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Manufacturer
+                  </label>
                   <input
                     type="text"
                     value={formData.manufacturer}
-                    onChange={(e) => setFormData({ ...formData, manufacturer: e.target.value })}
+                    onChange={e => setFormData({ ...formData, manufacturer: e.target.value })}
                     placeholder="e.g., Avery"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -441,7 +471,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.pageWidth}
-                        onChange={(e) => setFormData({ ...formData, pageWidth: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, pageWidth: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -452,7 +484,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.pageHeight}
-                        onChange={(e) => setFormData({ ...formData, pageHeight: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, pageHeight: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -461,7 +495,12 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                       <label className="block text-sm text-gray-600 mb-1">Orientation</label>
                       <select
                         value={formData.orientation}
-                        onChange={(e) => setFormData({ ...formData, orientation: e.target.value as 'portrait' | 'landscape' })}
+                        onChange={e =>
+                          setFormData({
+                            ...formData,
+                            orientation: e.target.value as 'portrait' | 'landscape',
+                          })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       >
                         <option value="portrait">Portrait</option>
@@ -480,7 +519,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.labelWidth}
-                        onChange={(e) => setFormData({ ...formData, labelWidth: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, labelWidth: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -491,7 +532,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.labelHeight}
-                        onChange={(e) => setFormData({ ...formData, labelHeight: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, labelHeight: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -507,7 +550,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                       <input
                         type="number"
                         value={formData.columns}
-                        onChange={(e) => setFormData({ ...formData, columns: parseInt(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, columns: parseInt(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                         min="1"
@@ -518,7 +563,7 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                       <input
                         type="number"
                         value={formData.rows}
-                        onChange={(e) => setFormData({ ...formData, rows: parseInt(e.target.value) })}
+                        onChange={e => setFormData({ ...formData, rows: parseInt(e.target.value) })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                         min="1"
@@ -536,7 +581,9 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.marginTop}
-                        onChange={(e) => setFormData({ ...formData, marginTop: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, marginTop: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -547,29 +594,39 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                         type="number"
                         step="0.1"
                         value={formData.marginLeft}
-                        onChange={(e) => setFormData({ ...formData, marginLeft: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, marginLeft: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Horizontal Spacing (mm)</label>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Horizontal Spacing (mm)
+                      </label>
                       <input
                         type="number"
                         step="0.1"
                         value={formData.spacingX}
-                        onChange={(e) => setFormData({ ...formData, spacingX: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, spacingX: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-600 mb-1">Vertical Spacing (mm)</label>
+                      <label className="block text-sm text-gray-600 mb-1">
+                        Vertical Spacing (mm)
+                      </label>
                       <input
                         type="number"
                         step="0.1"
                         value={formData.spacingY}
-                        onChange={(e) => setFormData({ ...formData, spacingY: parseFloat(e.target.value) })}
+                        onChange={e =>
+                          setFormData({ ...formData, spacingY: parseFloat(e.target.value) })
+                        }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required
                       />
@@ -578,11 +635,13 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Description
+                  </label>
                   <input
                     type="text"
                     value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    onChange={e => setFormData({ ...formData, description: e.target.value })}
                     placeholder="e.g., Address labels for envelopes"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   />
@@ -607,12 +666,12 @@ export default function MediaTemplateManager({ onMediaSelect, selectedMediaId }:
                   </button>
                 </div>
               </form>
-              
+
               {/* Live Preview Panel */}
               <div className="w-1/2 p-6 bg-gray-50 overflow-y-auto">
                 <h4 className="text-sm font-medium text-gray-700 mb-4">Live Preview</h4>
                 <div className="bg-white rounded-lg shadow-lg p-4 flex items-center justify-center">
-                  <LiveLabelPreview 
+                  <LiveLabelPreview
                     pageWidth={formData.pageWidth}
                     pageHeight={formData.pageHeight}
                     labelWidth={formData.labelWidth}

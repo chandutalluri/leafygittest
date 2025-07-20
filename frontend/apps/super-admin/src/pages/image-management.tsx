@@ -4,8 +4,8 @@ import ImageManagementHub from '../components/image-management/ImageManagementHu
 
 export default function ImageManagement() {
   return (
-    <DashboardLayout 
-      title="Image Management" 
+    <DashboardLayout
+      title="Image Management"
       description="Central image repository"
       activeDomain="products"
     >

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { 
-  ChartBarIcon, 
-  DocumentTextIcon, 
+import {
+  ChartBarIcon,
+  DocumentTextIcon,
   PrinterIcon,
   ClockIcon,
   UserGroupIcon,
   ArrowTrendingUpIcon,
   CalendarIcon,
-  CurrencyRupeeIcon
+  CurrencyRupeeIcon,
 } from '@heroicons/react/24/outline';
 
 interface AnalyticsData {
@@ -23,7 +23,7 @@ interface AnalyticsData {
 
 export default function LabelAnalytics() {
   const [dateRange, setDateRange] = useState<'week' | 'month' | 'year'>('month');
-  
+
   // Sample analytics data
   const analyticsData: AnalyticsData = {
     totalLabels: 15234,
@@ -104,7 +104,9 @@ export default function LabelAnalytics() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Labels Printed</p>
-              <p className="text-3xl font-bold text-gray-900">{analyticsData.totalLabels.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                {analyticsData.totalLabels.toLocaleString()}
+              </p>
               <p className="text-sm text-green-600 mt-1">+12% from last {dateRange}</p>
             </div>
             <div className="p-3 bg-blue-100 rounded-lg">
@@ -118,7 +120,9 @@ export default function LabelAnalytics() {
             <div>
               <p className="text-sm text-gray-500">Print Jobs</p>
               <p className="text-3xl font-bold text-gray-900">{analyticsData.totalPrintJobs}</p>
-              <p className="text-sm text-gray-600 mt-1">Avg {analyticsData.averageLabelsPerJob}/job</p>
+              <p className="text-sm text-gray-600 mt-1">
+                Avg {analyticsData.averageLabelsPerJob}/job
+              </p>
             </div>
             <div className="p-3 bg-emerald-100 rounded-lg">
               <PrinterIcon className="w-8 h-8 text-emerald-600" />
@@ -143,7 +147,9 @@ export default function LabelAnalytics() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Cost Savings</p>
-              <p className="text-3xl font-bold text-gray-900">₹{analyticsData.costSavings.toLocaleString()}</p>
+              <p className="text-3xl font-bold text-gray-900">
+                ₹{analyticsData.costSavings.toLocaleString()}
+              </p>
               <p className="text-sm text-green-600 mt-1">vs outsourced printing</p>
             </div>
             <div className="p-3 bg-green-100 rounded-lg">
@@ -159,12 +165,12 @@ export default function LabelAnalytics() {
         <div className="bg-white p-6 rounded-lg shadow">
           <h3 className="text-lg font-medium mb-4">Daily Print Volume</h3>
           <div className="space-y-3">
-            {analyticsData.dailyPrints.map((day) => (
+            {analyticsData.dailyPrints.map(day => (
               <div key={day.date} className="flex items-center">
                 <span className="text-sm text-gray-600 w-12">{day.date}</span>
                 <div className="flex-1 mx-4">
                   <div className="bg-gray-200 rounded-full h-6 relative">
-                    <div 
+                    <div
                       className="bg-emerald-500 h-6 rounded-full flex items-center justify-end pr-2"
                       style={{ width: `${(day.count / maxDailyCount) * 100}%` }}
                     >
@@ -187,7 +193,9 @@ export default function LabelAnalytics() {
                   <span className="text-sm font-medium text-gray-900 w-6">{index + 1}.</span>
                   <span className="text-sm text-gray-700 ml-2">{product.name}</span>
                 </div>
-                <span className="text-sm font-medium text-gray-900">{product.count.toLocaleString()}</span>
+                <span className="text-sm font-medium text-gray-900">
+                  {product.count.toLocaleString()}
+                </span>
               </div>
             ))}
           </div>
@@ -198,16 +206,18 @@ export default function LabelAnalytics() {
       <div className="bg-white p-6 rounded-lg shadow">
         <h3 className="text-lg font-medium mb-4">Branch-wise Label Usage</h3>
         <div className="space-y-3">
-          {analyticsData.branchStats.map((branch) => (
+          {analyticsData.branchStats.map(branch => (
             <div key={branch.branch} className="flex items-center">
               <span className="text-sm text-gray-600 w-40">{branch.branch}</span>
               <div className="flex-1 mx-4">
                 <div className="bg-gray-200 rounded-full h-6 relative">
-                  <div 
+                  <div
                     className="bg-blue-500 h-6 rounded-full flex items-center justify-end pr-2"
                     style={{ width: `${(branch.labels / maxBranchLabels) * 100}%` }}
                   >
-                    <span className="text-xs text-white font-medium">{branch.labels.toLocaleString()}</span>
+                    <span className="text-xs text-white font-medium">
+                      {branch.labels.toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </div>

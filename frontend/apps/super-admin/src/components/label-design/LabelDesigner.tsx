@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -26,7 +26,7 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
     { id: 'qrcode', name: 'QR Code', icon: '📱' },
     { id: 'image', name: 'Image', icon: '🖼️' },
     { id: 'rectangle', name: 'Rectangle', icon: '▭' },
-    { id: 'nutrition', name: 'Nutrition Facts', icon: '🥗' }
+    { id: 'nutrition', name: 'Nutrition Facts', icon: '🥗' },
   ];
 
   const addElement = () => {
@@ -40,9 +40,9 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
       content: selectedTool === 'text' ? 'Sample Text' : `Sample ${selectedTool}`,
       fontSize: 12,
       color: '#000000',
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     };
-    
+
     setElements([...elements, newElement]);
     toast.success(`${selectedTool} element added`);
   };
@@ -57,7 +57,7 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
       toast.error('Please add at least one element to your label design');
       return;
     }
-    
+
     setIsSaving(true);
     try {
       await onSave(elements);
@@ -71,9 +71,9 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
       {/* Left Toolbar */}
       <div className="w-64 bg-gray-50 border-r p-4">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">Design Tools</h3>
-        
+
         <div className="space-y-2 mb-6">
-          {tools.map((tool) => (
+          {tools.map(tool => (
             <button
               key={tool.id}
               onClick={() => setSelectedTool(tool.id)}
@@ -88,18 +88,18 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
             </button>
           ))}
         </div>
-        
+
         <button
           onClick={addElement}
           className="w-full py-2 px-4 bg-emerald-600 text-white rounded hover:bg-emerald-700 mb-4"
         >
           Add {selectedTool} Element
         </button>
-        
+
         <div className="border-t pt-4">
           <h4 className="text-sm font-medium text-gray-700 mb-2">Elements ({elements.length})</h4>
           <div className="space-y-2 max-h-48 overflow-y-auto">
-            {elements.map((element) => (
+            {elements.map(element => (
               <div
                 key={element.id}
                 className="flex items-center justify-between p-2 bg-white rounded border"
@@ -116,7 +116,7 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
           </div>
         </div>
       </div>
-      
+
       {/* Main Canvas Area */}
       <div className="flex-1 p-6">
         <div className="bg-white border rounded-lg h-full">
@@ -128,24 +128,22 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
               </div>
             </div>
           </div>
-          
+
           <div className="p-8 flex items-center justify-center h-full">
-            <div 
+            <div
               className="border-2 border-dashed border-gray-300 bg-white relative"
               style={{
                 width: `${mediaTemplate.dimensions.labelWidth * 2}px`,
                 height: `${mediaTemplate.dimensions.labelHeight * 2}px`,
                 minWidth: '400px',
-                minHeight: '300px'
+                minHeight: '300px',
               }}
             >
               <div className="absolute inset-0 p-2">
-                <div className="text-center text-gray-500 text-sm mb-4">
-                  Label Design Area
-                </div>
-                
+                <div className="text-center text-gray-500 text-sm mb-4">Label Design Area</div>
+
                 {/* Render Elements */}
-                {elements.map((element) => (
+                {elements.map(element => (
                   <div
                     key={element.id}
                     className="absolute border border-blue-300 bg-blue-50 p-2 cursor-move"
@@ -155,25 +153,27 @@ export function LabelDesigner({ mediaTemplate, onSave }: LabelDesignerProps) {
                       width: `${element.width}px`,
                       height: `${element.height}px`,
                       fontSize: `${element.fontSize}px`,
-                      color: element.color
+                      color: element.color,
                     }}
                   >
                     {element.content}
                   </div>
                 ))}
-                
+
                 {elements.length === 0 && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-gray-400">
                       <p className="mb-2">No elements added yet</p>
-                      <p className="text-sm">Select a tool from the left panel and click "Add Element"</p>
+                      <p className="text-sm">
+                        Select a tool from the left panel and click "Add Element"
+                      </p>
                     </div>
                   </div>
                 )}
               </div>
             </div>
           </div>
-          
+
           <div className="p-4 border-t">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-600">

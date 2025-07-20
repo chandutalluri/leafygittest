@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { 
-  BuildingOfficeIcon, 
-  UsersIcon, 
-  UserIcon, 
+import {
+  BuildingOfficeIcon,
+  UsersIcon,
+  UserIcon,
   ShieldCheckIcon,
   MapPinIcon,
-  UserGroupIcon
+  UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
 interface Branch {
@@ -32,7 +32,7 @@ export function OrganizationHub() {
   const fetchOrganizationData = async () => {
     try {
       setLoading(true);
-      
+
       const branchesResponse = await fetch('/api/direct-data/branches');
       if (branchesResponse.ok) {
         const branchesData = await branchesResponse.json();
@@ -56,7 +56,7 @@ export function OrganizationHub() {
     { id: 'companies', name: 'Company Management', icon: BuildingOfficeIcon },
     { id: 'branches', name: 'Branch Management', icon: MapPinIcon },
     { id: 'employees', name: 'Employee Management', icon: UsersIcon },
-    { id: 'roles', name: 'Role Management', icon: ShieldCheckIcon }
+    { id: 'roles', name: 'Role Management', icon: ShieldCheckIcon },
   ];
 
   const renderOverview = () => (
@@ -141,7 +141,7 @@ export function OrganizationHub() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {branches.map((branch) => (
+              {branches.map(branch => (
                 <tr key={branch.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{branch.name}</div>
@@ -157,11 +157,13 @@ export function OrganizationHub() {
                     {branch.employee_count || 0}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      branch.status === 'active' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        branch.status === 'active'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-red-100 text-red-800'
+                      }`}
+                    >
                       {branch.status}
                     </span>
                   </td>
@@ -193,7 +195,7 @@ export function OrganizationHub() {
 
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button

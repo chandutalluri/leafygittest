@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
@@ -29,7 +29,7 @@ import {
   ClipboardDocumentIcon,
   ArrowUturnLeftIcon,
   ArrowUturnRightIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
 } from '@heroicons/react/24/outline';
 import { EnhancedQRCodeGenerator } from './EnhancedQRCodeGenerator';
 import MultipleBarcodeGenerator from './MultipleBarcodeGenerator';
@@ -48,7 +48,15 @@ const pxToMm = (px: number) => px / 3.7795275591;
 
 interface CanvasElement {
   id: string;
-  type: 'text' | 'barcode' | 'qr' | 'image' | 'rectangle' | 'line' | 'nutrition-table' | 'indian-compliance';
+  type:
+    | 'text'
+    | 'barcode'
+    | 'qr'
+    | 'image'
+    | 'rectangle'
+    | 'line'
+    | 'nutrition-table'
+    | 'indian-compliance';
   x: number;
   y: number;
   width: number;
@@ -91,8 +99,8 @@ interface MediaType {
   layout: {
     rows: number;
     columns: number;
-    gaps: { x: number; y: number; };
-    margins: { top: number; bottom: number; left: number; right: number; };
+    gaps: { x: number; y: number };
+    margins: { top: number; bottom: number; left: number; right: number };
   };
 }
 
@@ -101,7 +109,7 @@ interface Product {
   name: string;
   sku: string;
   price: number;
-  category: { name: string; };
+  category: { name: string };
   nutritionData?: {
     calories: string;
     protein: string;
@@ -132,42 +140,42 @@ interface UnifiedLabelState {
   // Template selection
   selectedMediaType: MediaType | null;
   selectedLabelTemplate: LabelTemplate | null;
-  
+
   // Canvas state
   canvasElements: CanvasElement[];
   selectedElement: string | null;
   selectedElements: string[];
-  
+
   // Product/data
   selectedProduct: Product | null;
-  
+
   // UI state
   activeView: 'design' | 'preview' | 'print';
   zoom: number;
   showGrid: boolean;
   snapToGrid: boolean;
   gridSize: number;
-  
+
   // Settings
   canvasSettings: {
     showOnlyOneLabel: boolean;
-    labelDimensions: { width: number; height: number; };
+    labelDimensions: { width: number; height: number };
     snapToLabelBounds: boolean;
   };
-  
+
   // History
   undoStack: CanvasElement[][];
   redoStack: CanvasElement[][];
 }
 
-export function ProfessionalLabelDesigner({ 
-  selectedTemplate, 
-  onTemplateCleared, 
-  onTemplateSaved 
-}: { 
-  selectedTemplate?: any; 
-  onTemplateCleared?: () => void; 
-  onTemplateSaved?: () => void; 
+export function ProfessionalLabelDesigner({
+  selectedTemplate,
+  onTemplateCleared,
+  onTemplateSaved,
+}: {
+  selectedTemplate?: any;
+  onTemplateCleared?: () => void;
+  onTemplateSaved?: () => void;
 } = {}) {
   // State Management - Unified state approach
   const [selectedMedia, setSelectedMedia] = useState<MediaType | null>(null);
@@ -193,25 +201,25 @@ export function ProfessionalLabelDesigner({
   const [canvasSettings, setCanvasSettings] = useState({
     showOnlyOneLabel: true,
     labelDimensions: { width: 70, height: 37 },
-    snapToLabelBounds: true
+    snapToLabelBounds: true,
   });
 
   // UI state
   const [activeToolbar, setActiveToolbar] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Resize state
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState<string>('');
   const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
-  const [resizeElementStartState, setResizeElementStartState] = useState<{ 
-    x: number; 
-    y: number; 
-    width: number; 
-    height: number; 
+  const [resizeElementStartState, setResizeElementStartState] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
   }>({ x: 0, y: 0, width: 0, height: 0 });
-  
+
   const canvasRef = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 400, height: 300 });
 
@@ -252,25 +260,25 @@ export function ProfessionalLabelDesigner({
   useEffect(() => {
     if (selectedMedia && selectedMedia.dimensions) {
       const { labelWidth, labelHeight } = selectedMedia.dimensions;
-      
+
       // ENFORCE SINGLE LABEL CONSTRAINT - Only show label dimensions, NOT page dimensions
       const singleLabelSize = {
-        width: mmToPx(labelWidth),  // Single label width only
-        height: mmToPx(labelHeight) // Single label height only
+        width: mmToPx(labelWidth), // Single label width only
+        height: mmToPx(labelHeight), // Single label height only
       };
-      
+
       setCanvasSize(singleLabelSize);
-      
+
       // Update unified state with single label constraint
       updateUnifiedState({
         canvasSettings: {
           ...canvasSettings,
           showOnlyOneLabel: true, // CRITICAL: Force single label view
           labelDimensions: { width: labelWidth, height: labelHeight },
-          snapToLabelBounds: true
-        }
+          snapToLabelBounds: true,
+        },
       });
-      
+
       console.log(`🎯 Canvas set to SINGLE LABEL: ${labelWidth}×${labelHeight}mm (NOT full sheet)`);
     }
   }, [selectedMedia]);
@@ -281,7 +289,7 @@ export function ProfessionalLabelDesigner({
       const [mediaResponse, productsResponse, templatesResponse] = await Promise.all([
         fetch('/api/labels/media-types'),
         fetch('/api/direct-data/products'),
-        fetch('/api/labels/custom-templates')
+        fetch('/api/labels/custom-templates'),
       ]);
 
       if (mediaResponse.ok) {
@@ -296,9 +304,11 @@ export function ProfessionalLabelDesigner({
 
       if (productsResponse.ok) {
         const productsData = await productsResponse.json();
-        const productList = Array.isArray(productsData) ? productsData : 
-                           (productsData.success && productsData.data) ? productsData.data : 
-                           (productsData.products || []);
+        const productList = Array.isArray(productsData)
+          ? productsData
+          : productsData.success && productsData.data
+            ? productsData.data
+            : productsData.products || [];
         setProducts(productList);
       }
 
@@ -333,19 +343,19 @@ export function ProfessionalLabelDesigner({
       rotation: 0,
       opacity: 1,
       zIndex: canvasElements.length,
-      ...additionalProps
+      ...additionalProps,
     };
 
     updateUnifiedState({
       canvasElements: [...canvasElements, newElement],
-      selectedElement: newElement.id
+      selectedElement: newElement.id,
     });
 
     toast.success(`Added ${type} element`);
   };
 
   const addTextElement = () => addElement('text', { content: 'Click to edit' });
-  
+
   const addBarcode = () => {
     setShowModal('barcode');
   };
@@ -358,11 +368,12 @@ export function ProfessionalLabelDesigner({
     setShowModal('image');
   };
 
-  const addRectangle = () => addElement('rectangle', { 
-    backgroundColor: '#f0f0f0',
-    borderColor: '#000000',
-    borderWidth: 1
-  });
+  const addRectangle = () =>
+    addElement('rectangle', {
+      backgroundColor: '#f0f0f0',
+      borderColor: '#000000',
+      borderWidth: 1,
+    });
 
   const addNutrition = () => {
     setShowModal('nutrition');
@@ -395,12 +406,12 @@ Best Before: {{BEST_BEFORE}}
 Net Qty: {{NET_QTY}}
 MRP: ₹{{MRP}} (Incl. all taxes)
 Customer Care: {{CUSTOMER_CARE}}`,
-      zIndex: canvasElements.length
+      zIndex: canvasElements.length,
     };
 
     updateUnifiedState({
       canvasElements: [...canvasElements, complianceElement],
-      selectedElement: complianceElement.id
+      selectedElement: complianceElement.id,
     });
 
     toast.success('Added Indian Compliance block');
@@ -412,7 +423,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
       const response = await fetch('/api/direct-data/products');
       if (response.ok) {
         const data = await response.json();
-        const productList = Array.isArray(data) ? data : (data.products || []);
+        const productList = Array.isArray(data) ? data : data.products || [];
         setProducts(productList);
       }
     } catch (error) {
@@ -426,29 +437,29 @@ Customer Care: {{CUSTOMER_CARE}}`,
     if (e.target === e.currentTarget) {
       updateUnifiedState({
         selectedElement: null,
-        selectedElements: []
+        selectedElements: [],
       });
     }
   };
 
   const handleElementClick = (elementId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    
+
     if (e.ctrlKey || e.metaKey) {
       // Multi-select
       if (selectedElements.includes(elementId)) {
         updateUnifiedState({
-          selectedElements: selectedElements.filter(id => id !== elementId)
+          selectedElements: selectedElements.filter(id => id !== elementId),
         });
       } else {
         updateUnifiedState({
-          selectedElements: [...selectedElements, elementId]
+          selectedElements: [...selectedElements, elementId],
         });
       }
     } else {
       updateUnifiedState({
         selectedElement: elementId,
-        selectedElements: []
+        selectedElements: [],
       });
     }
   };
@@ -490,9 +501,9 @@ Customer Care: {{CUSTOMER_CARE}}`,
 
   // Delete selected elements
   const deleteSelectedElements = () => {
-    const elementsToDelete = selectedElements.length > 0 ? selectedElements : 
-                           selectedElement ? [selectedElement] : [];
-    
+    const elementsToDelete =
+      selectedElements.length > 0 ? selectedElements : selectedElement ? [selectedElement] : [];
+
     if (elementsToDelete.length === 0) {
       toast.error('No elements selected');
       return;
@@ -501,7 +512,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
     updateUnifiedState({
       canvasElements: canvasElements.filter(el => !elementsToDelete.includes(el.id)),
       selectedElement: null,
-      selectedElements: []
+      selectedElements: [],
     });
 
     toast.success(`Deleted ${elementsToDelete.length} elements`);
@@ -511,7 +522,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
   const selectAllElements = () => {
     updateUnifiedState({
       selectedElements: canvasElements.map(el => el.id),
-      selectedElement: null
+      selectedElement: null,
     });
     toast.success(`Selected all ${canvasElements.length} elements`);
   };
@@ -533,16 +544,16 @@ Customer Care: {{CUSTOMER_CARE}}`,
         labelSettings: {
           backgroundColor: '#ffffff',
           borderStyle: 'none',
-          cornerRadius: 0
-        }
-      }
+          cornerRadius: 0,
+        },
+      },
     };
 
     try {
       const response = await fetch('/api/labels/custom-templates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(template)
+        body: JSON.stringify(template),
       });
 
       if (response.ok) {
@@ -563,19 +574,21 @@ Customer Care: {{CUSTOMER_CARE}}`,
     switch (element.type) {
       case 'text':
         return (
-          <div style={{
-            fontSize: `${element.fontSize}px`,
-            fontWeight: element.fontWeight,
-            fontFamily: element.fontFamily,
-            textAlign: element.textAlign as any,
-            color: element.color,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: element.textAlign || 'left',
-            padding: '2px'
-          }}>
+          <div
+            style={{
+              fontSize: `${element.fontSize}px`,
+              fontWeight: element.fontWeight,
+              fontFamily: element.fontFamily,
+              textAlign: element.textAlign as any,
+              color: element.color,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: element.textAlign || 'left',
+              padding: '2px',
+            }}
+          >
             {element.content}
           </div>
         );
@@ -620,12 +633,15 @@ Customer Care: {{CUSTOMER_CARE}}`,
 
       case 'indian-compliance':
         return (
-          <div className="w-full h-full p-2 text-left" style={{
-            fontSize: `${element.fontSize}px`,
-            fontFamily: element.fontFamily,
-            color: element.color,
-            lineHeight: element.lineHeight
-          }}>
+          <div
+            className="w-full h-full p-2 text-left"
+            style={{
+              fontSize: `${element.fontSize}px`,
+              fontFamily: element.fontFamily,
+              color: element.color,
+              lineHeight: element.lineHeight,
+            }}
+          >
             {element.content?.split('\n').map((line, i) => (
               <div key={i}>{line}</div>
             ))}
@@ -646,7 +662,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
             <h2 className="text-xl font-semibold">Professional Label Designer</h2>
             <span className="text-sm text-gray-500">A4 Standard (210×297mm)</span>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {/* Main Action Buttons */}
             <button
@@ -656,7 +672,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <ChatBubbleLeftRightIcon className="w-4 h-4" />
               Text
             </button>
-            
+
             <button
               onClick={() => addQRCode()}
               className="flex items-center gap-2 px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
@@ -664,7 +680,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <QrCodeIcon className="w-4 h-4" />
               QR Code
             </button>
-            
+
             <button
               onClick={() => addBarcode()}
               className="flex items-center gap-2 px-3 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
@@ -672,7 +688,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <RectangleStackIcon className="w-4 h-4" />
               Barcode
             </button>
-            
+
             <button
               onClick={() => addNutrition()}
               className="flex items-center gap-2 px-3 py-2 bg-orange-500 text-white rounded hover:bg-orange-600"
@@ -680,7 +696,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <BeakerIcon className="w-4 h-4" />
               Nutrition
             </button>
-            
+
             <button
               onClick={() => addProductInfo()}
               className="flex items-center gap-2 px-3 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
@@ -688,7 +704,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <DocumentTextIcon className="w-4 h-4" />
               Product Info
             </button>
-            
+
             <button
               onClick={() => setShowModal('auto-generate')}
               className="flex items-center gap-2 px-3 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
@@ -696,7 +712,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <SparklesIcon className="w-4 h-4" />
               Auto Generate
             </button>
-            
+
             <button
               onClick={() => setShowModal('templates')}
               className="flex items-center gap-2 px-3 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600"
@@ -704,7 +720,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <Square3Stack3DIcon className="w-4 h-4" />
               Templates
             </button>
-            
+
             <button
               onClick={() => addIndianCompliance()}
               className="flex items-center gap-2 px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -712,7 +728,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <ShieldCheckIcon className="w-4 h-4" />
               Indian Compliance
             </button>
-            
+
             <button
               onClick={() => addImage()}
               className="flex items-center gap-2 px-3 py-2 bg-pink-500 text-white rounded hover:bg-pink-600"
@@ -720,7 +736,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <PhotoIcon className="w-4 h-4" />
               Image
             </button>
-            
+
             <button
               onClick={() => addRectangle()}
               className="flex items-center gap-2 px-3 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
@@ -729,16 +745,16 @@ Customer Care: {{CUSTOMER_CARE}}`,
               Rectangle
             </button>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={selectAllElements}
               className="flex items-center gap-1 px-3 py-2 border rounded hover:bg-gray-50"
             >
-              <CursorArrowRaysIcon className="w-4 h-4" />
+              <Squares2X2Icon className="w-4 h-4" />
               Select All
             </button>
-            
+
             <button
               onClick={deleteSelectedElements}
               className="p-2 text-red-600 hover:bg-red-50 rounded"
@@ -748,7 +764,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
             </button>
           </div>
         </div>
-        
+
         {/* Secondary Toolbar */}
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-4">
@@ -768,29 +784,29 @@ Customer Care: {{CUSTOMER_CARE}}`,
                 <MagnifyingGlassPlusIcon className="w-4 h-4" />
               </button>
             </div>
-            
+
             {/* Grid Controls */}
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={showGrid}
-                onChange={(e) => setShowGrid(e.target.checked)}
+                onChange={e => setShowGrid(e.target.checked)}
                 className="rounded"
               />
               <span className="text-sm">Show Grid</span>
             </label>
-            
+
             <label className="flex items-center gap-2">
               <input
                 type="checkbox"
                 checked={snapToGrid}
-                onChange={(e) => setSnapToGrid(e.target.checked)}
+                onChange={e => setSnapToGrid(e.target.checked)}
                 className="rounded"
               />
               <span className="text-sm">Snap to Grid</span>
             </label>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('preview')}
@@ -799,7 +815,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <EyeIcon className="w-4 h-4" />
               Preview
             </button>
-            
+
             <button
               onClick={() => setShowModal('save-template')}
               className="flex items-center gap-2 px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600"
@@ -810,7 +826,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
           </div>
         </div>
       </div>
-      
+
       {/* Main Content Area */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar */}
@@ -821,7 +837,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
               <label className="block text-sm font-medium mb-2">Label Media Type</label>
               <select
                 value={selectedMedia?.id || ''}
-                onChange={(e) => {
+                onChange={e => {
                   const media = mediaTypes.find(m => m.id === Number(e.target.value));
                   setSelectedMedia(media || null);
                 }}
@@ -834,13 +850,13 @@ Customer Care: {{CUSTOMER_CARE}}`,
                 ))}
               </select>
             </div>
-            
+
             {/* Product Data Source */}
             <div>
               <label className="block text-sm font-medium mb-2">Product Data Source</label>
               <select
                 value={selectedProduct?.id || ''}
-                onChange={(e) => {
+                onChange={e => {
                   const product = products.find(p => p.id === Number(e.target.value));
                   setSelectedProduct(product || null);
                 }}
@@ -854,13 +870,13 @@ Customer Care: {{CUSTOMER_CARE}}`,
                 ))}
               </select>
             </div>
-            
+
             {/* Saved Templates */}
             {savedTemplates.length > 0 && (
               <div>
                 <label className="block text-sm font-medium mb-2">Saved Templates</label>
                 <select
-                  onChange={(e) => {
+                  onChange={e => {
                     const template = savedTemplates.find(t => t.id === Number(e.target.value));
                     if (template) {
                       setCanvasElements(template.templateJson.elements);
@@ -878,19 +894,19 @@ Customer Care: {{CUSTOMER_CARE}}`,
                 </select>
               </div>
             )}
-            
+
             {/* Template Name */}
             <div>
               <label className="block text-sm font-medium mb-2">Template Name</label>
               <input
                 type="text"
                 value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
+                onChange={e => setTemplateName(e.target.value)}
                 placeholder="Enter template name"
                 className="w-full px-3 py-2 border rounded"
               />
             </div>
-            
+
             {/* Product Info Display */}
             {selectedProduct && (
               <div className="bg-gray-50 p-3 rounded">
@@ -904,7 +920,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
             )}
           </div>
         </div>
-        
+
         {/* Canvas Area */}
         <div className="flex-1 bg-gray-100 p-8 overflow-auto">
           <div className="flex justify-center">
@@ -920,7 +936,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
                   ? `repeating-linear-gradient(0deg, #f0f0f0 0px, transparent 1px, transparent ${gridSize}px, #f0f0f0 ${gridSize}px),
                      repeating-linear-gradient(90deg, #f0f0f0 0px, transparent 1px, transparent ${gridSize}px, #f0f0f0 ${gridSize}px)`
                   : 'none',
-                backgroundSize: `${gridSize}px ${gridSize}px`
+                backgroundSize: `${gridSize}px ${gridSize}px`,
               }}
               onClick={handleCanvasClick}
               onMouseMove={handleDragMove}
@@ -939,17 +955,21 @@ Customer Care: {{CUSTOMER_CARE}}`,
                     top: `${element.y}px`,
                     width: `${element.width}px`,
                     height: `${element.height}px`,
-                    backgroundColor: element.type === 'rectangle' ? element.backgroundColor : 'transparent',
-                    border: element.type === 'rectangle' ? `${element.borderWidth}px solid ${element.borderColor}` : 'none',
+                    backgroundColor:
+                      element.type === 'rectangle' ? element.backgroundColor : 'transparent',
+                    border:
+                      element.type === 'rectangle'
+                        ? `${element.borderWidth}px solid ${element.borderColor}`
+                        : 'none',
                     transform: `rotate(${element.rotation || 0}deg)`,
                     opacity: element.opacity || 1,
-                    zIndex: element.zIndex || 0
+                    zIndex: element.zIndex || 0,
                   }}
-                  onClick={(e) => handleElementClick(element.id, e)}
-                  onMouseDown={(e) => handleDragStart(element.id, e)}
+                  onClick={e => handleElementClick(element.id, e)}
+                  onMouseDown={e => handleDragStart(element.id, e)}
                 >
                   {renderElementContent(element)}
-                  
+
                   {/* Resize Handles */}
                   {(selectedElement === element.id || selectedElements.includes(element.id)) && (
                     <>
@@ -965,19 +985,21 @@ Customer Care: {{CUSTOMER_CARE}}`,
           </div>
         </div>
       </div>
-      
+
       {/* Modals */}
       {showModal === 'save-template' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96">
             <h3 className="text-lg font-semibold mb-4">Save Template</h3>
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              const formData = new FormData(e.target as HTMLFormElement);
-              const name = formData.get('name') as string;
-              const description = formData.get('description') as string;
-              handleSaveTemplate(name, description);
-            }}>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                const formData = new FormData(e.target as HTMLFormElement);
+                const name = formData.get('name') as string;
+                const description = formData.get('description') as string;
+                handleSaveTemplate(name, description);
+              }}
+            >
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-1">Template Name *</label>
                 <input
@@ -1017,50 +1039,50 @@ Customer Care: {{CUSTOMER_CARE}}`,
           </div>
         </div>
       )}
-      
+
       {showModal === 'qr' && (
         <EnhancedQRCodeGenerator
           onClose={() => setShowModal(null)}
-          onGenerate={(qrData) => {
+          onGenerate={qrData => {
             addElement('qr', {
               content: qrData.data,
               qrType: qrData.type,
               width: 100,
-              height: 100
+              height: 100,
             });
             setShowModal(null);
           }}
         />
       )}
-      
+
       {showModal === 'barcode' && (
         <MultipleBarcodeGenerator
           onClose={() => setShowModal(null)}
-          onAddToCanvas={(barcodeData) => {
+          onAddToCanvas={barcodeData => {
             addElement('barcode', {
               content: barcodeData.value,
               width: 150,
-              height: 50
+              height: 50,
             });
             setShowModal(null);
           }}
         />
       )}
-      
+
       {showModal === 'nutrition' && (
         <DynamicNutritionFacts
           onClose={() => setShowModal(null)}
-          onAddToCanvas={(nutritionData) => {
+          onAddToCanvas={nutritionData => {
             addElement('nutrition-table', {
               nutritionData,
               width: 200,
-              height: 250
+              height: 250,
             });
             setShowModal(null);
           }}
         />
       )}
-      
+
       {showModal === 'product' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96 max-h-96 overflow-y-auto">
@@ -1071,7 +1093,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
                   key={product.id}
                   onClick={() => {
                     setSelectedProduct(product);
-                    
+
                     // Replace placeholders in text elements
                     const updatedElements = canvasElements.map(el => {
                       if (el.type === 'text' && el.content) {
@@ -1084,7 +1106,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
                       }
                       return el;
                     });
-                    
+
                     setCanvasElements(updatedElements);
                     setShowModal(null);
                     toast.success('Product data applied');
@@ -1092,7 +1114,9 @@ Customer Care: {{CUSTOMER_CARE}}`,
                   className="w-full text-left p-3 border rounded hover:bg-gray-50"
                 >
                   <div className="font-medium">{product.name}</div>
-                  <div className="text-sm text-gray-500">SKU: {product.sku} | Price: ₹{product.price}</div>
+                  <div className="text-sm text-gray-500">
+                    SKU: {product.sku} | Price: ₹{product.price}
+                  </div>
                 </button>
               ))}
             </div>
@@ -1105,7 +1129,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
           </div>
         </div>
       )}
-      
+
       {showModal === 'image' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-96">
@@ -1116,7 +1140,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
                 type="text"
                 placeholder="Enter image URL"
                 className="w-full px-3 py-2 border rounded"
-                onKeyDown={(e) => {
+                onKeyDown={e => {
                   if (e.key === 'Enter') {
                     const url = (e.target as HTMLInputElement).value;
                     if (url) {
@@ -1138,22 +1162,22 @@ Customer Care: {{CUSTOMER_CARE}}`,
           </div>
         </div>
       )}
-      
+
       {showModal === 'auto-generate' && (
         <AutomaticLabelGenerator
           onClose={() => setShowModal(null)}
           selectedProduct={selectedProduct}
-          onGenerate={(elements) => {
+          onGenerate={elements => {
             setCanvasElements(elements);
             setShowModal(null);
           }}
         />
       )}
-      
+
       {showModal === 'templates' && (
         <AutomaticLabelTemplates
           onClose={() => setShowModal(null)}
-          onSelectTemplate={(template) => {
+          onSelectTemplate={template => {
             setCanvasElements(template.elements);
             setShowModal(null);
             toast.success('Template applied');
@@ -1177,11 +1201,11 @@ function PrintPreview({ mediaTemplate, labelElements, selectedProduct }: any) {
     <div className="p-8">
       <h2 className="text-xl font-semibold mb-4">Print Preview - {mediaTemplate.name}</h2>
       <div className="text-sm text-gray-600 mb-4">
-        Page Size: {dimensions.pageWidth}mm × {dimensions.pageHeight}mm | 
-        Labels per page: {labelsPerPage} ({dimensions.columns} × {dimensions.rows})
+        Page Size: {dimensions.pageWidth}mm × {dimensions.pageHeight}mm | Labels per page:{' '}
+        {labelsPerPage} ({dimensions.columns} × {dimensions.rows})
       </div>
-      
-      <div 
+
+      <div
         className="bg-white shadow-lg mx-auto"
         style={{
           width: `${dimensions.pageWidth}mm`,
@@ -1190,7 +1214,7 @@ function PrintPreview({ mediaTemplate, labelElements, selectedProduct }: any) {
           display: 'grid',
           gridTemplateColumns: `repeat(${dimensions.columns}, ${dimensions.labelWidth}mm)`,
           gridTemplateRows: `repeat(${dimensions.rows}, ${dimensions.labelHeight}mm)`,
-          gap: `${dimensions.spacingY}mm ${dimensions.spacingX}mm`
+          gap: `${dimensions.spacingY}mm ${dimensions.spacingX}mm`,
         }}
       >
         {Array.from({ length: labelsPerPage }).map((_, index) => (
@@ -1199,7 +1223,7 @@ function PrintPreview({ mediaTemplate, labelElements, selectedProduct }: any) {
             className="border border-gray-300 bg-gray-50 flex items-center justify-center text-xs text-gray-500"
             style={{
               width: `${dimensions.labelWidth}mm`,
-              height: `${dimensions.labelHeight}mm`
+              height: `${dimensions.labelHeight}mm`,
             }}
           >
             Label {index + 1}
@@ -1230,12 +1254,14 @@ function PrintJobManager({ mediaTemplate, labelElements, products }: any) {
   };
 
   const totalLabels = printJobs.reduce((sum, job) => sum + job.quantity, 0);
-  const sheetsNeeded = mediaTemplate ? Math.ceil(totalLabels / (mediaTemplate.dimensions.columns * mediaTemplate.dimensions.rows)) : 0;
+  const sheetsNeeded = mediaTemplate
+    ? Math.ceil(totalLabels / (mediaTemplate.dimensions.columns * mediaTemplate.dimensions.rows))
+    : 0;
 
   return (
     <div className="p-8">
       <h2 className="text-xl font-semibold mb-4">Print Job Configuration</h2>
-      
+
       <div className="bg-white rounded-lg shadow p-6 mb-6">
         <h3 className="font-medium mb-4">Add Products to Print</h3>
         <div className="flex gap-4 items-end">
@@ -1243,7 +1269,7 @@ function PrintJobManager({ mediaTemplate, labelElements, products }: any) {
             <label className="block text-sm font-medium mb-1">Product</label>
             <select
               value={selectedProductId || ''}
-              onChange={(e) => setSelectedProductId(Number(e.target.value))}
+              onChange={e => setSelectedProductId(Number(e.target.value))}
               className="w-full px-3 py-2 border rounded"
             >
               <option value="">Select Product...</option>
@@ -1259,7 +1285,7 @@ function PrintJobManager({ mediaTemplate, labelElements, products }: any) {
             <input
               type="number"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={e => setQuantity(Number(e.target.value))}
               min="1"
               className="w-full px-3 py-2 border rounded"
             />

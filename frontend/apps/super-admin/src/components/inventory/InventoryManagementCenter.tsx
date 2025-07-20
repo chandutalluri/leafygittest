@@ -6,8 +6,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../../stores/authStore';
-import { 
-  CubeIcon, 
+import {
+  CubeIcon,
   ExclamationTriangleIcon,
   ArrowUpIcon,
   ArrowDownIcon,
@@ -19,7 +19,7 @@ import {
   ClockIcon,
   BuildingOfficeIcon,
   DocumentTextIcon,
-  BellIcon
+  BellIcon,
 } from '@heroicons/react/24/outline';
 
 interface InventoryItem {
@@ -80,25 +80,25 @@ export function InventoryManagementCenter() {
     search: '',
     category: '',
     stockStatus: '',
-    showLowStockOnly: false
+    showLowStockOnly: false,
   });
 
   const [adjustmentModal, setAdjustmentModal] = useState<StockAdjustmentModal>({
     isOpen: false,
-    item: null
+    item: null,
   });
 
   const [adjustmentForm, setAdjustmentForm] = useState({
     adjustmentType: 'add',
     quantity: 0,
-    notes: ''
+    notes: '',
   });
 
   const [historyModal, setHistoryModal] = useState({
     isOpen: false,
     productId: null as number | null,
     branchId: null as number | null,
-    history: [] as InventoryHistory[]
+    history: [] as InventoryHistory[],
   });
 
   const [activeTab, setActiveTab] = useState('overview');
@@ -116,12 +116,7 @@ export function InventoryManagementCenter() {
 
   const initializeData = async () => {
     setLoading(true);
-    await Promise.all([
-      fetchBranches(),
-      fetchInventory(),
-      fetchSummary(),
-      fetchAlerts()
-    ]);
+    await Promise.all([fetchBranches(), fetchInventory(), fetchSummary(), fetchAlerts()]);
     setLoading(false);
   };
 
@@ -152,7 +147,9 @@ export function InventoryManagementCenter() {
         setInventory(inventoryData);
 
         // Extract unique categories (using categoryName from actual data structure)
-        const uniqueCategories = [...new Set(inventoryData.map((item: any) => item.categoryName).filter(Boolean))];
+        const uniqueCategories = [
+          ...new Set(inventoryData.map((item: any) => item.categoryName).filter(Boolean)),
+        ];
         setCategories(uniqueCategories as string[]);
       }
     } catch (error) {
@@ -174,7 +171,7 @@ export function InventoryManagementCenter() {
             totalValue: parseFloat(result.data.total_value) || 0,
             lowStockCount: parseInt(result.data.low_stock_count) || 0,
             outOfStockCount: parseInt(result.data.out_of_stock_count) || 0,
-            overstockCount: parseInt(result.data.critical_stock_count) || 0
+            overstockCount: parseInt(result.data.critical_stock_count) || 0,
           });
         }
       }
@@ -208,10 +205,13 @@ export function InventoryManagementCenter() {
           productId: adjustmentModal.item.productId,
           branchId: adjustmentModal.item.branchId,
           adjustmentType: adjustmentForm.adjustmentType,
-          quantity: adjustmentForm.adjustmentType === 'subtract' ? -adjustmentForm.quantity : adjustmentForm.quantity,
+          quantity:
+            adjustmentForm.adjustmentType === 'subtract'
+              ? -adjustmentForm.quantity
+              : adjustmentForm.quantity,
           notes: adjustmentForm.notes,
-          userId: user?.id
-        })
+          userId: user?.id,
+        }),
       });
 
       if (response.ok) {
@@ -238,8 +238,8 @@ export function InventoryManagementCenter() {
           productId: item.productId,
           branchId: item.branchId,
           quantity,
-          userId: user?.id
-        })
+          userId: user?.id,
+        }),
       });
 
       if (response.ok) {
@@ -259,7 +259,7 @@ export function InventoryManagementCenter() {
           isOpen: true,
           productId,
           branchId,
-          history: result.data || []
+          history: result.data || [],
         });
       }
     } catch (error) {
@@ -269,23 +269,35 @@ export function InventoryManagementCenter() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'out_of_stock': return 'bg-red-100 text-red-800 border-red-200';
-      case 'critical': return 'bg-red-100 text-red-800 border-red-200';
-      case 'low': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'normal': return 'bg-green-100 text-green-800 border-green-200';
-      case 'overstock': return 'bg-blue-100 text-blue-800 border-blue-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'out_of_stock':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'critical':
+        return 'bg-red-100 text-red-800 border-red-200';
+      case 'low':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'normal':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'overstock':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'out_of_stock': return <ExclamationTriangleIcon className="h-4 w-4" />;
-      case 'critical': return <ExclamationTriangleIcon className="h-4 w-4" />;
-      case 'low': return <ArrowDownIcon className="h-4 w-4" />;
-      case 'normal': return <CubeIcon className="h-4 w-4" />;
-      case 'overstock': return <ArrowUpIcon className="h-4 w-4" />;
-      default: return <CubeIcon className="h-4 w-4" />;
+      case 'out_of_stock':
+        return <ExclamationTriangleIcon className="h-4 w-4" />;
+      case 'critical':
+        return <ExclamationTriangleIcon className="h-4 w-4" />;
+      case 'low':
+        return <ArrowDownIcon className="h-4 w-4" />;
+      case 'normal':
+        return <CubeIcon className="h-4 w-4" />;
+      case 'overstock':
+        return <ArrowUpIcon className="h-4 w-4" />;
+      default:
+        return <CubeIcon className="h-4 w-4" />;
     }
   };
 
@@ -293,12 +305,15 @@ export function InventoryManagementCenter() {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
       currency: 'INR',
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const filteredInventory = inventory.filter(item => {
-    if (filters.showLowStockOnly && !['out_of_stock', 'critical', 'low'].includes(item.stockStatus)) {
+    if (
+      filters.showLowStockOnly &&
+      !['out_of_stock', 'critical', 'low'].includes(item.stockStatus)
+    ) {
       return false;
     }
     return true;
@@ -326,19 +341,22 @@ export function InventoryManagementCenter() {
           </div>
         </div>
         <div className="flex items-center space-x-4">
-
           <select
-              value={selectedBranch}
-              onChange={(e) => setSelectedBranch(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">All Branches</option>
-              {branches.map((branch, index) => (
-                <option key={`branch-${branch.id}-${index}`} value={branch.id}>{branch.name}</option>
-              ))}
-            </select>
+            value={selectedBranch}
+            onChange={e => setSelectedBranch(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Branches</option>
+            {branches.map((branch, index) => (
+              <option key={`branch-${branch.id}-${index}`} value={branch.id}>
+                {branch.name}
+              </option>
+            ))}
+          </select>
           <button
-            onClick={() => setFilters(prev => ({ ...prev, showLowStockOnly: !prev.showLowStockOnly }))}
+            onClick={() =>
+              setFilters(prev => ({ ...prev, showLowStockOnly: !prev.showLowStockOnly }))
+            }
             className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
               filters.showLowStockOnly
                 ? 'bg-red-600 text-white'
@@ -356,7 +374,7 @@ export function InventoryManagementCenter() {
           {[
             { id: 'overview', name: 'Overview', icon: ChartBarIcon },
             { id: 'alerts', name: 'Alerts', icon: BellIcon, count: alerts.length },
-          ].map((tab) => {
+          ].map(tab => {
             const Icon = tab.icon;
             return (
               <button
@@ -401,7 +419,9 @@ export function InventoryManagementCenter() {
                   <BuildingOfficeIcon className="h-8 w-8 text-green-600" />
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-600">Total Units</p>
-                    <p className="text-xl font-semibold text-gray-900">{summary.totalUnits.toLocaleString()}</p>
+                    <p className="text-xl font-semibold text-gray-900">
+                      {summary.totalUnits.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -421,7 +441,9 @@ export function InventoryManagementCenter() {
                   <ChartBarIcon className="h-8 w-8 text-purple-600" />
                   <div className="ml-3">
                     <p className="text-sm font-medium text-gray-600">Total Value</p>
-                    <p className="text-xl font-semibold text-gray-900">{formatCurrency(summary.totalValue)}</p>
+                    <p className="text-xl font-semibold text-gray-900">
+                      {formatCurrency(summary.totalValue)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -458,7 +480,7 @@ export function InventoryManagementCenter() {
                     type="text"
                     placeholder="Search products or SKU..."
                     value={filters.search}
-                    onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
+                    onChange={e => setFilters(prev => ({ ...prev, search: e.target.value }))}
                     className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
@@ -466,11 +488,11 @@ export function InventoryManagementCenter() {
               <div className="flex gap-4">
                 <select
                   value={filters.category}
-                  onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}
+                  onChange={e => setFilters(prev => ({ ...prev, category: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">All Categories</option>
-                  {categories.map((category) => (
+                  {categories.map(category => (
                     <option key={category} value={category}>
                       {category}
                     </option>
@@ -478,7 +500,7 @@ export function InventoryManagementCenter() {
                 </select>
                 <select
                   value={filters.stockStatus}
-                  onChange={(e) => setFilters(prev => ({ ...prev, stockStatus: e.target.value }))}
+                  onChange={e => setFilters(prev => ({ ...prev, stockStatus: e.target.value }))}
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
                   <option value="">All Status</option>
@@ -493,46 +515,83 @@ export function InventoryManagementCenter() {
           {/* Inventory Table */}
           <div className="backdrop-blur-sm bg-white/90 border border-white/20 shadow-xl rounded-lg">
             <div className="p-4 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900">Inventory Items ({filteredInventory.length})</h3>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Inventory Items ({filteredInventory.length})
+              </h3>
             </div>
             <div className="overflow-x-auto">
               <table className="min-w-full">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Branch</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reorder Level</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Value</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Product
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Branch
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      SKU
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Stock
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Reorder Level
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Value
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {filteredInventory.map((item) => (
-                    <tr key={`inventory-row-${item.productId}-${item.branchId}-${item.sku}-${Date.now()}-${Math.random()}`} className="hover:bg-gray-50">
+                  {filteredInventory.map(item => (
+                    <tr
+                      key={`inventory-row-${item.productId}-${item.branchId}-${item.sku}-${Date.now()}-${Math.random()}`}
+                      className="hover:bg-gray-50"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           {item.imageUrl && (
-                            <img className="h-10 w-10 rounded-lg object-cover mr-3" src={item.imageUrl} alt="" />
+                            <img
+                              className="h-10 w-10 rounded-lg object-cover mr-3"
+                              src={item.imageUrl}
+                              alt=""
+                            />
                           )}
                           <div>
-                            <div className="text-sm font-medium text-gray-900">{item.productName}</div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {item.productName}
+                            </div>
                             <div className="text-sm text-gray-500">{item.categoryName}</div>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.branchName}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.sku}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {item.branchName}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {item.sku}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm font-medium text-gray-900">{item.currentStock}</div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.reorderLevel}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {item.reorderLevel}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(item.stockStatus)}`}>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(item.stockStatus)}`}
+                        >
                           {getStatusIcon(item.stockStatus)}
-                          <span className="ml-1 capitalize">{item.stockStatus.replace('_', ' ')}</span>
+                          <span className="ml-1 capitalize">
+                            {item.stockStatus.replace('_', ' ')}
+                          </span>
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
@@ -571,8 +630,8 @@ export function InventoryManagementCenter() {
                 <CubeIcon className="mx-auto h-12 w-12 text-gray-400" />
                 <h3 className="mt-2 text-sm font-medium text-gray-900">No inventory items found</h3>
                 <p className="mt-1 text-sm text-gray-500">
-                  {filters.search || filters.category || filters.stockStatus 
-                    ? 'Try adjusting your filters.' 
+                  {filters.search || filters.category || filters.stockStatus
+                    ? 'Try adjusting your filters.'
                     : 'Inventory will appear here once products are created.'}
                 </p>
               </div>
@@ -584,7 +643,9 @@ export function InventoryManagementCenter() {
       {activeTab === 'alerts' && (
         <div className="backdrop-blur-sm bg-white/90 border border-white/20 shadow-xl rounded-lg">
           <div className="p-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">Inventory Alerts ({alerts.length})</h3>
+            <h3 className="text-lg font-semibold text-gray-900">
+              Inventory Alerts ({alerts.length})
+            </h3>
           </div>
           <div className="p-4">
             {alerts.length === 0 ? (
@@ -595,14 +656,18 @@ export function InventoryManagementCenter() {
               </div>
             ) : (
               <div className="space-y-4">
-                {alerts.map((alert) => (
-                  <div key={`alert-row-${alert.productId}-${alert.branchId}-${alert.severity}-${Date.now()}-${Math.random()}`} className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg">
+                {alerts.map(alert => (
+                  <div
+                    key={`alert-row-${alert.productId}-${alert.branchId}-${alert.severity}-${Date.now()}-${Math.random()}`}
+                    className="flex items-center justify-between p-4 bg-red-50 border border-red-200 rounded-lg"
+                  >
                     <div className="flex items-center">
                       <ExclamationTriangleIcon className="h-5 w-5 text-red-600 mr-3" />
                       <div>
                         <p className="font-medium text-gray-900">{alert.productName}</p>
                         <p className="text-sm text-gray-600">
-                          {alert.branchName} • Current: {alert.currentStock} • Threshold: {alert.threshold}
+                          {alert.branchName} • Current: {alert.currentStock} • Threshold:{' '}
+                          {alert.threshold}
                         </p>
                       </div>
                     </div>
@@ -643,13 +708,17 @@ export function InventoryManagementCenter() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Current Stock</label>
-                  <p className="text-lg font-semibold text-gray-900">{adjustmentModal.item.currentStock}</p>
+                  <p className="text-lg font-semibold text-gray-900">
+                    {adjustmentModal.item.currentStock}
+                  </p>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Adjustment Type</label>
                   <select
                     value={adjustmentForm.adjustmentType}
-                    onChange={(e) => setAdjustmentForm(prev => ({ ...prev, adjustmentType: e.target.value }))}
+                    onChange={e =>
+                      setAdjustmentForm(prev => ({ ...prev, adjustmentType: e.target.value }))
+                    }
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     <option value="add">Add Stock</option>
@@ -663,15 +732,22 @@ export function InventoryManagementCenter() {
                     type="number"
                     min="0"
                     value={adjustmentForm.quantity}
-                    onChange={(e) => setAdjustmentForm(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
+                    onChange={e =>
+                      setAdjustmentForm(prev => ({
+                        ...prev,
+                        quantity: parseInt(e.target.value) || 0,
+                      }))
+                    }
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Notes (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Notes (Optional)
+                  </label>
                   <textarea
                     value={adjustmentForm.notes}
-                    onChange={(e) => setAdjustmentForm(prev => ({ ...prev, notes: e.target.value }))}
+                    onChange={e => setAdjustmentForm(prev => ({ ...prev, notes: e.target.value }))}
                     rows={3}
                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     placeholder="Reason for adjustment..."
@@ -709,7 +785,9 @@ export function InventoryManagementCenter() {
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-medium text-gray-900">Inventory History</h3>
                 <button
-                  onClick={() => setHistoryModal({ isOpen: false, productId: null, branchId: null, history: [] })}
+                  onClick={() =>
+                    setHistoryModal({ isOpen: false, productId: null, branchId: null, history: [] })
+                  }
                   className="text-gray-400 hover:text-gray-600"
                 >
                   ×
@@ -719,16 +797,28 @@ export function InventoryManagementCenter() {
                 <table className="min-w-full">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Change</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">New Total</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">By</th>
-                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Notes</th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        Date
+                      </th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        Type
+                      </th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        Change
+                      </th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        New Total
+                      </th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        By
+                      </th>
+                      <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">
+                        Notes
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {historyModal.history.map((record) => (
+                    {historyModal.history.map(record => (
                       <tr key={record.id}>
                         <td className="px-4 py-2 text-sm text-gray-900">
                           {new Date(record.createdAt).toLocaleDateString()}
@@ -737,8 +827,13 @@ export function InventoryManagementCenter() {
                           {record.transactionType.replace('_', ' ')}
                         </td>
                         <td className="px-4 py-2 text-sm">
-                          <span className={record.quantityChange >= 0 ? 'text-green-600' : 'text-red-600'}>
-                            {record.quantityChange >= 0 ? '+' : ''}{record.quantityChange}
+                          <span
+                            className={
+                              record.quantityChange >= 0 ? 'text-green-600' : 'text-red-600'
+                            }
+                          >
+                            {record.quantityChange >= 0 ? '+' : ''}
+                            {record.quantityChange}
                           </span>
                         </td>
                         <td className="px-4 py-2 text-sm text-gray-900">{record.newQuantity}</td>

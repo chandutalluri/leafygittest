@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useAuthStore } from '../stores/authStore';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { GlassCard } from '../components/ui/GlassCard';
-import { 
+import {
   BarChart3,
   TrendingUp,
   Activity,
@@ -11,7 +11,7 @@ import {
   ShoppingBag,
   DollarSign,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 
 // Dashboard metrics configuration
@@ -22,7 +22,7 @@ const dashboardMetrics = [
     icon: ShoppingBag,
     color: 'bg-blue-500',
     change: '+12%',
-    changeType: 'positive'
+    changeType: 'positive',
   },
   {
     title: 'Active Orders',
@@ -30,7 +30,7 @@ const dashboardMetrics = [
     icon: Activity,
     color: 'bg-orange-500',
     change: '+8%',
-    changeType: 'positive'
+    changeType: 'positive',
   },
   {
     title: 'Total Users',
@@ -38,7 +38,7 @@ const dashboardMetrics = [
     icon: Users,
     color: 'bg-green-500',
     change: '+15%',
-    changeType: 'positive'
+    changeType: 'positive',
   },
   {
     title: 'Revenue Today',
@@ -46,8 +46,8 @@ const dashboardMetrics = [
     icon: DollarSign,
     color: 'bg-purple-500',
     change: '+5%',
-    changeType: 'positive'
-  }
+    changeType: 'positive',
+  },
 ];
 
 const systemStatus = [
@@ -55,31 +55,31 @@ const systemStatus = [
     service: 'Database Connection',
     status: 'operational',
     icon: CheckCircle,
-    color: 'text-green-600'
+    color: 'text-green-600',
   },
   {
     service: 'API Gateway',
     status: 'operational',
     icon: CheckCircle,
-    color: 'text-green-600'
+    color: 'text-green-600',
   },
   {
     service: 'Microservices',
     status: 'operational',
     icon: CheckCircle,
-    color: 'text-green-600'
+    color: 'text-green-600',
   },
   {
     service: 'Frontend Apps',
     status: 'operational',
     icon: CheckCircle,
-    color: 'text-green-600'
-  }
+    color: 'text-green-600',
+  },
 ];
 
 export default function OperationalDashboard() {
   const [metrics, setMetrics] = useState(dashboardMetrics);
-  
+
   // Simulate loading real data
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -91,13 +91,13 @@ export default function OperationalDashboard() {
         console.error('Error loading dashboard:', error);
       }
     };
-    
+
     fetchDashboardData();
   }, []);
 
   return (
-    <DashboardLayout 
-      title="Operational Dashboard" 
+    <DashboardLayout
+      title="Operational Dashboard"
       description="Complete business operations overview"
       activeDomain="dashboard"
     >
@@ -110,7 +110,9 @@ export default function OperationalDashboard() {
                 <div>
                   <p className="text-sm font-medium text-gray-600">{metric.title}</p>
                   <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-                  <p className={`text-sm ${metric.changeType === 'positive' ? 'text-green-600' : 'text-red-600'}`}>
+                  <p
+                    className={`text-sm ${metric.changeType === 'positive' ? 'text-green-600' : 'text-red-600'}`}
+                  >
                     {metric.change} from last month
                   </p>
                 </div>

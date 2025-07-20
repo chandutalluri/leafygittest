@@ -32,7 +32,7 @@ const verifyToken = async (token: string): Promise<User | null> => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -124,20 +124,20 @@ export const useAuthStore = create<AuthState>()(
           if (user) {
             set({ user, isAuthenticated: true, isLoading: false });
           } else {
-            set({ 
-              user: null, 
-              token: null, 
+            set({
+              user: null,
+              token: null,
               isAuthenticated: false,
-              isLoading: false
+              isLoading: false,
             });
           }
         } catch (error) {
           console.error('Auth check failed:', error);
-          set({ 
-            user: null, 
-            token: null, 
+          set({
+            user: null,
+            token: null,
             isAuthenticated: false,
-            isLoading: false
+            isLoading: false,
           });
         }
       },

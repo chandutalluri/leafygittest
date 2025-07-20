@@ -19,12 +19,12 @@ interface ImageSelectorProps {
   onClose: () => void;
 }
 
-export default function ImageSelector({ 
-  onSelect, 
-  selectedImages, 
+export default function ImageSelector({
+  onSelect,
+  selectedImages,
   maxImages = 5,
   isOpen,
-  onClose 
+  onClose,
 }: ImageSelectorProps) {
   const [localSelectedImages, setLocalSelectedImages] = useState<SimpleImage[]>(selectedImages);
 
@@ -35,12 +35,12 @@ export default function ImageSelector({
       const response = await fetch('/api/image-management/images');
       if (!response.ok) throw new Error('Failed to fetch images');
       const data = await response.json();
-      
+
       // Transform the data to include proper URLs
       const imageList = data.data || data.images || [];
       return imageList.map((img: any) => ({
         ...img,
-        url: `/api/image-management/serve/${img.filename}`
+        url: `/api/image-management/serve/${img.filename}`,
       }));
     },
     enabled: isOpen,
@@ -48,7 +48,7 @@ export default function ImageSelector({
 
   const toggleImageSelection = (image: SimpleImage) => {
     const isSelected = localSelectedImages.some(img => img.id === image.id);
-    
+
     if (isSelected) {
       setLocalSelectedImages(prev => prev.filter(img => img.id !== image.id));
     } else if (localSelectedImages.length < maxImages) {
@@ -86,10 +86,7 @@ export default function ImageSelector({
               Choose up to {maxImages} images from your central image library
             </p>
           </div>
-          <button
-            onClick={handleCancel}
-            className="text-gray-500 hover:text-gray-700"
-          >
+          <button onClick={handleCancel} className="text-gray-500 hover:text-gray-700">
             <XMarkIcon className="h-6 w-6" />
           </button>
         </div>
@@ -153,18 +150,19 @@ export default function ImageSelector({
                       src={image.url}
                       alt={image.originalName || image.filename}
                       className="w-full h-full object-cover"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
+                      onError={e => {
+                        (e.target as HTMLImageElement).src =
+                          'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
                       }}
                     />
-                    
+
                     {/* Selection Indicator */}
                     {isSelected && (
                       <div className="absolute top-2 right-2">
                         <CheckCircleIcon className="h-6 w-6 text-blue-600 bg-white rounded-full" />
                       </div>
                     )}
-                    
+
                     {/* Selection Number */}
                     {isSelected && (
                       <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-medium">
@@ -172,15 +170,13 @@ export default function ImageSelector({
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Image Info */}
                   <div className="p-2 bg-white">
                     <p className="text-xs font-medium text-gray-900 truncate">
                       {image.originalName || image.filename}
                     </p>
-                    <p className="text-xs text-gray-500">
-                      {formatFileSize(image.size)}
-                    </p>
+                    <p className="text-xs text-gray-500">{formatFileSize(image.size)}</p>
                   </div>
                 </div>
               );

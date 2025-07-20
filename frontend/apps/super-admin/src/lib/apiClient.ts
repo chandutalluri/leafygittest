@@ -5,7 +5,7 @@
 export class APIError extends Error {
   status: number;
   response: any;
-  
+
   constructor(message: string, status: number, response?: any) {
     super(message);
     this.name = 'APIError';
@@ -43,18 +43,18 @@ class APIClient {
 
     try {
       const response = await fetch(url, config);
-      
+
       if (!response.ok) {
         let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
         let errorData = null;
-        
+
         try {
           errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
         } catch (e) {
           // Response is not JSON
         }
-        
+
         throw new APIError(errorMessage, response.status, errorData);
       }
 
@@ -62,13 +62,13 @@ class APIClient {
       if (contentType && contentType.includes('application/json')) {
         return await response.json();
       }
-      
+
       return await response.text();
     } catch (error) {
       if (error instanceof APIError) {
         throw error;
       }
-      
+
       // Network or other errors
       const err = error as Error;
       throw new APIError(`Network error: ${err.message}`, 0, null);
@@ -82,7 +82,7 @@ class APIClient {
         url.searchParams.append(key, params[key]);
       }
     });
-    
+
     return this.request(url.pathname + url.search);
   }
 

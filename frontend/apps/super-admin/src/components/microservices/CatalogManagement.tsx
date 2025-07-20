@@ -53,8 +53,11 @@ export default function CatalogManagement() {
     try {
       setLoading(true);
       const [productsData, categoriesData] = await Promise.all([
-        apiClient.get('/api/direct-data/products', { search: searchTerm, category: selectedCategory }),
-        apiClient.get('/api/direct-data/categories')
+        apiClient.get('/api/direct-data/products', {
+          search: searchTerm,
+          category: selectedCategory,
+        }),
+        apiClient.get('/api/direct-data/categories'),
       ]);
       setProducts(productsData || []);
       setCategories(categoriesData || []);
@@ -107,14 +110,17 @@ export default function CatalogManagement() {
     }
   };
 
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.sku.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.sku.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading catalog management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading catalog management...</div>
+    );
   }
 
   return (
@@ -126,11 +132,17 @@ export default function CatalogManagement() {
           <p className="text-muted-foreground">Manage products, categories, and inventory</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setActiveTab('products')} variant={activeTab === 'products' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('products')}
+            variant={activeTab === 'products' ? 'default' : 'outline'}
+          >
             <Package className="w-4 h-4 mr-2" />
             Products ({products.length})
           </Button>
-          <Button onClick={() => setActiveTab('categories')} variant={activeTab === 'categories' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('categories')}
+            variant={activeTab === 'categories' ? 'default' : 'outline'}
+          >
             <Search className="w-4 h-4 mr-2" />
             Categories ({categories.length})
           </Button>
@@ -148,19 +160,21 @@ export default function CatalogManagement() {
                 <Input
                   placeholder="Search products by name, description, or SKU..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
             </div>
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               className="px-3 py-2 border rounded-md"
             >
               <option value="all">All Categories</option>
               {categories.map(category => (
-                <option key={category.id} value={category.id}>{category.name}</option>
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
               ))}
             </select>
             <Button onClick={() => setIsCreateDialogOpen(!isCreateDialogOpen)}>
@@ -168,7 +182,7 @@ export default function CatalogManagement() {
               Add Product
             </Button>
           </div>
-          
+
           {isCreateDialogOpen && (
             <Card className="mb-4">
               <CardHeader>
@@ -180,10 +194,10 @@ export default function CatalogManagement() {
               </CardContent>
             </Card>
           )}
-          
+
           {/* Products Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredProducts.map((product) => (
+            {filteredProducts.map(product => (
               <Card key={product.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -206,10 +220,15 @@ export default function CatalogManagement() {
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <Badge variant="outline">{product.category}</Badge>
-                      <Badge variant={
-                        product.status === 'active' ? 'default' : 
-                        product.status === 'out_of_stock' ? 'destructive' : 'secondary'
-                      }>
+                      <Badge
+                        variant={
+                          product.status === 'active'
+                            ? 'default'
+                            : product.status === 'out_of_stock'
+                              ? 'destructive'
+                              : 'secondary'
+                        }
+                      >
                         {product.status.replace('_', ' ')}
                       </Badge>
                     </div>
@@ -256,7 +275,7 @@ export default function CatalogManagement() {
               Add Category
             </Button>
           </div>
-          
+
           {isCreateDialogOpen && (
             <Card className="mb-4">
               <CardHeader>
@@ -268,9 +287,9 @@ export default function CatalogManagement() {
               </CardContent>
             </Card>
           )}
-          
+
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
+            {categories.map(category => (
               <Card key={category.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
@@ -305,7 +324,13 @@ export default function CatalogManagement() {
   );
 }
 
-function CreateProductForm({ categories, onSubmit }: { categories: Category[], onSubmit: (data: Partial<Product>) => void }) {
+function CreateProductForm({
+  categories,
+  onSubmit,
+}: {
+  categories: Category[];
+  onSubmit: (data: Partial<Product>) => void;
+}) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -315,14 +340,17 @@ function CreateProductForm({ categories, onSubmit }: { categories: Category[], o
     stock: 0,
     weight: 0,
     dimensions: '',
-    tags: ''
+    tags: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
       ...formData,
-      tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+      tags: formData.tags
+        .split(',')
+        .map(tag => tag.trim())
+        .filter(tag => tag),
     });
   };
 
@@ -331,99 +359,103 @@ function CreateProductForm({ categories, onSubmit }: { categories: Category[], o
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="name">Product Name</Label>
-          <Input 
-            id="name" 
+          <Input
+            id="name"
             value={formData.name}
-            onChange={(e) => setFormData({...formData, name: e.target.value})}
-            required 
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
+            required
           />
         </div>
         <div>
           <Label htmlFor="sku">SKU</Label>
-          <Input 
-            id="sku" 
+          <Input
+            id="sku"
             value={formData.sku}
-            onChange={(e) => setFormData({...formData, sku: e.target.value})}
-            required 
+            onChange={e => setFormData({ ...formData, sku: e.target.value })}
+            required
           />
         </div>
       </div>
       <div>
         <Label htmlFor="description">Description</Label>
-        <Textarea 
-          id="description" 
+        <Textarea
+          id="description"
           value={formData.description}
-          onChange={(e) => setFormData({...formData, description: e.target.value})}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
         />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="category">Category</Label>
-          <select 
+          <select
             id="category"
             value={formData.category}
-            onChange={(e) => setFormData({...formData, category: e.target.value})}
+            onChange={e => setFormData({ ...formData, category: e.target.value })}
             className="w-full p-2 border rounded"
             required
           >
             <option value="">Select Category</option>
             {categories.map(category => (
-              <option key={category.id} value={category.id}>{category.name}</option>
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
             ))}
           </select>
         </div>
         <div>
           <Label htmlFor="price">Price ($)</Label>
-          <Input 
-            id="price" 
+          <Input
+            id="price"
             type="number"
             step="0.01"
             value={formData.price}
-            onChange={(e) => setFormData({...formData, price: parseFloat(e.target.value)})}
-            required 
+            onChange={e => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+            required
           />
         </div>
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div>
           <Label htmlFor="stock">Stock</Label>
-          <Input 
-            id="stock" 
+          <Input
+            id="stock"
             type="number"
             value={formData.stock}
-            onChange={(e) => setFormData({...formData, stock: parseInt(e.target.value)})}
+            onChange={e => setFormData({ ...formData, stock: parseInt(e.target.value) })}
           />
         </div>
         <div>
           <Label htmlFor="weight">Weight (kg)</Label>
-          <Input 
-            id="weight" 
+          <Input
+            id="weight"
             type="number"
             step="0.1"
             value={formData.weight}
-            onChange={(e) => setFormData({...formData, weight: parseFloat(e.target.value)})}
+            onChange={e => setFormData({ ...formData, weight: parseFloat(e.target.value) })}
           />
         </div>
         <div>
           <Label htmlFor="dimensions">Dimensions</Label>
-          <Input 
-            id="dimensions" 
+          <Input
+            id="dimensions"
             value={formData.dimensions}
-            onChange={(e) => setFormData({...formData, dimensions: e.target.value})}
+            onChange={e => setFormData({ ...formData, dimensions: e.target.value })}
             placeholder="L x W x H"
           />
         </div>
       </div>
       <div>
         <Label htmlFor="tags">Tags (comma separated)</Label>
-        <Input 
-          id="tags" 
+        <Input
+          id="tags"
           value={formData.tags}
-          onChange={(e) => setFormData({...formData, tags: e.target.value})}
+          onChange={e => setFormData({ ...formData, tags: e.target.value })}
           placeholder="organic, fresh, local"
         />
       </div>
-      <Button type="submit" className="w-full">Create Product</Button>
+      <Button type="submit" className="w-full">
+        Create Product
+      </Button>
     </form>
   );
 }
@@ -431,7 +463,7 @@ function CreateProductForm({ categories, onSubmit }: { categories: Category[], o
 function CreateCategoryForm({ onSubmit }: { onSubmit: (data: Partial<Category>) => void }) {
   const [formData, setFormData] = useState({
     name: '',
-    description: ''
+    description: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -443,22 +475,24 @@ function CreateCategoryForm({ onSubmit }: { onSubmit: (data: Partial<Category>) 
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <Label htmlFor="categoryName">Category Name</Label>
-        <Input 
-          id="categoryName" 
+        <Input
+          id="categoryName"
           value={formData.name}
-          onChange={(e) => setFormData({...formData, name: e.target.value})}
-          required 
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
+          required
         />
       </div>
       <div>
         <Label htmlFor="categoryDescription">Description</Label>
-        <Textarea 
-          id="categoryDescription" 
+        <Textarea
+          id="categoryDescription"
           value={formData.description}
-          onChange={(e) => setFormData({...formData, description: e.target.value})}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
         />
       </div>
-      <Button type="submit" className="w-full">Create Category</Button>
+      <Button type="submit" className="w-full">
+        Create Category
+      </Button>
     </form>
   );
 }

@@ -26,30 +26,34 @@ function ImagePreviewModal({ image, isOpen, onClose }: ImagePreviewModalProps) {
       <div className="bg-white rounded-lg p-6 max-w-2xl max-h-[90vh] overflow-auto">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold">{image.originalName || image.filename}</h3>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             ✕
           </button>
         </div>
-        
+
         <div className="text-center">
           <img
             src={image.url}
             alt={image.originalName || image.filename}
             className="max-w-full max-h-96 object-contain mx-auto rounded-lg"
-            onError={(e) => {
+            onError={e => {
               console.error('Image failed to load:', image.url);
-              (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
+              (e.target as HTMLImageElement).src =
+                'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
             }}
           />
         </div>
-        
+
         <div className="mt-4 text-sm text-gray-600">
-          <p><strong>File:</strong> {image.filename}</p>
-          <p><strong>Size:</strong> {(image.size / 1024).toFixed(1)} KB</p>
-          <p><strong>Uploaded:</strong> {new Date(image.uploadedAt).toLocaleDateString()}</p>
+          <p>
+            <strong>File:</strong> {image.filename}
+          </p>
+          <p>
+            <strong>Size:</strong> {(image.size / 1024).toFixed(1)} KB
+          </p>
+          <p>
+            <strong>Uploaded:</strong> {new Date(image.uploadedAt).toLocaleDateString()}
+          </p>
         </div>
       </div>
     </div>
@@ -61,7 +65,11 @@ export default function SimpleImageGrid() {
   const queryClient = useQueryClient();
 
   // Fetch images
-  const { data: images = [], isLoading, error } = useQuery<SimpleImage[]>({
+  const {
+    data: images = [],
+    isLoading,
+    error,
+  } = useQuery<SimpleImage[]>({
     queryKey: ['simple-images'],
     queryFn: async () => {
       const response = await fetch('/api/image-management/images');
@@ -139,7 +147,7 @@ export default function SimpleImageGrid() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg p-4 shadow-sm border">
           <div className="flex items-center">
             <div className="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
@@ -147,11 +155,13 @@ export default function SimpleImageGrid() {
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">Total Size</p>
-              <p className="text-2xl font-semibold text-gray-900">{stats?.totalSizeFormatted || '0 B'}</p>
+              <p className="text-2xl font-semibold text-gray-900">
+                {stats?.totalSizeFormatted || '0 B'}
+              </p>
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg p-4 shadow-sm border">
           <div className="flex items-center">
             <div className="h-8 w-8 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -163,7 +173,7 @@ export default function SimpleImageGrid() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg p-4 shadow-sm border">
           <div className="flex items-center">
             <div className="h-8 w-8 bg-orange-100 rounded-lg flex items-center justify-center">
@@ -187,18 +197,22 @@ export default function SimpleImageGrid() {
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
           {images.map((image, index) => (
-            <div key={`${image.filename}-${index}`} className="bg-white rounded-lg p-3 shadow-sm border group hover:shadow-md transition-shadow">
+            <div
+              key={`${image.filename}-${index}`}
+              className="bg-white rounded-lg p-3 shadow-sm border group hover:shadow-md transition-shadow"
+            >
               <div className="aspect-square relative">
                 <img
                   src={image.url}
                   alt={image.originalName || image.filename}
                   className="w-full h-full object-cover rounded-md"
-                  onError={(e) => {
+                  onError={e => {
                     console.error('Image failed to load:', image.url);
-                    (e.target as HTMLImageElement).src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
+                    (e.target as HTMLImageElement).src =
+                      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjNmNGY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjOWNhM2FmIi8+CjxjaXJjbGUgY3g9IjE0MCIgY3k9IjYwIiByPSIxMCIgZmlsbD0iIzljYTNhZiIvPgo8L3N2Zz4=';
                   }}
                 />
-                
+
                 {/* Overlay with actions */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 rounded-md flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex space-x-2">
@@ -220,14 +234,12 @@ export default function SimpleImageGrid() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="mt-2">
                 <p className="text-sm font-medium text-gray-900 truncate">
                   {image.originalName || image.filename}
                 </p>
-                <p className="text-xs text-gray-500">
-                  {formatFileSize(image.size)}
-                </p>
+                <p className="text-xs text-gray-500">{formatFileSize(image.size)}</p>
               </div>
             </div>
           ))}

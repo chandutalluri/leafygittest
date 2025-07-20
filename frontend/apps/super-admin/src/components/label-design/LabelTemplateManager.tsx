@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { PlusIcon, TrashIcon, PencilIcon, EyeIcon, DocumentDuplicateIcon } from '@heroicons/react/24/outline';
+import {
+  PlusIcon,
+  TrashIcon,
+  PencilIcon,
+  EyeIcon,
+  DocumentDuplicateIcon,
+} from '@heroicons/react/24/outline';
 
 interface CanvasElement {
   id: string;
@@ -48,10 +54,10 @@ interface LabelTemplateManagerProps {
   mediaTypes: MediaType[];
 }
 
-export default function LabelTemplateManager({ 
-  onTemplateLoad, 
-  selectedMediaId, 
-  mediaTypes 
+export default function LabelTemplateManager({
+  onTemplateLoad,
+  selectedMediaId,
+  mediaTypes,
 }: LabelTemplateManagerProps) {
   const [templates, setTemplates] = useState<LabelTemplate[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,7 +68,7 @@ export default function LabelTemplateManager({
     name: '',
     description: '',
     type: 'product_label',
-    mediaId: selectedMediaId || 0
+    mediaId: selectedMediaId || 0,
   });
 
   useEffect(() => {
@@ -80,9 +86,11 @@ export default function LabelTemplateManager({
       const response = await fetch('/api/labels/custom-templates');
       if (response.ok) {
         const data = await response.json();
-        const templatesArray = Array.isArray(data) ? data : 
-                              (data.data && Array.isArray(data.data)) ? data.data : 
-                              (data.templates || []);
+        const templatesArray = Array.isArray(data)
+          ? data
+          : data.data && Array.isArray(data.data)
+            ? data.data
+            : data.templates || [];
         setTemplates(templatesArray);
         console.log('🏷️ Label templates loaded:', templatesArray.length);
       }
@@ -104,14 +112,14 @@ export default function LabelTemplateManager({
       name: '',
       description: '',
       type: 'product_label',
-      mediaId: selectedMediaId
+      mediaId: selectedMediaId,
     });
     setShowAddModal(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     const templateData = {
       name: formData.name,
       description: formData.description,
@@ -123,24 +131,24 @@ export default function LabelTemplateManager({
           backgroundColor: '#ffffff',
           borderStyle: 'solid',
           borderWidth: 0,
-          borderColor: '#000000'
-        }
+          borderColor: '#000000',
+        },
       },
       createdBy: 1,
       companyId: 1,
       branchId: 1,
-      isActive: true
+      isActive: true,
     };
 
     try {
-      const url = editingTemplate 
+      const url = editingTemplate
         ? `/api/labels/custom-templates/${editingTemplate.id}`
         : '/api/labels/custom-templates';
-      
+
       const response = await fetch(url, {
         method: editingTemplate ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(templateData)
+        body: JSON.stringify(templateData),
       });
 
       if (response.ok) {
@@ -150,13 +158,13 @@ export default function LabelTemplateManager({
         setEditingTemplate(null);
         resetForm();
         fetchTemplates();
-        
+
         // If creating new template, open it in designer
         if (!editingTemplate && result.data) {
           // Ensure the template has the correct structure for the designer
           const normalizedTemplate = {
             ...result.data,
-            templateJson: result.data.template_data || { elements: [], labelSettings: {} }
+            templateJson: result.data.template_data || { elements: [], labelSettings: {} },
           };
           onTemplateLoad?.(normalizedTemplate);
         }
@@ -176,7 +184,7 @@ export default function LabelTemplateManager({
 
     try {
       const response = await fetch(`/api/labels/custom-templates/${template.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       if (response.ok) {
@@ -197,7 +205,7 @@ export default function LabelTemplateManager({
       name: template.name,
       description: template.description || '',
       type: template.type,
-      mediaId: template.mediaId
+      mediaId: template.mediaId,
     });
     setShowAddModal(true);
   };
@@ -212,14 +220,14 @@ export default function LabelTemplateManager({
       createdBy: 1,
       companyId: 1,
       branchId: 1,
-      isActive: true
+      isActive: true,
     };
 
     try {
       const response = await fetch('/api/labels/custom-templates', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(duplicateData)
+        body: JSON.stringify(duplicateData),
       });
 
       if (response.ok) {
@@ -239,7 +247,7 @@ export default function LabelTemplateManager({
       name: '',
       description: '',
       type: 'product_label',
-      mediaId: selectedMediaId || 0
+      mediaId: selectedMediaId || 0,
     });
   };
 
@@ -255,11 +263,15 @@ export default function LabelTemplateManager({
   };
 
   if (loading) {
-    return <div className="flex justify-center py-8"><div className="animate-spin h-8 w-8 border-2 border-blue-600 border-t-transparent rounded-full"></div></div>;
+    return (
+      <div className="flex justify-center py-8">
+        <div className="animate-spin h-8 w-8 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+      </div>
+    );
   }
 
   // Filter templates by selected media type if provided
-  const filteredTemplates = selectedMediaId 
+  const filteredTemplates = selectedMediaId
     ? templates.filter(t => t.mediaId === selectedMediaId)
     : templates;
 
@@ -269,10 +281,9 @@ export default function LabelTemplateManager({
         <div>
           <h3 className="text-lg font-semibold text-gray-900">Label Templates</h3>
           <p className="text-sm text-gray-600">
-            {selectedMediaId 
+            {selectedMediaId
               ? `Templates for ${getMediaName(selectedMediaId)} (${filteredTemplates.length})`
-              : `All label templates (${templates.length})`
-            }
+              : `All label templates (${templates.length})`}
           </p>
         </div>
         <button
@@ -291,10 +302,9 @@ export default function LabelTemplateManager({
             <div className="text-gray-400 text-6xl mb-4">📝</div>
             <h3 className="text-lg font-medium text-gray-900 mb-2">No templates found</h3>
             <p className="text-gray-600 mb-4">
-              {selectedMediaId 
+              {selectedMediaId
                 ? 'Create your first label template for this media type'
-                : 'Select a media type to view and create templates'
-              }
+                : 'Select a media type to view and create templates'}
             </p>
             {selectedMediaId && (
               <button
@@ -308,7 +318,7 @@ export default function LabelTemplateManager({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredTemplates.map((template) => (
+            {filteredTemplates.map(template => (
               <div
                 key={template.id}
                 className="border rounded-lg p-4 hover:border-gray-300 transition-all"
@@ -351,7 +361,7 @@ export default function LabelTemplateManager({
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="text-sm text-gray-600 space-y-1">
                   <div className="truncate">{template.description || 'No description'}</div>
                   <div className="text-xs">
@@ -359,9 +369,7 @@ export default function LabelTemplateManager({
                       {template.type.replace('_', ' ')}
                     </span>
                   </div>
-                  <div className="text-xs text-gray-500">
-                    {getElementsPreview(template)}
-                  </div>
+                  <div className="text-xs text-gray-500">{getElementsPreview(template)}</div>
                   <div className="text-xs text-gray-400">
                     Created: {new Date(template.createdAt).toLocaleDateString()}
                   </div>
@@ -390,14 +398,16 @@ export default function LabelTemplateManager({
                 {editingTemplate ? 'Edit Template' : 'Create New Template'}
               </h3>
             </div>
-            
+
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Template Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Template Name
+                </label>
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g., Product Price Tag"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   required
@@ -408,7 +418,7 @@ export default function LabelTemplateManager({
                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea
                   value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={e => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
                   placeholder="Brief description of this template"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
@@ -416,10 +426,12 @@ export default function LabelTemplateManager({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Template Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Template Type
+                </label>
                 <select
                   value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  onChange={e => setFormData({ ...formData, type: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="product_label">Product Label</option>
@@ -434,12 +446,12 @@ export default function LabelTemplateManager({
                 <label className="block text-sm font-medium text-gray-700 mb-1">Media Type</label>
                 <select
                   value={formData.mediaId}
-                  onChange={(e) => setFormData({ ...formData, mediaId: Number(e.target.value) })}
+                  onChange={e => setFormData({ ...formData, mediaId: Number(e.target.value) })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   required
                 >
                   <option value="">Select Media Type</option>
-                  {mediaTypes.map((media) => (
+                  {mediaTypes.map(media => (
                     <option key={media.id} value={media.id}>
                       {media.name}
                     </option>
@@ -484,7 +496,7 @@ export default function LabelTemplateManager({
                 ✕
               </button>
             </div>
-            
+
             <div className="p-6">
               <div className="bg-gray-50 rounded-lg p-8 text-center">
                 <div className="text-gray-400 text-4xl mb-4">👁️</div>
@@ -493,7 +505,7 @@ export default function LabelTemplateManager({
                   Elements: {getElementsPreview(previewTemplate)}
                 </div>
               </div>
-              
+
               <div className="mt-6 flex justify-end space-x-3">
                 <button
                   onClick={() => setPreviewTemplate(null)}

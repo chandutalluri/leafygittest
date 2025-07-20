@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  PrinterIcon, 
-  DocumentIcon, 
-  ClockIcon, 
+import {
+  PrinterIcon,
+  DocumentIcon,
+  ClockIcon,
   CheckCircleIcon,
   XCircleIcon,
   ArrowPathIcon,
   QueueListIcon,
-  CogIcon
+  CogIcon,
 } from '@heroicons/react/24/outline';
 
 interface PrintJob {
@@ -116,11 +116,7 @@ export default function PrintManagement() {
   };
 
   const retryJob = (jobId: string) => {
-    setPrintJobs(jobs => 
-      jobs.map(job => 
-        job.id === jobId ? { ...job, status: 'pending' } : job
-      )
-    );
+    setPrintJobs(jobs => jobs.map(job => (job.id === jobId ? { ...job, status: 'pending' } : job)));
   };
 
   const cancelJob = (jobId: string) => {
@@ -142,7 +138,7 @@ export default function PrintManagement() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-2 bg-green-100 rounded-lg">
@@ -156,7 +152,7 @@ export default function PrintManagement() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-2 bg-yellow-100 rounded-lg">
@@ -170,7 +166,7 @@ export default function PrintManagement() {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white p-6 rounded-lg shadow">
           <div className="flex items-center">
             <div className="p-2 bg-emerald-100 rounded-lg">
@@ -249,7 +245,7 @@ export default function PrintManagement() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {printJobs.map((job) => (
+                    {printJobs.map(job => (
                       <tr key={job.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
@@ -304,24 +300,26 @@ export default function PrintManagement() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {printers.map((printer) => (
+                {printers.map(printer => (
                   <div key={printer.id} className="bg-white border border-gray-200 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-3">
                       <div>
                         <h4 className="font-medium">{printer.name}</h4>
                         <p className="text-sm text-gray-500 capitalize">{printer.type} Printer</p>
                       </div>
-                      <span className={`px-2 py-1 text-xs font-medium rounded-full ${getPrinterStatusColor(printer.status)}`}>
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${getPrinterStatusColor(printer.status)}`}
+                      >
                         {printer.status}
                       </span>
                     </div>
-                    
+
                     <div className="space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Jobs in Queue:</span>
                         <span className="font-medium">{printer.jobsInQueue}</span>
                       </div>
-                      
+
                       <div className="pt-3 border-t border-gray-100">
                         <button className="w-full text-center text-sm text-emerald-600 hover:text-emerald-700 font-medium">
                           Configure Printer

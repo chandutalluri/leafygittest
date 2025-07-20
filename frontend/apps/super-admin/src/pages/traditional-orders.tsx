@@ -4,15 +4,15 @@ import Layout from '../components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
-import { 
-  TrendingUp, 
-  Package, 
-  DollarSign, 
+import {
+  TrendingUp,
+  Package,
+  DollarSign,
   Users,
   Building,
   BarChart3,
   Filter,
-  Download
+  Download,
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -92,7 +92,7 @@ export default function TraditionalOrdersSuperAdminPage() {
       if (filterBranch !== 'all') {
         url += `&branch_id=${filterBranch}`;
       }
-      
+
       const response = await axios.get(url);
       setOrders(response.data.data || []);
     } catch (error) {
@@ -107,15 +107,17 @@ export default function TraditionalOrdersSuperAdminPage() {
     const headers = ['Order ID', 'Customer', 'Branch', 'Quality', 'Amount', 'Status', 'Date'];
     const csvData = [
       headers.join(','),
-      ...orders.map(order => [
-        order.id,
-        order.customer_name,
-        order.branch_name,
-        order.quality_tier,
-        order.total_amount,
-        order.order_status,
-        new Date(order.order_date).toLocaleDateString()
-      ].join(','))
+      ...orders.map(order =>
+        [
+          order.id,
+          order.customer_name,
+          order.branch_name,
+          order.quality_tier,
+          order.total_amount,
+          order.order_status,
+          new Date(order.order_date).toLocaleDateString(),
+        ].join(',')
+      ),
     ].join('\n');
 
     // Download CSV
@@ -149,7 +151,9 @@ export default function TraditionalOrdersSuperAdminPage() {
       <div className="p-6 max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Traditional Orders System</h1>
-          <p className="text-gray-600">System-wide overview and management for traditional home supplies</p>
+          <p className="text-gray-600">
+            System-wide overview and management for traditional home supplies
+          </p>
         </div>
 
         {/* Statistics Overview */}
@@ -171,7 +175,9 @@ export default function TraditionalOrdersSuperAdminPage() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-gray-600">Total Revenue</p>
-                    <p className="text-3xl font-bold">₹{statistics.overview.total_revenue.toFixed(0)}</p>
+                    <p className="text-3xl font-bold">
+                      ₹{statistics.overview.total_revenue.toFixed(0)}
+                    </p>
                   </div>
                   <DollarSign className="w-10 h-10 text-green-500" />
                 </div>
@@ -208,19 +214,27 @@ export default function TraditionalOrdersSuperAdminPage() {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Pending</span>
-                    <span className="font-semibold text-yellow-600">{statistics.overview.pending_orders}</span>
+                    <span className="font-semibold text-yellow-600">
+                      {statistics.overview.pending_orders}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Processing</span>
-                    <span className="font-semibold text-blue-600">{statistics.overview.processing_orders}</span>
+                    <span className="font-semibold text-blue-600">
+                      {statistics.overview.processing_orders}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Shipped</span>
-                    <span className="font-semibold text-purple-600">{statistics.overview.shipped_orders}</span>
+                    <span className="font-semibold text-purple-600">
+                      {statistics.overview.shipped_orders}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Delivered</span>
-                    <span className="font-semibold text-green-600">{statistics.overview.delivered_orders}</span>
+                    <span className="font-semibold text-green-600">
+                      {statistics.overview.delivered_orders}
+                    </span>
                   </div>
                 </div>
               </Card>
@@ -231,16 +245,20 @@ export default function TraditionalOrdersSuperAdminPage() {
                   Quality Tier Performance
                 </h3>
                 <div className="space-y-3">
-                  {statistics.quality_breakdown.map((quality) => {
+                  {statistics.quality_breakdown.map(quality => {
                     const display = getQualityDisplay(quality.quality_tier);
                     return (
                       <div key={quality.quality_tier} className="flex justify-between items-center">
                         <span className={`text-sm ${display.color} font-medium`}>
-                          {display.symbol} {quality.quality_tier.charAt(0).toUpperCase() + quality.quality_tier.slice(1)}
+                          {display.symbol}{' '}
+                          {quality.quality_tier.charAt(0).toUpperCase() +
+                            quality.quality_tier.slice(1)}
                         </span>
                         <div className="text-right">
                           <span className="font-semibold">{quality.count} orders</span>
-                          <span className="text-sm text-gray-500 ml-2">₹{quality.revenue.toFixed(0)}</span>
+                          <span className="text-sm text-gray-500 ml-2">
+                            ₹{quality.revenue.toFixed(0)}
+                          </span>
                         </div>
                       </div>
                     );
@@ -266,13 +284,16 @@ export default function TraditionalOrdersSuperAdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {statistics.branch_performance.map((branch) => (
+                    {statistics.branch_performance.map(branch => (
                       <tr key={branch.branch_name} className="border-b">
                         <td className="py-2">{branch.branch_name}</td>
                         <td className="text-right">{branch.order_count}</td>
                         <td className="text-right">₹{branch.revenue?.toFixed(0) || '0'}</td>
                         <td className="text-right">
-                          ₹{branch.order_count > 0 ? (branch.revenue / branch.order_count).toFixed(0) : '0'}
+                          ₹
+                          {branch.order_count > 0
+                            ? (branch.revenue / branch.order_count).toFixed(0)
+                            : '0'}
                         </td>
                       </tr>
                     ))}
@@ -290,7 +311,7 @@ export default function TraditionalOrdersSuperAdminPage() {
             <div className="flex gap-2">
               <select
                 value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
+                onChange={e => setFilterStatus(e.target.value)}
                 className="px-3 py-2 border rounded-lg text-sm"
               >
                 <option value="all">All Status</option>
@@ -301,12 +322,14 @@ export default function TraditionalOrdersSuperAdminPage() {
               </select>
               <select
                 value={filterBranch}
-                onChange={(e) => setFilterBranch(e.target.value)}
+                onChange={e => setFilterBranch(e.target.value)}
                 className="px-3 py-2 border rounded-lg text-sm"
               >
                 <option value="all">All Branches</option>
-                {branches.map((branch) => (
-                  <option key={branch.id} value={branch.id}>{branch.name}</option>
+                {branches.map(branch => (
+                  <option key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </option>
                 ))}
               </select>
               <Button
@@ -342,7 +365,7 @@ export default function TraditionalOrdersSuperAdminPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => {
+                  {orders.map(order => {
                     const quality = getQualityDisplay(order.quality_tier);
                     return (
                       <tr key={order.id} className="border-b hover:bg-gray-50">
@@ -352,12 +375,14 @@ export default function TraditionalOrdersSuperAdminPage() {
                         <td className={`py-3 ${quality.color}`}>{quality.symbol}</td>
                         <td className="py-3 text-right">₹{order.total_amount}</td>
                         <td className="py-3">
-                          <span className={`inline-block px-2 py-1 rounded-full text-xs
+                          <span
+                            className={`inline-block px-2 py-1 rounded-full text-xs
                             ${order.order_status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ''}
                             ${order.order_status === 'processing' ? 'bg-blue-100 text-blue-800' : ''}
                             ${order.order_status === 'shipped' ? 'bg-purple-100 text-purple-800' : ''}
                             ${order.order_status === 'delivered' ? 'bg-green-100 text-green-800' : ''}
-                          `}>
+                          `}
+                          >
                             {order.order_status}
                           </span>
                         </td>

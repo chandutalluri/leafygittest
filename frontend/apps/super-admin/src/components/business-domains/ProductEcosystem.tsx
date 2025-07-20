@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { apiClient } from '../../lib/apiClient';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Package, Boxes, Image, Tags, Plus, Search, Edit, Trash2, AlertTriangle } from 'lucide-react';
+import {
+  Package,
+  Boxes,
+  Image,
+  Tags,
+  Plus,
+  Search,
+  Edit,
+  Trash2,
+  AlertTriangle,
+} from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
@@ -51,7 +61,9 @@ export default function ProductEcosystem() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [stockAlerts, setStockAlerts] = useState<StockAlert[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'products' | 'inventory' | 'categories' | 'images'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'products' | 'inventory' | 'categories' | 'images'
+  >('overview');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -68,12 +80,12 @@ export default function ProductEcosystem() {
         apiClient.get('/api/direct-data/products', {
           search: searchTerm,
           category: categoryFilter !== 'all' ? categoryFilter : undefined,
-          status: statusFilter !== 'all' ? statusFilter : undefined
+          status: statusFilter !== 'all' ? statusFilter : undefined,
         }),
         apiClient.get('/api/direct-data/categories'),
-        apiClient.get('/api/direct-data/inventory/alerts')
+        apiClient.get('/api/direct-data/inventory/alerts'),
       ]);
-      
+
       setProducts(productsData || []);
       setCategories(categoriesData || []);
       setStockAlerts(stockAlertsData || []);
@@ -87,13 +99,13 @@ export default function ProductEcosystem() {
   const createProduct = async (productData: Partial<Product>) => {
     try {
       console.log('Creating product:', productData);
-      
+
       // Use the Product Orchestrator service for complete product creation
       const response = await fetch('/api/products/create-composite', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify({
           name: productData.name,
@@ -106,8 +118,8 @@ export default function ProductEcosystem() {
           isAvailable: true,
           initialStock: productData.stockLevel || 0,
           lowStockThreshold: productData.lowStockThreshold || 10,
-          branchSpecific: false
-        })
+          branchSpecific: false,
+        }),
       });
 
       if (!response.ok) {
@@ -117,29 +129,31 @@ export default function ProductEcosystem() {
 
       const result = await response.json();
       console.log('Product created successfully:', result);
-      
+
       // Refresh the product list
       await fetchProductEcosystemData();
       setIsProductDialogOpen(false);
-      
+
       return result;
     } catch (error) {
       console.error('Failed to create product:', error);
-      alert('Failed to create product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to create product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const updateProduct = async (productId: string, productData: Partial<Product>) => {
     try {
       console.log('Updating product:', productId, productData);
-      
+
       const response = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify(productData)
+        body: JSON.stringify(productData),
       });
 
       if (!response.ok) {
@@ -149,12 +163,14 @@ export default function ProductEcosystem() {
 
       const result = await response.json();
       console.log('Product updated successfully:', result);
-      
+
       await fetchProductEcosystemData();
       return result;
     } catch (error) {
       console.error('Failed to update product:', error);
-      alert('Failed to update product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
@@ -165,12 +181,12 @@ export default function ProductEcosystem() {
       }
 
       console.log('Deleting product:', productId);
-      
+
       const response = await fetch(`/api/products/${productId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
 
       if (!response.ok) {
@@ -182,21 +198,23 @@ export default function ProductEcosystem() {
       await fetchProductEcosystemData();
     } catch (error) {
       console.error('Failed to delete product:', error);
-      alert('Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to delete product: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const updateInventory = async (productId: string, stockLevel: number) => {
     try {
       console.log('Updating inventory for product:', productId, 'new stock:', stockLevel);
-      
+
       const response = await fetch(`/api/inventory/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ stockLevel })
+        body: JSON.stringify({ stockLevel }),
       });
 
       if (!response.ok) {
@@ -208,25 +226,27 @@ export default function ProductEcosystem() {
       await fetchProductEcosystemData();
     } catch (error) {
       console.error('Failed to update inventory:', error);
-      alert('Failed to update inventory: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to update inventory: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const uploadProductImage = async (productId: string, file: File) => {
     try {
       console.log('Uploading image for product:', productId);
-      
+
       const formData = new FormData();
       formData.append('files', file);
       formData.append('entityType', 'product');
       formData.append('entityId', productId);
-      
+
       const response = await fetch('/api/image-management/upload', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
-        body: formData
+        body: formData,
       });
 
       if (!response.ok) {
@@ -238,31 +258,42 @@ export default function ProductEcosystem() {
       await fetchProductEcosystemData();
     } catch (error) {
       console.error('Failed to upload product image:', error);
-      alert('Failed to upload image: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      alert(
+        'Failed to upload image: ' + (error instanceof Error ? error.message : 'Unknown error')
+      );
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'default';
-      case 'inactive': return 'secondary';
-      case 'out_of_stock': return 'destructive';
-      default: return 'default';
+      case 'active':
+        return 'default';
+      case 'inactive':
+        return 'secondary';
+      case 'out_of_stock':
+        return 'destructive';
+      default:
+        return 'default';
     }
   };
 
   const getAlertSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical': return 'destructive';
-      case 'low': return 'secondary';
-      case 'out_of_stock': return 'destructive';
-      default: return 'default';
+      case 'critical':
+        return 'destructive';
+      case 'low':
+        return 'secondary';
+      case 'out_of_stock':
+        return 'destructive';
+      default:
+        return 'default';
     }
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.description.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    product =>
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalProducts = products.length;
@@ -279,7 +310,9 @@ export default function ProductEcosystem() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Product Ecosystem</h1>
-          <p className="text-gray-500">Complete product lifecycle management - Use sidebar "Add Product" to create new products</p>
+          <p className="text-gray-500">
+            Complete product lifecycle management - Use sidebar "Add Product" to create new products
+          </p>
         </div>
       </div>
 
@@ -333,8 +366,11 @@ export default function ProductEcosystem() {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {stockAlerts.slice(0, 5).map((alert) => (
-                <div key={alert.id} className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+              {stockAlerts.slice(0, 5).map(alert => (
+                <div
+                  key={alert.id}
+                  className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg"
+                >
                   <div>
                     <div className="font-medium">{alert.productName}</div>
                     <div className="text-sm text-gray-500">{alert.branchName}</div>
@@ -343,7 +379,10 @@ export default function ProductEcosystem() {
                     <Badge variant={getAlertSeverityColor(alert.severity)}>
                       {alert.currentStock} / {alert.threshold}
                     </Badge>
-                    <Button size="sm" onClick={() => updateInventory(alert.productId, alert.threshold + 50)}>
+                    <Button
+                      size="sm"
+                      onClick={() => updateInventory(alert.productId, alert.threshold + 50)}
+                    >
                       Restock
                     </Button>
                   </div>
@@ -355,7 +394,7 @@ export default function ProductEcosystem() {
       )}
 
       <div className="flex space-x-4 border-b">
-        {['overview', 'products', 'inventory', 'categories', 'images'].map((tab) => (
+        {['overview', 'products', 'inventory', 'categories', 'images'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -382,7 +421,7 @@ export default function ProductEcosystem() {
             <Input
               placeholder="Search products..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger>
@@ -390,7 +429,7 @@ export default function ProductEcosystem() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
@@ -412,13 +451,9 @@ export default function ProductEcosystem() {
         </CardContent>
       </Card>
 
-      {activeTab === 'products' && (
-        <ProductCRUD />
-      )}
+      {activeTab === 'products' && <ProductCRUD />}
 
-      {activeTab === 'inventory' && (
-        <InventoryCRUD />
-      )}
+      {activeTab === 'inventory' && <InventoryCRUD />}
 
       {activeTab === 'categories' && (
         <Card>
@@ -440,13 +475,13 @@ export default function ProductEcosystem() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map(product => (
                     <tr key={product.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-3">
                           {product.images.length > 0 && (
-                            <img 
-                              src={product.images[0]} 
+                            <img
+                              src={product.images[0]}
                               alt={product.name}
                               className="w-10 h-10 rounded-lg object-cover"
                             />
@@ -460,12 +495,16 @@ export default function ProductEcosystem() {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{product.category}</Badge>
+                        <Badge variant="secondary">{product.category}</Badge>
                       </td>
                       <td className="py-3 px-4">₹{product.price}</td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
-                          <span className={product.stockLevel <= product.lowStockThreshold ? 'text-red-600' : ''}>
+                          <span
+                            className={
+                              product.stockLevel <= product.lowStockThreshold ? 'text-red-600' : ''
+                            }
+                          >
                             {product.stockLevel}
                           </span>
                           {product.stockLevel <= product.lowStockThreshold && (
@@ -488,16 +527,16 @@ export default function ProductEcosystem() {
                           <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => {
+                            onChange={e => {
                               const file = e.target.files?.[0];
                               if (file) uploadProductImage(product.id, file);
                             }}
                             className="hidden"
                             id={`image-${product.id}`}
                           />
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
+                          <Button
+                            size="sm"
+                            variant="outline"
                             onClick={() => document.getElementById(`image-${product.id}`)?.click()}
                           >
                             <Image className="h-4 w-4 mr-1" />
@@ -522,7 +561,7 @@ export default function ProductEcosystem() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {categories.map((category) => (
+              {categories.map(category => (
                 <Card key={category.id}>
                   <CardHeader>
                     <CardTitle className="text-lg">{category.name}</CardTitle>
@@ -530,9 +569,7 @@ export default function ProductEcosystem() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center justify-between">
-                      <div className="text-sm text-gray-500">
-                        {category.productCount} products
-                      </div>
+                      <div className="text-sm text-gray-500">{category.productCount} products</div>
                       <div className="flex gap-2">
                         <Button size="sm" variant="outline">
                           <Edit className="h-4 w-4" />
@@ -553,10 +590,10 @@ export default function ProductEcosystem() {
   );
 }
 
-function ProductForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function ProductForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<Product>) => void;
   onCancel: () => void;
 }) {
@@ -567,7 +604,7 @@ function ProductForm({
     category: '',
     stockLevel: 0,
     lowStockThreshold: 10,
-    status: 'active' as const
+    status: 'active' as const,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -583,7 +620,7 @@ function ProductForm({
           <Input
             id="name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
             required
           />
         </div>
@@ -593,7 +630,7 @@ function ProductForm({
             id="price"
             type="number"
             value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
+            onChange={e => setFormData({ ...formData, price: parseFloat(e.target.value) })}
             required
           />
         </div>
@@ -604,7 +641,7 @@ function ProductForm({
         <Textarea
           id="description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
           rows={3}
         />
       </div>
@@ -612,7 +649,10 @@ function ProductForm({
       <div className="grid grid-cols-3 gap-4">
         <div>
           <Label htmlFor="category">Category</Label>
-          <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+          <Select
+            value={formData.category}
+            onValueChange={value => setFormData({ ...formData, category: value })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
@@ -630,7 +670,7 @@ function ProductForm({
             id="stockLevel"
             type="number"
             value={formData.stockLevel}
-            onChange={(e) => setFormData({ ...formData, stockLevel: parseInt(e.target.value) })}
+            onChange={e => setFormData({ ...formData, stockLevel: parseInt(e.target.value) })}
           />
         </div>
         <div>
@@ -639,7 +679,9 @@ function ProductForm({
             id="lowStockThreshold"
             type="number"
             value={formData.lowStockThreshold}
-            onChange={(e) => setFormData({ ...formData, lowStockThreshold: parseInt(e.target.value) })}
+            onChange={e =>
+              setFormData({ ...formData, lowStockThreshold: parseInt(e.target.value) })
+            }
           />
         </div>
       </div>
@@ -648,9 +690,7 @@ function ProductForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Create Product
-        </Button>
+        <Button type="submit">Create Product</Button>
       </div>
     </form>
   );

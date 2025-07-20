@@ -23,7 +23,7 @@ export const AuthenticatedHeader: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Super Admin Dashboard</h1>
           <p className="text-sm text-gray-600">System Administration Panel</p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
             <UserCircleIcon className="h-8 w-8 text-gray-400" />
@@ -32,10 +32,12 @@ export const AuthenticatedHeader: React.FC = () => {
                 {user?.firstName} {user?.lastName}
               </p>
               <p className="text-xs text-gray-500">{user?.email}</p>
-              <p className="text-xs text-purple-600 font-medium">{user?.role?.replace('_', ' ').toUpperCase()}</p>
+              <p className="text-xs text-purple-600 font-medium">
+                {user?.role?.replace('_', ' ').toUpperCase()}
+              </p>
             </div>
           </div>
-          
+
           <button
             onClick={handleLogout}
             className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"

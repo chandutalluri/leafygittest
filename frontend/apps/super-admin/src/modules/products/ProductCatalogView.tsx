@@ -5,26 +5,38 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../../stores/authStore';
-import { 
-  MagnifyingGlassIcon as SearchIcon, 
-  FunnelIcon as FilterIcon, 
-  PencilIcon as EditIcon, 
-  TrashIcon, 
+import {
+  MagnifyingGlassIcon as SearchIcon,
+  FunnelIcon as FilterIcon,
+  PencilIcon as EditIcon,
+  TrashIcon,
   EyeIcon,
   PlusIcon,
   CubeIcon as PackageIcon,
   TagIcon,
-  CurrencyDollarIcon as DollarSignIcon
+  CurrencyDollarIcon as DollarSignIcon,
 } from '@heroicons/react/24/outline';
 import { Package, X, Save } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/card';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Badge } from '../../components/ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '../../components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '../../components/ui/dialog';
 import { Label } from '../../components/ui/label';
 import { Textarea } from '../../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../components/ui/select';
 
 interface Product {
   id: number;
@@ -49,19 +61,19 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [categories, setCategories] = useState<any[]>([]);
-  
+
   // Dialog states
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  
+
   // Edit form state
   const [editFormData, setEditFormData] = useState({
     name: '',
     price: 0,
     description: '',
     categoryId: 1,
-    isActive: true
+    isActive: true,
   });
 
   const { token } = useAuthStore();
@@ -75,7 +87,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
       price: product.price,
       description: '',
       categoryId: 1,
-      isActive: product.is_active
+      isActive: product.is_active,
     });
     setIsEditDialogOpen(true);
   };
@@ -94,10 +106,10 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          isActive: !product.is_active
+          isActive: !product.is_active,
         }),
       });
 
@@ -115,13 +127,13 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
 
   const handleSaveEdit = async () => {
     if (!selectedProduct) return;
-    
+
     try {
       const response = await fetch(`/api/products/${selectedProduct.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           name: editFormData.name,
@@ -156,7 +168,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
       setLoading(true);
       const response = await fetch('/api/products', {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -198,7 +210,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ is_active: !currentStatus }),
       });
@@ -206,9 +218,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
       if (response.ok) {
         setProducts(prev =>
           prev.map(product =>
-            product.id === productId
-              ? { ...product, is_active: !currentStatus }
-              : product
+            product.id === productId ? { ...product, is_active: !currentStatus } : product
           )
         );
       }
@@ -256,7 +266,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                   type="text"
                   placeholder="Search products by name..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={e => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -264,7 +274,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
             <div className="flex gap-4">
               <select
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
+                onChange={e => setStatusFilter(e.target.value)}
                 className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 <option value="all">All Status</option>
@@ -279,15 +289,20 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
       {/* Products Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredProducts.map((product, index) => (
-          <div key={`product-${product.id}-${index}`} className="backdrop-blur-sm bg-white/90 border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-lg border">
+          <div
+            key={`product-${product.id}-${index}`}
+            className="backdrop-blur-sm bg-white/90 border-white/20 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-lg border"
+          >
             <div className="p-4">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900 text-sm line-clamp-2">{product.name}</h3>
+                  <h3 className="font-semibold text-gray-900 text-sm line-clamp-2">
+                    {product.name}
+                  </h3>
                   <p className="text-xs text-gray-500 mt-1">ID: {product.id}</p>
                 </div>
-                <span 
-                  className={`px-2 py-1 text-xs rounded-full ${product.is_active ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}
+                <span
+                  className={`px-2 py-1 text-xs rounded-full ${product.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}
                 >
                   {product.is_active ? 'Active' : 'Inactive'}
                 </span>
@@ -316,27 +331,31 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                 )}
 
                 <div className="flex space-x-2 pt-2">
-                  <button 
+                  <button
                     className="flex-1 px-3 py-2 text-sm bg-green-600 text-white border border-green-600 rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center"
                     onClick={() => handleViewProduct(product)}
                   >
                     <EyeIcon className="h-4 w-4" />
                   </button>
-                  <button 
+                  <button
                     className="flex-1 px-3 py-2 text-sm bg-blue-600 text-white border border-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center"
                     onClick={() => handleEditProduct(product)}
                   >
                     <EditIcon className="h-4 w-4" />
                   </button>
-                  <button 
+                  <button
                     className={`flex-1 px-3 py-2 text-sm rounded-lg flex items-center justify-center ${
-                      product.is_active 
-                        ? "bg-red-600 text-white hover:bg-red-700" 
-                        : "bg-green-600 text-white hover:bg-green-700"
+                      product.is_active
+                        ? 'bg-red-600 text-white hover:bg-red-700'
+                        : 'bg-green-600 text-white hover:bg-green-700'
                     }`}
                     onClick={() => handleAddToInventory(product)}
                   >
-                    {product.is_active ? <TrashIcon className="h-4 w-4" /> : <PlusIcon className="h-4 w-4" />}
+                    {product.is_active ? (
+                      <TrashIcon className="h-4 w-4" />
+                    ) : (
+                      <PlusIcon className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -350,11 +369,13 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
           <PackageIcon className="mx-auto h-12 w-12 text-gray-400" />
           <h3 className="mt-2 text-sm font-medium text-gray-900">No products found</h3>
           <p className="mt-1 text-sm text-gray-500">
-            {searchTerm ? 'Try adjusting your search terms.' : 'Get started by creating your first product.'}
+            {searchTerm
+              ? 'Try adjusting your search terms.'
+              : 'Get started by creating your first product.'}
           </p>
           {!searchTerm && (
             <div className="mt-6">
-              <button 
+              <button
                 onClick={onCreateProduct}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2"
               >
@@ -371,7 +392,9 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
         <DialogContent className="max-w-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-gray-100">Product Details</DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">View complete product information</DialogDescription>
+            <DialogDescription className="text-gray-600 dark:text-gray-400">
+              View complete product information
+            </DialogDescription>
           </DialogHeader>
           {selectedProduct && (
             <div className="space-y-4">
@@ -385,7 +408,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                   <div className="text-lg">{selectedProduct.id}</div>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label>Price</Label>
@@ -411,7 +434,9 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
 
               <div>
                 <Label>Created Date</Label>
-                <div className="text-lg">{new Date(selectedProduct.created_at).toLocaleDateString()}</div>
+                <div className="text-lg">
+                  {new Date(selectedProduct.created_at).toLocaleDateString()}
+                </div>
               </div>
             </div>
           )}
@@ -422,16 +447,18 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
         <DialogContent className="max-w-4xl bg-white border border-gray-200 shadow-xl">
           <DialogHeader className="bg-white border-b border-gray-200 pb-4">
-            <DialogTitle className="text-2xl font-bold text-gray-900">
-              Edit Product
-            </DialogTitle>
-            <DialogDescription className="text-gray-600 mt-2">Update product information</DialogDescription>
+            <DialogTitle className="text-2xl font-bold text-gray-900">Edit Product</DialogTitle>
+            <DialogDescription className="text-gray-600 mt-2">
+              Update product information
+            </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-6 p-6 bg-white">
             {/* Product Image Section */}
             <div className="border border-gray-200 rounded-lg p-4 bg-gray-50">
-              <Label className="text-lg font-semibold text-gray-900 mb-3 block">Product Image</Label>
+              <Label className="text-lg font-semibold text-gray-900 mb-3 block">
+                Product Image
+              </Label>
               <div className="flex items-center space-x-4">
                 <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center bg-white">
                   <div className="text-gray-400 text-center">
@@ -443,7 +470,7 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={(e) => {
+                    onChange={e => {
                       const file = e.target.files?.[0];
                       if (file && selectedProduct) {
                         // Handle image upload here
@@ -453,10 +480,12 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                     className="hidden"
                     id={`edit-image-${selectedProduct?.id}`}
                   />
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
-                    onClick={() => document.getElementById(`edit-image-${selectedProduct?.id}`)?.click()}
+                    onClick={() =>
+                      document.getElementById(`edit-image-${selectedProduct?.id}`)?.click()
+                    }
                   >
                     Choose Image
                   </Button>
@@ -473,19 +502,24 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                 </Label>
                 <Input
                   value={editFormData.name}
-                  onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                  onChange={e => setEditFormData({ ...editFormData, name: e.target.value })}
                   className="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="Enter product name"
                 />
               </div>
               <div>
-                <Label htmlFor="edit-price" className="text-sm font-medium text-gray-900 mb-2 block">
+                <Label
+                  htmlFor="edit-price"
+                  className="text-sm font-medium text-gray-900 mb-2 block"
+                >
                   Price (₹) *
                 </Label>
                 <Input
                   type="number"
                   value={editFormData.price}
-                  onChange={(e) => setEditFormData({ ...editFormData, price: parseFloat(e.target.value) || 0 })}
+                  onChange={e =>
+                    setEditFormData({ ...editFormData, price: parseFloat(e.target.value) || 0 })
+                  }
                   className="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
                   placeholder="0.00"
                 />
@@ -494,12 +528,15 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
 
             {/* Description */}
             <div>
-              <Label htmlFor="edit-description" className="text-sm font-medium text-gray-900 mb-2 block">
+              <Label
+                htmlFor="edit-description"
+                className="text-sm font-medium text-gray-900 mb-2 block"
+              >
                 Description
               </Label>
               <Textarea
                 value={editFormData.description || ''}
-                onChange={(e) => setEditFormData({ ...editFormData, description: e.target.value })}
+                onChange={e => setEditFormData({ ...editFormData, description: e.target.value })}
                 className="bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
                 placeholder="Enter product description"
                 rows={3}
@@ -509,20 +546,25 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
             {/* Category and Status */}
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="edit-category" className="text-sm font-medium text-gray-900 mb-2 block">
+                <Label
+                  htmlFor="edit-category"
+                  className="text-sm font-medium text-gray-900 mb-2 block"
+                >
                   Category *
                 </Label>
-                <Select 
+                <Select
                   value={editFormData.categoryId?.toString()}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, categoryId: parseInt(value) })}
+                  onValueChange={value =>
+                    setEditFormData({ ...editFormData, categoryId: parseInt(value) })
+                  }
                 >
                   <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-200 shadow-lg">
-                    {categories.map((category) => (
-                      <SelectItem 
-                        key={category.id} 
+                    {categories.map(category => (
+                      <SelectItem
+                        key={category.id}
                         value={category.id.toString()}
                         className="text-gray-900 hover:bg-gray-100"
                       >
@@ -533,19 +575,28 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
                 </Select>
               </div>
               <div>
-                <Label htmlFor="edit-status" className="text-sm font-medium text-gray-900 mb-2 block">
+                <Label
+                  htmlFor="edit-status"
+                  className="text-sm font-medium text-gray-900 mb-2 block"
+                >
                   Status
                 </Label>
-                <Select 
+                <Select
                   value={editFormData.isActive ? 'active' : 'inactive'}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, isActive: value === 'active' })}
+                  onValueChange={value =>
+                    setEditFormData({ ...editFormData, isActive: value === 'active' })
+                  }
                 >
                   <SelectTrigger className="bg-white border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white border border-gray-200 shadow-lg">
-                    <SelectItem value="active" className="text-gray-900 hover:bg-gray-100">Active</SelectItem>
-                    <SelectItem value="inactive" className="text-gray-900 hover:bg-gray-100">Inactive</SelectItem>
+                    <SelectItem value="active" className="text-gray-900 hover:bg-gray-100">
+                      Active
+                    </SelectItem>
+                    <SelectItem value="inactive" className="text-gray-900 hover:bg-gray-100">
+                      Inactive
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -553,18 +604,15 @@ export function ProductCatalogView({ onCreateProduct }: ProductCatalogViewProps)
 
             {/* Action Buttons */}
             <div className="flex justify-end space-x-3 pt-6 border-t border-gray-200">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => setIsEditDialogOpen(false)}
                 className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <X className="h-4 w-4 mr-2" />
                 Cancel
               </Button>
-              <Button 
-                onClick={handleSaveEdit}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
-              >
+              <Button onClick={handleSaveEdit} className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Save className="h-4 w-4 mr-2" />
                 Save Changes
               </Button>

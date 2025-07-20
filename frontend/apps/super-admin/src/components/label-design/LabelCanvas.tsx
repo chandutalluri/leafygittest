@@ -1,12 +1,11 @@
-"use client";
+'use client';
 
 import React, { useRef, useEffect } from 'react';
-import { Stage, Layer, Group, Text, Rect, Image } from 'react-konva';
 import { MediaTypeConfig } from '../../config/MediaTypeConfig';
 
 export interface LabelElement {
   id: string;
-  type: 'text' | 'qr' | 'barcode' | 'image' | 'nutrition-table' | 'indian-compliance';
+  type: 'text' | 'rectangle' | 'barcode' | 'nutritionTable' | 'logo';
   x: number;
   y: number;
   width: number;
@@ -53,227 +52,134 @@ export default function LabelCanvas({
   onElementSelect,
   onElementUpdate,
   selectedElementIds = [],
-  isEditable = true
+  isEditable = true,
 }: LabelCanvasProps) {
-  const stageRef = useRef<any>(null);
-  
   // Calculate canvas dimensions based on media config and zoom
-  const canvasWidth = (mediaConfig.labelSizeMM.width * 3.7795275591) * zoom / 100;
-  const canvasHeight = (mediaConfig.labelSizeMM.height * 3.7795275591) * zoom / 100;
+  const canvasWidth = (mediaConfig.labelSizeMM.width * 3.7795275591 * zoom) / 100;
+  const canvasHeight = (mediaConfig.labelSizeMM.height * 3.7795275591 * zoom) / 100;
 
   const renderElement = (element: LabelElement) => {
     const isSelected = selectedElementIds.includes(element.id);
     const scaleFactor = zoom / 100;
-    
-    const elementProps = {
-      key: element.id,
-      x: element.x * scaleFactor,
-      y: element.y * scaleFactor,
+
+    const elementStyle: React.CSSProperties = {
+      position: 'absolute',
+      left: element.x * scaleFactor,
+      top: element.y * scaleFactor,
       width: element.width * scaleFactor,
       height: element.height * scaleFactor,
-      draggable: isEditable,
-      onClick: () => onElementSelect?.(element.id),
-      onDragEnd: (e: any) => {
-        if (onElementUpdate) {
-          onElementUpdate(element.id, {
-            x: e.target.x() / scaleFactor,
-            y: e.target.y() / scaleFactor
-          });
-        }
+      cursor: isEditable ? 'move' : 'default',
+      border: isSelected ? '2px solid #0066ff' : 'none',
+      fontSize: (element.fontSize || 12) * scaleFactor,
+      fontFamily: element.fontFamily || 'Arial',
+      fontWeight: element.fontWeight || 'normal',
+      color: element.color || '#000000',
+      backgroundColor: element.backgroundColor || 'transparent',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: element.type === 'text' ? 'flex-start' : 'center',
+      padding: element.type === 'text' ? '2px' : '0',
+      overflow: 'hidden',
+      transform: element.rotation ? `rotate(${element.rotation}deg)` : 'none',
+    };
+
+    const handleClick = () => {
+      if (onElementSelect) {
+        onElementSelect(element.id);
       }
     };
 
     switch (element.type) {
       case 'text':
         return (
-          <Group {...elementProps}>
-            <Text
-              text={element.content || 'Text'}
-              fontSize={(element.fontSize || 12) * scaleFactor}
-              fontFamily={element.fontFamily || 'Arial'}
-              fontStyle={element.fontWeight || 'normal'}
-              fill={element.color || '#000000'}
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              align="left"
-              verticalAlign="top"
-            />
-            {isSelected && (
-              <Rect
-                width={element.width * scaleFactor}
-                height={element.height * scaleFactor}
-                stroke="#0066ff"
-                strokeWidth={2}
-                dash={[5, 5]}
-                fill="transparent"
-              />
-            )}
-          </Group>
+          <div key={element.id} style={elementStyle} onClick={handleClick}>
+            {element.content || 'Sample Text'}
+          </div>
         );
-        
-      case 'qr':
+      case 'rectangle':
         return (
-          <Group {...elementProps}>
-            <Rect
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              fill="#000000"
-              cornerRadius={2}
-            />
-            <Text
-              text="QR"
-              fontSize={12 * scaleFactor}
-              fill="#ffffff"
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              align="center"
-              verticalAlign="middle"
-            />
-            {isSelected && (
-              <Rect
-                width={element.width * scaleFactor}
-                height={element.height * scaleFactor}
-                stroke="#0066ff"
-                strokeWidth={2}
-                dash={[5, 5]}
-                fill="transparent"
-              />
-            )}
-          </Group>
+          <div 
+            key={element.id} 
+            style={{
+              ...elementStyle,
+              border: '1px solid ' + (element.color || '#000000'),
+              backgroundColor: element.backgroundColor || 'transparent',
+            }} 
+            onClick={handleClick}
+          />
         );
-        
       case 'barcode':
         return (
-          <Group {...elementProps}>
-            <Rect
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              fill="#ffffff"
-              stroke="#000000"
-              strokeWidth={1}
-            />
-            {/* Barcode lines */}
-            {Array.from({ length: 20 }, (_, i) => (
-              <Rect
-                key={i}
-                x={(i * 2 + 1) * scaleFactor}
-                y={5 * scaleFactor}
-                width={1 * scaleFactor}
-                height={(element.height - 10) * scaleFactor}
-                fill="#000000"
-              />
-            ))}
-            {isSelected && (
-              <Rect
-                width={element.width * scaleFactor}
-                height={element.height * scaleFactor}
-                stroke="#0066ff"
-                strokeWidth={2}
-                dash={[5, 5]}
-                fill="transparent"
-              />
-            )}
-          </Group>
+          <div key={element.id} style={elementStyle} onClick={handleClick}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              background: 'repeating-linear-gradient(to right, #000 0px, #000 2px, #fff 2px, #fff 4px)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#666',
+              fontSize: '8px',
+            }}>
+              {element.content || '123456789'}
+            </div>
+          </div>
         );
-        
-      case 'nutrition-table':
+      case 'nutritionTable':
         return (
-          <Group {...elementProps}>
-            <Rect
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              fill="#f8f9fa"
-              stroke="#dee2e6"
-              strokeWidth={1}
-            />
-            <Text
-              text="Nutrition Facts"
-              fontSize={10 * scaleFactor}
-              fontStyle="bold"
-              fill="#000000"
-              x={5 * scaleFactor}
-              y={5 * scaleFactor}
-              width={(element.width - 10) * scaleFactor}
-            />
-            {isSelected && (
-              <Rect
-                width={element.width * scaleFactor}
-                height={element.height * scaleFactor}
-                stroke="#0066ff"
-                strokeWidth={2}
-                dash={[5, 5]}
-                fill="transparent"
-              />
-            )}
-          </Group>
+          <div key={element.id} style={{
+            ...elementStyle,
+            border: '2px solid black',
+            backgroundColor: 'white',
+            padding: '4px',
+            fontSize: '8px',
+            textAlign: 'left',
+            lineHeight: '1.2',
+          }} onClick={handleClick}>
+            <div style={{ fontWeight: 'bold', textAlign: 'center', marginBottom: '2px' }}>
+              NUTRITION FACTS
+            </div>
+            <div style={{ borderTop: '1px solid black', paddingTop: '2px', fontSize: '6px' }}>
+              Per 100g | Energy: 250 kcal<br />
+              Protein: 12g | Fat: 15g<br />
+              Carbs: 20g | Sugar: 5g
+            </div>
+          </div>
         );
-        
-      case 'indian-compliance':
-        return (
-          <Group {...elementProps}>
-            <Rect
-              width={element.width * scaleFactor}
-              height={element.height * scaleFactor}
-              fill="#fff8dc"
-              stroke="#d4c5a9"
-              strokeWidth={1}
-            />
-            <Text
-              text="FSSAI License: 12345678901234\nMfd by: Company Name\nPacked Date: DD/MM/YYYY"
-              fontSize={8 * scaleFactor}
-              fill="#000000"
-              x={3 * scaleFactor}
-              y={3 * scaleFactor}
-              width={(element.width - 6) * scaleFactor}
-              height={(element.height - 6) * scaleFactor}
-            />
-            {isSelected && (
-              <Rect
-                width={element.width * scaleFactor}
-                height={element.height * scaleFactor}
-                stroke="#0066ff"
-                strokeWidth={2}
-                dash={[5, 5]}
-                fill="transparent"
-              />
-            )}
-          </Group>
-        );
-        
       default:
-        return null;
+        return (
+          <div key={element.id} style={elementStyle} onClick={handleClick}>
+            {element.type}
+          </div>
+        );
     }
   };
 
   return (
-    <div className="relative">
-      <Stage
-        ref={stageRef}
-        width={canvasWidth}
-        height={canvasHeight}
-        className={showBorder ? "border-2 border-gray-300 rounded-lg" : ""}
+    <div style={{ padding: '20px', backgroundColor: '#f5f5f5' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: canvasWidth,
+          height: canvasHeight,
+          backgroundColor: 'white',
+          border: showBorder ? '1px solid #ddd' : 'none',
+          margin: '0 auto',
+          overflow: 'hidden',
+        }}
       >
-        <Layer>
-          {/* Label background */}
-          <Rect
-            width={canvasWidth}
-            height={canvasHeight}
-            fill="#ffffff"
-            stroke={showBorder ? "#e5e7eb" : "transparent"}
-            strokeWidth={1}
-          />
-          
-          {/* Render all template elements */}
-          {template.elements.map(renderElement)}
-        </Layer>
-      </Stage>
-      
-      {/* Label info overlay */}
-      {showBorder && (
-        <div className="absolute top-1 left-1 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-          {mediaConfig.labelSizeMM.width}×{mediaConfig.labelSizeMM.height}mm
-        </div>
-      )}
+        {template.elements.map(renderElement)}
+      </div>
+      <div style={{
+        textAlign: 'center',
+        marginTop: '10px',
+        fontSize: '12px',
+        color: '#666',
+      }}>
+        {template.name} - {Math.round(canvasWidth)}×{Math.round(canvasHeight)}px ({zoom}%)
+        <br />
+        <em>Simplified HTML preview (react-konva not available)</em>
+      </div>
     </div>
   );
 }

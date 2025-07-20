@@ -4,8 +4,8 @@ import { InventoryManagementCenter } from '../components/inventory/InventoryMana
 
 export default function InventoryManagement() {
   return (
-    <DashboardLayout 
-      title="Inventory Management" 
+    <DashboardLayout
+      title="Inventory Management"
       description="Stock and inventory control"
       activeDomain="products"
     >

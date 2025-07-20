@@ -30,7 +30,7 @@ const getApiPrefix = (domain: string) => {
     'marketplace-management': '/api/marketplace',
     'performance-monitor': '/api/performance',
     'shipping-delivery': '/api/shipping',
-    'multi-language-management': '/api/languages'
+    'multi-language-management': '/api/languages',
   };
   return (prefixMap as any)[domain] || '/api/generic';
 };
@@ -53,7 +53,7 @@ export function useComplianceAudit() {
     data: itemsData,
     isLoading: isItemsLoading,
     error: itemsError,
-    refetch: refetchItems
+    refetch: refetchItems,
   } = useQuery({
     queryKey: ['compliance-audit', 'all'],
     queryFn: async () => {
@@ -93,7 +93,7 @@ export function useComplianceAudit() {
     mutationFn: async (newItem: Partial<ComplianceAuditItem>) => {
       return await apiClient.post(API_PREFIX, newItem);
     },
-    onSuccess: (newItem) => {
+    onSuccess: newItem => {
       queryClient.invalidateQueries({ queryKey: ['compliance-audit'] });
       setItems(prev => [...prev, newItem]);
       toast({
@@ -111,7 +111,7 @@ export function useComplianceAudit() {
         window.location.href = '/api/login';
         return;
       }
-      
+
       toast({
         title: 'Error',
         description: error instanceof APIError ? error.message : 'Failed to create item',
@@ -125,9 +125,9 @@ export function useComplianceAudit() {
     mutationFn: async ({ id, data }: { id: string; data: Partial<ComplianceAuditItem> }) => {
       return await apiClient.put(`${API_PREFIX}/${id}`, data);
     },
-    onSuccess: (updatedItem) => {
+    onSuccess: updatedItem => {
       queryClient.invalidateQueries({ queryKey: ['compliance-audit'] });
-      setItems(prev => prev.map(item => item.id === updatedItem.id ? updatedItem : item));
+      setItems(prev => prev.map(item => (item.id === updatedItem.id ? updatedItem : item)));
       toast({
         title: 'Success',
         description: 'compliance audit item updated successfully',
@@ -143,7 +143,7 @@ export function useComplianceAudit() {
         window.location.href = '/api/login';
         return;
       }
-      
+
       toast({
         title: 'Error',
         description: error instanceof APIError ? error.message : 'Failed to update item',
@@ -175,7 +175,7 @@ export function useComplianceAudit() {
         window.location.href = '/api/login';
         return;
       }
-      
+
       toast({
         title: 'Error',
         description: error instanceof APIError ? error.message : 'Failed to delete item',
@@ -189,13 +189,13 @@ export function useComplianceAudit() {
     items,
     isLoading: isItemsLoading || isLoading,
     error: itemsError,
-    
+
     // Actions
     refetch: refetchItems,
     createItem: createMutation.mutate,
     updateItem: updateMutation.mutate,
     deleteItem: deleteMutation.mutate,
-    
+
     // Mutation states
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,

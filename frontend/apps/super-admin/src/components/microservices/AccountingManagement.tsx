@@ -4,8 +4,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Calculator, TrendingUp, TrendingDown, DollarSign, FileText, Plus, Download } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Calculator,
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  FileText,
+  Plus,
+  Download,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -57,9 +72,9 @@ export default function AccountingManagement() {
       const [entriesData, reportsData] = await Promise.all([
         apiClient.get('/api/direct-data/accounting/entries', {
           account: accountFilter !== 'all' ? accountFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/accounting/reports')
+        apiClient.get('/api/direct-data/accounting/reports'),
       ]);
       setEntries(entriesData || []);
       setReports(reportsData || []);
@@ -84,7 +99,7 @@ export default function AccountingManagement() {
     try {
       await apiClient.post('/api/direct-data/accounting/reports/generate', {
         type: reportType,
-        period
+        period,
       });
       fetchAccountingData();
     } catch (error) {
@@ -94,28 +109,39 @@ export default function AccountingManagement() {
 
   const getAccountTypeColor = (type: string) => {
     switch (type) {
-      case 'asset': return 'default';
-      case 'liability': return 'destructive';
-      case 'equity': return 'secondary';
-      case 'revenue': return 'default';
-      case 'expense': return 'outline';
-      default: return 'secondary';
+      case 'asset':
+        return 'default';
+      case 'liability':
+        return 'destructive';
+      case 'equity':
+        return 'secondary';
+      case 'revenue':
+        return 'default';
+      case 'expense':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getReportStatusColor = (status: string) => {
     switch (status) {
-      case 'final': return 'default';
-      case 'reviewed': return 'secondary';
-      case 'draft': return 'outline';
-      default: return 'secondary';
+      case 'final':
+        return 'default';
+      case 'reviewed':
+        return 'secondary';
+      case 'draft':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredEntries = entries.filter(entry =>
-    entry.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    entry.accountName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    entry.reference.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredEntries = entries.filter(
+    entry =>
+      entry.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.accountName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      entry.reference.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalAssets = entries
@@ -135,7 +161,9 @@ export default function AccountingManagement() {
     .reduce((sum, e) => sum + e.debitAmount - e.creditAmount, 0);
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading accounting management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading accounting management...</div>
+    );
   }
 
   return (
@@ -156,9 +184,14 @@ export default function AccountingManagement() {
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Create Accounting Entry</DialogTitle>
-                <DialogDescription>Add a new journal entry to the accounting system</DialogDescription>
+                <DialogDescription>
+                  Add a new journal entry to the accounting system
+                </DialogDescription>
               </DialogHeader>
-              <AccountingEntryForm onSubmit={createEntry} onCancel={() => setIsEntryDialogOpen(false)} />
+              <AccountingEntryForm
+                onSubmit={createEntry}
+                onCancel={() => setIsEntryDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
           <Button variant="outline">
@@ -185,7 +218,9 @@ export default function AccountingManagement() {
             <TrendingDown className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">₹{totalLiabilities.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-red-600">
+              ₹{totalLiabilities.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -203,7 +238,9 @@ export default function AccountingManagement() {
             <Calculator className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">₹{(totalRevenue - totalExpenses).toLocaleString()}</div>
+            <div className="text-2xl font-bold text-purple-600">
+              ₹{(totalRevenue - totalExpenses).toLocaleString()}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -242,7 +279,7 @@ export default function AccountingManagement() {
             <Input
               placeholder="Search entries..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={accountFilter} onValueChange={setAccountFilter}>
               <SelectTrigger>
@@ -283,7 +320,7 @@ export default function AccountingManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredEntries.map((entry) => (
+                  {filteredEntries.map(entry => (
                     <tr key={entry.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 text-sm">
                         {new Date(entry.date).toLocaleDateString()}
@@ -325,7 +362,11 @@ export default function AccountingManagement() {
                 <Button onClick={() => generateReport('balance_sheet', 'current_month')} size="sm">
                   Generate Balance Sheet
                 </Button>
-                <Button onClick={() => generateReport('income_statement', 'current_month')} size="sm" variant="outline">
+                <Button
+                  onClick={() => generateReport('income_statement', 'current_month')}
+                  size="sm"
+                  variant="outline"
+                >
                   Generate Income Statement
                 </Button>
               </div>
@@ -333,7 +374,7 @@ export default function AccountingManagement() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {reports.map((report) => (
+              {reports.map(report => (
                 <Card key={report.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -352,15 +393,21 @@ export default function AccountingManagement() {
                         <>
                           <div className="flex justify-between">
                             <span>Total Assets:</span>
-                            <span className="font-medium">₹{report.totalAssets.toLocaleString()}</span>
+                            <span className="font-medium">
+                              ₹{report.totalAssets.toLocaleString()}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span>Total Liabilities:</span>
-                            <span className="font-medium">₹{report.totalLiabilities.toLocaleString()}</span>
+                            <span className="font-medium">
+                              ₹{report.totalLiabilities.toLocaleString()}
+                            </span>
                           </div>
                           <div className="flex justify-between">
                             <span>Total Equity:</span>
-                            <span className="font-medium">₹{report.totalEquity.toLocaleString()}</span>
+                            <span className="font-medium">
+                              ₹{report.totalEquity.toLocaleString()}
+                            </span>
                           </div>
                         </>
                       )}
@@ -391,10 +438,10 @@ export default function AccountingManagement() {
   );
 }
 
-function AccountingEntryForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function AccountingEntryForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<AccountEntry>) => void;
   onCancel: () => void;
 }) {
@@ -405,7 +452,7 @@ function AccountingEntryForm({
     accountType: 'expense' as const,
     debitAmount: 0,
     creditAmount: 0,
-    reference: ''
+    reference: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -421,17 +468,17 @@ function AccountingEntryForm({
           id="date"
           type="date"
           value={formData.date}
-          onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+          onChange={e => setFormData({ ...formData, date: e.target.value })}
           required
         />
       </div>
-      
+
       <div>
         <Label htmlFor="accountName">Account Name</Label>
         <Input
           id="accountName"
           value={formData.accountName}
-          onChange={(e) => setFormData({ ...formData, accountName: e.target.value })}
+          onChange={e => setFormData({ ...formData, accountName: e.target.value })}
           placeholder="Enter account name"
           required
         />
@@ -439,7 +486,10 @@ function AccountingEntryForm({
 
       <div>
         <Label htmlFor="accountType">Account Type</Label>
-        <Select value={formData.accountType} onValueChange={(value: any) => setFormData({ ...formData, accountType: value })}>
+        <Select
+          value={formData.accountType}
+          onValueChange={(value: any) => setFormData({ ...formData, accountType: value })}
+        >
           <SelectTrigger>
             <SelectValue />
           </SelectTrigger>
@@ -458,7 +508,7 @@ function AccountingEntryForm({
         <Textarea
           id="description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
           placeholder="Enter transaction description"
           required
         />
@@ -472,7 +522,9 @@ function AccountingEntryForm({
             type="number"
             step="0.01"
             value={formData.debitAmount}
-            onChange={(e) => setFormData({ ...formData, debitAmount: parseFloat(e.target.value) || 0 })}
+            onChange={e =>
+              setFormData({ ...formData, debitAmount: parseFloat(e.target.value) || 0 })
+            }
           />
         </div>
         <div>
@@ -482,7 +534,9 @@ function AccountingEntryForm({
             type="number"
             step="0.01"
             value={formData.creditAmount}
-            onChange={(e) => setFormData({ ...formData, creditAmount: parseFloat(e.target.value) || 0 })}
+            onChange={e =>
+              setFormData({ ...formData, creditAmount: parseFloat(e.target.value) || 0 })
+            }
           />
         </div>
       </div>
@@ -492,7 +546,7 @@ function AccountingEntryForm({
         <Input
           id="reference"
           value={formData.reference}
-          onChange={(e) => setFormData({ ...formData, reference: e.target.value })}
+          onChange={e => setFormData({ ...formData, reference: e.target.value })}
           placeholder="Enter reference number"
         />
       </div>
@@ -501,9 +555,7 @@ function AccountingEntryForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Create Entry
-        </Button>
+        <Button type="submit">Create Entry</Button>
       </div>
     </form>
   );

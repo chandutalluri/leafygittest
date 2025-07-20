@@ -3,7 +3,16 @@ import { apiClient } from '../../lib/apiClient';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { BarChart3, TrendingUp, TrendingDown, Users, ShoppingCart, DollarSign, Package, Calendar } from 'lucide-react';
+import {
+  BarChart3,
+  TrendingUp,
+  TrendingDown,
+  Users,
+  ShoppingCart,
+  DollarSign,
+  Package,
+  Calendar,
+} from 'lucide-react';
 
 interface AnalyticsData {
   id: string;
@@ -53,7 +62,7 @@ export default function AnalyticsReporting() {
       const [analyticsData, reportsData, salesResponse] = await Promise.all([
         apiClient.get('/api/analytics-reporting/metrics', { period: dateRange }),
         apiClient.get('/api/analytics-reporting/reports'),
-        apiClient.get('/api/analytics-reporting/sales', { period: dateRange })
+        apiClient.get('/api/analytics-reporting/sales', { period: dateRange }),
       ]);
       setAnalytics(analyticsData || []);
       setReports(reportsData || []);
@@ -65,12 +74,12 @@ export default function AnalyticsReporting() {
         {
           id: '1',
           metric: 'Total Revenue',
-          value: 45678.90,
+          value: 45678.9,
           previousValue: 42341.25,
           changePercentage: 7.9,
           trend: 'up',
           period: dateRange,
-          category: 'financial'
+          category: 'financial',
         },
         {
           id: '2',
@@ -80,7 +89,7 @@ export default function AnalyticsReporting() {
           changePercentage: 18.2,
           trend: 'up',
           period: dateRange,
-          category: 'sales'
+          category: 'sales',
         },
         {
           id: '3',
@@ -90,7 +99,7 @@ export default function AnalyticsReporting() {
           changePercentage: 13.8,
           trend: 'up',
           period: dateRange,
-          category: 'customer'
+          category: 'customer',
         },
         {
           id: '4',
@@ -100,8 +109,8 @@ export default function AnalyticsReporting() {
           changePercentage: 22.4,
           trend: 'up',
           period: dateRange,
-          category: 'inventory'
-        }
+          category: 'inventory',
+        },
       ]);
       setReports([
         {
@@ -112,7 +121,7 @@ export default function AnalyticsReporting() {
           frequency: 'daily',
           lastGenerated: new Date().toISOString(),
           status: 'active',
-          recipients: ['admin@leafyhealth.com', 'sales@leafyhealth.com']
+          recipients: ['admin@leafyhealth.com', 'sales@leafyhealth.com'],
         },
         {
           id: '2',
@@ -122,8 +131,8 @@ export default function AnalyticsReporting() {
           frequency: 'weekly',
           lastGenerated: new Date(Date.now() - 86400000).toISOString(),
           status: 'active',
-          recipients: ['marketing@leafyhealth.com']
-        }
+          recipients: ['marketing@leafyhealth.com'],
+        },
       ]);
     } finally {
       setLoading(false);
@@ -148,24 +157,34 @@ export default function AnalyticsReporting() {
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'up': return <TrendingUp className="w-4 h-4 text-green-500" />;
-      case 'down': return <TrendingDown className="w-4 h-4 text-red-500" />;
-      default: return <BarChart3 className="w-4 h-4 text-gray-500" />;
+      case 'up':
+        return <TrendingUp className="w-4 h-4 text-green-500" />;
+      case 'down':
+        return <TrendingDown className="w-4 h-4 text-red-500" />;
+      default:
+        return <BarChart3 className="w-4 h-4 text-gray-500" />;
     }
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'financial': return <DollarSign className="w-5 h-5" />;
-      case 'sales': return <ShoppingCart className="w-5 h-5" />;
-      case 'customer': return <Users className="w-5 h-5" />;
-      case 'inventory': return <Package className="w-5 h-5" />;
-      default: return <BarChart3 className="w-5 h-5" />;
+      case 'financial':
+        return <DollarSign className="w-5 h-5" />;
+      case 'sales':
+        return <ShoppingCart className="w-5 h-5" />;
+      case 'customer':
+        return <Users className="w-5 h-5" />;
+      case 'inventory':
+        return <Package className="w-5 h-5" />;
+      default:
+        return <BarChart3 className="w-5 h-5" />;
     }
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading analytics dashboard...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading analytics dashboard...</div>
+    );
   }
 
   return (
@@ -174,12 +193,14 @@ export default function AnalyticsReporting() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Analytics & Reporting</h2>
-          <p className="text-muted-foreground">Business intelligence, metrics, and automated reporting</p>
+          <p className="text-muted-foreground">
+            Business intelligence, metrics, and automated reporting
+          </p>
         </div>
         <div className="flex gap-2">
           <select
             value={dateRange}
-            onChange={(e) => setDateRange(e.target.value)}
+            onChange={e => setDateRange(e.target.value)}
             className="px-3 py-2 border rounded-md"
           >
             <option value="1d">Last 24 Hours</option>
@@ -187,11 +208,17 @@ export default function AnalyticsReporting() {
             <option value="30d">Last 30 Days</option>
             <option value="90d">Last 90 Days</option>
           </select>
-          <Button onClick={() => setActiveTab('dashboard')} variant={activeTab === 'dashboard' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('dashboard')}
+            variant={activeTab === 'dashboard' ? 'default' : 'outline'}
+          >
             <BarChart3 className="w-4 h-4 mr-2" />
             Dashboard
           </Button>
-          <Button onClick={() => setActiveTab('reports')} variant={activeTab === 'reports' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('reports')}
+            variant={activeTab === 'reports' ? 'default' : 'outline'}
+          >
             <Calendar className="w-4 h-4 mr-2" />
             Reports
           </Button>
@@ -203,18 +230,23 @@ export default function AnalyticsReporting() {
         <div className="space-y-6">
           {/* Key Metrics */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {analytics.map((metric) => (
+            {analytics.map(metric => (
               <Card key={metric.id}>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">{metric.metric}</CardTitle>
                   {getCategoryIcon(metric.category)}
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{formatValue(metric.value, metric.metric)}</div>
+                  <div className="text-2xl font-bold">
+                    {formatValue(metric.value, metric.metric)}
+                  </div>
                   <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                     {getTrendIcon(metric.trend)}
-                    <span className={metric.changePercentage > 0 ? 'text-green-600' : 'text-red-600'}>
-                      {metric.changePercentage > 0 ? '+' : ''}{metric.changePercentage.toFixed(1)}%
+                    <span
+                      className={metric.changePercentage > 0 ? 'text-green-600' : 'text-red-600'}
+                    >
+                      {metric.changePercentage > 0 ? '+' : ''}
+                      {metric.changePercentage.toFixed(1)}%
                     </span>
                     <span>from previous {metric.period}</span>
                   </div>
@@ -236,11 +268,14 @@ export default function AnalyticsReporting() {
                     { name: 'Organic Vegetables', sales: 15420, percentage: 34 },
                     { name: 'Fresh Fruits', sales: 12380, percentage: 27 },
                     { name: 'Dairy Products', sales: 9250, percentage: 20 },
-                    { name: 'Grains & Cereals', sales: 8630, percentage: 19 }
+                    { name: 'Grains & Cereals', sales: 8630, percentage: 19 },
                   ].map((category, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 rounded-full bg-primary" style={{ opacity: 1 - index * 0.2 }} />
+                        <div
+                          className="w-3 h-3 rounded-full bg-primary"
+                          style={{ opacity: 1 - index * 0.2 }}
+                        />
                         <span className="text-sm font-medium">{category.name}</span>
                       </div>
                       <div className="text-right">
@@ -264,7 +299,7 @@ export default function AnalyticsReporting() {
                     { period: 'This Week', count: 47, growth: 12.5 },
                     { period: 'Last Week', count: 42, growth: 8.3 },
                     { period: '2 Weeks Ago', count: 39, growth: -2.1 },
-                    { period: '3 Weeks Ago', count: 40, growth: 15.4 }
+                    { period: '3 Weeks Ago', count: 40, growth: 15.4 },
                   ].map((period, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
@@ -273,8 +308,11 @@ export default function AnalyticsReporting() {
                       </div>
                       <div className="text-right">
                         <div className="text-sm font-bold">{period.count} customers</div>
-                        <div className={`text-xs ${period.growth > 0 ? 'text-green-600' : 'text-red-600'}`}>
-                          {period.growth > 0 ? '+' : ''}{period.growth.toFixed(1)}%
+                        <div
+                          className={`text-xs ${period.growth > 0 ? 'text-green-600' : 'text-red-600'}`}
+                        >
+                          {period.growth > 0 ? '+' : ''}
+                          {period.growth.toFixed(1)}%
                         </div>
                       </div>
                     </div>
@@ -296,9 +334,9 @@ export default function AnalyticsReporting() {
               Schedule Report
             </Button>
           </div>
-          
+
           <div className="grid gap-4">
-            {reports.map((report) => (
+            {reports.map(report => (
               <Card key={report.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">

@@ -56,12 +56,9 @@ export const dashboardApi = {
   async getSystemMetrics(): Promise<SystemMetrics> {
     try {
       // Get metrics from database-driven endpoints
-      const [
-        systemStats,
-        microserviceStats
-      ] = await Promise.all([
+      const [systemStats, microserviceStats] = await Promise.all([
         apiClient.get('/api/direct-data/system/stats'),
-        apiClient.get('/api/direct-data/microservices/health')
+        apiClient.get('/api/direct-data/microservices/health'),
       ]);
 
       return {
@@ -77,7 +74,7 @@ export const dashboardApi = {
         totalRevenue: systemStats?.totalRevenue || 0,
         systemHealth: microserviceStats?.health || 'Healthy',
         databaseConnections: microserviceStats?.dbConnections || 5,
-        uptime: microserviceStats?.uptime || '24h+'
+        uptime: microserviceStats?.uptime || '24h+',
       };
     } catch (error) {
       console.error('Failed to fetch system metrics:', error);
@@ -121,18 +118,18 @@ export const dashboardApi = {
         this.getSystemMetrics(),
         this.getMicroserviceStatus(),
         this.getRecentActivity(),
-        this.getSystemAlerts()
+        this.getSystemAlerts(),
       ]);
 
       return {
         metrics,
         microservices,
         recentActivity,
-        alerts
+        alerts,
       };
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
       throw error;
     }
-  }
+  },
 };

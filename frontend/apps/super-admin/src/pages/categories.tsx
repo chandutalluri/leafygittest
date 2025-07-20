@@ -4,8 +4,8 @@ import { CategoryManagement } from '../modules/products/CategoryManagement';
 
 export default function Categories() {
   return (
-    <DashboardLayout 
-      title="Categories" 
+    <DashboardLayout
+      title="Categories"
       description="Product categories management"
       activeDomain="products"
     >

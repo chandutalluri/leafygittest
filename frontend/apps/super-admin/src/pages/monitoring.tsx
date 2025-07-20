@@ -46,14 +46,14 @@ export default function MonitoringDashboard() {
     try {
       const metricsResponse = await fetch('/api/performance-monitor/metrics');
       const dashboardResponse = await fetch('/api/performance-monitor/dashboard');
-      
+
       if (!metricsResponse.ok || !dashboardResponse.ok) {
         throw new Error('Failed to fetch metrics');
       }
-      
+
       const metricsData = await metricsResponse.json();
       const dashboardData = await dashboardResponse.json();
-      
+
       setMetrics(metricsData);
       setDashboard(dashboardData);
       setError(null);
@@ -67,7 +67,7 @@ export default function MonitoringDashboard() {
 
   useEffect(() => {
     fetchMetrics();
-    
+
     if (autoRefresh) {
       const interval = setInterval(fetchMetrics, 5000); // Refresh every 5 seconds
       return () => clearInterval(interval);
@@ -86,7 +86,7 @@ export default function MonitoringDashboard() {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    
+
     if (days > 0) return `${days}d ${hours}h ${minutes}m`;
     if (hours > 0) return `${hours}h ${minutes}m`;
     return `${minutes}m`;
@@ -129,7 +129,7 @@ export default function MonitoringDashboard() {
               <input
                 type="checkbox"
                 checked={autoRefresh}
-                onChange={(e) => setAutoRefresh(e.target.checked)}
+                onChange={e => setAutoRefresh(e.target.checked)}
                 className="rounded border-gray-300"
               />
               <span className="text-sm text-gray-600">Auto-refresh</span>
@@ -157,24 +157,35 @@ export default function MonitoringDashboard() {
                 <div>
                   <h2 className="text-xl font-semibold mb-2">System Health</h2>
                   <div className="flex items-center gap-3">
-                    <div className={`text-5xl font-bold ${
-                      dashboard.overview.healthScore >= 80 ? 'text-green-600' : 
-                      dashboard.overview.healthScore >= 60 ? 'text-yellow-600' : 'text-red-600'
-                    }`}>
+                    <div
+                      className={`text-5xl font-bold ${
+                        dashboard.overview.healthScore >= 80
+                          ? 'text-green-600'
+                          : dashboard.overview.healthScore >= 60
+                            ? 'text-yellow-600'
+                            : 'text-red-600'
+                      }`}
+                    >
                       {dashboard.overview.healthScore}%
                     </div>
                     <div>
                       <p className="text-lg font-medium">{dashboard.overview.status}</p>
                       <p className="text-sm text-gray-500">
-                        Last updated: {new Date(dashboard.overview.lastUpdated).toLocaleTimeString()}
+                        Last updated:{' '}
+                        {new Date(dashboard.overview.lastUpdated).toLocaleTimeString()}
                       </p>
                     </div>
                   </div>
                 </div>
-                <div className={`w-24 h-24 rounded-full flex items-center justify-center ${
-                  dashboard.overview.healthScore >= 80 ? 'bg-green-100' : 
-                  dashboard.overview.healthScore >= 60 ? 'bg-yellow-100' : 'bg-red-100'
-                }`}>
+                <div
+                  className={`w-24 h-24 rounded-full flex items-center justify-center ${
+                    dashboard.overview.healthScore >= 80
+                      ? 'bg-green-100'
+                      : dashboard.overview.healthScore >= 60
+                        ? 'bg-yellow-100'
+                        : 'bg-red-100'
+                  }`}
+                >
                   {dashboard.overview.healthScore >= 80 ? (
                     <CheckCircle className="w-12 h-12 text-green-600" />
                   ) : (
@@ -193,16 +204,22 @@ export default function MonitoringDashboard() {
                     <div
                       key={index}
                       className={`p-4 rounded-lg border ${
-                        alert.level === 'critical' ? 'bg-red-50 border-red-200' : 'bg-yellow-50 border-yellow-200'
+                        alert.level === 'critical'
+                          ? 'bg-red-50 border-red-200'
+                          : 'bg-yellow-50 border-yellow-200'
                       }`}
                     >
                       <div className="flex items-center gap-2">
-                        <AlertCircle className={`w-5 h-5 ${
-                          alert.level === 'critical' ? 'text-red-600' : 'text-yellow-600'
-                        }`} />
-                        <span className={`font-medium ${
-                          alert.level === 'critical' ? 'text-red-800' : 'text-yellow-800'
-                        }`}>
+                        <AlertCircle
+                          className={`w-5 h-5 ${
+                            alert.level === 'critical' ? 'text-red-600' : 'text-yellow-600'
+                          }`}
+                        />
+                        <span
+                          className={`font-medium ${
+                            alert.level === 'critical' ? 'text-red-800' : 'text-yellow-800'
+                          }`}
+                        >
                           {alert.message}
                         </span>
                       </div>
@@ -237,7 +254,8 @@ export default function MonitoringDashboard() {
                 </div>
                 <div className="text-3xl font-bold text-gray-800">{dashboard.system.memory}</div>
                 <div className="mt-2 text-sm text-gray-500">
-                  {formatBytes(metrics?.system.memory.used || 0)} / {formatBytes(metrics?.system.memory.total || 0)}
+                  {formatBytes(metrics?.system.memory.used || 0)} /{' '}
+                  {formatBytes(metrics?.system.memory.total || 0)}
                 </div>
               </GlassCard>
 
@@ -247,9 +265,7 @@ export default function MonitoringDashboard() {
                   <Activity className="w-6 h-6 text-gray-400" />
                 </div>
                 <div className="text-3xl font-bold text-gray-800">{dashboard.system.uptime}</div>
-                <div className="mt-2 text-sm text-gray-500">
-                  Since last restart
-                </div>
+                <div className="mt-2 text-sm text-gray-500">Since last restart</div>
               </GlassCard>
             </div>
 
@@ -267,18 +283,24 @@ export default function MonitoringDashboard() {
                 </div>
                 <div className="space-y-2">
                   {dashboard.services.details.map((service: any) => (
-                    <div key={service.name} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                    <div
+                      key={service.name}
+                      className="flex items-center justify-between p-2 bg-gray-50 rounded"
+                    >
                       <div className="flex items-center gap-2">
-                        <div className={`w-2 h-2 rounded-full ${
-                          service.status === 'healthy' ? 'bg-green-500' : 
-                          service.status === 'unhealthy' ? 'bg-yellow-500' : 'bg-red-500'
-                        }`} />
+                        <div
+                          className={`w-2 h-2 rounded-full ${
+                            service.status === 'healthy'
+                              ? 'bg-green-500'
+                              : service.status === 'unhealthy'
+                                ? 'bg-yellow-500'
+                                : 'bg-red-500'
+                          }`}
+                        />
                         <span className="font-medium">{service.name}</span>
                       </div>
                       <div className="flex items-center gap-4 text-sm">
-                        <span className={getStatusColor(service.status)}>
-                          {service.status}
-                        </span>
+                        <span className={getStatusColor(service.status)}>{service.status}</span>
                         {service.responseTime > 0 && (
                           <span className="text-gray-500">{service.responseTime}ms</span>
                         )}
@@ -297,7 +319,9 @@ export default function MonitoringDashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm text-gray-600">Status</span>
-                      <span className={`font-medium ${dashboard.database.healthy ? 'text-green-600' : 'text-red-600'}`}>
+                      <span
+                        className={`font-medium ${dashboard.database.healthy ? 'text-green-600' : 'text-red-600'}`}
+                      >
                         {dashboard.database.healthy ? 'Healthy' : 'Unhealthy'}
                       </span>
                     </div>
@@ -311,7 +335,9 @@ export default function MonitoringDashboard() {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-sm text-gray-600">Database Size</span>
-                      <span className="font-medium">{formatBytes(dashboard.database.databaseSize)}</span>
+                      <span className="font-medium">
+                        {formatBytes(dashboard.database.databaseSize)}
+                      </span>
                     </div>
                   </div>
                 </div>

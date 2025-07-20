@@ -1,27 +1,30 @@
-'use client'
+'use client';
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 interface ColorScheme {
-  id: string
-  name: string
-  description: string
-  background: string
-  foreground: string
-  accent: string
-  muted: string
-  contrastRatio: number
-  wcagLevel: 'AA' | 'AAA'
+  id: string;
+  name: string;
+  description: string;
+  background: string;
+  foreground: string;
+  accent: string;
+  muted: string;
+  contrastRatio: number;
+  wcagLevel: 'AA' | 'AAA';
 }
 
 interface ColorContrastSelectorProps {
-  onSchemeChange: (scheme: ColorScheme) => void
-  currentScheme?: string
+  onSchemeChange: (scheme: ColorScheme) => void;
+  currentScheme?: string;
 }
 
-export default function ColorContrastSelector({ onSchemeChange, currentScheme = 'default' }: ColorContrastSelectorProps) {
-  const [selectedScheme, setSelectedScheme] = useState(currentScheme)
-  const [showAdvanced, setShowAdvanced] = useState(false)
+export default function ColorContrastSelector({
+  onSchemeChange,
+  currentScheme = 'default',
+}: ColorContrastSelectorProps) {
+  const [selectedScheme, setSelectedScheme] = useState(currentScheme);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   // WCAG 2.1 compliant color schemes
   const colorSchemes: ColorScheme[] = [
@@ -34,7 +37,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#7c3aed',
       muted: '#6b7280',
       contrastRatio: 12.6,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'high-contrast',
@@ -45,7 +48,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#ffff00',
       muted: '#cccccc',
       contrastRatio: 21,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'dark-mode',
@@ -56,7 +59,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#60a5fa',
       muted: '#9ca3af',
       contrastRatio: 15.8,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'deuteranopia',
@@ -67,7 +70,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#0891b2',
       muted: '#64748b',
       contrastRatio: 12.6,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'protanopia',
@@ -78,7 +81,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#059669',
       muted: '#64748b',
       contrastRatio: 12.6,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'tritanopia',
@@ -89,7 +92,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#dc2626',
       muted: '#64748b',
       contrastRatio: 12.6,
-      wcagLevel: 'AAA'
+      wcagLevel: 'AAA',
     },
     {
       id: 'low-vision',
@@ -100,70 +103,74 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       accent: '#b45309',
       muted: '#78716c',
       contrastRatio: 16.2,
-      wcagLevel: 'AAA'
-    }
-  ]
+      wcagLevel: 'AAA',
+    },
+  ];
 
   // Calculate contrast ratio between two colors
   const calculateContrastRatio = (color1: string, color2: string): number => {
     const getLuminance = (hex: string): number => {
-      const rgb = parseInt(hex.slice(1), 16)
-      const r = (rgb >> 16) & 0xff
-      const g = (rgb >> 8) & 0xff
-      const b = (rgb >> 0) & 0xff
+      const rgb = parseInt(hex.slice(1), 16);
+      const r = (rgb >> 16) & 0xff;
+      const g = (rgb >> 8) & 0xff;
+      const b = (rgb >> 0) & 0xff;
 
       const sRGB = [r, g, b].map(c => {
-        c = c / 255
-        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4)
-      })
+        c = c / 255;
+        return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+      });
 
-      return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2]
-    }
+      return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2];
+    };
 
-    const lum1 = getLuminance(color1)
-    const lum2 = getLuminance(color2)
-    const brightest = Math.max(lum1, lum2)
-    const darkest = Math.min(lum1, lum2)
+    const lum1 = getLuminance(color1);
+    const lum2 = getLuminance(color2);
+    const brightest = Math.max(lum1, lum2);
+    const darkest = Math.min(lum1, lum2);
 
-    return (brightest + 0.05) / (darkest + 0.05)
-  }
+    return (brightest + 0.05) / (darkest + 0.05);
+  };
 
   const handleSchemeChange = (scheme: ColorScheme) => {
-    setSelectedScheme(scheme.id)
-    onSchemeChange(scheme)
-    
+    setSelectedScheme(scheme.id);
+    onSchemeChange(scheme);
+
     // Apply CSS variables immediately for preview
-    const root = document.documentElement
-    root.style.setProperty('--contrast-bg', scheme.background)
-    root.style.setProperty('--contrast-fg', scheme.foreground)
-    root.style.setProperty('--contrast-accent', scheme.accent)
-    root.style.setProperty('--contrast-muted', scheme.muted)
-  }
+    const root = document.documentElement;
+    root.style.setProperty('--contrast-bg', scheme.background);
+    root.style.setProperty('--contrast-fg', scheme.foreground);
+    root.style.setProperty('--contrast-accent', scheme.accent);
+    root.style.setProperty('--contrast-muted', scheme.muted);
+  };
 
   const getWCAGBadge = (level: 'AA' | 'AAA', ratio: number) => {
-    const isAAA = ratio >= 7
-    const isAA = ratio >= 4.5
-    
+    const isAAA = ratio >= 7;
+    const isAA = ratio >= 4.5;
+
     return (
-      <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-        isAAA ? 'bg-green-100 text-green-800' : 
-        isAA ? 'bg-yellow-100 text-yellow-800' : 
-        'bg-red-100 text-red-800'
-      }`}>
+      <div
+        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+          isAAA
+            ? 'bg-green-100 text-green-800'
+            : isAA
+              ? 'bg-yellow-100 text-yellow-800'
+              : 'bg-red-100 text-red-800'
+        }`}
+      >
         WCAG {isAAA ? 'AAA' : isAA ? 'AA' : 'Fail'} ({ratio.toFixed(1)}:1)
       </div>
-    )
-  }
+    );
+  };
 
   useEffect(() => {
-    const savedScheme = localStorage.getItem('accessibility-color-scheme')
+    const savedScheme = localStorage.getItem('accessibility-color-scheme');
     if (savedScheme) {
-      const scheme = colorSchemes.find(s => s.id === savedScheme)
+      const scheme = colorSchemes.find(s => s.id === savedScheme);
       if (scheme) {
-        handleSchemeChange(scheme)
+        handleSchemeChange(scheme);
       }
     }
-  }, [])
+  }, []);
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6">
@@ -184,7 +191,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
 
       {/* Color Scheme Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-        {colorSchemes.map((scheme) => (
+        {colorSchemes.map(scheme => (
           <div
             key={scheme.id}
             className={`relative border-2 rounded-lg p-4 cursor-pointer transition-all ${
@@ -251,19 +258,19 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
             className="p-4 rounded border"
             style={{
               backgroundColor: colorSchemes.find(s => s.id === selectedScheme)?.background,
-              color: colorSchemes.find(s => s.id === selectedScheme)?.foreground
+              color: colorSchemes.find(s => s.id === selectedScheme)?.foreground,
             }}
           >
             <h5 className="font-semibold mb-2">Sample Content</h5>
             <p className="text-sm mb-3">
-              This is how your interface will look with the selected color scheme. 
-              The contrast ensures readability for users with visual impairments.
+              This is how your interface will look with the selected color scheme. The contrast
+              ensures readability for users with visual impairments.
             </p>
             <button
               className="px-4 py-2 rounded text-sm font-medium"
               style={{
                 backgroundColor: colorSchemes.find(s => s.id === selectedScheme)?.accent,
-                color: colorSchemes.find(s => s.id === selectedScheme)?.background
+                color: colorSchemes.find(s => s.id === selectedScheme)?.background,
               }}
             >
               Sample Button
@@ -276,7 +283,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       {showAdvanced && (
         <div className="border-t pt-6">
           <h4 className="font-medium text-gray-900 mb-4">Advanced Accessibility Options</h4>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="flex items-center space-x-3">
@@ -287,7 +294,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
                 <span className="text-sm text-gray-700">Reduce motion effects</span>
               </label>
             </div>
-            
+
             <div>
               <label className="flex items-center space-x-3">
                 <input
@@ -297,7 +304,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
                 <span className="text-sm text-gray-700">Increase focus indicators</span>
               </label>
             </div>
-            
+
             <div>
               <label className="flex items-center space-x-3">
                 <input
@@ -307,7 +314,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
                 <span className="text-sm text-gray-700">Enhanced button borders</span>
               </label>
             </div>
-            
+
             <div>
               <label className="flex items-center space-x-3">
                 <input
@@ -320,9 +327,7 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Font Size Scale
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Font Size Scale</label>
             <input
               type="range"
               min="0.8"
@@ -343,17 +348,18 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
       {/* Action Buttons */}
       <div className="flex justify-between items-center pt-6 border-t">
         <div className="text-sm text-gray-600">
-          Current scheme: <span className="font-medium">
+          Current scheme:{' '}
+          <span className="font-medium">
             {colorSchemes.find(s => s.id === selectedScheme)?.name}
           </span>
         </div>
-        
+
         <div className="flex space-x-3">
           <button
             onClick={() => {
-              localStorage.removeItem('accessibility-color-scheme')
-              const defaultScheme = colorSchemes[0]
-              handleSchemeChange(defaultScheme)
+              localStorage.removeItem('accessibility-color-scheme');
+              const defaultScheme = colorSchemes[0];
+              handleSchemeChange(defaultScheme);
             }}
             className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
           >
@@ -361,10 +367,10 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
           </button>
           <button
             onClick={() => {
-              const scheme = colorSchemes.find(s => s.id === selectedScheme)
+              const scheme = colorSchemes.find(s => s.id === selectedScheme);
               if (scheme) {
-                localStorage.setItem('accessibility-color-scheme', scheme.id)
-                localStorage.setItem('accessibility-settings', JSON.stringify(scheme))
+                localStorage.setItem('accessibility-color-scheme', scheme.id);
+                localStorage.setItem('accessibility-settings', JSON.stringify(scheme));
               }
             }}
             className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
@@ -374,5 +380,5 @@ export default function ColorContrastSelector({ onSchemeChange, currentScheme = 
         </div>
       </div>
     </div>
-  )
+  );
 }

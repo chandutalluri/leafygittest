@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Store, Users, Package, DollarSign, TrendingUp, Star, Eye, Plus } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -62,9 +69,9 @@ export default function MarketplaceManagement() {
       const [vendorsData, productsData] = await Promise.all([
         apiClient.get('/api/direct-data/marketplace/vendors', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/marketplace/products')
+        apiClient.get('/api/direct-data/marketplace/products'),
       ]);
       setVendors(vendorsData || []);
       setVendorProducts(productsData || []);
@@ -77,7 +84,9 @@ export default function MarketplaceManagement() {
 
   const updateVendorStatus = async (vendorId: string, newStatus: string) => {
     try {
-      await apiClient.put(`/api/direct-data/marketplace/vendors/${vendorId}`, { status: newStatus });
+      await apiClient.put(`/api/direct-data/marketplace/vendors/${vendorId}`, {
+        status: newStatus,
+      });
       fetchMarketplaceData();
     } catch (error) {
       console.error('Failed to update vendor status:', error);
@@ -86,7 +95,9 @@ export default function MarketplaceManagement() {
 
   const updateCommissionRate = async (vendorId: string, newRate: number) => {
     try {
-      await apiClient.put(`/api/direct-data/marketplace/vendors/${vendorId}/commission`, { rate: newRate });
+      await apiClient.put(`/api/direct-data/marketplace/vendors/${vendorId}/commission`, {
+        rate: newRate,
+      });
       fetchMarketplaceData();
     } catch (error) {
       console.error('Failed to update commission rate:', error);
@@ -95,30 +106,42 @@ export default function MarketplaceManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'default';
-      case 'pending': return 'secondary';
-      case 'suspended': return 'destructive';
-      case 'rejected': return 'destructive';
-      default: return 'secondary';
+      case 'active':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'suspended':
+        return 'destructive';
+      case 'rejected':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredVendors = vendors.filter(vendor =>
-    vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vendor.contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    vendor.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredVendors = vendors.filter(
+    vendor =>
+      vendor.businessName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vendor.contactName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      vendor.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredProducts = vendorProducts.filter(product =>
-    product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.vendorName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = vendorProducts.filter(
+    product =>
+      product.productName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.vendorName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalRevenue = vendors.reduce((sum, vendor) => sum + vendor.totalSales, 0);
-  const totalCommission = vendors.reduce((sum, vendor) => sum + (vendor.totalSales * vendor.commissionRate / 100), 0);
+  const totalCommission = vendors.reduce(
+    (sum, vendor) => sum + (vendor.totalSales * vendor.commissionRate) / 100,
+    0
+  );
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading marketplace management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading marketplace management...</div>
+    );
   }
 
   return (
@@ -214,7 +237,7 @@ export default function MarketplaceManagement() {
             <Input
               placeholder={`Search ${activeTab}...`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -254,7 +277,7 @@ export default function MarketplaceManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredVendors.map((vendor) => (
+                  {filteredVendors.map(vendor => (
                     <tr key={vendor.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{vendor.businessName}</div>
@@ -280,10 +303,13 @@ export default function MarketplaceManagement() {
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
-                          <Dialog open={isVendorDialogOpen && selectedVendor?.id === vendor.id} onOpenChange={(open) => {
-                            setIsVendorDialogOpen(open);
-                            if (!open) setSelectedVendor(null);
-                          }}>
+                          <Dialog
+                            open={isVendorDialogOpen && selectedVendor?.id === vendor.id}
+                            onOpenChange={open => {
+                              setIsVendorDialogOpen(open);
+                              if (!open) setSelectedVendor(null);
+                            }}
+                          >
                             <DialogTrigger asChild>
                               <Button
                                 variant="outline"
@@ -301,12 +327,15 @@ export default function MarketplaceManagement() {
                               </DialogHeader>
                               <VendorDetails
                                 vendor={vendor}
-                                onStatusChange={(status) => updateVendorStatus(vendor.id, status)}
-                                onCommissionChange={(rate) => updateCommissionRate(vendor.id, rate)}
+                                onStatusChange={status => updateVendorStatus(vendor.id, status)}
+                                onCommissionChange={rate => updateCommissionRate(vendor.id, rate)}
                               />
                             </DialogContent>
                           </Dialog>
-                          <Select value={vendor.status} onValueChange={(status) => updateVendorStatus(vendor.id, status)}>
+                          <Select
+                            value={vendor.status}
+                            onValueChange={status => updateVendorStatus(vendor.id, status)}
+                          >
                             <SelectTrigger className="w-32">
                               <SelectValue />
                             </SelectTrigger>
@@ -347,7 +376,7 @@ export default function MarketplaceManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredProducts.map((product) => (
+                  {filteredProducts.map(product => (
                     <tr key={product.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{product.productName}</div>
@@ -380,12 +409,12 @@ export default function MarketplaceManagement() {
   );
 }
 
-function VendorDetails({ 
-  vendor, 
-  onStatusChange, 
-  onCommissionChange 
-}: { 
-  vendor: Vendor; 
+function VendorDetails({
+  vendor,
+  onStatusChange,
+  onCommissionChange,
+}: {
+  vendor: Vendor;
   onStatusChange: (status: string) => void;
   onCommissionChange: (rate: number) => void;
 }) {
@@ -453,7 +482,7 @@ function VendorDetails({
           <Input
             type="number"
             value={commissionRate}
-            onChange={(e) => setCommissionRate(parseFloat(e.target.value))}
+            onChange={e => setCommissionRate(parseFloat(e.target.value))}
             className="w-32"
           />
           <Button onClick={handleCommissionUpdate} size="sm">
@@ -464,8 +493,8 @@ function VendorDetails({
 
       <div className="border-t pt-4">
         <div className="text-sm text-gray-500">
-          Joined: {new Date(vendor.joinedDate).toLocaleDateString()} | 
-          Last Active: {new Date(vendor.lastActive).toLocaleDateString()}
+          Joined: {new Date(vendor.joinedDate).toLocaleDateString()} | Last Active:{' '}
+          {new Date(vendor.lastActive).toLocaleDateString()}
         </div>
       </div>
     </div>

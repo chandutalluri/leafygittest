@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
@@ -49,13 +49,48 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
     try {
       // Use mock data for initial testing to avoid API errors
       const mockProducts: Product[] = [
-        { id: '1', name: 'Organic Tomatoes', selling_price: 45.00, unit: 'kg', category: 'Vegetables', sku: 'ORG-TOM-001' },
-        { id: '2', name: 'Organic Onions', selling_price: 35.00, unit: 'kg', category: 'Vegetables', sku: 'ORG-ONI-002' },
-        { id: '3', name: 'Organic Potatoes', selling_price: 32.00, unit: 'kg', category: 'Vegetables', sku: 'ORG-POT-003' },
-        { id: '4', name: 'Organic Bananas', selling_price: 55.00, unit: 'dozen', category: 'Fruits', sku: 'ORG-BAN-004' },
-        { id: '5', name: 'Organic Turmeric Powder', selling_price: 185.00, unit: 'kg', category: 'Spices', sku: 'ORG-TUR-005' }
+        {
+          id: '1',
+          name: 'Organic Tomatoes',
+          selling_price: 45.0,
+          unit: 'kg',
+          category: 'Vegetables',
+          sku: 'ORG-TOM-001',
+        },
+        {
+          id: '2',
+          name: 'Organic Onions',
+          selling_price: 35.0,
+          unit: 'kg',
+          category: 'Vegetables',
+          sku: 'ORG-ONI-002',
+        },
+        {
+          id: '3',
+          name: 'Organic Potatoes',
+          selling_price: 32.0,
+          unit: 'kg',
+          category: 'Vegetables',
+          sku: 'ORG-POT-003',
+        },
+        {
+          id: '4',
+          name: 'Organic Bananas',
+          selling_price: 55.0,
+          unit: 'dozen',
+          category: 'Fruits',
+          sku: 'ORG-BAN-004',
+        },
+        {
+          id: '5',
+          name: 'Organic Turmeric Powder',
+          selling_price: 185.0,
+          unit: 'kg',
+          category: 'Spices',
+          sku: 'ORG-TUR-005',
+        },
       ];
-      
+
       setProducts(mockProducts);
       console.log('✅ Loaded', mockProducts.length, 'products for template system');
       toast.success(`Loaded ${mockProducts.length} products successfully`);
@@ -73,10 +108,10 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       mediaType: selectedMediaType,
       labelSize: {
         width: mediaConfig.labelSizeMM.width,
-        height: mediaConfig.labelSizeMM.height
+        height: mediaConfig.labelSizeMM.height,
       },
       elements: createDefaultElements(product, mediaConfig),
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     };
 
     setCurrentTemplate(template);
@@ -102,7 +137,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       fontWeight: 'bold',
       fontFamily: 'Arial',
       color: '#000000',
-      groupId: 'header-group'
+      groupId: 'header-group',
     });
 
     // 2. Price and Unit (grouped with header)
@@ -118,11 +153,12 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       fontWeight: 'normal',
       fontFamily: 'Arial',
       color: '#333333',
-      groupId: 'header-group'
+      groupId: 'header-group',
     });
 
     // 3. QR Code (separate group)
-    if (labelWidth > 100) { // Only add QR for larger labels
+    if (labelWidth > 100) {
+      // Only add QR for larger labels
       elements.push({
         id: `qr-code-${Date.now()}`,
         type: 'qr',
@@ -131,12 +167,13 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
         width: 30,
         height: 30,
         content: `https://leafyhealth.com/product/${product.id}`,
-        groupId: 'qr-group'
+        groupId: 'qr-group',
       });
     }
 
     // 4. Indian Compliance (grouped together)
-    if (labelHeight > 80) { // Only add for taller labels
+    if (labelHeight > 80) {
+      // Only add for taller labels
       elements.push({
         id: `indian-compliance-${Date.now()}`,
         type: 'indian-compliance',
@@ -144,9 +181,10 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
         y: labelHeight - 35,
         width: labelWidth - 10,
         height: 30,
-        content: 'FSSAI License: 12345678901234\nMfd by: Sri Venkateswara Organic Foods\nBest Before: 12 months from MFD',
+        content:
+          'FSSAI License: 12345678901234\nMfd by: Sri Venkateswara Organic Foods\nBest Before: 12 months from MFD',
         fontSize: 8,
-        groupId: 'compliance-group'
+        groupId: 'compliance-group',
       });
     }
 
@@ -160,7 +198,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
         width: 80,
         height: 25,
         content: product.sku || '1234567890',
-        groupId: 'barcode-group'
+        groupId: 'barcode-group',
       });
     }
 
@@ -184,7 +222,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
 
     const updatedTemplate = {
       ...currentTemplate,
-      elements: updatedElements
+      elements: updatedElements,
     };
 
     setCurrentTemplate(updatedTemplate);
@@ -204,12 +242,12 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       content: type === 'text' ? 'New Text' : type === 'qr' ? 'https://example.com' : '',
       fontSize: 12,
       fontFamily: 'Arial',
-      color: '#000000'
+      color: '#000000',
     };
 
     const updatedTemplate = {
       ...currentTemplate,
-      elements: [...currentTemplate.elements, newElement]
+      elements: [...currentTemplate.elements, newElement],
     };
 
     setCurrentTemplate(updatedTemplate);
@@ -222,45 +260,39 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       {/* Control Panel */}
       <div className="bg-white rounded-lg shadow-sm border p-4 space-y-4">
         <h2 className="text-xl font-bold text-gray-900">Template Controller</h2>
-        
+
         {/* Product Selection */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Product
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Select Product</label>
             <select
               value={selectedProduct?.id || ''}
-              onChange={(e) => {
+              onChange={e => {
                 const product = products.find(p => p.id === e.target.value);
                 setSelectedProduct(product || null);
               }}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Choose a product...</option>
-              {products.map((product) => (
+              {products.map(product => (
                 <option key={product.id} value={product.id}>
                   {product.name} - ₹{product.selling_price}/{product.unit}
                 </option>
               ))}
             </select>
             {products.length > 0 && (
-              <p className="text-sm text-green-600 mt-1">
-                ✅ {products.length} products loaded
-              </p>
+              <p className="text-sm text-green-600 mt-1">✅ {products.length} products loaded</p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Media Type
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Media Type</label>
             <select
               value={selectedMediaType}
-              onChange={(e) => setSelectedMediaType(e.target.value)}
+              onChange={e => setSelectedMediaType(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             >
-              {Object.values(mediaTypes).map((type) => (
+              {Object.values(mediaTypes).map(type => (
                 <option key={type.name} value={type.name}>
                   {type.displayName}
                 </option>
@@ -269,16 +301,12 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              View Mode
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">View Mode</label>
             <div className="flex space-x-2">
               <button
                 onClick={() => setViewMode('design')}
                 className={`flex-1 px-3 py-2 rounded-md ${
-                  viewMode === 'design' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-200 text-gray-700'
+                  viewMode === 'design' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
                 }`}
               >
                 Design
@@ -286,9 +314,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
               <button
                 onClick={() => setViewMode('print')}
                 className={`flex-1 px-3 py-2 rounded-md ${
-                  viewMode === 'print' 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-200 text-gray-700'
+                  viewMode === 'print' ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700'
                 }`}
               >
                 Print Layout
@@ -346,13 +372,13 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
                     max="200"
                     step="10"
                     value={zoom}
-                    onChange={(e) => setZoom(Number(e.target.value))}
+                    onChange={e => setZoom(Number(e.target.value))}
                     className="w-20"
                   />
                   <span className="text-sm text-gray-600">{zoom}%</span>
                 </div>
               </div>
-              
+
               <LabelCanvas
                 template={currentTemplate}
                 mediaConfig={mediaConfig}
@@ -363,11 +389,11 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
                 selectedElementIds={selectedElementIds}
                 isEditable={true}
               />
-              
+
               <div className="text-sm text-gray-600">
-                Selected elements: {selectedElementIds.length} | 
-                Total elements: {currentTemplate.elements.length} | 
-                Grouped elements: {new Set(currentTemplate.elements.map(e => e.groupId).filter(Boolean)).size} groups
+                Selected elements: {selectedElementIds.length} | Total elements:{' '}
+                {currentTemplate.elements.length} | Grouped elements:{' '}
+                {new Set(currentTemplate.elements.map(e => e.groupId).filter(Boolean)).size} groups
               </div>
             </div>
           ) : (

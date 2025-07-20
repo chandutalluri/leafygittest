@@ -3,14 +3,14 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { 
-  ShoppingBagIcon, 
-  PhotoIcon, 
+import {
+  ShoppingBagIcon,
+  PhotoIcon,
   TagIcon,
   BuildingStorefrontIcon,
   CurrencyRupeeIcon,
   DocumentTextIcon,
-  CheckIcon
+  CheckIcon,
 } from '@heroicons/react/24/outline';
 import { LoadingSkeleton } from '../../components/ui/LoadingSkeleton';
 import ImageSelector from '../../components/image-management/ImageSelector';
@@ -67,21 +67,22 @@ interface CompositeProductFormProps {
   onSuccess?: () => void;
 }
 
-export default function CompositeProductForm({ 
-  editMode = false, 
-  productId, 
+export default function CompositeProductForm({
+  editMode = false,
+  productId,
   initialData,
   onClose,
-  onSuccess
+  onSuccess,
 }: CompositeProductFormProps) {
   const { user, token } = useAuthStore();
   const { branches } = useBranchStore();
-  
+
   // Transform branches to match our interface
-  const formattedBranches = branches?.map((branch: any) => ({
-    ...branch,
-    address: branch.address || branch.location || 'Location not specified'
-  })) || [];
+  const formattedBranches =
+    branches?.map((branch: any) => ({
+      ...branch,
+      address: branch.address || branch.location || 'Location not specified',
+    })) || [];
   const [selectedBranches, setSelectedBranches] = useState<string[]>([]);
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
   const [showImageSelector, setShowImageSelector] = useState(false);
@@ -96,55 +97,58 @@ export default function CompositeProductForm({
     watch,
     setValue,
   } = useForm<CompositeProductFormData>({
-    defaultValues: editMode && initialData ? {
-      name: initialData.name || '',
-      description: initialData.description || '',
-      shortDescription: initialData.shortDescription || '',
-      sku: initialData.sku || '',
-      barcode: initialData.barcode || '',
-      price: initialData.price || 0,
-      salePrice: initialData.salePrice || 0,
-      costPrice: initialData.costPrice || 0,
-      weight: initialData.weight || 0,
-      unit: initialData.unit || 'kg',
-      categoryId: initialData.categoryId || initialData.category?.id || '',
-      openingStock: initialData.openingStock || 0,
-      reorderLevel: initialData.reorderLevel || 10,
-      maxStock: initialData.maxStock || 1000,
-      stockStatus: initialData.stockStatus || 'in_stock',
-      isFeatured: initialData.isFeatured || false,
-      isDigital: initialData.isDigital || false,
-      status: initialData.status || 'active',
-      seoTitle: initialData.seoTitle || '',
-      seoDescription: initialData.seoDescription || '',
-      tags: initialData.tags || [],
-      attributes: initialData.attributes || {},
-      dimensions: initialData.dimensions || {}
-    } : {
-      name: '',
-      description: '',
-      shortDescription: '',
-      sku: '',
-      barcode: '',
-      price: 0,
-      salePrice: 0,
-      costPrice: 0,
-      weight: 0,
-      unit: 'kg',
-      categoryId: '',
-      openingStock: 0,
-      reorderLevel: 0,
-      maxStock: 1000,
-      stockStatus: 'in_stock',
-      isFeatured: false,
-      isDigital: false,
-      status: 'active',
-      seoTitle: '',
-      seoDescription: '',
-      tags: [],
-      attributes: {},
-      dimensions: {}
-    }
+    defaultValues:
+      editMode && initialData
+        ? {
+            name: initialData.name || '',
+            description: initialData.description || '',
+            shortDescription: initialData.shortDescription || '',
+            sku: initialData.sku || '',
+            barcode: initialData.barcode || '',
+            price: initialData.price || 0,
+            salePrice: initialData.salePrice || 0,
+            costPrice: initialData.costPrice || 0,
+            weight: initialData.weight || 0,
+            unit: initialData.unit || 'kg',
+            categoryId: initialData.categoryId || initialData.category?.id || '',
+            openingStock: initialData.openingStock || 0,
+            reorderLevel: initialData.reorderLevel || 10,
+            maxStock: initialData.maxStock || 1000,
+            stockStatus: initialData.stockStatus || 'in_stock',
+            isFeatured: initialData.isFeatured || false,
+            isDigital: initialData.isDigital || false,
+            status: initialData.status || 'active',
+            seoTitle: initialData.seoTitle || '',
+            seoDescription: initialData.seoDescription || '',
+            tags: initialData.tags || [],
+            attributes: initialData.attributes || {},
+            dimensions: initialData.dimensions || {},
+          }
+        : {
+            name: '',
+            description: '',
+            shortDescription: '',
+            sku: '',
+            barcode: '',
+            price: 0,
+            salePrice: 0,
+            costPrice: 0,
+            weight: 0,
+            unit: 'kg',
+            categoryId: '',
+            openingStock: 0,
+            reorderLevel: 0,
+            maxStock: 1000,
+            stockStatus: 'in_stock',
+            isFeatured: false,
+            isDigital: false,
+            status: 'active',
+            seoTitle: '',
+            seoDescription: '',
+            tags: [],
+            attributes: {},
+            dimensions: {},
+          },
   });
 
   // Fetch categories with useEffect and useState
@@ -158,15 +162,15 @@ export default function CompositeProductForm({
         console.log('Fetching categories from /api/categories');
         setCategoriesLoading(true);
         const response = await fetch('/api/categories');
-        
+
         if (!response.ok) {
           console.error('Categories API failed:', response.status, response.statusText);
           throw new Error(`Failed to fetch categories: ${response.status}`);
         }
-        
+
         const data = await response.json();
         console.log('Categories API response:', data);
-        
+
         // The API returns {success: true, data: [...]} format
         if (data && data.success && Array.isArray(data.data)) {
           console.log('Categories found (success/data format):', data.data.length);
@@ -178,7 +182,7 @@ export default function CompositeProductForm({
           console.warn('Categories API returned unexpected format:', data);
           setCategories([]);
         }
-        
+
         setCategoriesError(null);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -193,10 +197,10 @@ export default function CompositeProductForm({
   }, []);
 
   // Debug logging
-  console.log('Categories loading state:', { 
-    categories: categories?.length || 0, 
-    isLoading: categoriesLoading, 
-    error: categoriesError 
+  console.log('Categories loading state:', {
+    categories: categories?.length || 0,
+    isLoading: categoriesLoading,
+    error: categoriesError,
   });
 
   // Create or update composite product mutation
@@ -229,14 +233,16 @@ export default function CompositeProductForm({
         dimensions: data.dimensions || {},
       };
 
-      const apiUrl = editMode ? `/api/products/${productId}` : '/api/product-orchestrator/create-composite';
+      const apiUrl = editMode
+        ? `/api/products/${productId}`
+        : '/api/product-orchestrator/create-composite';
       const method = editMode ? 'PUT' : 'POST';
 
       const response = await fetch(apiUrl, {
         method: method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(productData),
       });
@@ -248,10 +254,10 @@ export default function CompositeProductForm({
 
       return response.json();
     },
-    onSuccess: (data) => {
+    onSuccess: data => {
       toast.success(`Product ${editMode ? 'updated' : 'created'} successfully!`);
       setCreatedProductId(data.productId || data.id);
-      
+
       if (editMode) {
         // Call onSuccess callback and close modal for edit mode
         onSuccess?.();
@@ -268,7 +274,7 @@ export default function CompositeProductForm({
         message: error?.message || 'Unknown error',
         status: error?.status,
         response: error?.response,
-        stack: error?.stack
+        stack: error?.stack,
       });
       toast.error(error?.message || `Failed to ${editMode ? 'update' : 'create'} product`);
     },
@@ -297,9 +303,7 @@ export default function CompositeProductForm({
 
   const handleBranchToggle = (branchId: string) => {
     setSelectedBranches(prev =>
-      prev.includes(branchId)
-        ? prev.filter(id => id !== branchId)
-        : [...prev, branchId]
+      prev.includes(branchId) ? prev.filter(id => id !== branchId) : [...prev, branchId]
     );
   };
 
@@ -319,7 +323,7 @@ export default function CompositeProductForm({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           productId: createdProductId,
@@ -333,7 +337,7 @@ export default function CompositeProductForm({
 
       const labelData = await response.json();
       toast.success('Product label generated successfully!');
-      
+
       // Download the label
       if (labelData.downloadUrl) {
         window.open(labelData.downloadUrl, '_blank');
@@ -368,12 +372,14 @@ export default function CompositeProductForm({
                 {editMode ? 'Edit Product' : 'Create New Product'}
               </h1>
               <p className="text-green-100 mt-1">
-                {editMode ? 'Update product information across all branches' : 'Add products to your inventory across multiple branches'}
+                {editMode
+                  ? 'Update product information across all branches'
+                  : 'Add products to your inventory across multiple branches'}
               </p>
             </div>
           </div>
         </div>
-        
+
         {/* Form Content */}
         <div className="p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -396,7 +402,7 @@ export default function CompositeProductForm({
                     {selectedImages.length > 0 ? 'Change Images' : 'Select Images'}
                   </button>
                 </div>
-                
+
                 {/* Selected Images Preview */}
                 {selectedImages.length > 0 && (
                   <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -412,7 +418,9 @@ export default function CompositeProductForm({
                         </div>
                         <button
                           type="button"
-                          onClick={() => setSelectedImages(prev => prev.filter(img => img.id !== image.id))}
+                          onClick={() =>
+                            setSelectedImages(prev => prev.filter(img => img.id !== image.id))
+                          }
                           className="absolute top-1 right-1 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-700 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           ×
@@ -421,12 +429,14 @@ export default function CompositeProductForm({
                     ))}
                   </div>
                 )}
-                
+
                 {selectedImages.length === 0 && (
                   <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center bg-white">
                     <PhotoIcon className="mx-auto h-12 w-12 text-gray-400" />
                     <p className="mt-2 text-sm text-gray-700">No images selected</p>
-                    <p className="text-xs text-gray-500">Click "Select Images" to choose from your image library</p>
+                    <p className="text-xs text-gray-500">
+                      Click "Select Images" to choose from your image library
+                    </p>
                   </div>
                 )}
               </div>
@@ -440,17 +450,23 @@ export default function CompositeProductForm({
               </div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Product Name *</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Product Name *
+                  </label>
                   <input
                     type="text"
                     {...register('name', { required: 'Product name is required' })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="Enter product name"
                   />
-                  {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
+                  {errors.name && (
+                    <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">SKU (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    SKU (Optional)
+                  </label>
                   <input
                     type="text"
                     {...register('sku')}
@@ -459,7 +475,9 @@ export default function CompositeProductForm({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Barcode (Optional)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Barcode (Optional)
+                  </label>
                   <input
                     type="text"
                     {...register('barcode')}
@@ -479,10 +497,12 @@ export default function CompositeProductForm({
                   </select>
                 </div>
               </div>
-              
+
               <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Short Description</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Short Description
+                  </label>
                   <textarea
                     {...register('shortDescription')}
                     rows={3}
@@ -491,7 +511,9 @@ export default function CompositeProductForm({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Full Description</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Full Description
+                  </label>
                   <textarea
                     {...register('description')}
                     rows={3}
@@ -508,7 +530,7 @@ export default function CompositeProductForm({
                 <TagIcon className="h-6 w-6 text-purple-600 mr-3" />
                 <h3 className="text-lg font-semibold text-gray-900">Category & Pricing</h3>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Category *</label>
@@ -523,56 +545,72 @@ export default function CompositeProductForm({
                       </option>
                     ))}
                   </select>
-                  {errors.categoryId && <p className="mt-1 text-sm text-red-600">{errors.categoryId.message}</p>}
+                  {errors.categoryId && (
+                    <p className="mt-1 text-sm text-red-600">{errors.categoryId.message}</p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Regular Price (₹) *</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Regular Price (₹) *
+                  </label>
                   <input
                     type="number"
                     step="0.01"
-                    {...register('price', { 
+                    {...register('price', {
                       required: 'Price is required',
-                      min: { value: 0, message: 'Price must be positive' }
+                      min: { value: 0, message: 'Price must be positive' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0.00"
                   />
-                  {errors.price && <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>}
+                  {errors.price && (
+                    <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Sale Price (₹)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Sale Price (₹)
+                  </label>
                   <input
                     type="number"
                     step="0.01"
-                    {...register('salePrice', { 
-                      min: { value: 0, message: 'Sale price must be positive' }
+                    {...register('salePrice', {
+                      min: { value: 0, message: 'Sale price must be positive' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0.00"
                   />
-                  {errors.salePrice && <p className="mt-1 text-sm text-red-600">{errors.salePrice.message}</p>}
+                  {errors.salePrice && (
+                    <p className="mt-1 text-sm text-red-600">{errors.salePrice.message}</p>
+                  )}
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Cost Price (₹)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Cost Price (₹)
+                  </label>
                   <input
                     type="number"
                     step="0.01"
-                    {...register('costPrice', { 
-                      min: { value: 0, message: 'Cost price must be positive' }
+                    {...register('costPrice', {
+                      min: { value: 0, message: 'Cost price must be positive' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0.00"
                   />
-                  {errors.costPrice && <p className="mt-1 text-sm text-red-600">{errors.costPrice.message}</p>}
+                  {errors.costPrice && (
+                    <p className="mt-1 text-sm text-red-600">{errors.costPrice.message}</p>
+                  )}
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Discount (%)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Discount (%)
+                  </label>
                   <input
                     type="number"
                     step="0.01"
@@ -584,7 +622,9 @@ export default function CompositeProductForm({
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Tax Rate (%)</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Tax Rate (%)
+                  </label>
                   <input
                     type="number"
                     step="0.01"
@@ -603,9 +643,9 @@ export default function CompositeProductForm({
                 <BuildingStorefrontIcon className="h-6 w-6 text-orange-600 mr-3" />
                 <h3 className="text-lg font-semibold text-gray-900">Available Branches</h3>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {formattedBranches?.map((branch) => (
+                {formattedBranches?.map(branch => (
                   <div key={`branch-${branch.id}`} className="relative">
                     <label className="flex items-center p-4 border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
                       <input
@@ -622,7 +662,7 @@ export default function CompositeProductForm({
                   </div>
                 ))}
               </div>
-              
+
               {selectedBranches.length === 0 && (
                 <p className="mt-2 text-sm text-red-600">Please select at least one branch</p>
               )}
@@ -634,46 +674,58 @@ export default function CompositeProductForm({
                 <CurrencyRupeeIcon className="h-6 w-6 text-green-600 mr-3" />
                 <h3 className="text-lg font-semibold text-gray-900">Inventory Settings</h3>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Opening Stock</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Opening Stock
+                  </label>
                   <input
                     type="number"
                     min="0"
-                    {...register('openingStock', { 
-                      min: { value: 0, message: 'Opening stock must be non-negative' }
+                    {...register('openingStock', {
+                      min: { value: 0, message: 'Opening stock must be non-negative' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0"
                   />
-                  {errors.openingStock && <p className="mt-1 text-sm text-red-600">{errors.openingStock.message}</p>}
+                  {errors.openingStock && (
+                    <p className="mt-1 text-sm text-red-600">{errors.openingStock.message}</p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Reorder Level</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Reorder Level
+                  </label>
                   <input
                     type="number"
                     min="0"
-                    {...register('reorderLevel', { 
-                      min: { value: 0, message: 'Reorder level must be non-negative' }
+                    {...register('reorderLevel', {
+                      min: { value: 0, message: 'Reorder level must be non-negative' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0"
                   />
-                  {errors.reorderLevel && <p className="mt-1 text-sm text-red-600">{errors.reorderLevel.message}</p>}
+                  {errors.reorderLevel && (
+                    <p className="mt-1 text-sm text-red-600">{errors.reorderLevel.message}</p>
+                  )}
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Maximum Stock</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Maximum Stock
+                  </label>
                   <input
                     type="number"
                     min="0"
-                    {...register('maxStock', { 
-                      min: { value: 0, message: 'Maximum stock must be non-negative' }
+                    {...register('maxStock', {
+                      min: { value: 0, message: 'Maximum stock must be non-negative' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="1000"
                   />
-                  {errors.maxStock && <p className="mt-1 text-sm text-red-600">{errors.maxStock.message}</p>}
+                  {errors.maxStock && (
+                    <p className="mt-1 text-sm text-red-600">{errors.maxStock.message}</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -684,22 +736,24 @@ export default function CompositeProductForm({
                 <BuildingStorefrontIcon className="h-6 w-6 text-indigo-600 mr-3" />
                 <h3 className="text-lg font-semibold text-gray-900">Physical Attributes</h3>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Weight</label>
                   <input
                     type="number"
                     step="0.01"
-                    {...register('weight', { 
-                      min: { value: 0, message: 'Weight must be positive' }
+                    {...register('weight', {
+                      min: { value: 0, message: 'Weight must be positive' },
                     })}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900 placeholder-gray-500"
                     placeholder="0.00"
                   />
-                  {errors.weight && <p className="mt-1 text-sm text-red-600">{errors.weight.message}</p>}
+                  {errors.weight && (
+                    <p className="mt-1 text-sm text-red-600">{errors.weight.message}</p>
+                  )}
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">Unit</label>
                   <select
@@ -716,9 +770,11 @@ export default function CompositeProductForm({
                     <option value="box">Box</option>
                   </select>
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">Stock Status</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    Stock Status
+                  </label>
                   <select
                     {...register('stockStatus')}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white text-gray-900"
@@ -730,7 +786,7 @@ export default function CompositeProductForm({
                   </select>
                 </div>
               </div>
-              
+
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
                 <div className="flex items-center space-x-4">
                   <label className="flex items-center">
@@ -761,7 +817,7 @@ export default function CompositeProductForm({
                 <TagIcon className="h-6 w-6 text-red-600 mr-3" />
                 <h3 className="text-lg font-semibold text-gray-900">SEO & Meta Information</h3>
               </div>
-              
+
               <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">SEO Title</label>
@@ -772,9 +828,11 @@ export default function CompositeProductForm({
                     placeholder="SEO optimized product title"
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 mb-2">SEO Description</label>
+                  <label className="block text-sm font-medium text-gray-900 mb-2">
+                    SEO Description
+                  </label>
                   <textarea
                     {...register('seoDescription')}
                     rows={3}
@@ -804,7 +862,7 @@ export default function CompositeProductForm({
                   </div>
                 )}
               </button>
-              
+
               {createdProductId && (
                 <button
                   type="button"

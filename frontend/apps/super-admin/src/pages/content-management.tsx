@@ -1,58 +1,58 @@
-import { useState, useEffect } from 'react'
-import { SuperAdminLayout } from '../components/layout/SuperAdminLayout'
+import { useState, useEffect } from 'react';
+import { SuperAdminLayout } from '../components/layout/SuperAdminLayout';
 
 interface ContentManagementData {
-  id: number
-  name: string
-  status: string
-  createdAt: string
-  [key: string]: any
+  id: number;
+  name: string;
+  status: string;
+  createdAt: string;
+  [key: string]: any;
 }
 
 export default function ContentManagementPage() {
-  const [data, setData] = useState<ContentManagementData[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [data, setData] = useState<ContentManagementData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
-    pending: 0
-  })
+    pending: 0,
+  });
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
-      setLoading(true)
-      
+      setLoading(true);
+
       // Fetch from actual content-management microservice
       const apiGateway = process.env.NEXT_PUBLIC_API_GATEWAY || 'http://localhost:8080';
-      const response = await fetch(`${apiGateway}/api/content-management`)
-      
+      const response = await fetch(`${apiGateway}/api/content-management`);
+
       if (!response.ok) {
-        throw new Error('Failed to fetch content-management data')
+        throw new Error('Failed to fetch content-management data');
       }
-      
-      const result = await response.json()
-      
+
+      const result = await response.json();
+
       // Calculate stats from real data
       setStats({
         total: result.length,
         active: result.filter((item: any) => item.status === 'active').length,
-        pending: result.filter((item: any) => item.status === 'pending').length
-      })
-      
-      setData(result)
-      setError(null)
+        pending: result.filter((item: any) => item.status === 'pending').length,
+      });
+
+      setData(result);
+      setError(null);
     } catch (err) {
-      console.error('Error fetching content-management data:', err)
-      setError('Failed to connect to content-management service')
+      console.error('Error fetching content-management data:', err);
+      setError('Failed to connect to content-management service');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -70,7 +70,7 @@ export default function ContentManagementPage() {
           </div>
         </div>
       </SuperAdminLayout>
-    )
+    );
   }
 
   return (
@@ -79,13 +79,15 @@ export default function ContentManagementPage() {
         <div className="bg-white shadow-lg rounded-xl border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-900">Content Management</h2>
-            <div className={`px-3 py-1 rounded-full text-sm font-medium ${
-              error ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
-            }`}>
+            <div
+              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                error ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+              }`}
+            >
               {error ? 'Offline' : 'Online'}
             </div>
           </div>
-          
+
           {error ? (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
               <div className="flex">
@@ -93,10 +95,7 @@ export default function ContentManagementPage() {
                 <div>
                   <h3 className="text-sm font-medium text-red-800">Service Connection Error</h3>
                   <p className="text-red-700 text-sm mt-1">{error}</p>
-                  <button 
-                    onClick={fetchData}
-                    className="text-red-800 text-sm underline mt-2"
-                  >
+                  <button onClick={fetchData} className="text-red-800 text-sm underline mt-2">
                     Retry Connection
                   </button>
                 </div>
@@ -116,7 +115,7 @@ export default function ContentManagementPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-green-50 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -128,7 +127,7 @@ export default function ContentManagementPage() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-orange-50 rounded-lg p-4">
                   <div className="flex items-center justify-between">
                     <div>
@@ -141,40 +140,56 @@ export default function ContentManagementPage() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="border-t border-gray-200 pt-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium text-gray-900">Recent Data</h3>
-                  <button 
+                  <button
                     onClick={fetchData}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     Refresh
                   </button>
                 </div>
-                
+
                 {data.length > 0 ? (
                   <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ID
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Name
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                          </th>
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Created
+                          </th>
                         </tr>
                       </thead>
                       <tbody className="bg-white divide-y divide-gray-200">
-                        {data.slice(0, 10).map((item) => (
+                        {data.slice(0, 10).map(item => (
                           <tr key={item.id}>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.id}</td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                              {item.id}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              {item.name}
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap">
-                              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                item.status === 'active' ? 'bg-green-100 text-green-800' :
-                                item.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                              }`}>
+                              <span
+                                className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                  item.status === 'active'
+                                    ? 'bg-green-100 text-green-800'
+                                    : item.status === 'pending'
+                                      ? 'bg-yellow-100 text-yellow-800'
+                                      : 'bg-red-100 text-red-800'
+                                }`}
+                              >
                                 {item.status}
                               </span>
                             </td>
@@ -195,7 +210,7 @@ export default function ContentManagementPage() {
                     <p className="text-gray-600 mb-4">
                       The content management service is connected but no data is available yet.
                     </p>
-                    <button 
+                    <button
                       onClick={fetchData}
                       className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
                     >
@@ -209,5 +224,5 @@ export default function ContentManagementPage() {
         </div>
       </div>
     </SuperAdminLayout>
-  )
+  );
 }

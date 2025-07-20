@@ -1,8 +1,11 @@
-import { SuperAdminLayout } from '../components/layout/SuperAdminLayout'
+import { SuperAdminLayout } from '../components/layout/SuperAdminLayout';
 
 export default function MarketplaceManagementPage() {
   return (
-    <SuperAdminLayout title="Marketplace Management" subtitle="Manage marketplace management operations">
+    <SuperAdminLayout
+      title="Marketplace Management"
+      subtitle="Manage marketplace management operations"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white shadow-lg rounded-xl border border-gray-100 p-6">
           <div className="flex items-center justify-between mb-6">
@@ -11,7 +14,7 @@ export default function MarketplaceManagementPage() {
               Active
             </div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-blue-50 rounded-lg p-4">
               <div className="flex items-center justify-between">
@@ -24,7 +27,7 @@ export default function MarketplaceManagementPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-green-50 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -36,7 +39,7 @@ export default function MarketplaceManagementPage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-orange-50 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
@@ -49,7 +52,7 @@ export default function MarketplaceManagementPage() {
               </div>
             </div>
           </div>
-          
+
           <div className="border-t border-gray-200 pt-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-medium text-gray-900">Management Interface</h3>
@@ -57,7 +60,7 @@ export default function MarketplaceManagementPage() {
                 Add New
               </button>
             </div>
-            
+
             <div className="bg-gray-50 rounded-lg p-8 text-center">
               <div className="w-16 h-16 bg-gray-200 rounded-lg mx-auto mb-4 flex items-center justify-center">
                 <span className="text-gray-400 text-2xl">📋</span>
@@ -74,5 +77,5 @@ export default function MarketplaceManagementPage() {
         </div>
       </div>
     </SuperAdminLayout>
-  )
+  );
 }

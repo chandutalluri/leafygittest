@@ -4,7 +4,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { ShoppingCart, Package, Truck, CheckCircle, Clock, DollarSign, User, MapPin } from 'lucide-react';
+import {
+  ShoppingCart,
+  Package,
+  Truck,
+  CheckCircle,
+  Clock,
+  DollarSign,
+  User,
+  MapPin,
+} from 'lucide-react';
 
 interface Order {
   id: string;
@@ -57,7 +66,7 @@ export default function OrderManagement() {
       setLoading(true);
       const ordersData = await apiClient.get('/api/direct-data/orders', {
         status: statusFilter !== 'all' ? statusFilter : undefined,
-        search: searchTerm
+        search: searchTerm,
       });
       setOrders(ordersData || []);
     } catch (error) {
@@ -87,30 +96,43 @@ export default function OrderManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'secondary';
-      case 'confirmed': return 'default';
-      case 'processing': return 'default';
-      case 'shipped': return 'default';
-      case 'delivered': return 'default';
-      case 'cancelled': return 'destructive';
-      default: return 'secondary';
+      case 'pending':
+        return 'secondary';
+      case 'confirmed':
+        return 'default';
+      case 'processing':
+        return 'default';
+      case 'shipped':
+        return 'default';
+      case 'delivered':
+        return 'default';
+      case 'cancelled':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'default';
-      case 'pending': return 'secondary';
-      case 'failed': return 'destructive';
-      case 'refunded': return 'secondary';
-      default: return 'secondary';
+      case 'paid':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'failed':
+        return 'destructive';
+      case 'refunded':
+        return 'secondary';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredOrders = orders.filter(order => 
-    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrders = orders.filter(
+    order =>
+      order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customerEmail.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -123,7 +145,9 @@ export default function OrderManagement() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Order Management</h2>
-          <p className="text-muted-foreground">Track and manage customer orders, payments, and fulfillment</p>
+          <p className="text-muted-foreground">
+            Track and manage customer orders, payments, and fulfillment
+          </p>
         </div>
         <div className="flex gap-2">
           <Badge variant="outline" className="text-sm">
@@ -131,8 +155,8 @@ export default function OrderManagement() {
             {orders.length} Total Orders
           </Badge>
           <Badge variant="outline" className="text-sm">
-            <DollarSign className="w-4 h-4 mr-1" />
-            ${orders.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
+            <DollarSign className="w-4 h-4 mr-1" />$
+            {orders.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
           </Badge>
         </div>
       </div>
@@ -143,12 +167,12 @@ export default function OrderManagement() {
           <Input
             placeholder="Search by order number, customer name, or email..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
           />
         </div>
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={e => setStatusFilter(e.target.value)}
           className="px-3 py-2 border rounded-md"
         >
           <option value="all">All Orders</option>
@@ -163,8 +187,12 @@ export default function OrderManagement() {
 
       {/* Orders List */}
       <div className="grid gap-4">
-        {filteredOrders.map((order) => (
-          <Card key={order.id} className="cursor-pointer hover:bg-accent/50" onClick={() => setSelectedOrder(order)}>
+        {filteredOrders.map(order => (
+          <Card
+            key={order.id}
+            className="cursor-pointer hover:bg-accent/50"
+            onClick={() => setSelectedOrder(order)}
+          >
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -182,9 +210,7 @@ export default function OrderManagement() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge variant={getStatusColor(order.status)}>
-                    {order.status}
-                  </Badge>
+                  <Badge variant={getStatusColor(order.status)}>{order.status}</Badge>
                   <Badge variant={getPaymentStatusColor(order.paymentStatus)}>
                     {order.paymentStatus}
                   </Badge>
@@ -207,32 +233,59 @@ export default function OrderManagement() {
                 </div>
                 <div className="flex items-center space-x-2">
                   <MapPin className="w-4 h-4 text-muted-foreground" />
-                  <span>{order.shippingAddress.city}, {order.shippingAddress.state}</span>
+                  <span>
+                    {order.shippingAddress.city}, {order.shippingAddress.state}
+                  </span>
                 </div>
               </div>
-              
+
               {/* Quick Actions */}
               <div className="flex gap-2 mt-4">
                 {order.status === 'pending' && (
-                  <Button size="sm" onClick={(e) => { e.stopPropagation(); updateOrderStatus(order.id, 'confirmed'); }}>
+                  <Button
+                    size="sm"
+                    onClick={e => {
+                      e.stopPropagation();
+                      updateOrderStatus(order.id, 'confirmed');
+                    }}
+                  >
                     <CheckCircle className="w-4 h-4 mr-1" />
                     Confirm
                   </Button>
                 )}
                 {order.status === 'confirmed' && (
-                  <Button size="sm" onClick={(e) => { e.stopPropagation(); updateOrderStatus(order.id, 'processing'); }}>
+                  <Button
+                    size="sm"
+                    onClick={e => {
+                      e.stopPropagation();
+                      updateOrderStatus(order.id, 'processing');
+                    }}
+                  >
                     <Package className="w-4 h-4 mr-1" />
                     Process
                   </Button>
                 )}
                 {order.status === 'processing' && (
-                  <Button size="sm" onClick={(e) => { e.stopPropagation(); updateOrderStatus(order.id, 'shipped'); }}>
+                  <Button
+                    size="sm"
+                    onClick={e => {
+                      e.stopPropagation();
+                      updateOrderStatus(order.id, 'shipped');
+                    }}
+                  >
                     <Truck className="w-4 h-4 mr-1" />
                     Ship
                   </Button>
                 )}
                 {order.paymentStatus === 'pending' && (
-                  <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); processPayment(order.id); }}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={e => {
+                      e.stopPropagation();
+                      processPayment(order.id);
+                    }}
+                  >
                     <DollarSign className="w-4 h-4 mr-1" />
                     Process Payment
                   </Button>
@@ -250,7 +303,9 @@ export default function OrderManagement() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold">Order Details: {selectedOrder.orderNumber}</h3>
-                <Button variant="ghost" onClick={() => setSelectedOrder(null)}>×</Button>
+                <Button variant="ghost" onClick={() => setSelectedOrder(null)}>
+                  ×
+                </Button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -260,9 +315,16 @@ export default function OrderManagement() {
                     <CardTitle>Customer Information</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p><strong>Name:</strong> {selectedOrder.customerName}</p>
-                    <p><strong>Email:</strong> {selectedOrder.customerEmail}</p>
-                    <p><strong>Order Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
+                    <p>
+                      <strong>Name:</strong> {selectedOrder.customerName}
+                    </p>
+                    <p>
+                      <strong>Email:</strong> {selectedOrder.customerEmail}
+                    </p>
+                    <p>
+                      <strong>Order Date:</strong>{' '}
+                      {new Date(selectedOrder.createdAt).toLocaleString()}
+                    </p>
                   </CardContent>
                 </Card>
 
@@ -273,7 +335,10 @@ export default function OrderManagement() {
                   </CardHeader>
                   <CardContent>
                     <p>{selectedOrder.shippingAddress.street}</p>
-                    <p>{selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state} {selectedOrder.shippingAddress.zipCode}</p>
+                    <p>
+                      {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.state}{' '}
+                      {selectedOrder.shippingAddress.zipCode}
+                    </p>
                     <p>{selectedOrder.shippingAddress.country}</p>
                   </CardContent>
                 </Card>
@@ -285,15 +350,22 @@ export default function OrderManagement() {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      {selectedOrder.items.map((item) => (
-                        <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded">
+                      {selectedOrder.items.map(item => (
+                        <div
+                          key={item.id}
+                          className="flex justify-between items-center p-3 bg-gray-50 rounded"
+                        >
                           <div>
                             <p className="font-medium">{item.productName}</p>
-                            <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Quantity: {item.quantity}
+                            </p>
                           </div>
                           <div className="text-right">
                             <p className="font-medium">${item.totalPrice.toFixed(2)}</p>
-                            <p className="text-sm text-muted-foreground">${item.unitPrice.toFixed(2)} each</p>
+                            <p className="text-sm text-muted-foreground">
+                              ${item.unitPrice.toFixed(2)} each
+                            </p>
                           </div>
                         </div>
                       ))}

@@ -1,7 +1,12 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { BeakerIcon, GlobeAltIcon, DocumentTextIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import {
+  BeakerIcon,
+  GlobeAltIcon,
+  DocumentTextIcon,
+  CheckCircleIcon,
+} from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 
 interface NutritionData {
@@ -40,11 +45,11 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
   productName,
   category,
   onNutritionData,
-  onClose
+  onClose,
 }) => {
   const [nutritionData, setNutritionData] = useState<Partial<NutritionData>>({
     serving_size: '100g',
-    servings_per_container: 1
+    servings_per_container: 1,
   });
   const [template, setTemplate] = useState<NutritionTemplate | null>(null);
   const [isSearching, setIsSearching] = useState(false);
@@ -66,7 +71,7 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
     iron: 'Iron (mg)',
     potassium: 'Potassium (mg)',
     serving_size: 'Serving Size',
-    servings_per_container: 'Servings Per Container'
+    servings_per_container: 'Servings Per Container',
   };
 
   // Load nutrition template based on category
@@ -91,8 +96,14 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
         // Fallback template for fruits
         const fallbackTemplate = {
           category: category,
-          required_fields: ['energy_kcal', 'protein', 'carbohydrates', 'total_fat', 'dietary_fiber'],
-          optional_fields: ['vitamin_c', 'potassium', 'calcium', 'iron']
+          required_fields: [
+            'energy_kcal',
+            'protein',
+            'carbohydrates',
+            'total_fat',
+            'dietary_fiber',
+          ],
+          optional_fields: ['vitamin_c', 'potassium', 'calcium', 'iron'],
         };
         setTemplate(fallbackTemplate);
         console.log('✅ Fallback template set:', fallbackTemplate);
@@ -111,19 +122,21 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
       // Clean product name for better search results
       const cleanQuery = productName.replace(/organic\s*/i, '').trim();
       console.log('🔍 Searching OpenFoodFacts via server proxy for:', cleanQuery);
-      
+
       // Use our server-side proxy to bypass CSP restrictions
-      const response = await fetch(`/api/nutrition/search?q=${encodeURIComponent(cleanQuery)}&country=India`);
-      
+      const response = await fetch(
+        `/api/nutrition/search?q=${encodeURIComponent(cleanQuery)}&country=India`
+      );
+
       console.log('📡 Nutrition search response status:', response.status);
-      
+
       if (response.ok) {
         const result = await response.json();
         console.log('🥗 OpenFoodFacts proxy response:', result);
-        
+
         if (result.status === 'success' && result.product && result.product.nutrition) {
           const nutrition = result.product.nutrition;
-          
+
           // Map the nutrition data to our form format
           const mappedData = {
             serving_size: result.product.serving_size || '100g',
@@ -140,20 +153,26 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
             vitamin_c: Math.round(nutrition.vitamin_c || 0),
             calcium: Math.round(nutrition.calcium || 0),
             iron: Math.round((nutrition.iron || 0) * 10) / 10,
-            potassium: Math.round(nutrition.potassium || 0)
+            potassium: Math.round(nutrition.potassium || 0),
           };
-          
+
           setNutritionData(mappedData);
-          toast.success(`Auto-filled nutrition data for "${result.product.name}" from ${result.source} database`, {
-            duration: 3000,
-            icon: '🥗'
-          });
+          toast.success(
+            `Auto-filled nutrition data for "${result.product.name}" from ${result.source} database`,
+            {
+              duration: 3000,
+              icon: '🥗',
+            }
+          );
           console.log('✅ Auto-fill successful from:', result.source);
         } else if (result.status === 'not_found') {
           console.log('❌ No nutrition data found for:', cleanQuery);
-          toast.error(`No nutrition data found for "${cleanQuery}". ${result.suggestion || 'Try manual entry.'}`, {
-            duration: 4000
-          });
+          toast.error(
+            `No nutrition data found for "${cleanQuery}". ${result.suggestion || 'Try manual entry.'}`,
+            {
+              duration: 4000,
+            }
+          );
         } else {
           throw new Error(result.message || 'Unknown error from nutrition API');
         }
@@ -163,36 +182,36 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
       }
     } catch (error) {
       console.error('❌ Auto-fill error:', error);
-      toast.error(`Failed to fetch nutrition data: ${error.message}`, {
-        duration: 4000
+      toast.error(`Failed to fetch nutrition data: ${error instanceof Error ? error.message : 'Unknown error'}`, {
+        duration: 4000,
       });
     } finally {
       setIsSearching(false);
     }
   };
 
-
-
   const handleInputChange = (field: keyof NutritionData, value: string | number) => {
     setNutritionData(prev => ({
       ...prev,
-      [field]: field === 'serving_size' ? value : parseFloat(value as string) || 0
+      [field]: field === 'serving_size' ? value : parseFloat(value as string) || 0,
     }));
   };
 
   const handleSave = () => {
     if (template) {
       // Validate required fields
-      const missingFields = template.required_fields.filter(field => 
-        !nutritionData[field as keyof NutritionData] && nutritionData[field as keyof NutritionData] !== 0
+      const missingFields = template.required_fields.filter(
+        field =>
+          !nutritionData[field as keyof NutritionData] &&
+          nutritionData[field as keyof NutritionData] !== 0
       );
-      
+
       if (missingFields.length > 0) {
         alert(`Please fill in required fields: ${missingFields.join(', ')}`);
         return;
       }
     }
-    
+
     onNutritionData(nutritionData as NutritionData);
     onClose();
   };
@@ -220,7 +239,9 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Add Nutrition Facts</h2>
-              <p className="text-sm text-gray-600">Product: {productName} | Category: {category}</p>
+              <p className="text-sm text-gray-600">
+                Product: {productName} | Category: {category}
+              </p>
             </div>
             <div className="flex space-x-2">
               <button
@@ -229,33 +250,30 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
                 className="flex items-center space-x-2 px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50 transition-colors"
               >
                 <GlobeAltIcon className="h-4 w-4" />
-                <span>{isSearching ? 'Searching OpenFoodFacts...' : 'Auto-Fill from Database'}</span>
+                <span>
+                  {isSearching ? 'Searching OpenFoodFacts...' : 'Auto-Fill from Database'}
+                </span>
               </button>
               <button
                 onClick={() => {
                   // Reset form to empty state for manual entry
                   setNutritionData({
                     serving_size: '100g',
-                    servings_per_container: 1
+                    servings_per_container: 1,
                   });
-                  toast.info('Form cleared for manual entry');
+                  toast.success('Form cleared for manual entry');
                 }}
                 className="flex items-center space-x-2 px-3 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition-colors"
               >
                 <DocumentTextIcon className="h-4 w-4" />
                 <span>Manual Entry</span>
               </button>
-              <button
-                onClick={onClose}
-                className="text-gray-400 hover:text-gray-600"
-              >
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
                 ✕
               </button>
             </div>
           </div>
         </div>
-
-
 
         <div className="p-6">
           {/* Serving Information */}
@@ -266,13 +284,11 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
             </h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Serving Size
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Serving Size</label>
                 <input
                   type="text"
                   value={nutritionData.serving_size || ''}
-                  onChange={(e) => handleInputChange('serving_size', e.target.value)}
+                  onChange={e => handleInputChange('serving_size', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="e.g., 100g, 1 cup, 1 piece"
                 />
@@ -284,7 +300,7 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
                 <input
                   type="number"
                   value={nutritionData.servings_per_container || ''}
-                  onChange={(e) => handleInputChange('servings_per_container', e.target.value)}
+                  onChange={e => handleInputChange('servings_per_container', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   min="1"
                 />
@@ -308,7 +324,7 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
                     type="number"
                     step="0.01"
                     value={nutritionData[field as keyof NutritionData] || ''}
-                    onChange={(e) => handleInputChange(field as keyof NutritionData, e.target.value)}
+                    onChange={e => handleInputChange(field as keyof NutritionData, e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     required
                   />
@@ -333,7 +349,9 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
                       type="number"
                       step="0.01"
                       value={nutritionData[field as keyof NutritionData] || ''}
-                      onChange={(e) => handleInputChange(field as keyof NutritionData, e.target.value)}
+                      onChange={e =>
+                        handleInputChange(field as keyof NutritionData, e.target.value)
+                      }
                       className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     />
                   </div>
@@ -345,8 +363,9 @@ const NutritionFactsForm: React.FC<NutritionFactsFormProps> = ({
           {/* FSSAI Compliance Note */}
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
             <p className="text-sm text-blue-800">
-              <strong>FSSAI Compliance:</strong> This form follows Indian Food Safety and Standards Authority guidelines. 
-              Energy values are displayed per 100g as required by Indian regulations.
+              <strong>FSSAI Compliance:</strong> This form follows Indian Food Safety and Standards
+              Authority guidelines. Energy values are displayed per 100g as required by Indian
+              regulations.
             </p>
           </div>
 

@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { Plus, Search, Edit, Copy, Trash2, Eye, Grid, Ruler, FileText, Printer, BarChart3 } from 'lucide-react';
+import {
+  Plus,
+  Search,
+  Edit,
+  Copy,
+  Trash2,
+  Eye,
+  Grid,
+  Ruler,
+  FileText,
+  Printer,
+  BarChart3,
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -52,9 +64,9 @@ export function StreamlinedLabelDesign() {
       setLoading(true);
       const response = await fetch('/api/labels/custom-templates');
       const data = await response.json();
-      
+
       if (response.ok) {
-        const templatesArray = Array.isArray(data) ? data : (data.data || []);
+        const templatesArray = Array.isArray(data) ? data : data.data || [];
         setTemplates(templatesArray);
       } else {
         toast.error('Failed to fetch templates');
@@ -120,10 +132,14 @@ export function StreamlinedLabelDesign() {
           <div className="border-b bg-white px-6 py-4">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">Professional Label Design System</h2>
-                <p className="text-gray-600">Create, manage, and print professional labels with precision</p>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Professional Label Design System
+                </h2>
+                <p className="text-gray-600">
+                  Create, manage, and print professional labels with precision
+                </p>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <Button
                   onClick={handleNewTemplate}
@@ -135,7 +151,7 @@ export function StreamlinedLabelDesign() {
                 </Button>
               </div>
             </div>
-            
+
             <TabsList className="grid w-full grid-cols-4 mt-4">
               <TabsTrigger value="templates" className="flex items-center gap-2">
                 <Grid className="w-4 h-4" />
@@ -159,7 +175,7 @@ export function StreamlinedLabelDesign() {
           <div className="flex-1">
             <TabsContent value="templates" className="h-full m-0">
               <div className="h-full p-6">
-                <TemplateManager 
+                <TemplateManager
                   templates={templates}
                   onTemplateSelect={handleTemplateSelect}
                   onTemplateCreated={handleTemplateCreated}
@@ -180,8 +196,12 @@ export function StreamlinedLabelDesign() {
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
                       <Edit className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-600 mb-2">No template selected</h3>
-                      <p className="text-gray-500 mb-6">Select a template or create a new one to start designing</p>
+                      <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                        No template selected
+                      </h3>
+                      <p className="text-gray-500 mb-6">
+                        Select a template or create a new one to start designing
+                      </p>
                       <Button onClick={handleNewTemplate} className="flex items-center gap-2">
                         <Plus className="w-4 h-4" />
                         Create New Template

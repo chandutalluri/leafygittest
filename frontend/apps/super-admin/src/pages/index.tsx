@@ -6,57 +6,138 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAuthStore } from '../stores/authStore';
-import { 
-  Shield, Database, Users, Globe, Building2, Image,
-  BarChart3, Package, CreditCard, Bell, TrendingUp,
-  Zap, Network, Settings, ShoppingBag, Truck,
-  HeadphonesIcon, Calculator, Store, DollarSign
+import {
+  Shield,
+  Database,
+  Users,
+  Globe,
+  Building2,
+  Image,
+  BarChart3,
+  Package,
+  CreditCard,
+  Bell,
+  TrendingUp,
+  Zap,
+  Network,
+  Settings,
+  ShoppingBag,
+  Truck,
+  HeadphonesIcon,
+  Calculator,
+  Store,
+  DollarSign,
 } from 'lucide-react';
 
 const systemSections = [
   {
     title: 'Core System Management',
     items: [
-      { name: 'Database Backup & Restore', href: '/database-backup-restore', icon: Database, color: 'bg-blue-500' },
-      { name: 'Company Management', href: '/company-management', icon: Building2, color: 'bg-green-500' },
-      { name: 'Image Management', href: '/image-management', icon: Image, color: 'bg-yellow-500' }
-    ]
+      {
+        name: 'Database Backup & Restore',
+        href: '/database-backup-restore',
+        icon: Database,
+        color: 'bg-blue-500',
+      },
+      {
+        name: 'Company Management',
+        href: '/company-management',
+        icon: Building2,
+        color: 'bg-green-500',
+      },
+      { name: 'Image Management', href: '/image-management', icon: Image, color: 'bg-yellow-500' },
+    ],
   },
   {
     title: 'Security & Access Control',
     items: [
       { name: 'Security Centre', href: '/security', icon: Shield, color: 'bg-red-500' },
       { name: 'User Management', href: '/user-management', icon: Users, color: 'bg-indigo-500' },
-      { name: 'System Settings', href: '/system-dashboard', icon: Settings, color: 'bg-gray-500' }
-    ]
+      { name: 'System Settings', href: '/system-dashboard', icon: Settings, color: 'bg-gray-500' },
+    ],
   },
   {
     title: 'Business Operations',
     items: [
-      { name: 'Catalog Management', href: '/catalog-management', icon: Package, color: 'bg-teal-500' },
-      { name: 'Order Management', href: '/order-management', icon: ShoppingBag, color: 'bg-orange-500' },
-      { name: 'Customer Service', href: '/customer-service', icon: HeadphonesIcon, color: 'bg-pink-500' },
-      { name: 'Marketplace Management', href: '/marketplace-management', icon: Store, color: 'bg-purple-500' }
-    ]
+      {
+        name: 'Catalog Management',
+        href: '/catalog-management',
+        icon: Package,
+        color: 'bg-teal-500',
+      },
+      {
+        name: 'Order Management',
+        href: '/order-management',
+        icon: ShoppingBag,
+        color: 'bg-orange-500',
+      },
+      {
+        name: 'Customer Service',
+        href: '/customer-service',
+        icon: HeadphonesIcon,
+        color: 'bg-pink-500',
+      },
+      {
+        name: 'Marketplace Management',
+        href: '/marketplace-management',
+        icon: Store,
+        color: 'bg-purple-500',
+      },
+    ],
   },
   {
     title: 'Financial & Analytics',
     items: [
-      { name: 'Payment Processing', href: '/payment-processing', icon: CreditCard, color: 'bg-green-500' },
-      { name: 'Analytics Reporting', href: '/analytics-reporting', icon: TrendingUp, color: 'bg-blue-500' },
-      { name: 'Accounting Management', href: '/accounting-management', icon: Calculator, color: 'bg-yellow-500' },
-      { name: 'Expense Monitoring', href: '/expense-monitoring', icon: DollarSign, color: 'bg-red-500' }
-    ]
+      {
+        name: 'Payment Processing',
+        href: '/payment-processing',
+        icon: CreditCard,
+        color: 'bg-green-500',
+      },
+      {
+        name: 'Analytics Reporting',
+        href: '/analytics-reporting',
+        icon: TrendingUp,
+        color: 'bg-blue-500',
+      },
+      {
+        name: 'Accounting Management',
+        href: '/accounting-management',
+        icon: Calculator,
+        color: 'bg-yellow-500',
+      },
+      {
+        name: 'Expense Monitoring',
+        href: '/expense-monitoring',
+        icon: DollarSign,
+        color: 'bg-red-500',
+      },
+    ],
   },
   {
     title: 'System Administration',
     items: [
-      { name: 'Performance Monitor', href: '/performance-monitor', icon: Zap, color: 'bg-orange-500' },
+      {
+        name: 'Performance Monitor',
+        href: '/performance-monitor',
+        icon: Zap,
+        color: 'bg-orange-500',
+      },
       { name: 'Integration Hub', href: '/integration-hub', icon: Network, color: 'bg-teal-500' },
-      { name: 'Notification Service', href: '/notification-service', icon: Bell, color: 'bg-purple-500' },
-      { name: 'Shipping Delivery', href: '/shipping-delivery', icon: Truck, color: 'bg-indigo-500' }
-    ]
-  }
+      {
+        name: 'Notification Service',
+        href: '/notification-service',
+        icon: Bell,
+        color: 'bg-purple-500',
+      },
+      {
+        name: 'Shipping Delivery',
+        href: '/shipping-delivery',
+        icon: Truck,
+        color: 'bg-indigo-500',
+      },
+    ],
+  },
 ];
 
 export default function SuperAdminDashboard() {
@@ -66,23 +147,24 @@ export default function SuperAdminDashboard() {
     microservices: 27,
     frontendApps: 5,
     activeBranches: 5,
-    totalUsers: 0
+    totalUsers: 0,
   });
 
   useEffect(() => {
     // Check if current user should access this dashboard
     if (isAuthenticated && user) {
-      const isGlobalAdmin = user.email === 'global.admin@leafyhealth.com' || 
-                            user.user_type === 'global_admin' || 
-                            user.role === 'global_admin';
-      
+      const isGlobalAdmin =
+        user.email === 'global.admin@leafyhealth.com' ||
+        user.user_type === 'global_admin' ||
+        user.role === 'global_admin';
+
       // Redirect operational admins to their dashboard
       if (!isGlobalAdmin) {
         router.replace('/operational-dashboard');
         return;
       }
     }
-    
+
     if (!user && !localStorage.getItem('token')) {
       router.push('/login');
     }
@@ -160,7 +242,7 @@ export default function SuperAdminDashboard() {
           <div key={sectionIdx} className="mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{section.title}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {section.items.map((item) => {
+              {section.items.map(item => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -170,7 +252,9 @@ export default function SuperAdminDashboard() {
                   >
                     <div className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <div className={`w-12 h-12 ${item.color} rounded-lg flex items-center justify-center`}>
+                        <div
+                          className={`w-12 h-12 ${item.color} rounded-lg flex items-center justify-center`}
+                        >
                           <Icon className="h-6 w-6 text-white" />
                         </div>
                         <svg

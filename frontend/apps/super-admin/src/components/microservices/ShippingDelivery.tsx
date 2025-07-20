@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Truck, Package, MapPin, Clock, CheckCircle, AlertCircle, Route, Plus } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -83,10 +90,10 @@ export default function ShippingDelivery() {
       const [routesData, schedulesData, carriersData] = await Promise.all([
         apiClient.get('/api/direct-data/shipping/routes', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
         apiClient.get('/api/direct-data/shipping/schedules'),
-        apiClient.get('/api/direct-data/shipping/carriers')
+        apiClient.get('/api/direct-data/shipping/carriers'),
       ]);
       setRoutes(routesData || []);
       setSchedules(schedulesData || []);
@@ -109,10 +116,10 @@ export default function ShippingDelivery() {
 
   const updateDeliveryStatus = async (scheduleId: string, newStatus: string, notes?: string) => {
     try {
-      await apiClient.put(`/api/direct-data/shipping/schedules/${scheduleId}`, { 
+      await apiClient.put(`/api/direct-data/shipping/schedules/${scheduleId}`, {
         deliveryStatus: newStatus,
         deliveryNotes: notes,
-        actualDeliveryTime: newStatus === 'delivered' ? new Date().toISOString() : undefined
+        actualDeliveryTime: newStatus === 'delivered' ? new Date().toISOString() : undefined,
       });
       fetchShippingData();
     } catch (error) {
@@ -151,11 +158,16 @@ export default function ShippingDelivery() {
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'urgent': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'secondary';
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'secondary';
+      case 'low':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
@@ -174,24 +186,29 @@ export default function ShippingDelivery() {
     }
   };
 
-  const filteredRoutes = routes.filter(route =>
-    route.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    route.driverName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    route.branchName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredRoutes = routes.filter(
+    route =>
+      route.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      route.driverName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      route.branchName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredSchedules = schedules.filter(schedule =>
-    schedule.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    schedule.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSchedules = schedules.filter(
+    schedule =>
+      schedule.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      schedule.orderNumber.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalDeliveries = schedules.length;
   const completedDeliveries = schedules.filter(s => s.deliveryStatus === 'delivered').length;
   const pendingDeliveries = schedules.filter(s => s.deliveryStatus === 'scheduled').length;
-  const onTimeRate = completedDeliveries > 0 ? Math.round((completedDeliveries / totalDeliveries) * 100) : 0;
+  const onTimeRate =
+    completedDeliveries > 0 ? Math.round((completedDeliveries / totalDeliveries) * 100) : 0;
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading shipping & delivery...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading shipping & delivery...</div>
+    );
   }
 
   return (
@@ -199,7 +216,9 @@ export default function ShippingDelivery() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Shipping & Delivery</h1>
-          <p className="text-gray-500">Manage delivery routes, schedules, and logistics operations</p>
+          <p className="text-gray-500">
+            Manage delivery routes, schedules, and logistics operations
+          </p>
         </div>
         <div className="flex gap-2">
           <Dialog open={isRouteDialogOpen} onOpenChange={setIsRouteDialogOpen}>
@@ -262,7 +281,7 @@ export default function ShippingDelivery() {
 
       {/* Tabs */}
       <div className="flex space-x-4 border-b">
-        {['routes', 'schedules', 'carriers'].map((tab) => (
+        {['routes', 'schedules', 'carriers'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -287,7 +306,7 @@ export default function ShippingDelivery() {
             <Input
               placeholder={`Search ${activeTab}...`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -340,7 +359,7 @@ export default function ShippingDelivery() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRoutes.map((route) => (
+                  {filteredRoutes.map(route => (
                     <tr key={route.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{route.name}</div>
@@ -360,7 +379,10 @@ export default function ShippingDelivery() {
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Select value={route.status} onValueChange={(status) => updateRouteStatus(route.id, status)}>
+                        <Select
+                          value={route.status}
+                          onValueChange={status => updateRouteStatus(route.id, status)}
+                        >
                           <SelectTrigger className="w-32">
                             <SelectValue />
                           </SelectTrigger>
@@ -402,7 +424,7 @@ export default function ShippingDelivery() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredSchedules.map((schedule) => (
+                  {filteredSchedules.map(schedule => (
                     <tr key={schedule.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 font-mono text-sm">{schedule.orderNumber}</td>
                       <td className="py-3 px-4">
@@ -430,9 +452,9 @@ export default function ShippingDelivery() {
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Select 
-                          value={schedule.deliveryStatus} 
-                          onValueChange={(status) => updateDeliveryStatus(schedule.id, status)}
+                        <Select
+                          value={schedule.deliveryStatus}
+                          onValueChange={status => updateDeliveryStatus(schedule.id, status)}
                         >
                           <SelectTrigger className="w-40">
                             <SelectValue />
@@ -463,7 +485,7 @@ export default function ShippingDelivery() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {carriers.map((carrier) => (
+              {carriers.map(carrier => (
                 <Card key={carrier.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -520,10 +542,10 @@ export default function ShippingDelivery() {
   );
 }
 
-function RouteForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function RouteForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<DeliveryRoute>) => void;
   onCancel: () => void;
 }) {
@@ -533,7 +555,7 @@ function RouteForm({
     driverName: '',
     vehicleType: '',
     vehicleNumber: '',
-    vehicleCapacity: 0
+    vehicleCapacity: 0,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -543,8 +565,8 @@ function RouteForm({
       vehicleInfo: {
         type: formData.vehicleType,
         number: formData.vehicleNumber,
-        capacity: formData.vehicleCapacity
-      }
+        capacity: formData.vehicleCapacity,
+      },
     });
   };
 
@@ -555,7 +577,7 @@ function RouteForm({
         <Input
           id="name"
           value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          onChange={e => setFormData({ ...formData, name: e.target.value })}
           placeholder="Enter route name"
           required
         />
@@ -567,7 +589,7 @@ function RouteForm({
           id="deliveryDate"
           type="date"
           value={formData.deliveryDate}
-          onChange={(e) => setFormData({ ...formData, deliveryDate: e.target.value })}
+          onChange={e => setFormData({ ...formData, deliveryDate: e.target.value })}
           required
         />
       </div>
@@ -577,7 +599,7 @@ function RouteForm({
         <Input
           id="driverName"
           value={formData.driverName}
-          onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}
+          onChange={e => setFormData({ ...formData, driverName: e.target.value })}
           placeholder="Enter driver name"
           required
         />
@@ -586,7 +608,10 @@ function RouteForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="vehicleType">Vehicle Type</Label>
-          <Select value={formData.vehicleType} onValueChange={(value) => setFormData({ ...formData, vehicleType: value })}>
+          <Select
+            value={formData.vehicleType}
+            onValueChange={value => setFormData({ ...formData, vehicleType: value })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select vehicle type" />
             </SelectTrigger>
@@ -604,7 +629,7 @@ function RouteForm({
           <Input
             id="vehicleNumber"
             value={formData.vehicleNumber}
-            onChange={(e) => setFormData({ ...formData, vehicleNumber: e.target.value })}
+            onChange={e => setFormData({ ...formData, vehicleNumber: e.target.value })}
             placeholder="Enter vehicle number"
             required
           />
@@ -617,7 +642,9 @@ function RouteForm({
           id="vehicleCapacity"
           type="number"
           value={formData.vehicleCapacity}
-          onChange={(e) => setFormData({ ...formData, vehicleCapacity: parseInt(e.target.value) || 0 })}
+          onChange={e =>
+            setFormData({ ...formData, vehicleCapacity: parseInt(e.target.value) || 0 })
+          }
           placeholder="Enter vehicle capacity"
           required
         />
@@ -627,9 +654,7 @@ function RouteForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Create Route
-        </Button>
+        <Button type="submit">Create Route</Button>
       </div>
     </form>
   );

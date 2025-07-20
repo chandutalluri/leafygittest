@@ -14,7 +14,7 @@ export function useToast() {
   const toast = ({ title, description, variant = 'default' }: Toast) => {
     const newToast = { title, description, variant };
     setToasts(prev => [...prev, newToast]);
-    
+
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t !== newToast));
     }, 5000);

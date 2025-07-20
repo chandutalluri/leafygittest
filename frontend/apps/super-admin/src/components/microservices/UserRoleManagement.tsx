@@ -41,7 +41,7 @@ export default function UserRoleManagement() {
       setLoading(true);
       const [usersData, rolesData] = await Promise.all([
         apiClient.get('/api/direct-data/users'),
-        apiClient.get('/api/direct-data/roles')
+        apiClient.get('/api/direct-data/roles'),
       ]);
       setUsers(usersData || []);
       setRoles(rolesData || []);
@@ -83,11 +83,17 @@ export default function UserRoleManagement() {
           <p className="text-muted-foreground">Manage system users, roles, and permissions</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => setActiveTab('users')} variant={activeTab === 'users' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('users')}
+            variant={activeTab === 'users' ? 'default' : 'outline'}
+          >
             <Users className="w-4 h-4 mr-2" />
             Users ({users.length})
           </Button>
-          <Button onClick={() => setActiveTab('roles')} variant={activeTab === 'roles' ? 'default' : 'outline'}>
+          <Button
+            onClick={() => setActiveTab('roles')}
+            variant={activeTab === 'roles' ? 'default' : 'outline'}
+          >
             <Shield className="w-4 h-4 mr-2" />
             Roles ({roles.length})
           </Button>
@@ -104,9 +110,9 @@ export default function UserRoleManagement() {
               Add User
             </Button>
           </div>
-          
+
           <div className="grid gap-4">
-            {users.map((user) => (
+            {users.map(user => (
               <Card key={user.id}>
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
@@ -115,7 +121,9 @@ export default function UserRoleManagement() {
                         <Users className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-semibold">{user.firstName} {user.lastName}</h4>
+                        <h4 className="font-semibold">
+                          {user.firstName} {user.lastName}
+                        </h4>
                         <p className="text-sm text-muted-foreground">{user.email}</p>
                       </div>
                     </div>
@@ -146,9 +154,9 @@ export default function UserRoleManagement() {
               Create Role
             </Button>
           </div>
-          
+
           <div className="grid gap-4 md:grid-cols-2">
-            {roles.map((role) => (
+            {roles.map(role => (
               <Card key={role.id}>
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">

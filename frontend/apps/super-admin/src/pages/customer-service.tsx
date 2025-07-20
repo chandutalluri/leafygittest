@@ -4,8 +4,8 @@ import { CustomerRelationshipHub } from '../components/business-domains';
 
 export default function CustomerService() {
   return (
-    <DashboardLayout 
-      title="Customer Relations" 
+    <DashboardLayout
+      title="Customer Relations"
       description="Complete customer lifecycle management"
       activeDomain="customers"
     >

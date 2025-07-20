@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { 
-  UserGroupIcon, 
-  BellIcon, 
-  CreditCardIcon, 
+import {
+  UserGroupIcon,
+  BellIcon,
+  CreditCardIcon,
   ChatBubbleLeftEllipsisIcon,
   UserIcon,
-  CalendarIcon
+  CalendarIcon,
 } from '@heroicons/react/24/outline';
 
 interface Customer {
@@ -49,7 +49,7 @@ export function CustomerRelationshipHub() {
     { id: 'customers', name: 'Customer Profiles', icon: UserIcon },
     { id: 'notifications', name: 'Communication', icon: BellIcon },
     { id: 'subscriptions', name: 'Subscriptions', icon: CreditCardIcon },
-    { id: 'support', name: 'Support Tickets', icon: ChatBubbleLeftEllipsisIcon }
+    { id: 'support', name: 'Support Tickets', icon: ChatBubbleLeftEllipsisIcon },
   ];
 
   const renderOverview = () => (
@@ -89,7 +89,13 @@ export function CustomerRelationshipHub() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Average Order Value</p>
               <p className="text-2xl font-semibold text-gray-900">
-                ₹{customers.length > 0 ? Math.round(customers.reduce((sum, c) => sum + c.total_spent, 0) / customers.reduce((sum, c) => sum + c.total_orders, 0) || 0) : 0}
+                ₹
+                {customers.length > 0
+                  ? Math.round(
+                      customers.reduce((sum, c) => sum + c.total_spent, 0) /
+                        customers.reduce((sum, c) => sum + c.total_orders, 0) || 0
+                    )
+                  : 0}
               </p>
             </div>
           </div>
@@ -103,11 +109,16 @@ export function CustomerRelationshipHub() {
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">New This Month</p>
               <p className="text-2xl font-semibold text-gray-900">
-                {customers.filter(c => {
-                  const created = new Date(c.created_at);
-                  const now = new Date();
-                  return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
-                }).length}
+                {
+                  customers.filter(c => {
+                    const created = new Date(c.created_at);
+                    const now = new Date();
+                    return (
+                      created.getMonth() === now.getMonth() &&
+                      created.getFullYear() === now.getFullYear()
+                    );
+                  }).length
+                }
               </p>
             </div>
           </div>
@@ -143,34 +154,36 @@ export function CustomerRelationshipHub() {
               {customers
                 .sort((a, b) => b.total_spent - a.total_spent)
                 .slice(0, 10)
-                .map((customer) => (
-                <tr key={customer.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {customer.first_name} {customer.last_name}
-                    </div>
-                    <div className="text-sm text-gray-500">{customer.phone}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {customer.email}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {customer.total_orders}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ₹{customer.total_spent.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      customer.status === 'active' 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {customer.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                .map(customer => (
+                  <tr key={customer.id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm font-medium text-gray-900">
+                        {customer.first_name} {customer.last_name}
+                      </div>
+                      <div className="text-sm text-gray-500">{customer.phone}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {customer.email}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {customer.total_orders}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      ₹{customer.total_spent.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          customer.status === 'active'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {customer.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
@@ -197,7 +210,7 @@ export function CustomerRelationshipHub() {
 
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
-          {tabs.map((tab) => {
+          {tabs.map(tab => {
             const Icon = tab.icon;
             return (
               <button

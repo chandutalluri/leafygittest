@@ -3,14 +3,42 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Progress } from '@/components/ui/progress';
-import { AlertCircle, Calendar, Clock, Database, Download, RefreshCw, Shield, Settings, Trash2, Play, Pause, Eye, Plus } from 'lucide-react';
+import {
+  AlertCircle,
+  Calendar,
+  Clock,
+  Database,
+  Download,
+  RefreshCw,
+  Shield,
+  Settings,
+  Trash2,
+  Play,
+  Pause,
+  Eye,
+  Plus,
+} from 'lucide-react';
 
 interface BackupJob {
   id: number;
@@ -89,7 +117,7 @@ export default function DatabaseBackupRestore() {
     try {
       setServiceStatus('checking');
       setError(null);
-      
+
       const response = await fetch('/api/backup-restore/health');
       if (response.ok) {
         const data = await response.json();
@@ -111,7 +139,7 @@ export default function DatabaseBackupRestore() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/backup-restore/backup/jobs');
       if (response.ok) {
         const data = await response.json();
@@ -119,13 +147,15 @@ export default function DatabaseBackupRestore() {
           // Filter to show only recent backups (last 7 days) and completed ones
           const sevenDaysAgo = new Date();
           sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-          
-          const relevantBackups = data.data.filter((backup: BackupJob) => {
-            const backupDate = new Date(backup.startedAt);
-            // Show only backups from last 7 days OR completed backups
-            return backupDate >= sevenDaysAgo || backup.status === 'completed';
-          }).slice(0, 20); // Limit to 20 most recent backups
-          
+
+          const relevantBackups = data.data
+            .filter((backup: BackupJob) => {
+              const backupDate = new Date(backup.startedAt);
+              // Show only backups from last 7 days OR completed backups
+              return backupDate >= sevenDaysAgo || backup.status === 'completed';
+            })
+            .slice(0, 20); // Limit to 20 most recent backups
+
           setBackupJobs(relevantBackups);
         } else {
           setBackupJobs([]);
@@ -186,8 +216,8 @@ export default function DatabaseBackupRestore() {
         const data = await response.json();
         if (data.success && Array.isArray(data.backups)) {
           // Filter to show only professional backups (not JSON)
-          const professionalOnly = data.backups.filter((backup: any) => 
-            backup.fileName.endsWith('.sql') || backup.fileName.endsWith('.dump')
+          const professionalOnly = data.backups.filter(
+            (backup: any) => backup.fileName.endsWith('.sql') || backup.fileName.endsWith('.dump')
           );
           setProfessionalBackups(professionalOnly);
         } else {
@@ -205,20 +235,22 @@ export default function DatabaseBackupRestore() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/backup-restore/backup/professional', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: backupType === 'full' ? 'custom' : 'logical' })
+        body: JSON.stringify({ type: backupType === 'full' ? 'custom' : 'logical' }),
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
           console.log('Professional backup created:', data.metadata);
           setError(null);
           // Show success message
-          alert(`Backup created successfully! File: ${data.metadata.fileName}, Size: ${data.metadata.fileSize}`);
+          alert(
+            `Backup created successfully! File: ${data.metadata.fileName}, Size: ${data.metadata.fileSize}`
+          );
         } else {
           setError(data.message || 'Backup failed');
         }
@@ -244,16 +276,16 @@ export default function DatabaseBackupRestore() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/backup-restore/restore/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           backupId: selectedBackupForRestore.id,
-          restoreType
-        })
+          restoreType,
+        }),
       });
-      
+
       if (response.ok) {
         setShowRestoreDialog(false);
         setSelectedBackupForRestore(null);
@@ -274,7 +306,7 @@ export default function DatabaseBackupRestore() {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/backup-restore/schedule/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -282,10 +314,10 @@ export default function DatabaseBackupRestore() {
           name: scheduleName,
           cronExpression,
           backupType,
-          retentionDays
-        })
+          retentionDays,
+        }),
       });
-      
+
       if (response.ok) {
         setShowCreateSchedule(false);
         setScheduleName('');
@@ -304,11 +336,13 @@ export default function DatabaseBackupRestore() {
   // Download professional backup
   const downloadProfessionalBackup = async (fileName: string) => {
     try {
-      const response = await fetch(`/api/backup-restore/backup/professional/download/${encodeURIComponent(fileName)}`);
+      const response = await fetch(
+        `/api/backup-restore/backup/professional/download/${encodeURIComponent(fileName)}`
+      );
       if (!response.ok) {
         throw new Error('Failed to download backup');
       }
-      
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -327,15 +361,15 @@ export default function DatabaseBackupRestore() {
   // Delete backup
   const deleteBackup = async () => {
     if (!backupToDelete) return;
-    
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/backup-restore/backup/${backupToDelete.jobId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
@@ -359,10 +393,14 @@ export default function DatabaseBackupRestore() {
   };
 
   const restoreProfessionalBackup = async (fileName: string) => {
-    if (!confirm(`Are you sure you want to restore the database from ${fileName}? This will replace all current data.`)) {
+    if (
+      !confirm(
+        `Are you sure you want to restore the database from ${fileName}? This will replace all current data.`
+      )
+    ) {
       return;
     }
-    
+
     try {
       const response = await fetch('/api/backup-restore/backup/professional/restore', {
         method: 'POST',
@@ -371,17 +409,13 @@ export default function DatabaseBackupRestore() {
         },
         body: JSON.stringify({ fileName }),
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         alert(`Database restored successfully in ${data.duration}!`);
         // Refresh all data
-        await Promise.all([
-          fetchBackupJobs(),
-          fetchRestoreJobs(),
-          fetchProfessionalBackups()
-        ]);
+        await Promise.all([fetchBackupJobs(), fetchRestoreJobs(), fetchProfessionalBackups()]);
       } else {
         throw new Error(data.error || 'Restore failed');
       }
@@ -399,10 +433,10 @@ export default function DatabaseBackupRestore() {
         fetchBackupJobs(),
         fetchRestoreJobs(),
         fetchSchedules(),
-        fetchProfessionalBackups()
+        fetchProfessionalBackups(),
       ]);
     };
-    
+
     initializePage().catch(err => {
       console.warn('Failed to initialize page:', err);
       setError('Failed to initialize database backup system');
@@ -422,19 +456,20 @@ export default function DatabaseBackupRestore() {
   const StatusBadge = ({ status }: { status: string }) => {
     const getStatusColor = (status: string) => {
       switch (status.toLowerCase()) {
-        case 'completed': return 'bg-green-100 text-green-800';
-        case 'failed': return 'bg-red-100 text-red-800';
-        case 'running': return 'bg-blue-100 text-blue-800';
-        case 'pending': return 'bg-yellow-100 text-yellow-800';
-        default: return 'bg-gray-100 text-gray-800';
+        case 'completed':
+          return 'bg-green-100 text-green-800';
+        case 'failed':
+          return 'bg-red-100 text-red-800';
+        case 'running':
+          return 'bg-blue-100 text-blue-800';
+        case 'pending':
+          return 'bg-yellow-100 text-yellow-800';
+        default:
+          return 'bg-gray-100 text-gray-800';
       }
     };
 
-    return (
-      <Badge className={getStatusColor(status)}>
-        {status}
-      </Badge>
-    );
+    return <Badge className={getStatusColor(status)}>{status}</Badge>;
   };
 
   return (
@@ -445,24 +480,28 @@ export default function DatabaseBackupRestore() {
           <h1 className="text-3xl font-bold text-gray-900">Database Backup & Restore</h1>
           <p className="text-gray-600 mt-1">Professional PostgreSQL database management system</p>
         </div>
-        
+
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full ${
-              serviceStatus === 'online' ? 'bg-green-500' : 
-              serviceStatus === 'offline' ? 'bg-red-500' : 'bg-yellow-500'
-            }`}></div>
+            <div
+              className={`w-3 h-3 rounded-full ${
+                serviceStatus === 'online'
+                  ? 'bg-green-500'
+                  : serviceStatus === 'offline'
+                    ? 'bg-red-500'
+                    : 'bg-yellow-500'
+              }`}
+            ></div>
             <span className="text-sm font-medium">
-              {serviceStatus === 'online' ? 'Service Online' : 
-               serviceStatus === 'offline' ? 'Service Offline' : 'Checking...'}
+              {serviceStatus === 'online'
+                ? 'Service Online'
+                : serviceStatus === 'offline'
+                  ? 'Service Offline'
+                  : 'Checking...'}
             </span>
           </div>
-          
-          {serviceHealth && (
-            <div className="text-xs text-gray-500">
-              Port {serviceHealth.port}
-            </div>
-          )}
+
+          {serviceHealth && <div className="text-xs text-gray-500">Port {serviceHealth.port}</div>}
         </div>
       </div>
 
@@ -551,7 +590,7 @@ export default function DatabaseBackupRestore() {
                   <Input
                     id="scheduleName"
                     value={scheduleName}
-                    onChange={(e) => setScheduleName(e.target.value)}
+                    onChange={e => setScheduleName(e.target.value)}
                     placeholder="Daily Database Backup"
                   />
                 </div>
@@ -560,12 +599,10 @@ export default function DatabaseBackupRestore() {
                   <Input
                     id="cronExpression"
                     value={cronExpression}
-                    onChange={(e) => setCronExpression(e.target.value)}
+                    onChange={e => setCronExpression(e.target.value)}
                     placeholder="0 2 * * *"
                   />
-                  <p className="text-sm text-gray-500 mt-1">
-                    Daily at 2:00 AM (0 2 * * *)
-                  </p>
+                  <p className="text-sm text-gray-500 mt-1">Daily at 2:00 AM (0 2 * * *)</p>
                 </div>
                 <div>
                   <Label htmlFor="retentionDays">Retention Days</Label>
@@ -573,7 +610,7 @@ export default function DatabaseBackupRestore() {
                     id="retentionDays"
                     type="number"
                     value={retentionDays}
-                    onChange={(e) => setRetentionDays(parseInt(e.target.value))}
+                    onChange={e => setRetentionDays(parseInt(e.target.value))}
                     min={1}
                     max={365}
                   />
@@ -627,10 +664,10 @@ export default function DatabaseBackupRestore() {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{schedules.filter(s => s.is_active).length}</div>
-                <p className="text-xs text-muted-foreground">
-                  {schedules.length} total schedules
-                </p>
+                <div className="text-2xl font-bold">
+                  {schedules.filter(s => s.is_active).length}
+                </div>
+                <p className="text-xs text-muted-foreground">{schedules.length} total schedules</p>
               </CardContent>
             </Card>
 
@@ -647,8 +684,6 @@ export default function DatabaseBackupRestore() {
               </CardContent>
             </Card>
           </div>
-
-
         </TabsContent>
 
         <TabsContent value="backups" className="space-y-6">
@@ -667,7 +702,9 @@ export default function DatabaseBackupRestore() {
                 <div className="text-center py-8">
                   <Database className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                   <p className="text-gray-600">No backup jobs found</p>
-                  <p className="text-gray-500 text-sm mt-1">Create your first backup to see it here</p>
+                  <p className="text-gray-500 text-sm mt-1">
+                    Create your first backup to see it here
+                  </p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
@@ -684,7 +721,7 @@ export default function DatabaseBackupRestore() {
                       </tr>
                     </thead>
                     <tbody>
-                      {backupJobs.map((job) => (
+                      {backupJobs.map(job => (
                         <tr key={job.id} className="border-b hover:bg-gray-50">
                           <td className="py-3 font-mono text-xs">{job.jobId}</td>
                           <td className="py-3 capitalize">{job.type}</td>
@@ -693,11 +730,13 @@ export default function DatabaseBackupRestore() {
                           </td>
                           <td className="py-3">{job.fileSize || 'N/A'}</td>
                           <td className="py-3">{formatDate(job.startedAt)}</td>
-                          <td className="py-3">{job.completedAt ? formatDate(job.completedAt) : 'N/A'}</td>
+                          <td className="py-3">
+                            {job.completedAt ? formatDate(job.completedAt) : 'N/A'}
+                          </td>
                           <td className="py-3">
                             <div className="flex gap-2">
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 onClick={() => {
                                   setSelectedBackupForRestore(job);
@@ -714,8 +753,8 @@ export default function DatabaseBackupRestore() {
                                   Download
                                 </Button>
                               )}
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 onClick={() => {
                                   setBackupToDelete(job);
@@ -743,7 +782,9 @@ export default function DatabaseBackupRestore() {
               <CardDescription>Production-grade pg_dump backups (zero downtime)</CardDescription>
               <div className="mt-2 p-3 bg-blue-50 rounded-lg text-sm">
                 <p className="font-medium text-blue-900">Backup Location:</p>
-                <p className="text-blue-700 font-mono text-xs mt-1">/home/runner/workspace/backend/domains/database-backup-restore/backups/</p>
+                <p className="text-blue-700 font-mono text-xs mt-1">
+                  /home/runner/workspace/backend/domains/database-backup-restore/backups/
+                </p>
                 <p className="font-medium text-blue-900 mt-2">Features:</p>
                 <ul className="text-blue-700 text-xs mt-1 ml-4 list-disc">
                   <li>Logical (.sql) and Custom (.dump) format backups</li>
@@ -758,7 +799,9 @@ export default function DatabaseBackupRestore() {
                 <div className="text-center py-8">
                   <Database className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                   <p className="text-gray-600">No professional backups found</p>
-                  <p className="text-gray-500 text-sm mt-1">Create a professional backup using the button above</p>
+                  <p className="text-gray-500 text-sm mt-1">
+                    Create a professional backup using the button above
+                  </p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
@@ -773,7 +816,7 @@ export default function DatabaseBackupRestore() {
                       </tr>
                     </thead>
                     <tbody>
-                      {professionalBackups.map((backup) => (
+                      {professionalBackups.map(backup => (
                         <tr key={backup.fileName} className="border-b hover:bg-gray-50">
                           <td className="py-3">
                             <div>
@@ -786,16 +829,16 @@ export default function DatabaseBackupRestore() {
                           <td className="py-3">{formatDate(backup.createdAt)}</td>
                           <td className="py-3">
                             <div className="flex gap-2">
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="outline"
                                 onClick={() => downloadProfessionalBackup(backup.fileName)}
                               >
                                 <Download className="w-3 h-3 mr-1" />
                                 Download
                               </Button>
-                              <Button 
-                                size="sm" 
+                              <Button
+                                size="sm"
                                 variant="default"
                                 onClick={() => restoreProfessionalBackup(backup.fileName)}
                               >
@@ -841,7 +884,7 @@ export default function DatabaseBackupRestore() {
                       </tr>
                     </thead>
                     <tbody>
-                      {restoreJobs.map((job) => (
+                      {restoreJobs.map(job => (
                         <tr key={job.id} className="border-b hover:bg-gray-50">
                           <td className="py-3 font-mono text-xs">restore-{job.id}</td>
                           <td className="py-3">{job.backup_file_name || 'N/A'}</td>
@@ -849,8 +892,12 @@ export default function DatabaseBackupRestore() {
                           <td className="py-3">
                             <StatusBadge status={job.status} />
                           </td>
-                          <td className="py-3">{job.started_at ? formatDate(job.started_at) : 'N/A'}</td>
-                          <td className="py-3">{job.completed_at ? formatDate(job.completed_at) : 'N/A'}</td>
+                          <td className="py-3">
+                            {job.started_at ? formatDate(job.started_at) : 'N/A'}
+                          </td>
+                          <td className="py-3">
+                            {job.completed_at ? formatDate(job.completed_at) : 'N/A'}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -872,20 +919,25 @@ export default function DatabaseBackupRestore() {
                 <div className="text-center py-8">
                   <Calendar className="w-12 h-12 mx-auto mb-4 text-gray-400" />
                   <p className="text-gray-600">No backup schedules found</p>
-                  <p className="text-gray-500 text-sm mt-1">Create a schedule to automate backups</p>
+                  <p className="text-gray-500 text-sm mt-1">
+                    Create a schedule to automate backups
+                  </p>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {schedules.map((schedule) => (
+                  {schedules.map(schedule => (
                     <Card key={schedule.id}>
                       <CardContent className="pt-6">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className={`w-3 h-3 rounded-full ${schedule.is_active ? 'bg-green-500' : 'bg-gray-400'}`}></div>
+                            <div
+                              className={`w-3 h-3 rounded-full ${schedule.is_active ? 'bg-green-500' : 'bg-gray-400'}`}
+                            ></div>
                             <div>
                               <h3 className="font-medium">{schedule.name}</h3>
                               <p className="text-sm text-gray-500">
-                                {schedule.cron_expression} • {schedule.backup_type} backup • {schedule.retention_days} days retention
+                                {schedule.cron_expression} • {schedule.backup_type} backup •{' '}
+                                {schedule.retention_days} days retention
                               </p>
                               {schedule.last_run_at && (
                                 <p className="text-xs text-gray-400">
@@ -895,8 +947,8 @@ export default function DatabaseBackupRestore() {
                             </div>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Badge variant={schedule.is_active ? "default" : "secondary"}>
-                              {schedule.is_active ? "Active" : "Inactive"}
+                            <Badge variant={schedule.is_active ? 'default' : 'secondary'}>
+                              {schedule.is_active ? 'Active' : 'Inactive'}
                             </Badge>
                             <Button size="sm" variant="outline">
                               <Settings className="w-3 h-3" />
@@ -918,9 +970,7 @@ export default function DatabaseBackupRestore() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Restore Database</DialogTitle>
-            <DialogDescription>
-              Restore your database from the selected backup
-            </DialogDescription>
+            <DialogDescription>Restore your database from the selected backup</DialogDescription>
           </DialogHeader>
           {selectedBackupForRestore && (
             <div className="space-y-4">
@@ -930,10 +980,11 @@ export default function DatabaseBackupRestore() {
                   {selectedBackupForRestore.fileName || selectedBackupForRestore.jobId}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Created: {formatDate(selectedBackupForRestore.startedAt)} • Size: {selectedBackupForRestore.fileSize}
+                  Created: {formatDate(selectedBackupForRestore.startedAt)} • Size:{' '}
+                  {selectedBackupForRestore.fileSize}
                 </p>
               </div>
-              
+
               <div>
                 <Label htmlFor="restoreType">Restore Type</Label>
                 <Select value={restoreType} onValueChange={setRestoreType}>
@@ -947,7 +998,7 @@ export default function DatabaseBackupRestore() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-yellow-600" />
@@ -963,7 +1014,11 @@ export default function DatabaseBackupRestore() {
             <Button variant="outline" onClick={() => setShowRestoreDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={startRestore} disabled={loading} className="bg-red-600 hover:bg-red-700">
+            <Button
+              onClick={startRestore}
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700"
+            >
               {loading ? 'Starting Restore...' : 'Start Restore'}
             </Button>
           </DialogFooter>
@@ -975,9 +1030,7 @@ export default function DatabaseBackupRestore() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Delete Backup</DialogTitle>
-            <DialogDescription>
-              Are you sure you want to delete this backup?
-            </DialogDescription>
+            <DialogDescription>Are you sure you want to delete this backup?</DialogDescription>
           </DialogHeader>
           {backupToDelete && (
             <div className="space-y-4">
@@ -987,10 +1040,11 @@ export default function DatabaseBackupRestore() {
                   {backupToDelete.fileName || backupToDelete.jobId}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Created: {formatDate(backupToDelete.startedAt)} • Size: {backupToDelete.fileSize || 'N/A'}
+                  Created: {formatDate(backupToDelete.startedAt)} • Size:{' '}
+                  {backupToDelete.fileSize || 'N/A'}
                 </p>
               </div>
-              
+
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 text-red-600" />
@@ -1006,7 +1060,11 @@ export default function DatabaseBackupRestore() {
             <Button variant="outline" onClick={() => setShowDeleteConfirm(false)}>
               Cancel
             </Button>
-            <Button onClick={deleteBackup} disabled={loading} className="bg-red-600 hover:bg-red-700">
+            <Button
+              onClick={deleteBackup}
+              disabled={loading}
+              className="bg-red-600 hover:bg-red-700"
+            >
               {loading ? 'Deleting...' : 'Delete Backup'}
             </Button>
           </DialogFooter>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
@@ -19,7 +19,7 @@ import {
   MagnifyingGlassPlusIcon,
   MagnifyingGlassMinusIcon,
   ArrowsPointingOutIcon,
-  Squares2X2Icon
+  Squares2X2Icon,
 } from '@heroicons/react/24/outline';
 
 // Utility functions for canvas operations
@@ -66,8 +66,8 @@ interface MediaType {
   layout: {
     rows: number;
     columns: number;
-    gaps: { x: number; y: number; };
-    margins: { top: number; bottom: number; left: number; right: number; };
+    gaps: { x: number; y: number };
+    margins: { top: number; bottom: number; left: number; right: number };
   };
 }
 
@@ -76,7 +76,7 @@ interface Product {
   name: string;
   sku: string;
   price: number;
-  category: { name: string; };
+  category: { name: string };
   nutritionData?: {
     calories: string;
     protein: string;
@@ -113,7 +113,7 @@ export function ProfessionalLabelDesigner() {
   const [availableImages, setAvailableImages] = useState<any[]>([]);
   const [companyData, setCompanyData] = useState<any>(null);
   const [editingElementId, setEditingElementId] = useState<string | null>(null);
-  
+
   // Canvas state
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const [selectedElement, setSelectedElement] = useState<string | null>(null);
@@ -124,17 +124,19 @@ export function ProfessionalLabelDesigner() {
   const [panOffset, setPanOffset] = useState({ x: 0, y: 0 });
   const [isPanning, setIsPanning] = useState(false);
   const [lastPanPoint, setLastPanPoint] = useState({ x: 0, y: 0 });
-  
+
   // Drag state for elements
   const [isDragging, setIsDragging] = useState(false);
   const [dragStartPos, setDragStartPos] = useState({ x: 0, y: 0 });
   const [dragElementStartPos, setDragElementStartPos] = useState({ x: 0, y: 0 });
-  
+
   // Template state
   const [templateName, setTemplateName] = useState('');
-  
+
   // QR Code state
-  const [qrCodeType, setQrCodeType] = useState<'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi' | 'vcard' | 'whatsapp'>('url');
+  const [qrCodeType, setQrCodeType] = useState<
+    'url' | 'text' | 'email' | 'phone' | 'sms' | 'wifi' | 'vcard' | 'whatsapp'
+  >('url');
   const [qrCodeContent, setQrCodeContent] = useState('');
   const [templateDescription, setTemplateDescription] = useState('');
   const [templateType, setTemplateType] = useState('price_tag');
@@ -166,23 +168,23 @@ export function ProfessionalLabelDesigner() {
     }
   };
   const [previewMode, setPreviewMode] = useState(false);
-  
+
   // UI state
   const [activeToolbar, setActiveToolbar] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   // Resize state
   const [isResizing, setIsResizing] = useState(false);
   const [resizeHandle, setResizeHandle] = useState<string>('');
   const [resizeStartPos, setResizeStartPos] = useState({ x: 0, y: 0 });
-  const [resizeElementStartState, setResizeElementStartState] = useState<{ 
-    x: number; 
-    y: number; 
-    width: number; 
-    height: number; 
+  const [resizeElementStartState, setResizeElementStartState] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
   }>({ x: 0, y: 0, width: 0, height: 0 });
-  
+
   const canvasRef = useRef<HTMLDivElement>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 400, height: 300 });
 
@@ -198,9 +200,11 @@ export function ProfessionalLabelDesigner() {
       const { labelWidth, labelHeight } = selectedMedia.dimensions;
       setCanvasSize({
         width: mmToPx(labelWidth),
-        height: mmToPx(labelHeight)
+        height: mmToPx(labelHeight),
       });
-      console.log(`📐 Canvas size updated: ${labelWidth}×${labelHeight}mm → ${mmToPx(labelWidth)}×${mmToPx(labelHeight)}px`);
+      console.log(
+        `📐 Canvas size updated: ${labelWidth}×${labelHeight}mm → ${mmToPx(labelWidth)}×${mmToPx(labelHeight)}px`
+      );
     } else {
       console.warn('⚠️ selectedMedia or selectedMedia.dimensions is undefined:', selectedMedia);
     }
@@ -213,7 +217,7 @@ export function ProfessionalLabelDesigner() {
         fetch('/api/labels/media-types'),
         fetch('/api/products'),
         fetch('/api/image-management/images'),
-        fetch('/api/company-management/companies')
+        fetch('/api/company-management/companies'),
       ]);
 
       if (mediaResponse.ok) {
@@ -234,12 +238,12 @@ export function ProfessionalLabelDesigner() {
               marginTop: media.physicalProperties.marginTop,
               marginLeft: media.physicalProperties.marginLeft,
               spacingX: media.physicalProperties.horizontalSpacing, // Map horizontalSpacing to spacingX
-              spacingY: media.physicalProperties.verticalSpacing // Map verticalSpacing to spacingY
+              spacingY: media.physicalProperties.verticalSpacing, // Map verticalSpacing to spacingY
             },
             orientation: media.orientation,
             description: media.description,
             manufacturer: media.manufacturer,
-            isActive: media.isActive
+            isActive: media.isActive,
           }));
           setMediaTypes(mappedMediaTypes);
           if (mappedMediaTypes.length > 0) {
@@ -261,7 +265,7 @@ export function ProfessionalLabelDesigner() {
       if (imagesResponse.ok) {
         const imagesData = await imagesResponse.json();
         console.log('🖼️ Images Response:', imagesData);
-        
+
         // Handle different response formats and ensure proper URL construction
         let imageList: any[] = [];
         if (imagesData.images && Array.isArray(imagesData.images)) {
@@ -281,11 +285,12 @@ export function ProfessionalLabelDesigner() {
         // Ensure all images have proper URLs for serving
         const processedImages = imageList.map((image: any) => ({
           ...image,
-          url: image.url && image.url.startsWith('/api/') 
-            ? image.url 
-            : `/api/image-management/serve/${image.filename}`
+          url:
+            image.url && image.url.startsWith('/api/')
+              ? image.url
+              : `/api/image-management/serve/${image.filename}`,
         }));
-        
+
         console.log('🔧 Processed images with proper URLs:', processedImages);
         setAvailableImages(processedImages);
       }
@@ -295,7 +300,11 @@ export function ProfessionalLabelDesigner() {
         // Handle both success wrapper and direct array response
         if (Array.isArray(companyResponse_data) && companyResponse_data.length > 0) {
           setCompanyData(companyResponse_data[0]); // Use first company from direct array
-        } else if (companyResponse_data.success && companyResponse_data.data && companyResponse_data.data.length > 0) {
+        } else if (
+          companyResponse_data.success &&
+          companyResponse_data.data &&
+          companyResponse_data.data.length > 0
+        ) {
           setCompanyData(companyResponse_data.data[0]); // Use first company from wrapped response
         }
       }
@@ -320,7 +329,7 @@ export function ProfessionalLabelDesigner() {
         height: 40,
         content: 'Company Logo',
         imageUrl: companyData.logo_url,
-        companyData: companyData
+        companyData: companyData,
       };
       setCanvasElements(prev => [...prev, logoElement]);
       console.log('✅ Company logo added to canvas');
@@ -343,9 +352,9 @@ export function ProfessionalLabelDesigner() {
         content: companyData.name || 'Company Name',
         fontSize: 16,
         fontWeight: 'bold',
-        companyData: companyData
+        companyData: companyData,
       };
-      
+
       const licenseElement: CanvasElement = {
         id: `license_${Date.now()}`,
         type: 'text',
@@ -355,9 +364,9 @@ export function ProfessionalLabelDesigner() {
         height: 20,
         content: `FSSAI: ${companyData.fssaiLicense || 'N/A'}`,
         fontSize: 10,
-        companyData: companyData
+        companyData: companyData,
       };
-      
+
       setCanvasElements(prev => [...prev, companyNameElement, licenseElement]);
       console.log('✅ Company info added to canvas');
     } else {
@@ -368,7 +377,7 @@ export function ProfessionalLabelDesigner() {
 
   const addProductNutrition = () => {
     console.log('🍃 Adding product nutrition table');
-    
+
     const nutritionElement: CanvasElement = {
       id: `nutrition_${Date.now()}`,
       type: 'nutrition-table',
@@ -379,9 +388,9 @@ export function ProfessionalLabelDesigner() {
       backgroundColor: '#ffffff',
       borderColor: '#000000',
       borderWidth: 2,
-      nutritionData: selectedProduct
+      nutritionData: selectedProduct,
     };
-    
+
     setCanvasElements(prev => [...prev, nutritionElement]);
     setSelectedElement(nutritionElement.id);
     console.log('✅ Product nutrition table added to canvas');
@@ -389,48 +398,73 @@ export function ProfessionalLabelDesigner() {
   };
 
   // Canvas operations
-  const addElement = useCallback((type: CanvasElement['type']) => {
-    console.log(`🎯 Adding ${type} element to canvas`);
-    
-    const newElement: CanvasElement = {
-      id: `element_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      type,
-      x: 20 + (canvasElements.length * 10), // Stagger new elements
-      y: 20 + (canvasElements.length * 10),
-      width: type === 'text' ? 150 : type === 'qr' ? 60 : type === 'barcode' ? 120 : type === 'image' ? 80 : 100,
-      height: type === 'text' ? 30 : type === 'qr' ? 60 : type === 'barcode' ? 40 : type === 'image' ? 80 : 25,
-      content: type === 'text' ? 'Sample Text' : 
-               type === 'qr' ? 'https://leafyhealth.com' : // Default to functional website URL
-               type === 'barcode' ? '1234567890' : 
-               type === 'image' ? 'image.jpg' : 'Element',
-      placeholder: type === 'text' ? '{{PRODUCT_NAME}}' : undefined,
-      fontSize: type === 'text' ? 14 : 12,
-      fontWeight: 'normal',
-      fontFamily: 'Arial, sans-serif',
-      textAlign: 'left',
-      backgroundColor: type === 'rectangle' ? '#f3f4f6' : 'transparent',
-      borderColor: '#374151',
-      borderWidth: type === 'rectangle' ? 1 : 0,
-      rotation: 0,
-      opacity: 1,
-      zIndex: canvasElements.length + 1,
-      qrType: type === 'qr' ? 'url' : undefined // Set QR type for functional web links
-    };
+  const addElement = useCallback(
+    (type: CanvasElement['type']) => {
+      console.log(`🎯 Adding ${type} element to canvas`);
 
-    setCanvasElements(prev => {
-      const updated = [...prev, newElement];
-      console.log(`✅ Canvas elements updated. Total: ${updated.length}`);
-      console.log('✅ New element details:', newElement);
-      return updated;
-    });
-    setSelectedElement(newElement.id);
-    console.log(`🎯 Element ${newElement.id} selected`);
-  }, [canvasElements.length]);
+      const newElement: CanvasElement = {
+        id: `element_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        type,
+        x: 20 + canvasElements.length * 10, // Stagger new elements
+        y: 20 + canvasElements.length * 10,
+        width:
+          type === 'text'
+            ? 150
+            : type === 'qr'
+              ? 60
+              : type === 'barcode'
+                ? 120
+                : type === 'image'
+                  ? 80
+                  : 100,
+        height:
+          type === 'text'
+            ? 30
+            : type === 'qr'
+              ? 60
+              : type === 'barcode'
+                ? 40
+                : type === 'image'
+                  ? 80
+                  : 25,
+        content:
+          type === 'text'
+            ? 'Sample Text'
+            : type === 'qr'
+              ? 'https://leafyhealth.com' // Default to functional website URL
+              : type === 'barcode'
+                ? '1234567890'
+                : type === 'image'
+                  ? 'image.jpg'
+                  : 'Element',
+        placeholder: type === 'text' ? '{{PRODUCT_NAME}}' : undefined,
+        fontSize: type === 'text' ? 14 : 12,
+        fontWeight: 'normal',
+        fontFamily: 'Arial, sans-serif',
+        textAlign: 'left',
+        backgroundColor: type === 'rectangle' ? '#f3f4f6' : 'transparent',
+        borderColor: '#374151',
+        borderWidth: type === 'rectangle' ? 1 : 0,
+        rotation: 0,
+        opacity: 1,
+        zIndex: canvasElements.length + 1,
+        qrType: type === 'qr' ? 'url' : undefined, // Set QR type for functional web links
+      };
+
+      setCanvasElements(prev => {
+        const updated = [...prev, newElement];
+        console.log(`✅ Canvas elements updated. Total: ${updated.length}`);
+        console.log('✅ New element details:', newElement);
+        return updated;
+      });
+      setSelectedElement(newElement.id);
+      console.log(`🎯 Element ${newElement.id} selected`);
+    },
+    [canvasElements.length]
+  );
 
   const updateElement = (id: string, updates: Partial<CanvasElement>) => {
-    setCanvasElements(prev =>
-      prev.map(el => el.id === id ? { ...el, ...updates } : el)
-    );
+    setCanvasElements(prev => prev.map(el => (el.id === id ? { ...el, ...updates } : el)));
   };
 
   const deleteElement = (id: string) => {
@@ -448,7 +482,7 @@ export function ProfessionalLabelDesigner() {
         id: `element_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         x: element.x + 10,
         y: element.y + 10,
-        zIndex: canvasElements.length
+        zIndex: canvasElements.length,
       };
       setCanvasElements(prev => [...prev, duplicated]);
       setSelectedElement(duplicated.id);
@@ -475,9 +509,9 @@ export function ProfessionalLabelDesigner() {
             backgroundColor: '#ffffff',
             borderStyle: 'solid',
             borderWidth: 1,
-            borderColor: '#000000'
-          }
-        }
+            borderColor: '#000000',
+          },
+        },
       };
 
       const response = await fetch('/api/labels/templates', {
@@ -487,8 +521,8 @@ export function ProfessionalLabelDesigner() {
           ...templateData,
           createdBy: 1,
           companyId: 1,
-          branchId: 1
-        })
+          branchId: 1,
+        }),
       });
 
       if (response.ok) {
@@ -570,16 +604,21 @@ export function ProfessionalLabelDesigner() {
       transform: element.rotation ? `rotate(${element.rotation}deg)` : undefined,
       opacity: element.opacity,
       zIndex: element.zIndex,
-      border: isSelected ? '2px dashed #2563eb' : element.borderWidth ? 
-        `${element.borderWidth}px solid ${element.borderColor}` : 'none',
-      backgroundColor: element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
+      border: isSelected
+        ? '2px dashed #2563eb'
+        : element.borderWidth
+          ? `${element.borderWidth}px solid ${element.borderColor}`
+          : 'none',
+      backgroundColor:
+        element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
       cursor: 'move',
-      userSelect: 'none'
+      userSelect: 'none',
     };
 
-    const content = previewMode && element.placeholder && selectedProduct ? 
-      replaceProductPlaceholder(element.placeholder, selectedProduct) : 
-      element.content;
+    const content =
+      previewMode && element.placeholder && selectedProduct
+        ? replaceProductPlaceholder(element.placeholder, selectedProduct)
+        : element.content;
 
     return (
       <div
@@ -596,8 +635,8 @@ export function ProfessionalLabelDesigner() {
                 type="text"
                 defaultValue={element.content}
                 autoFocus
-                onBlur={(e) => handleTextEditComplete(element.id, e.target.value)}
-                onKeyDown={(e) => {
+                onBlur={e => handleTextEditComplete(element.id, e.target.value)}
+                onKeyDown={e => {
                   if (e.key === 'Enter') {
                     handleTextEditComplete(element.id, e.currentTarget.value);
                   } else if (e.key === 'Escape') {
@@ -615,7 +654,7 @@ export function ProfessionalLabelDesigner() {
                   outline: 'none',
                   background: 'transparent',
                   padding: '2px',
-                  color: 'inherit'
+                  color: 'inherit',
                 }}
                 className="canvas-text-editor"
               />
@@ -631,7 +670,7 @@ export function ProfessionalLabelDesigner() {
                   display: 'flex',
                   alignItems: 'center',
                   padding: '2px',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
                 }}
               >
                 {content}
@@ -639,7 +678,7 @@ export function ProfessionalLabelDesigner() {
             )}
           </>
         )}
-        
+
         {element.type === 'qr' && (
           <div className="w-full h-full bg-white border flex items-center justify-center relative">
             <img
@@ -648,23 +687,28 @@ export function ProfessionalLabelDesigner() {
               style={{
                 width: '100%',
                 height: '100%',
-                objectFit: 'contain'
+                objectFit: 'contain',
               }}
               onError={() => {
                 // QR code failed to load - fallback is already handled by conditional rendering
               }}
             />
-            <div className="absolute inset-0 bg-gray-200 flex items-center justify-center text-xs" style={{display: 'none'}}>
+            <div
+              className="absolute inset-0 bg-gray-200 flex items-center justify-center text-xs"
+              style={{ display: 'none' }}
+            >
               QR: {content}
             </div>
           </div>
         )}
-        
+
         {element.type === 'barcode' && (
           <div className="w-full h-full bg-white border flex flex-col items-center justify-center text-xs">
             <div className="flex-1 w-full flex items-center justify-center">
-              <div className="w-full h-8 bg-white flex items-center justify-center" style={{
-                background: `repeating-linear-gradient(
+              <div
+                className="w-full h-8 bg-white flex items-center justify-center"
+                style={{
+                  background: `repeating-linear-gradient(
                   90deg,
                   #000 0px,
                   #000 2px,
@@ -674,20 +718,20 @@ export function ProfessionalLabelDesigner() {
                   #000 4px,
                   #fff 4px,
                   #fff 6px
-                )`
-              }}>
-              </div>
+                )`,
+                }}
+              ></div>
             </div>
-            <div className="text-xs font-mono mt-1" style={{fontSize: '8px'}}>
+            <div className="text-xs font-mono mt-1" style={{ fontSize: '8px' }}>
               {content}
             </div>
           </div>
         )}
-        
+
         {element.type === 'rectangle' && (
           <div className="w-full h-full border border-gray-400"></div>
         )}
-        
+
         {element.type === 'image' && (
           <div className="w-full h-full bg-gray-100 border flex items-center justify-center relative">
             {element.imageUrl ? (
@@ -697,17 +741,17 @@ export function ProfessionalLabelDesigner() {
                 style={{
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover'
+                  objectFit: 'cover',
                 }}
                 onError={() => {
                   // Image failed to load - fallback is already handled by conditional rendering
                 }}
               />
             ) : null}
-            <div 
+            <div
               className="absolute inset-0 bg-gray-100 flex items-center justify-center text-xs cursor-pointer"
-              style={{display: element.imageUrl ? 'none' : 'flex'}}
-              onClick={(e) => {
+              style={{ display: element.imageUrl ? 'none' : 'flex' }}
+              onClick={e => {
                 e.stopPropagation();
                 setActiveToolbar('image');
                 setSelectedElement(element.id);
@@ -751,13 +795,13 @@ export function ProfessionalLabelDesigner() {
         const containerRect = container.getBoundingClientRect();
         const canvasWidth = mmToPx(selectedMedia.dimensions.labelWidth);
         const canvasHeight = mmToPx(selectedMedia.dimensions.labelHeight);
-        
+
         // Calculate zoom to fit with padding
         const padding = 100; // 50px padding on each side
         const zoomX = ((containerRect.width - padding) / canvasWidth) * 100;
         const zoomY = ((containerRect.height - padding) / canvasHeight) * 100;
         const newZoom = Math.min(zoomX, zoomY, 300); // Max 300% for fit
-        
+
         setZoom(Math.max(newZoom, 25));
         setPanOffset({ x: 0, y: 0 });
       }
@@ -770,26 +814,30 @@ export function ProfessionalLabelDesigner() {
 
   // Pan functionality
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (e.button === 1 || (e.button === 0 && e.ctrlKey)) { // Middle click or Ctrl+left click
+    if (e.button === 1 || (e.button === 0 && e.ctrlKey)) {
+      // Middle click or Ctrl+left click
       e.preventDefault();
       setIsPanning(true);
       setLastPanPoint({ x: e.clientX, y: e.clientY });
     }
   };
 
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (isPanning) {
-      const deltaX = e.clientX - lastPanPoint.x;
-      const deltaY = e.clientY - lastPanPoint.y;
-      
-      setPanOffset(prev => ({
-        x: prev.x + deltaX,
-        y: prev.y + deltaY
-      }));
-      
-      setLastPanPoint({ x: e.clientX, y: e.clientY });
-    }
-  }, [isPanning, lastPanPoint]);
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (isPanning) {
+        const deltaX = e.clientX - lastPanPoint.x;
+        const deltaY = e.clientY - lastPanPoint.y;
+
+        setPanOffset(prev => ({
+          x: prev.x + deltaX,
+          y: prev.y + deltaY,
+        }));
+
+        setLastPanPoint({ x: e.clientX, y: e.clientY });
+      }
+    },
+    [isPanning, lastPanPoint]
+  );
 
   const handleMouseUp = useCallback(() => {
     setIsPanning(false);
@@ -809,7 +857,7 @@ export function ProfessionalLabelDesigner() {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
       document.body.style.cursor = 'grabbing';
-      
+
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -821,7 +869,7 @@ export function ProfessionalLabelDesigner() {
   // Calculate scaled canvas dimensions
   const scaledCanvasSize = {
     width: (canvasSize.width * zoom) / 100,
-    height: (canvasSize.height * zoom) / 100
+    height: (canvasSize.height * zoom) / 100,
   };
 
   // Initialize fit to window on media change
@@ -861,9 +909,10 @@ export function ProfessionalLabelDesigner() {
             break;
         }
       }
-      
+
       // Element shortcuts
-      if (selectedElement && !editingElementId) { // Don't handle delete when editing text
+      if (selectedElement && !editingElementId) {
+        // Don't handle delete when editing text
         switch (e.key) {
           case 'Delete':
             e.preventDefault();
@@ -871,8 +920,10 @@ export function ProfessionalLabelDesigner() {
             break;
           case 'Backspace':
             // Only delete element if not editing text and no input is focused
-            if (document.activeElement?.tagName !== 'INPUT' && 
-                document.activeElement?.tagName !== 'TEXTAREA') {
+            if (
+              document.activeElement?.tagName !== 'INPUT' &&
+              document.activeElement?.tagName !== 'TEXTAREA'
+            ) {
               e.preventDefault();
               deleteElement(selectedElement);
             }
@@ -887,7 +938,7 @@ export function ProfessionalLabelDesigner() {
             break;
         }
       }
-      
+
       // Grid toggle
       if (e.key === 'g' && !e.ctrlKey && !e.metaKey) {
         e.preventDefault();
@@ -903,37 +954,38 @@ export function ProfessionalLabelDesigner() {
   const handleElementMouseDown = (e: React.MouseEvent, elementId: string) => {
     e.stopPropagation();
     e.preventDefault();
-    
+
     if (editingElementId) return; // Don't drag while editing
-    
+
     const element = canvasElements.find(el => el.id === elementId);
     if (!element) return;
-    
+
     setSelectedElement(elementId);
     setIsDragging(true);
     setDragStartPos({ x: e.clientX, y: e.clientY });
     setDragElementStartPos({ x: element.x, y: element.y });
-    
+
     console.log(`🎯 Starting drag for element ${elementId}`);
   };
 
-  const handleElementMouseMove = useCallback((e: MouseEvent) => {
-    if (!isDragging || !selectedElement) return;
-    
-    const deltaX = (e.clientX - dragStartPos.x) / (zoom / 100);
-    const deltaY = (e.clientY - dragStartPos.y) / (zoom / 100);
-    
-    const newX = dragElementStartPos.x + deltaX;
-    const newY = dragElementStartPos.y + deltaY;
-    
-    setCanvasElements(prev =>
-      prev.map(el =>
-        el.id === selectedElement
-          ? { ...el, x: Math.max(0, newX), y: Math.max(0, newY) }
-          : el
-      )
-    );
-  }, [isDragging, selectedElement, dragStartPos, dragElementStartPos, zoom]);
+  const handleElementMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging || !selectedElement) return;
+
+      const deltaX = (e.clientX - dragStartPos.x) / (zoom / 100);
+      const deltaY = (e.clientY - dragStartPos.y) / (zoom / 100);
+
+      const newX = dragElementStartPos.x + deltaX;
+      const newY = dragElementStartPos.y + deltaY;
+
+      setCanvasElements(prev =>
+        prev.map(el =>
+          el.id === selectedElement ? { ...el, x: Math.max(0, newX), y: Math.max(0, newY) } : el
+        )
+      );
+    },
+    [isDragging, selectedElement, dragStartPos, dragElementStartPos, zoom]
+  );
 
   const handleElementMouseUp = useCallback(() => {
     if (isDragging) {
@@ -948,7 +1000,7 @@ export function ProfessionalLabelDesigner() {
       document.addEventListener('mousemove', handleElementMouseMove);
       document.addEventListener('mouseup', handleElementMouseUp);
       document.body.style.cursor = 'grabbing';
-      
+
       return () => {
         document.removeEventListener('mousemove', handleElementMouseMove);
         document.removeEventListener('mouseup', handleElementMouseUp);
@@ -961,10 +1013,10 @@ export function ProfessionalLabelDesigner() {
   const handleResizeStart = (e: React.MouseEvent, elementId: string, handle: string) => {
     e.stopPropagation();
     e.preventDefault();
-    
+
     const element = canvasElements.find(el => el.id === elementId);
     if (!element) return;
-    
+
     setIsResizing(true);
     setResizeHandle(handle);
     setResizeStartPos({ x: e.clientX, y: e.clientY });
@@ -972,88 +1024,99 @@ export function ProfessionalLabelDesigner() {
       x: element.x,
       y: element.y,
       width: element.width,
-      height: element.height
+      height: element.height,
     });
-    
+
     console.log(`🔧 Starting resize for element ${elementId} with handle ${handle}`);
   };
-  
-  const handleResizeMove = useCallback((e: MouseEvent) => {
-    if (!isResizing || !selectedElement) return;
-    
-    const deltaX = (e.clientX - resizeStartPos.x) / (zoom / 100);
-    const deltaY = (e.clientY - resizeStartPos.y) / (zoom / 100);
-    
-    setCanvasElements(prev =>
-      prev.map(el => {
-        if (el.id !== selectedElement) return el;
-        
-        let newX = resizeElementStartState.x;
-        let newY = resizeElementStartState.y;
-        let newWidth = resizeElementStartState.width;
-        let newHeight = resizeElementStartState.height;
-        
-        switch (resizeHandle) {
-          case 'se': // Bottom Right
-            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
-            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
-            break;
-          case 'sw': // Bottom Left
-            newX = resizeElementStartState.x + deltaX;
-            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
-            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
-            break;
-          case 'ne': // Top Right
-            newY = resizeElementStartState.y + deltaY;
-            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
-            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
-            break;
-          case 'nw': // Top Left
-            newX = resizeElementStartState.x + deltaX;
-            newY = resizeElementStartState.y + deltaY;
-            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
-            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
-            break;
-          case 'n': // Top
-            newY = resizeElementStartState.y + deltaY;
-            newHeight = Math.max(20, resizeElementStartState.height - deltaY);
-            break;
-          case 's': // Bottom
-            newHeight = Math.max(20, resizeElementStartState.height + deltaY);
-            break;
-          case 'e': // Right
-            newWidth = Math.max(20, resizeElementStartState.width + deltaX);
-            break;
-          case 'w': // Left
-            newX = resizeElementStartState.x + deltaX;
-            newWidth = Math.max(20, resizeElementStartState.width - deltaX);
-            break;
-        }
-        
-        return { ...el, x: newX, y: newY, width: newWidth, height: newHeight };
-      })
-    );
-  }, [isResizing, selectedElement, resizeStartPos, resizeElementStartState, resizeHandle, zoom]);
-  
+
+  const handleResizeMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isResizing || !selectedElement) return;
+
+      const deltaX = (e.clientX - resizeStartPos.x) / (zoom / 100);
+      const deltaY = (e.clientY - resizeStartPos.y) / (zoom / 100);
+
+      setCanvasElements(prev =>
+        prev.map(el => {
+          if (el.id !== selectedElement) return el;
+
+          let newX = resizeElementStartState.x;
+          let newY = resizeElementStartState.y;
+          let newWidth = resizeElementStartState.width;
+          let newHeight = resizeElementStartState.height;
+
+          switch (resizeHandle) {
+            case 'se': // Bottom Right
+              newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+              newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+              break;
+            case 'sw': // Bottom Left
+              newX = resizeElementStartState.x + deltaX;
+              newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+              newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+              break;
+            case 'ne': // Top Right
+              newY = resizeElementStartState.y + deltaY;
+              newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+              newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+              break;
+            case 'nw': // Top Left
+              newX = resizeElementStartState.x + deltaX;
+              newY = resizeElementStartState.y + deltaY;
+              newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+              newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+              break;
+            case 'n': // Top
+              newY = resizeElementStartState.y + deltaY;
+              newHeight = Math.max(20, resizeElementStartState.height - deltaY);
+              break;
+            case 's': // Bottom
+              newHeight = Math.max(20, resizeElementStartState.height + deltaY);
+              break;
+            case 'e': // Right
+              newWidth = Math.max(20, resizeElementStartState.width + deltaX);
+              break;
+            case 'w': // Left
+              newX = resizeElementStartState.x + deltaX;
+              newWidth = Math.max(20, resizeElementStartState.width - deltaX);
+              break;
+          }
+
+          return { ...el, x: newX, y: newY, width: newWidth, height: newHeight };
+        })
+      );
+    },
+    [isResizing, selectedElement, resizeStartPos, resizeElementStartState, resizeHandle, zoom]
+  );
+
   const handleResizeEnd = useCallback(() => {
     if (isResizing) {
       console.log(`✅ Resize completed for element ${selectedElement}`);
       setIsResizing(false);
     }
   }, [isResizing, selectedElement]);
-  
+
   // Resize event listeners
   useEffect(() => {
     if (isResizing) {
       document.addEventListener('mousemove', handleResizeMove);
       document.addEventListener('mouseup', handleResizeEnd);
-      document.body.style.cursor = resizeHandle.includes('e') && resizeHandle.includes('w') ? 'ew-resize' :
-        resizeHandle.includes('n') && resizeHandle.includes('s') ? 'ns-resize' :
-        resizeHandle.includes('ne') || resizeHandle.includes('sw') ? 'nesw-resize' :
-        resizeHandle.includes('nw') || resizeHandle.includes('se') ? 'nwse-resize' :
-        resizeHandle === 'n' || resizeHandle === 's' ? 'ns-resize' :
-        resizeHandle === 'e' || resizeHandle === 'w' ? 'ew-resize' : 'default';
-      
+      document.body.style.cursor =
+        resizeHandle.includes('e') && resizeHandle.includes('w')
+          ? 'ew-resize'
+          : resizeHandle.includes('n') && resizeHandle.includes('s')
+            ? 'ns-resize'
+            : resizeHandle.includes('ne') || resizeHandle.includes('sw')
+              ? 'nesw-resize'
+              : resizeHandle.includes('nw') || resizeHandle.includes('se')
+                ? 'nwse-resize'
+                : resizeHandle === 'n' || resizeHandle === 's'
+                  ? 'ns-resize'
+                  : resizeHandle === 'e' || resizeHandle === 'w'
+                    ? 'ew-resize'
+                    : 'default';
+
       return () => {
         document.removeEventListener('mousemove', handleResizeMove);
         document.removeEventListener('mouseup', handleResizeEnd);
@@ -1074,45 +1137,46 @@ export function ProfessionalLabelDesigner() {
       transform: element.rotation ? `rotate(${element.rotation}deg)` : undefined,
       opacity: element.opacity,
       zIndex: element.zIndex,
-      border: isSelected ? '2px dashed #2563eb' : element.borderWidth ? 
-        `${element.borderWidth}px solid ${element.borderColor}` : 'none',
-      backgroundColor: element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
+      border: isSelected
+        ? '2px dashed #2563eb'
+        : element.borderWidth
+          ? `${element.borderWidth}px solid ${element.borderColor}`
+          : 'none',
+      backgroundColor:
+        element.backgroundColor !== 'transparent' ? element.backgroundColor : undefined,
       cursor: isDragging ? 'grabbing' : 'move',
       userSelect: 'none',
-      pointerEvents: 'auto'
+      pointerEvents: 'auto',
     };
 
-    const content = previewMode && element.placeholder && selectedProduct ? 
-      replaceProductPlaceholder(element.placeholder, selectedProduct) : 
-      element.content;
+    const content =
+      previewMode && element.placeholder && selectedProduct
+        ? replaceProductPlaceholder(element.placeholder, selectedProduct)
+        : element.content;
 
     return (
       <div
         key={element.id}
         style={style}
-        onMouseDown={(e) => handleElementMouseDown(e, element.id)}
-        onClick={(e) => {
+        onMouseDown={e => handleElementMouseDown(e, element.id)}
+        onClick={e => {
           e.stopPropagation();
           setSelectedElement(element.id);
         }}
         className={`canvas-element ${isSelected ? 'selected' : ''}`}
       >
-        {element.type === 'text' && (
-          editingElementId === element.id ? (
+        {element.type === 'text' &&
+          (editingElementId === element.id ? (
             <input
               type="text"
               value={element.content || ''}
-              onChange={(e) => {
-                setCanvasElements(prev => 
-                  prev.map(el => 
-                    el.id === element.id 
-                      ? { ...el, content: e.target.value }
-                      : el
-                  )
+              onChange={e => {
+                setCanvasElements(prev =>
+                  prev.map(el => (el.id === element.id ? { ...el, content: e.target.value } : el))
                 );
               }}
               onBlur={() => setEditingElementId(null)}
-              onKeyDown={(e) => {
+              onKeyDown={e => {
                 if (e.key === 'Enter') {
                   setEditingElementId(null);
                 } else if (e.key === 'Escape') {
@@ -1131,9 +1195,9 @@ export function ProfessionalLabelDesigner() {
                 border: 'none',
                 outline: 'none',
                 background: 'white',
-                color: element.color || '#000000'
+                color: element.color || '#000000',
               }}
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             />
           ) : (
             <div
@@ -1150,36 +1214,35 @@ export function ProfessionalLabelDesigner() {
                 padding: '2px',
                 overflow: 'hidden',
                 lineHeight: '1.2',
-                cursor: 'text'
+                cursor: 'text',
               }}
-              onDoubleClick={(e) => {
+              onDoubleClick={e => {
                 e.stopPropagation();
                 setEditingElementId(element.id);
               }}
             >
               {content || 'Click to edit text'}
             </div>
-          )
-        )}
-        
+          ))}
+
         {element.type === 'qr' && (
           <div className="w-full h-full bg-white flex items-center justify-center relative overflow-hidden">
             {content ? (
-              <img 
+              <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(content)}&format=png&margin=0`}
                 alt="QR Code"
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'contain',
-                  display: 'block'
+                  display: 'block',
                 }}
-                onError={(e) => {
+                onError={e => {
                   console.error('QR code generation failed:', content);
                 }}
               />
             ) : (
-              <div 
+              <div
                 className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
                 onDoubleClick={() => setEditingElementId(element.id)}
               >
@@ -1191,7 +1254,7 @@ export function ProfessionalLabelDesigner() {
             )}
           </div>
         )}
-        
+
         {element.type === 'barcode' && (
           <div className="w-full h-full bg-white flex items-center justify-center relative overflow-hidden">
             {content ? (
@@ -1206,7 +1269,7 @@ export function ProfessionalLabelDesigner() {
                           className="bg-black"
                           style={{
                             width: i % 2 === 0 ? '3px' : i % 3 === 0 ? '5px' : '2px',
-                            height: '100%'
+                            height: '100%',
                           }}
                         />
                       ))}
@@ -1216,7 +1279,7 @@ export function ProfessionalLabelDesigner() {
                 <div className="text-xs text-center mt-1">{content}</div>
               </div>
             ) : (
-              <div 
+              <div
                 className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 cursor-pointer hover:bg-gray-50"
                 onDoubleClick={() => setEditingElementId(element.id)}
               >
@@ -1228,15 +1291,15 @@ export function ProfessionalLabelDesigner() {
             )}
           </div>
         )}
-        
+
         {element.type === 'rectangle' && (
           <div className="w-full h-full border border-gray-400 bg-transparent"></div>
         )}
-        
+
         {element.type === 'image' && (
           <div className="w-full h-full bg-gray-100 flex items-center justify-center border border-gray-400 relative">
             {element.imageUrl ? (
-              <img 
+              <img
                 src={element.imageUrl}
                 alt="Label Image"
                 className="max-w-full max-h-full object-contain"
@@ -1248,7 +1311,7 @@ export function ProfessionalLabelDesigner() {
               </div>
             )}
             {isSelected && (
-              <div 
+              <div
                 className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-10 cursor-pointer"
                 onDoubleClick={() => setActiveToolbar('image-selector')}
               >
@@ -1257,7 +1320,7 @@ export function ProfessionalLabelDesigner() {
             )}
           </div>
         )}
-        
+
         {element.type === 'nutrition-table' && (
           <div className="w-full h-full bg-white border-2 border-black p-2 overflow-auto">
             <div className="text-center mb-1">
@@ -1277,10 +1340,14 @@ export function ProfessionalLabelDesigner() {
                   <td className="text-right font-bold text-lg">250</td>
                 </tr>
                 <tr>
-                  <td colSpan={2} className="text-right text-xs border-t-4 border-black">% Daily Value*</td>
+                  <td colSpan={2} className="text-right text-xs border-t-4 border-black">
+                    % Daily Value*
+                  </td>
                 </tr>
                 <tr className="border-t border-gray-300">
-                  <td><b>Total Fat</b> 10g</td>
+                  <td>
+                    <b>Total Fat</b> 10g
+                  </td>
                   <td className="text-right">15%</td>
                 </tr>
                 <tr className="border-t border-gray-300">
@@ -1292,15 +1359,21 @@ export function ProfessionalLabelDesigner() {
                   <td></td>
                 </tr>
                 <tr className="border-t border-gray-300">
-                  <td><b>Cholesterol</b> 0mg</td>
+                  <td>
+                    <b>Cholesterol</b> 0mg
+                  </td>
                   <td className="text-right">0%</td>
                 </tr>
                 <tr className="border-t border-gray-300">
-                  <td><b>Sodium</b> 100mg</td>
+                  <td>
+                    <b>Sodium</b> 100mg
+                  </td>
                   <td className="text-right">5%</td>
                 </tr>
                 <tr className="border-t border-gray-300">
-                  <td><b>Total Carbohydrate</b> 30g</td>
+                  <td>
+                    <b>Total Carbohydrate</b> 30g
+                  </td>
                   <td className="text-right">10%</td>
                 </tr>
                 <tr className="border-t border-gray-300">
@@ -1316,7 +1389,9 @@ export function ProfessionalLabelDesigner() {
                   <td className="text-right">25%</td>
                 </tr>
                 <tr className="border-t border-gray-300">
-                  <td><b>Protein</b> 5g</td>
+                  <td>
+                    <b>Protein</b> 5g
+                  </td>
                   <td></td>
                 </tr>
                 <tr className="border-t-4 border-black">
@@ -1338,53 +1413,56 @@ export function ProfessionalLabelDesigner() {
               </tbody>
             </table>
             <div className="border-t border-black mt-1 pt-1 text-xs">
-              <p>* Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.</p>
+              <p>
+                * Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be
+                higher or lower depending on your calorie needs.
+              </p>
             </div>
           </div>
         )}
-        
+
         {/* Resize handles */}
         {isSelected && !editingElementId && (
           <>
             {/* Top Left */}
-            <div 
+            <div
               className="absolute -top-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-nw-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'nw')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'nw')}
             />
             {/* Top Right */}
-            <div 
+            <div
               className="absolute -top-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-ne-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'ne')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'ne')}
             />
             {/* Bottom Left */}
-            <div 
+            <div
               className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-sw-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'sw')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'sw')}
             />
             {/* Bottom Right */}
-            <div 
+            <div
               className="absolute -bottom-2 -right-2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-se-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'se')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'se')}
             />
             {/* Top Middle */}
-            <div 
+            <div
               className="absolute -top-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-n-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'n')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'n')}
             />
             {/* Bottom Middle */}
-            <div 
+            <div
               className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-s-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 's')}
+              onMouseDown={e => handleResizeStart(e, element.id, 's')}
             />
             {/* Left Middle */}
-            <div 
+            <div
               className="absolute -left-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-w-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'w')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'w')}
             />
             {/* Right Middle */}
-            <div 
+            <div
               className="absolute -right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 bg-blue-600 border-2 border-white rounded-full cursor-e-resize hover:scale-125 transition-transform"
-              onMouseDown={(e) => handleResizeStart(e, element.id, 'e')}
+              onMouseDown={e => handleResizeStart(e, element.id, 'e')}
             />
           </>
         )}
@@ -1398,15 +1476,17 @@ export function ProfessionalLabelDesigner() {
       <div className="flex items-center space-x-2 mb-4">
         <h3 className="text-lg font-medium text-gray-900">Professional Label Designer</h3>
         <span className="text-sm text-gray-500">
-          {selectedMedia ? `${selectedMedia.name} (${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm)` : 'Select Media Type'}
+          {selectedMedia
+            ? `${selectedMedia.name} (${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm)`
+            : 'Select Media Type'}
         </span>
       </div>
-      
+
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <button
             type="button"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               console.log('🎯 Text button clicked');
               addElement('text');
@@ -1416,10 +1496,10 @@ export function ProfessionalLabelDesigner() {
             <ChatBubbleLeftRightIcon className="w-4 h-4 mr-1" />
             Text
           </button>
-          
+
           <button
             type="button"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               console.log('🎯 QR Code button clicked');
               setQrCodeContent('');
@@ -1431,10 +1511,10 @@ export function ProfessionalLabelDesigner() {
             <QrCodeIcon className="w-4 h-4 mr-1" />
             QR Code
           </button>
-          
+
           <button
             type="button"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               console.log('🎯 Barcode button clicked');
               addElement('barcode');
@@ -1444,10 +1524,10 @@ export function ProfessionalLabelDesigner() {
             <Square3Stack3DIcon className="w-4 h-4 mr-1" />
             Barcode
           </button>
-          
+
           <button
             type="button"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               console.log('🎯 Image button clicked');
               addElement('image');
@@ -1457,10 +1537,10 @@ export function ProfessionalLabelDesigner() {
             <PhotoIcon className="w-4 h-4 mr-1" />
             Image
           </button>
-          
+
           <button
             type="button"
-            onClick={(e) => {
+            onClick={e => {
               e.preventDefault();
               console.log('🎯 Rectangle button clicked');
               addElement('rectangle');
@@ -1471,7 +1551,7 @@ export function ProfessionalLabelDesigner() {
             Rectangle
           </button>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           {/* Zoom Controls */}
           <div className="flex items-center space-x-2 bg-gray-50 rounded-lg px-3 py-1">
@@ -1482,7 +1562,7 @@ export function ProfessionalLabelDesigner() {
             >
               <MagnifyingGlassMinusIcon className="w-4 h-4 text-gray-600" />
             </button>
-            
+
             <div className="flex items-center space-x-1">
               <input
                 type="range"
@@ -1490,12 +1570,12 @@ export function ProfessionalLabelDesigner() {
                 max="500"
                 step="25"
                 value={zoom}
-                onChange={(e) => handleZoomChange(parseInt(e.target.value))}
+                onChange={e => handleZoomChange(parseInt(e.target.value))}
                 className="w-20 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
               />
               <span className="text-sm font-medium text-gray-700 min-w-[3rem]">{zoom}%</span>
             </div>
-            
+
             <button
               onClick={handleZoomIn}
               className="p-1 hover:bg-gray-200 rounded"
@@ -1503,9 +1583,9 @@ export function ProfessionalLabelDesigner() {
             >
               <MagnifyingGlassPlusIcon className="w-4 h-4 text-gray-600" />
             </button>
-            
+
             <div className="w-px h-4 bg-gray-300"></div>
-            
+
             <button
               onClick={handleZoomReset}
               className="p-1 hover:bg-gray-200 rounded text-xs font-medium text-gray-600"
@@ -1513,7 +1593,7 @@ export function ProfessionalLabelDesigner() {
             >
               1:1
             </button>
-            
+
             <button
               onClick={handleFitToWindow}
               className="p-1 hover:bg-gray-200 rounded"
@@ -1521,7 +1601,7 @@ export function ProfessionalLabelDesigner() {
             >
               <ArrowsPointingOutIcon className="w-4 h-4 text-gray-600" />
             </button>
-            
+
             <button
               onClick={() => setShowGrid(!showGrid)}
               className={`p-1 hover:bg-gray-200 rounded ${showGrid ? 'text-blue-600' : 'text-gray-600'}`}
@@ -1530,7 +1610,7 @@ export function ProfessionalLabelDesigner() {
               <Squares2X2Icon className="w-4 h-4" />
             </button>
           </div>
-          
+
           <div className="flex items-center space-x-2">
             <button
               onClick={generatePreview}
@@ -1539,7 +1619,7 @@ export function ProfessionalLabelDesigner() {
               <EyeIcon className="w-4 h-4 mr-1" />
               Preview
             </button>
-            
+
             <button
               onClick={saveTemplate}
               disabled={loading}
@@ -1562,24 +1642,24 @@ export function ProfessionalLabelDesigner() {
     return (
       <div className="w-80 bg-white border-l border-gray-200 p-4">
         <h4 className="text-md font-medium text-gray-900 mb-4">Element Properties</h4>
-        
+
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Content</label>
             <input
               type="text"
               value={element.content || ''}
-              onChange={(e) => updateElement(element.id, { content: e.target.value })}
+              onChange={e => updateElement(element.id, { content: e.target.value })}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
-          
+
           {element.type === 'text' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Placeholder</label>
               <select
                 value={element.placeholder || ''}
-                onChange={(e) => updateElement(element.id, { placeholder: e.target.value })}
+                onChange={e => updateElement(element.id, { placeholder: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">No placeholder</option>
@@ -1590,14 +1670,16 @@ export function ProfessionalLabelDesigner() {
               </select>
             </div>
           )}
-          
+
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">X (mm)</label>
               <input
                 type="number"
                 value={Math.round(pxToMm(element.x) * 10) / 10}
-                onChange={(e) => updateElement(element.id, { x: mmToPx(parseFloat(e.target.value) || 0) })}
+                onChange={e =>
+                  updateElement(element.id, { x: mmToPx(parseFloat(e.target.value) || 0) })
+                }
                 className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
               />
             </div>
@@ -1606,19 +1688,23 @@ export function ProfessionalLabelDesigner() {
               <input
                 type="number"
                 value={Math.round(pxToMm(element.y) * 10) / 10}
-                onChange={(e) => updateElement(element.id, { y: mmToPx(parseFloat(e.target.value) || 0) })}
+                onChange={e =>
+                  updateElement(element.id, { y: mmToPx(parseFloat(e.target.value) || 0) })
+                }
                 className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
               />
             </div>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Width (mm)</label>
               <input
                 type="number"
                 value={Math.round(pxToMm(element.width) * 10) / 10}
-                onChange={(e) => updateElement(element.id, { width: mmToPx(parseFloat(e.target.value) || 0) })}
+                onChange={e =>
+                  updateElement(element.id, { width: mmToPx(parseFloat(e.target.value) || 0) })
+                }
                 className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
               />
             </div>
@@ -1627,12 +1713,14 @@ export function ProfessionalLabelDesigner() {
               <input
                 type="number"
                 value={Math.round(pxToMm(element.height) * 10) / 10}
-                onChange={(e) => updateElement(element.id, { height: mmToPx(parseFloat(e.target.value) || 0) })}
+                onChange={e =>
+                  updateElement(element.id, { height: mmToPx(parseFloat(e.target.value) || 0) })
+                }
                 className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
               />
             </div>
           </div>
-          
+
           {element.type === 'text' && (
             <>
               <div className="grid grid-cols-2 gap-2">
@@ -1641,38 +1729,40 @@ export function ProfessionalLabelDesigner() {
                   <input
                     type="number"
                     value={element.fontSize || 12}
-                    onChange={(e) => updateElement(element.id, { fontSize: parseInt(e.target.value) || 12 })}
+                    onChange={e =>
+                      updateElement(element.id, { fontSize: parseInt(e.target.value) || 12 })
+                    }
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                     min="6"
                     max="72"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Text Color</label>
                   <div className="flex items-center space-x-2">
                     <input
                       type="color"
                       value={element.color || '#000000'}
-                      onChange={(e) => updateElement(element.id, { color: e.target.value })}
+                      onChange={e => updateElement(element.id, { color: e.target.value })}
                       className="w-12 h-9 border border-gray-300 rounded cursor-pointer"
                     />
                     <input
                       type="text"
                       value={element.color || '#000000'}
-                      onChange={(e) => updateElement(element.id, { color: e.target.value })}
+                      onChange={e => updateElement(element.id, { color: e.target.value })}
                       className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-sm"
                       placeholder="#000000"
                     />
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Font Family</label>
                 <select
                   value={element.fontFamily || 'Arial, sans-serif'}
-                  onChange={(e) => updateElement(element.id, { fontFamily: e.target.value })}
+                  onChange={e => updateElement(element.id, { fontFamily: e.target.value })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                 >
                   <option value="Arial, sans-serif">Arial</option>
@@ -1687,13 +1777,15 @@ export function ProfessionalLabelDesigner() {
                   <option value="Tahoma, sans-serif">Tahoma</option>
                 </select>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Font Weight</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Font Weight
+                  </label>
                   <select
                     value={element.fontWeight || 'normal'}
-                    onChange={(e) => updateElement(element.id, { fontWeight: e.target.value })}
+                    onChange={e => updateElement(element.id, { fontWeight: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   >
                     <option value="normal">Normal</option>
@@ -1701,12 +1793,12 @@ export function ProfessionalLabelDesigner() {
                     <option value="lighter">Light</option>
                   </select>
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Text Align</label>
                   <select
                     value={element.textAlign || 'left'}
-                    onChange={(e) => updateElement(element.id, { textAlign: e.target.value })}
+                    onChange={e => updateElement(element.id, { textAlign: e.target.value })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   >
                     <option value="left">Left</option>
@@ -1717,7 +1809,7 @@ export function ProfessionalLabelDesigner() {
               </div>
             </>
           )}
-          
+
           {/* Background Color for all elements */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Background Color</label>
@@ -1725,19 +1817,19 @@ export function ProfessionalLabelDesigner() {
               <input
                 type="color"
                 value={element.backgroundColor || '#ffffff'}
-                onChange={(e) => updateElement(element.id, { backgroundColor: e.target.value })}
+                onChange={e => updateElement(element.id, { backgroundColor: e.target.value })}
                 className="w-12 h-9 border border-gray-300 rounded cursor-pointer"
               />
               <input
                 type="text"
                 value={element.backgroundColor || '#ffffff'}
-                onChange={(e) => updateElement(element.id, { backgroundColor: e.target.value })}
+                onChange={e => updateElement(element.id, { backgroundColor: e.target.value })}
                 className="flex-1 px-2 py-1 border border-gray-300 rounded-md text-sm"
                 placeholder="#ffffff"
               />
             </div>
           </div>
-          
+
           {/* Border settings */}
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -1745,24 +1837,26 @@ export function ProfessionalLabelDesigner() {
               <input
                 type="number"
                 value={element.borderWidth || 0}
-                onChange={(e) => updateElement(element.id, { borderWidth: parseInt(e.target.value) || 0 })}
+                onChange={e =>
+                  updateElement(element.id, { borderWidth: parseInt(e.target.value) || 0 })
+                }
                 className="w-full px-2 py-1 border border-gray-300 rounded-md text-sm"
                 min="0"
                 max="10"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Border Color</label>
               <input
                 type="color"
                 value={element.borderColor || '#000000'}
-                onChange={(e) => updateElement(element.id, { borderColor: e.target.value })}
+                onChange={e => updateElement(element.id, { borderColor: e.target.value })}
                 className="w-full h-9 border border-gray-300 rounded cursor-pointer"
               />
             </div>
           </div>
-          
+
           <div className="flex space-x-2">
             <button
               onClick={() => duplicateElement(element.id)}
@@ -1771,7 +1865,7 @@ export function ProfessionalLabelDesigner() {
               <ArrowsRightLeftIcon className="w-4 h-4 mr-1" />
               Duplicate
             </button>
-            
+
             <button
               onClick={() => deleteElement(element.id)}
               className="flex-1 flex items-center justify-center px-3 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
@@ -1800,7 +1894,7 @@ export function ProfessionalLabelDesigner() {
     <div className="h-screen flex flex-col bg-gray-50">
       {/* Toolbar */}
       {renderToolbar()}
-      
+
       {/* Error Display */}
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-md p-4 m-4">
@@ -1813,7 +1907,7 @@ export function ProfessionalLabelDesigner() {
           </button>
         </div>
       )}
-      
+
       {/* Main Content */}
       <div className="flex-1 flex">
         {/* Left Sidebar - Controls */}
@@ -1823,7 +1917,7 @@ export function ProfessionalLabelDesigner() {
               <label className="block text-sm font-medium text-gray-700 mb-2">Media Type</label>
               <select
                 value={selectedMedia?.id || ''}
-                onChange={(e) => {
+                onChange={e => {
                   const media = mediaTypes.find(m => m.id === parseInt(e.target.value));
                   setSelectedMedia(media || null);
                 }}
@@ -1837,12 +1931,14 @@ export function ProfessionalLabelDesigner() {
                 ))}
               </select>
             </div>
-            
+
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Preview Product</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Preview Product
+              </label>
               <select
                 value={selectedProduct?.id || ''}
-                onChange={(e) => {
+                onChange={e => {
                   const product = products.find(p => p.id === parseInt(e.target.value));
                   setSelectedProduct(product || null);
                 }}
@@ -1856,34 +1952,34 @@ export function ProfessionalLabelDesigner() {
                 ))}
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Template Name</label>
               <input
                 type="text"
                 value={templateName}
-                onChange={(e) => setTemplateName(e.target.value)}
+                onChange={e => setTemplateName(e.target.value)}
                 placeholder="Enter template name"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
               <textarea
                 value={templateDescription}
-                onChange={(e) => setTemplateDescription(e.target.value)}
+                onChange={e => setTemplateDescription(e.target.value)}
                 placeholder="Enter description"
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Template Type</label>
               <select
                 value={templateType}
-                onChange={(e) => setTemplateType(e.target.value)}
+                onChange={e => setTemplateType(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="price_tag">Price Tag</option>
@@ -1892,10 +1988,12 @@ export function ProfessionalLabelDesigner() {
                 <option value="custom">Custom</option>
               </select>
             </div>
-            
+
             {/* Smart Data Integration */}
             <div className="border-t pt-4">
-              <label className="block text-sm font-medium text-gray-700 mb-3">Smart Data Integration</label>
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Smart Data Integration
+              </label>
               <div className="space-y-2">
                 <button
                   onClick={addCompanyLogo}
@@ -1904,7 +2002,7 @@ export function ProfessionalLabelDesigner() {
                 >
                   {companyData?.logo_url ? 'Add Company Logo' : 'No Logo Available'}
                 </button>
-                
+
                 <button
                   onClick={addCompanyInfo}
                   disabled={!companyData}
@@ -1912,7 +2010,7 @@ export function ProfessionalLabelDesigner() {
                 >
                   {companyData ? 'Add Company Info & License' : 'Loading Company...'}
                 </button>
-                
+
                 <button
                   onClick={addProductNutrition}
                   disabled={!selectedProduct}
@@ -1920,7 +2018,7 @@ export function ProfessionalLabelDesigner() {
                 >
                   Add Product Nutrition
                 </button>
-                
+
                 <button
                   onClick={() => setActiveToolbar('image-selector')}
                   className="w-full px-3 py-2 text-sm bg-blue-600 text-white rounded-md hover:bg-blue-700"
@@ -1931,23 +2029,23 @@ export function ProfessionalLabelDesigner() {
             </div>
           </div>
         </div>
-        
+
         {/* Canvas Area */}
         <div className="flex-1 flex flex-col bg-gray-100 overflow-hidden">
           {/* Canvas Container with Scroll and Zoom */}
-          <div 
+          <div
             className="flex-1 flex items-center justify-center p-8 overflow-auto cursor-grab active:cursor-grabbing"
             onMouseDown={handleMouseDown}
             onWheel={handleWheel}
             style={{
-              cursor: isPanning ? 'grabbing' : 'grab'
+              cursor: isPanning ? 'grabbing' : 'grab',
             }}
           >
-            <div 
+            <div
               className="relative"
               style={{
                 transform: `translate(${panOffset.x}px, ${panOffset.y}px)`,
-                transition: isPanning ? 'none' : 'transform 0.1s ease-out'
+                transition: isPanning ? 'none' : 'transform 0.1s ease-out',
               }}
             >
               {/* Professional Canvas with Shadow and Border */}
@@ -1959,27 +2057,27 @@ export function ProfessionalLabelDesigner() {
                   style={{
                     width: scaledCanvasSize.width,
                     height: scaledCanvasSize.height,
-                    backgroundImage: showGrid ? 
-                      `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)` : 
-                      'none',
+                    backgroundImage: showGrid
+                      ? `linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px)`
+                      : 'none',
                     backgroundSize: `${(10 * zoom) / 100}px ${(10 * zoom) / 100}px`,
                     transform: 'translateZ(0)', // Hardware acceleration
-                    imageRendering: 'crisp-edges'
+                    imageRendering: 'crisp-edges',
                   }}
                 >
                   {/* Render all canvas elements with scaling */}
-                  {canvasElements.map((element) => {
+                  {canvasElements.map(element => {
                     const scaledElement = {
                       ...element,
                       x: (element.x * zoom) / 100,
                       y: (element.y * zoom) / 100,
                       width: (element.width * zoom) / 100,
                       height: (element.height * zoom) / 100,
-                      fontSize: element.fontSize ? (element.fontSize * zoom) / 100 : undefined
+                      fontSize: element.fontSize ? (element.fontSize * zoom) / 100 : undefined,
                     };
                     return renderScaledElement(scaledElement);
                   })}
-                  
+
                   {/* Preview overlay */}
                   {previewMode && (
                     <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
@@ -1989,70 +2087,88 @@ export function ProfessionalLabelDesigner() {
                       </div>
                     </div>
                   )}
-                  
+
                   {/* Canvas Rulers */}
                   <div className="absolute -top-6 left-0 right-0 h-6 bg-gray-100 border-b border-gray-300 flex items-end text-xs text-gray-500">
-                    {Array.from({ length: Math.ceil(scaledCanvasSize.width / ((10 * zoom) / 100)) }, (_, i) => (
-                      <div 
-                        key={i} 
-                        className="border-l border-gray-400" 
-                        style={{ 
-                          width: (10 * zoom) / 100,
-                          height: i % 5 === 0 ? '100%' : '50%'
-                        }}
-                      >
-                        {i % 5 === 0 && <span className="ml-1">{i * 2}</span>}
-                      </div>
-                    ))}
+                    {Array.from(
+                      { length: Math.ceil(scaledCanvasSize.width / ((10 * zoom) / 100)) },
+                      (_, i) => (
+                        <div
+                          key={i}
+                          className="border-l border-gray-400"
+                          style={{
+                            width: (10 * zoom) / 100,
+                            height: i % 5 === 0 ? '100%' : '50%',
+                          }}
+                        >
+                          {i % 5 === 0 && <span className="ml-1">{i * 2}</span>}
+                        </div>
+                      )
+                    )}
                   </div>
-                  
+
                   <div className="absolute -left-6 top-0 bottom-0 w-6 bg-gray-100 border-r border-gray-300 flex flex-col justify-end text-xs text-gray-500">
-                    {Array.from({ length: Math.ceil(scaledCanvasSize.height / ((10 * zoom) / 100)) }, (_, i) => (
-                      <div 
-                        key={i} 
-                        className="border-t border-gray-400 flex items-start" 
-                        style={{ 
-                          height: (10 * zoom) / 100,
-                          width: i % 5 === 0 ? '100%' : '50%',
-                          marginLeft: i % 5 === 0 ? '0' : '50%'
-                        }}
-                      >
-                        {i % 5 === 0 && <span className="mt-1 -rotate-90 origin-left text-xs">{i * 2}</span>}
-                      </div>
-                    ))}
+                    {Array.from(
+                      { length: Math.ceil(scaledCanvasSize.height / ((10 * zoom) / 100)) },
+                      (_, i) => (
+                        <div
+                          key={i}
+                          className="border-t border-gray-400 flex items-start"
+                          style={{
+                            height: (10 * zoom) / 100,
+                            width: i % 5 === 0 ? '100%' : '50%',
+                            marginLeft: i % 5 === 0 ? '0' : '50%',
+                          }}
+                        >
+                          {i % 5 === 0 && (
+                            <span className="mt-1 -rotate-90 origin-left text-xs">{i * 2}</span>
+                          )}
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          
+
           {/* Professional Status Bar */}
           <div className="bg-white border-t border-gray-200 px-6 py-3">
             <div className="flex items-center justify-between text-sm text-gray-600">
               <div className="flex items-center space-x-4">
                 <span>
-                  Canvas: {selectedMedia ? `${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm` : 'No media selected'}
+                  Canvas:{' '}
+                  {selectedMedia
+                    ? `${selectedMedia.dimensions.labelWidth}×${selectedMedia.dimensions.labelHeight}mm`
+                    : 'No media selected'}
                 </span>
-                <span className={`font-semibold ${canvasElements.length > 0 ? 'text-green-600' : 'text-gray-400'}`}>
+                <span
+                  className={`font-semibold ${canvasElements.length > 0 ? 'text-green-600' : 'text-gray-400'}`}
+                >
                   Elements: {canvasElements.length}
                 </span>
                 <span>• Zoom: {zoom}%</span>
               </div>
-              
+
               <div className="flex items-center space-x-4 text-xs">
-                <span>Pan: Ctrl+Click & Drag | Zoom: Ctrl+Scroll | Shortcuts: Ctrl+0 (Reset), Ctrl+1 (Fit), G (Grid)</span>
+                <span>
+                  Pan: Ctrl+Click & Drag | Zoom: Ctrl+Scroll | Shortcuts: Ctrl+0 (Reset), Ctrl+1
+                  (Fit), G (Grid)
+                </span>
                 {selectedElement && (
-                  <span className="text-blue-600 font-medium">• Element Selected (Del to delete, Ctrl+D to duplicate)</span>
+                  <span className="text-blue-600 font-medium">
+                    • Element Selected (Del to delete, Ctrl+D to duplicate)
+                  </span>
                 )}
               </div>
             </div>
           </div>
         </div>
-        
+
         {/* Right Sidebar - Properties */}
         {selectedElement && renderPropertiesPanel()}
       </div>
-      
+
       {/* Image Selector Modal */}
       {activeToolbar === 'image-selector' && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -2064,11 +2180,16 @@ export function ProfessionalLabelDesigner() {
                 className="text-gray-400 hover:text-gray-600"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-4">
               {availableImages.map((image: any) => (
                 <div
@@ -2076,9 +2197,9 @@ export function ProfessionalLabelDesigner() {
                   className="border rounded-lg p-2 cursor-pointer hover:bg-gray-50"
                   onClick={() => {
                     if (selectedElement) {
-                      setCanvasElements(prev => 
-                        prev.map(el => 
-                          el.id === selectedElement 
+                      setCanvasElements(prev =>
+                        prev.map(el =>
+                          el.id === selectedElement
                             ? { ...el, imageUrl: image.url, content: image.filename }
                             : el
                         )
@@ -2093,29 +2214,30 @@ export function ProfessionalLabelDesigner() {
                         height: 60,
                         content: image.filename,
                         imageUrl: image.url,
-                        imageId: image.id
+                        imageId: image.id,
                       };
                       setCanvasElements(prev => [...prev, imageElement]);
                     }
                     setActiveToolbar(null);
                   }}
                 >
-                  <img 
+                  <img
                     src={image.url}
                     alt={image.filename}
                     className="w-full h-20 object-cover rounded"
-                    onError={(e) => {
+                    onError={e => {
                       console.error('Image failed to load:', image.url);
                       const target = e.target as HTMLImageElement;
                       // Set a fallback placeholder image
-                      target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNEwzOCAzNkg0Nkw0MiAyNFoiIGZpbGw9IiNEREREREQiLz4KPC9zdmc+';
+                      target.src =
+                        'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yNiAyNEwzOCAzNkg0Nkw0MiAyNFoiIGZpbGw9IiNEREREREQiLz4KPC9zdmc+';
                     }}
                   />
                   <p className="text-xs text-gray-600 mt-1 truncate">{image.filename}</p>
                 </div>
               ))}
             </div>
-            
+
             {availableImages.length === 0 && (
               <div className="text-center py-8 text-gray-500">
                 <PhotoIcon className="w-12 h-12 mx-auto mb-2" />
@@ -2137,19 +2259,22 @@ export function ProfessionalLabelDesigner() {
                 className="text-gray-400 hover:text-gray-600"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
-            
+
             {/* QR Code Type Selector */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                QR Code Type
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">QR Code Type</label>
               <select
                 value={qrCodeType}
-                onChange={(e) => setQrCodeType(e.target.value as any)}
+                onChange={e => setQrCodeType(e.target.value as any)}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="url">🌐 Website URL</option>
@@ -2173,21 +2298,29 @@ export function ProfessionalLabelDesigner() {
                 {qrCodeType === 'sms' && 'Phone Number for SMS'}
                 {qrCodeType === 'whatsapp' && 'WhatsApp Number (e.g., 919876543210)'}
                 {qrCodeType === 'wifi' && 'Network Name | Password (e.g., MyWiFi|password123)'}
-                {qrCodeType === 'vcard' && 'Name | Phone | Email (e.g., John Doe|+919876543210|john@example.com)'}
+                {qrCodeType === 'vcard' &&
+                  'Name | Phone | Email (e.g., John Doe|+919876543210|john@example.com)'}
               </label>
               <input
                 type="text"
                 value={qrCodeContent}
-                onChange={(e) => setQrCodeContent(e.target.value)}
+                onChange={e => setQrCodeContent(e.target.value)}
                 placeholder={
-                  qrCodeType === 'url' ? 'Enter website URL...' :
-                  qrCodeType === 'text' ? 'Enter text content...' :
-                  qrCodeType === 'email' ? 'Enter email address...' :
-                  qrCodeType === 'phone' ? 'Enter phone number...' :
-                  qrCodeType === 'sms' ? 'Enter phone number...' :
-                  qrCodeType === 'whatsapp' ? 'Enter WhatsApp number...' :
-                  qrCodeType === 'wifi' ? 'Enter network|password...' :
-                  'Enter name|phone|email...'
+                  qrCodeType === 'url'
+                    ? 'Enter website URL...'
+                    : qrCodeType === 'text'
+                      ? 'Enter text content...'
+                      : qrCodeType === 'email'
+                        ? 'Enter email address...'
+                        : qrCodeType === 'phone'
+                          ? 'Enter phone number...'
+                          : qrCodeType === 'sms'
+                            ? 'Enter phone number...'
+                            : qrCodeType === 'whatsapp'
+                              ? 'Enter WhatsApp number...'
+                              : qrCodeType === 'wifi'
+                                ? 'Enter network|password...'
+                                : 'Enter name|phone|email...'
                 }
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
               />
@@ -2197,7 +2330,9 @@ export function ProfessionalLabelDesigner() {
             <div className="mb-4 p-3 bg-gray-50 rounded-md">
               <p className="text-sm font-medium text-gray-700 mb-1">Generated QR Content:</p>
               <code className="text-xs text-gray-600 break-all">
-                {qrCodeContent ? generateQRContent(qrCodeType, qrCodeContent) : 'Enter content above to see preview...'}
+                {qrCodeContent
+                  ? generateQRContent(qrCodeType, qrCodeContent)
+                  : 'Enter content above to see preview...'}
               </code>
             </div>
 
@@ -2221,7 +2356,7 @@ export function ProfessionalLabelDesigner() {
                       height: 50,
                       content: generateQRContent(qrCodeType, qrCodeContent),
                       qrType: qrCodeType,
-                      zIndex: canvasElements.length + 1
+                      zIndex: canvasElements.length + 1,
                     };
                     setCanvasElements(prev => [...prev, qrElement]);
                     setActiveToolbar(null);

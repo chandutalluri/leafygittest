@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { FileText, Image, Video, Upload, Eye, Edit, Trash2, Plus, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -82,10 +89,10 @@ export default function ContentManagement() {
         apiClient.get('/api/direct-data/content', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
           type: typeFilter !== 'all' ? typeFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
         apiClient.get('/api/direct-data/media'),
-        apiClient.get('/api/direct-data/content-templates')
+        apiClient.get('/api/direct-data/content-templates'),
       ]);
       setContent(contentData || []);
       setMedia(mediaData || []);
@@ -99,9 +106,9 @@ export default function ContentManagement() {
 
   const updateContentStatus = async (contentId: string, newStatus: string) => {
     try {
-      await apiClient.put(`/api/direct-data/content/${contentId}`, { 
+      await apiClient.put(`/api/direct-data/content/${contentId}`, {
         status: newStatus,
-        publishedAt: newStatus === 'published' ? new Date().toISOString() : undefined
+        publishedAt: newStatus === 'published' ? new Date().toISOString() : undefined,
       });
       fetchContentData();
     } catch (error) {
@@ -113,7 +120,10 @@ export default function ContentManagement() {
     try {
       await apiClient.post('/api/direct-data/content', {
         ...contentData,
-        slug: contentData.title?.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+        slug: contentData.title
+          ?.toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^a-z0-9-]/g, ''),
       });
       fetchContentData();
       setIsContentDialogOpen(false);
@@ -136,9 +146,9 @@ export default function ContentManagement() {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('folder', folder);
-      
+
       await apiClient.post('/api/direct-data/media/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
       fetchContentData();
     } catch (error) {
@@ -148,23 +158,31 @@ export default function ContentManagement() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published': return 'default';
-      case 'draft': return 'secondary';
-      case 'scheduled': return 'outline';
-      case 'archived': return 'destructive';
-      default: return 'secondary';
+      case 'published':
+        return 'default';
+      case 'draft':
+        return 'secondary';
+      case 'scheduled':
+        return 'outline';
+      case 'archived':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'image': return <Image className="h-4 w-4" />;
-      case 'video': return <Video className="h-4 w-4" />;
+      case 'image':
+        return <Image className="h-4 w-4" />;
+      case 'video':
+        return <Video className="h-4 w-4" />;
       case 'page':
       case 'blog_post':
       case 'faq':
         return <FileText className="h-4 w-4" />;
-      default: return <FileText className="h-4 w-4" />;
+      default:
+        return <FileText className="h-4 w-4" />;
     }
   };
 
@@ -176,9 +194,10 @@ export default function ContentManagement() {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
-  const filteredContent = content.filter(item =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.content.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredContent = content.filter(
+    item =>
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.content.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalContent = content.length;
@@ -187,7 +206,9 @@ export default function ContentManagement() {
   const totalViews = content.reduce((sum, c) => sum + c.viewCount, 0);
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading content management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading content management...</div>
+    );
   }
 
   return (
@@ -208,9 +229,14 @@ export default function ContentManagement() {
             <DialogContent className="max-w-4xl">
               <DialogHeader>
                 <DialogTitle>Create New Content</DialogTitle>
-                <DialogDescription>Add new content to your website or application</DialogDescription>
+                <DialogDescription>
+                  Add new content to your website or application
+                </DialogDescription>
               </DialogHeader>
-              <ContentForm onSubmit={createContent} onCancel={() => setIsContentDialogOpen(false)} />
+              <ContentForm
+                onSubmit={createContent}
+                onCancel={() => setIsContentDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
           <input
@@ -218,13 +244,16 @@ export default function ContentManagement() {
             id="media-upload"
             multiple
             accept="image/*,video/*,audio/*,.pdf,.doc,.docx"
-            onChange={(e) => {
+            onChange={e => {
               const files = Array.from(e.target.files || []);
               files.forEach(file => uploadMedia(file));
             }}
             className="hidden"
           />
-          <Button variant="outline" onClick={() => document.getElementById('media-upload')?.click()}>
+          <Button
+            variant="outline"
+            onClick={() => document.getElementById('media-upload')?.click()}
+          >
             <Upload className="h-4 w-4 mr-2" />
             Upload Media
           </Button>
@@ -273,7 +302,7 @@ export default function ContentManagement() {
 
       {/* Tabs */}
       <div className="flex space-x-4 border-b">
-        {['content', 'media', 'templates'].map((tab) => (
+        {['content', 'media', 'templates'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -301,7 +330,7 @@ export default function ContentManagement() {
             <Input
               placeholder="Search content..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -355,7 +384,7 @@ export default function ContentManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredContent.map((item) => (
+                  {filteredContent.map(item => (
                     <tr key={item.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{item.title}</div>
@@ -383,9 +412,9 @@ export default function ContentManagement() {
                             <Edit className="h-4 w-4 mr-1" />
                             Edit
                           </Button>
-                          <Select 
-                            value={item.status} 
-                            onValueChange={(status) => updateContentStatus(item.id, status)}
+                          <Select
+                            value={item.status}
+                            onValueChange={status => updateContentStatus(item.id, status)}
                           >
                             <SelectTrigger className="w-28">
                               <SelectValue />
@@ -397,8 +426,8 @@ export default function ContentManagement() {
                               <SelectItem value="archived">Archived</SelectItem>
                             </SelectContent>
                           </Select>
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="destructive"
                             onClick={() => deleteContent(item.id)}
                           >
@@ -423,21 +452,19 @@ export default function ContentManagement() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {media.map((file) => (
+              {media.map(file => (
                 <Card key={file.id}>
                   <CardContent className="p-4">
                     <div className="space-y-3">
                       <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
                         {file.type === 'image' ? (
-                          <img 
-                            src={file.url} 
+                          <img
+                            src={file.url}
                             alt={file.altText || file.filename}
                             className="w-full h-full object-cover rounded-lg"
                           />
                         ) : (
-                          <div className="text-gray-400">
-                            {getTypeIcon(file.type)}
-                          </div>
+                          <div className="text-gray-400">{getTypeIcon(file.type)}</div>
                         )}
                       </div>
                       <div>
@@ -471,13 +498,15 @@ export default function ContentManagement() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {templates.map((template) => (
+              {templates.map(template => (
                 <Card key={template.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle className="text-lg">{template.name}</CardTitle>
-                        <CardDescription>{template.type.replace('_', ' ')} template</CardDescription>
+                        <CardDescription>
+                          {template.type.replace('_', ' ')} template
+                        </CardDescription>
                       </div>
                       <Badge variant={template.isActive ? 'default' : 'outline'}>
                         {template.isActive ? 'Active' : 'Inactive'}
@@ -500,9 +529,7 @@ export default function ContentManagement() {
                         <Button size="sm" variant="outline">
                           Edit Template
                         </Button>
-                        <Button size="sm">
-                          Use Template
-                        </Button>
+                        <Button size="sm">Use Template</Button>
                       </div>
                     </div>
                   </CardContent>
@@ -516,10 +543,10 @@ export default function ContentManagement() {
   );
 }
 
-function ContentForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function ContentForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<ContentItem>) => void;
   onCancel: () => void;
 }) {
@@ -529,7 +556,7 @@ function ContentForm({
     type: 'page' as const,
     metaTitle: '',
     metaDescription: '',
-    language: 'en'
+    language: 'en',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -537,7 +564,7 @@ function ContentForm({
     onSubmit({
       ...formData,
       status: 'draft' as const,
-      tags: []
+      tags: [],
     });
   };
 
@@ -549,13 +576,16 @@ function ContentForm({
           <Input
             id="title"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={e => setFormData({ ...formData, title: e.target.value })}
             required
           />
         </div>
         <div>
           <Label htmlFor="type">Content Type</Label>
-          <Select value={formData.type} onValueChange={(value: any) => setFormData({ ...formData, type: value })}>
+          <Select
+            value={formData.type}
+            onValueChange={(value: any) => setFormData({ ...formData, type: value })}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -576,7 +606,7 @@ function ContentForm({
         <Textarea
           id="content"
           value={formData.content}
-          onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+          onChange={e => setFormData({ ...formData, content: e.target.value })}
           rows={8}
           required
         />
@@ -588,12 +618,15 @@ function ContentForm({
           <Input
             id="metaTitle"
             value={formData.metaTitle}
-            onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
+            onChange={e => setFormData({ ...formData, metaTitle: e.target.value })}
           />
         </div>
         <div>
           <Label htmlFor="language">Language</Label>
-          <Select value={formData.language} onValueChange={(value) => setFormData({ ...formData, language: value })}>
+          <Select
+            value={formData.language}
+            onValueChange={value => setFormData({ ...formData, language: value })}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -612,7 +645,7 @@ function ContentForm({
         <Textarea
           id="metaDescription"
           value={formData.metaDescription}
-          onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
+          onChange={e => setFormData({ ...formData, metaDescription: e.target.value })}
           rows={3}
         />
       </div>
@@ -621,9 +654,7 @@ function ContentForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Create Content
-        </Button>
+        <Button type="submit">Create Content</Button>
       </div>
     </form>
   );

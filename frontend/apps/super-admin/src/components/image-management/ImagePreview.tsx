@@ -10,7 +10,7 @@ interface ImagePreviewProps {
 const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => {
   const [selectedSize, setSelectedSize] = useState('medium');
   const [selectedFormat, setSelectedFormat] = useState('webp');
-  const [metadata, setMetadata] = useState(null);
+  const [metadata, setMetadata] = useState<any>(null);
   const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
 
   const sizes = [
@@ -19,13 +19,13 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
     { key: 'medium', label: 'Medium (600x600)', dimensions: '600x600' },
     { key: 'large', label: 'Large (1200x1200)', dimensions: '1200x1200' },
     { key: 'xl', label: 'Extra Large (1920x1920)', dimensions: '1920x1920' },
-    { key: 'original', label: 'Original', dimensions: 'Original' }
+    { key: 'original', label: 'Original', dimensions: 'Original' },
   ];
 
   const formats = [
     { key: 'webp', label: 'WebP (Best compression)' },
     { key: 'jpeg', label: 'JPEG' },
-    { key: 'png', label: 'PNG' }
+    { key: 'png', label: 'PNG' },
   ];
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
 
   const loadMetadata = async () => {
     if (!image?.filename) return;
-    
+
     setIsLoadingMetadata(true);
     try {
       const response = await fetch(`/api/image-management/metadata/${image.filename}`);
@@ -51,22 +51,22 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
 
   const getImageUrl = () => {
     if (!image?.filename) return '/placeholder-image.jpg';
-    
+
     let url = `/api/image-management/serve/${image.filename}`;
     const params = new URLSearchParams();
-    
+
     if (selectedSize !== 'original') {
       params.append('size', selectedSize);
     }
-    
+
     if (selectedFormat !== 'original') {
       params.append('format', selectedFormat);
     }
-    
+
     if (params.toString()) {
       url += `?${params.toString()}`;
     }
-    
+
     return url;
   };
 
@@ -82,14 +82,14 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this image?')) return;
-    
+
     try {
       const response = await fetch(`/api/image-management/images/${image.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
-      
+
       if (!response.ok) throw new Error('Failed to delete image');
-      
+
       toast.success('Image deleted successfully');
       onImageUpdate(null);
     } catch (error) {
@@ -113,13 +113,13 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
                 src={getImageUrl()}
                 alt={image.alt_text || image.original_name}
                 className="w-full h-full object-cover"
-                onError={(e) => {
+                onError={e => {
                   e.currentTarget.src = '/placeholder-image.jpg';
                 }}
               />
             </div>
           </div>
-          
+
           {/* Controls */}
           <div className="flex-1 space-y-4">
             <div>
@@ -133,12 +133,10 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
 
             {/* Size Selection */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
-                Image Size
-              </label>
+              <label className="block text-sm font-medium text-white/80 mb-2">Image Size</label>
               <select
                 value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
+                onChange={e => setSelectedSize(e.target.value)}
                 className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 {sizes.map(size => (
@@ -151,12 +149,10 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
 
             {/* Format Selection */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2">
-                Output Format
-              </label>
+              <label className="block text-sm font-medium text-white/80 mb-2">Output Format</label>
               <select
                 value={selectedFormat}
-                onChange={(e) => setSelectedFormat(e.target.value)}
+                onChange={e => setSelectedFormat(e.target.value)}
                 className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
               >
                 {formats.map(format => (
@@ -194,33 +190,37 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({ image, onImageUpdate }) => 
           className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
         >
           <h3 className="text-xl font-semibold text-white mb-4">📊 Image Metadata</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">File Size</div>
-              <div className="text-white font-semibold">{metadata.size ? `${(metadata.size / 1024).toFixed(1)} KB` : 'N/A'}</div>
+              <div className="text-white font-semibold">
+                {metadata.size ? `${(metadata.size / 1024).toFixed(1)} KB` : 'N/A'}
+              </div>
             </div>
-            
+
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">Dimensions</div>
-              <div className="text-white font-semibold">{metadata.width}x{metadata.height}</div>
+              <div className="text-white font-semibold">
+                {metadata.width}x{metadata.height}
+              </div>
             </div>
-            
+
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">Format</div>
               <div className="text-white font-semibold">{metadata.format?.toUpperCase()}</div>
             </div>
-            
+
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">Aspect Ratio</div>
               <div className="text-white font-semibold">{metadata.aspectRatio}</div>
             </div>
-            
+
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">Channels</div>
               <div className="text-white font-semibold">{metadata.channels}</div>
             </div>
-            
+
             <div className="bg-white/5 rounded-lg p-3">
               <div className="text-white/60 text-sm">Has Alpha</div>
               <div className="text-white font-semibold">{metadata.hasAlpha ? 'Yes' : 'No'}</div>

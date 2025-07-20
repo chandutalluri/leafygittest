@@ -11,26 +11,26 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [isEnhancing, setIsEnhancing] = useState(false);
-  
+
   const [optimizeSettings, setOptimizeSettings] = useState({
     quality: 85,
-    format: 'webp'
+    format: 'webp',
   });
-  
+
   const [resizeSettings, setResizeSettings] = useState({
     width: 800,
     height: 600,
     quality: 90,
-    format: 'webp'
+    format: 'webp',
   });
-  
+
   const [enhanceSettings, setEnhanceSettings] = useState({
     brightness: 1,
     contrast: 1,
     saturation: 1,
     sharpen: false,
     blur: 0,
-    removeNoise: false
+    removeNoise: false,
   });
 
   const handleOptimize = async () => {
@@ -39,11 +39,11 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
       const response = await fetch(`/api/image-management/optimize/${imageId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(optimizeSettings)
+        body: JSON.stringify(optimizeSettings),
       });
-      
+
       if (!response.ok) throw new Error('Optimization failed');
-      
+
       const result = await response.json();
       toast.success(`Image optimized! Saved ${result.optimized.compressionRatio}% file size`);
       onOptimizationComplete(result);
@@ -60,11 +60,11 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
       const response = await fetch(`/api/image-management/resize/${imageId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(resizeSettings)
+        body: JSON.stringify(resizeSettings),
       });
-      
+
       if (!response.ok) throw new Error('Resizing failed');
-      
+
       const result = await response.json();
       toast.success(`Image resized to ${resizeSettings.width}x${resizeSettings.height}`);
       onOptimizationComplete(result);
@@ -81,11 +81,11 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
       const response = await fetch(`/api/image-management/enhance/${imageId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(enhanceSettings)
+        body: JSON.stringify(enhanceSettings),
       });
-      
+
       if (!response.ok) throw new Error('Enhancement failed');
-      
+
       const result = await response.json();
       toast.success('Image enhanced successfully');
       onOptimizationComplete(result);
@@ -105,7 +105,7 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
         className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
       >
         <h3 className="text-xl font-semibold text-white mb-4">🎯 Image Optimization</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
@@ -116,16 +116,18 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               min="1"
               max="100"
               value={optimizeSettings.quality}
-              onChange={(e) => setOptimizeSettings(prev => ({ ...prev, quality: parseInt(e.target.value) }))}
+              onChange={e =>
+                setOptimizeSettings(prev => ({ ...prev, quality: parseInt(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Output Format</label>
             <select
               value={optimizeSettings.format}
-              onChange={(e) => setOptimizeSettings(prev => ({ ...prev, format: e.target.value }))}
+              onChange={e => setOptimizeSettings(prev => ({ ...prev, format: e.target.value }))}
               className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
             >
               <option value="webp">WebP (Best compression)</option>
@@ -134,7 +136,7 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
             </select>
           </div>
         </div>
-        
+
         <button
           onClick={handleOptimize}
           disabled={isOptimizing}
@@ -152,28 +154,32 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
         className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
       >
         <h3 className="text-xl font-semibold text-white mb-4">📏 Image Resizing</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Width (px)</label>
             <input
               type="number"
               value={resizeSettings.width}
-              onChange={(e) => setResizeSettings(prev => ({ ...prev, width: parseInt(e.target.value) }))}
+              onChange={e =>
+                setResizeSettings(prev => ({ ...prev, width: parseInt(e.target.value) }))
+              }
               className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Height (px)</label>
             <input
               type="number"
               value={resizeSettings.height}
-              onChange={(e) => setResizeSettings(prev => ({ ...prev, height: parseInt(e.target.value) }))}
+              onChange={e =>
+                setResizeSettings(prev => ({ ...prev, height: parseInt(e.target.value) }))
+              }
               className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               Quality: {resizeSettings.quality}%
@@ -183,16 +189,18 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               min="1"
               max="100"
               value={resizeSettings.quality}
-              onChange={(e) => setResizeSettings(prev => ({ ...prev, quality: parseInt(e.target.value) }))}
+              onChange={e =>
+                setResizeSettings(prev => ({ ...prev, quality: parseInt(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">Output Format</label>
             <select
               value={resizeSettings.format}
-              onChange={(e) => setResizeSettings(prev => ({ ...prev, format: e.target.value }))}
+              onChange={e => setResizeSettings(prev => ({ ...prev, format: e.target.value }))}
               className="w-full p-2 bg-white/10 border border-white/20 rounded-lg text-white"
             >
               <option value="webp">WebP</option>
@@ -201,7 +209,7 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
             </select>
           </div>
         </div>
-        
+
         <button
           onClick={handleResize}
           disabled={isResizing}
@@ -219,7 +227,7 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
         className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20"
       >
         <h3 className="text-xl font-semibold text-white mb-4">✨ Image Enhancement</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
@@ -231,11 +239,13 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               max="3"
               step="0.1"
               value={enhanceSettings.brightness}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, brightness: parseFloat(e.target.value) }))}
+              onChange={e =>
+                setEnhanceSettings(prev => ({ ...prev, brightness: parseFloat(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               Contrast: {enhanceSettings.contrast}
@@ -246,11 +256,13 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               max="3"
               step="0.1"
               value={enhanceSettings.contrast}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, contrast: parseFloat(e.target.value) }))}
+              onChange={e =>
+                setEnhanceSettings(prev => ({ ...prev, contrast: parseFloat(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               Saturation: {enhanceSettings.saturation}
@@ -261,11 +273,13 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               max="3"
               step="0.1"
               value={enhanceSettings.saturation}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, saturation: parseFloat(e.target.value) }))}
+              onChange={e =>
+                setEnhanceSettings(prev => ({ ...prev, saturation: parseFloat(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-white/80 mb-2">
               Blur: {enhanceSettings.blur}px
@@ -276,34 +290,38 @@ const ImageOptimizer: React.FC<ImageOptimizerProps> = ({ imageId, onOptimization
               max="10"
               step="0.5"
               value={enhanceSettings.blur}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, blur: parseFloat(e.target.value) }))}
+              onChange={e =>
+                setEnhanceSettings(prev => ({ ...prev, blur: parseFloat(e.target.value) }))
+              }
               className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
             />
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
               checked={enhanceSettings.sharpen}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, sharpen: e.target.checked }))}
+              onChange={e => setEnhanceSettings(prev => ({ ...prev, sharpen: e.target.checked }))}
               className="w-5 h-5 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500"
             />
             <span className="text-white">Apply Sharpening</span>
           </label>
-          
+
           <label className="flex items-center space-x-3">
             <input
               type="checkbox"
               checked={enhanceSettings.removeNoise}
-              onChange={(e) => setEnhanceSettings(prev => ({ ...prev, removeNoise: e.target.checked }))}
+              onChange={e =>
+                setEnhanceSettings(prev => ({ ...prev, removeNoise: e.target.checked }))
+              }
               className="w-5 h-5 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500"
             />
             <span className="text-white">Remove Noise</span>
           </label>
         </div>
-        
+
         <button
           onClick={handleEnhance}
           disabled={isEnhancing}

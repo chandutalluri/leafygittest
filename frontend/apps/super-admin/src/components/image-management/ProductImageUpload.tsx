@@ -35,72 +35,75 @@ const IMAGE_VARIANTS: ImageVariantPreview[] = [
   { name: 'desktop-grid', description: 'Desktop Grid', icon: Monitor, size: '250x250' },
   { name: 'desktop-detail', description: 'Desktop Detail', icon: Monitor, size: '800x800' },
   { name: 'thumbnail', description: 'Standard Thumbnail', icon: ImageIcon, size: '150x150' },
-  { name: 'large', description: 'High Resolution', icon: ImageIcon, size: '1200x1200' }
+  { name: 'large', description: 'High Resolution', icon: ImageIcon, size: '1200x1200' },
 ];
 
 export default function ProductImageUpload({
   productId,
   entityType = 'products',
   onImagesChange,
-  maxImages = 5
+  maxImages = 5,
 }: ProductImageUploadProps) {
   const [uploadedImages, setUploadedImages] = useState<UploadedImage[]>([]);
   const [uploading, setUploading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [selectedVariant, setSelectedVariant] = useState<string>('original');
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    if (uploadedImages.length + acceptedFiles.length > maxImages) {
-      alert(`Maximum ${maxImages} images allowed`);
-      return;
-    }
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      if (uploadedImages.length + acceptedFiles.length > maxImages) {
+        alert(`Maximum ${maxImages} images allowed`);
+        return;
+      }
 
-    setUploading(true);
+      setUploading(true);
 
-    try {
-      const uploadPromises = acceptedFiles.map(async (file) => {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('entityType', entityType);
-        if (productId) {
-          formData.append('entityId', productId);
-        }
+      try {
+        const uploadPromises = acceptedFiles.map(async file => {
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('entityType', entityType);
+          if (productId) {
+            formData.append('entityId', productId);
+          }
 
-        const response = await fetch('/api/image-management/upload', {
-          method: 'POST',
-          body: formData,
+          const response = await fetch('/api/image-management/upload', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (!response.ok) {
+            throw new Error(`Upload failed: ${response.statusText}`);
+          }
+
+          const result = await response.json();
+          return result.data;
         });
 
-        if (!response.ok) {
-          throw new Error(`Upload failed: ${response.statusText}`);
+        const newImages = await Promise.all(uploadPromises);
+        const updatedImages = [...uploadedImages, ...newImages];
+        setUploadedImages(updatedImages);
+
+        if (onImagesChange) {
+          onImagesChange(updatedImages);
         }
-
-        const result = await response.json();
-        return result.data;
-      });
-
-      const newImages = await Promise.all(uploadPromises);
-      const updatedImages = [...uploadedImages, ...newImages];
-      setUploadedImages(updatedImages);
-      
-      if (onImagesChange) {
-        onImagesChange(updatedImages);
+      } catch (error) {
+        console.error('Upload failed:', error);
+        alert('Upload failed. Please try again.');
+      } finally {
+        setUploading(false);
       }
-    } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Upload failed. Please try again.');
-    } finally {
-      setUploading(false);
-    }
-  }, [uploadedImages, maxImages, entityType, productId, onImagesChange]);
+    },
+    [uploadedImages, maxImages, entityType, productId, onImagesChange]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp']
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp'],
     },
     multiple: true,
-    disabled: uploading || uploadedImages.length >= maxImages
+    disabled: uploading || uploadedImages.length >= maxImages,
   });
 
   const removeImage = async (imageId: string) => {
@@ -142,34 +145,27 @@ export default function ProductImageUpload({
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
-          ${isDragActive 
-            ? 'border-blue-400 bg-blue-50' 
-            : 'border-gray-300 hover:border-gray-400'
-          }
-          ${uploading || uploadedImages.length >= maxImages 
-            ? 'opacity-50 cursor-not-allowed' 
-            : ''
+          ${isDragActive ? 'border-blue-400 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}
+          ${
+            uploading || uploadedImages.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''
           }`}
       >
         <input {...getInputProps()} />
         <Upload className="mx-auto h-12 w-12 text-gray-400 mb-4" />
         <p className="text-lg font-medium text-gray-700 mb-2">
-          {isDragActive 
-            ? 'Drop images here...' 
-            : 'Drag & drop product images here'
-          }
+          {isDragActive ? 'Drop images here...' : 'Drag & drop product images here'}
         </p>
         <p className="text-sm text-gray-500 mb-4">
           or click to select files • Max {maxImages} images • JPEG, PNG, WebP
         </p>
-        
+
         {uploading && (
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-md">
             <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
             Processing images with optimization...
           </div>
         )}
-        
+
         <p className="text-xs text-gray-400 mt-2">
           Industry-standard optimization: Mobile, Tablet, Desktop variants
         </p>
@@ -179,7 +175,7 @@ export default function ProductImageUpload({
       <div className="bg-gray-50 rounded-lg p-4">
         <h4 className="font-medium text-gray-900 mb-3">Automatic Image Optimization</h4>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-          {IMAGE_VARIANTS.map((variant) => {
+          {IMAGE_VARIANTS.map(variant => {
             const IconComponent = variant.icon;
             return (
               <div key={variant.name} className="flex items-center space-x-2 text-sm">
@@ -205,7 +201,7 @@ export default function ProductImageUpload({
               <label className="text-sm text-gray-600">Preview variant:</label>
               <select
                 value={selectedVariant}
-                onChange={(e) => setSelectedVariant(e.target.value)}
+                onChange={e => setSelectedVariant(e.target.value)}
                 className="text-sm border border-gray-300 rounded px-2 py-1"
               >
                 <option value="original">Original</option>
@@ -219,20 +215,20 @@ export default function ProductImageUpload({
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {uploadedImages.map((image) => (
+            {uploadedImages.map(image => (
               <div key={image.id} className="relative group">
                 <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                   <img
                     src={getImageUrl(image, selectedVariant)}
                     alt={image.originalName}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
+                    onError={e => {
                       const target = e.target as HTMLImageElement;
                       target.src = getImageUrl(image, 'original');
                     }}
                   />
                 </div>
-                
+
                 {/* Image Actions */}
                 <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-opacity rounded-lg">
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity space-x-1">

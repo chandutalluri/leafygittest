@@ -4,8 +4,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { ShoppingCart, CreditCard, Truck, HeadphonesIcon, Search, Eye, RefreshCw, AlertCircle } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  ShoppingCart,
+  CreditCard,
+  Truck,
+  HeadphonesIcon,
+  Search,
+  Eye,
+  RefreshCw,
+  AlertCircle,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
@@ -77,7 +93,9 @@ export default function OrderOperations() {
   const [deliveryRoutes, setDeliveryRoutes] = useState<DeliveryRoute[]>([]);
   const [supportTickets, setSupportTickets] = useState<SupportTicket[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'payments' | 'delivery' | 'support'>('overview');
+  const [activeTab, setActiveTab] = useState<
+    'overview' | 'orders' | 'payments' | 'delivery' | 'support'
+  >('overview');
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -92,13 +110,13 @@ export default function OrderOperations() {
       const [ordersData, paymentsData, deliveryData, supportData] = await Promise.all([
         apiClient.get('/api/direct-data/orders', {
           search: searchTerm,
-          status: statusFilter !== 'all' ? statusFilter : undefined
+          status: statusFilter !== 'all' ? statusFilter : undefined,
         }),
         apiClient.get('/api/direct-data/payments'),
         apiClient.get('/api/direct-data/delivery-routes'),
-        apiClient.get('/api/direct-data/support-tickets')
+        apiClient.get('/api/direct-data/support-tickets'),
       ]);
-      
+
       setOrders(ordersData || []);
       setPayments(paymentsData || []);
       setDeliveryRoutes(deliveryData || []);
@@ -113,20 +131,20 @@ export default function OrderOperations() {
   const updateOrderStatus = async (orderId: string, status: string) => {
     try {
       await apiClient.put(`/api/direct-data/orders/${orderId}`, { status });
-      
+
       // If order is confirmed, automatically process payment
       if (status === 'confirmed') {
         await apiClient.post(`/api/direct-data/payments/${orderId}/process`);
       }
-      
+
       // If order is shipped, create delivery route
       if (status === 'shipped') {
         await apiClient.post('/api/direct-data/delivery-routes', {
           orderIds: [orderId],
-          driverId: 'auto-assign'
+          driverId: 'auto-assign',
         });
       }
-      
+
       fetchOrderOperationsData();
     } catch (error) {
       console.error('Failed to update order status:', error);
@@ -148,7 +166,7 @@ export default function OrderOperations() {
         orderId,
         subject: `Order Issue: ${issue}`,
         description: `Customer reported issue with order`,
-        priority: 'medium'
+        priority: 'medium',
       });
       fetchOrderOperationsData();
     } catch (error) {
@@ -156,46 +174,67 @@ export default function OrderOperations() {
     }
   };
 
-  const getOrderStatusColor = (status: string) => {
+  const getOrderStatusColor = (status: string): 'default' | 'secondary' | 'destructive' => {
     switch (status) {
-      case 'delivered': return 'default';
-      case 'shipped': return 'default';
-      case 'confirmed': return 'secondary';
-      case 'processing': return 'secondary';
-      case 'pending': return 'outline';
-      case 'cancelled': return 'destructive';
-      default: return 'outline';
+      case 'delivered':
+        return 'default';
+      case 'shipped':
+        return 'default';
+      case 'confirmed':
+        return 'secondary';
+      case 'processing':
+        return 'secondary';
+      case 'pending':
+        return 'secondary';
+      case 'cancelled':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
-  const getPaymentStatusColor = (status: string) => {
+  const getPaymentStatusColor = (status: string): 'default' | 'secondary' | 'destructive' => {
     switch (status) {
-      case 'completed': return 'default';
-      case 'processing': return 'secondary';
-      case 'pending': return 'outline';
-      case 'failed': return 'destructive';
-      case 'refunded': return 'secondary';
-      default: return 'outline';
+      case 'completed':
+        return 'default';
+      case 'processing':
+        return 'secondary';
+      case 'pending':
+        return 'secondary';
+      case 'failed':
+        return 'destructive';
+      case 'refunded':
+        return 'secondary';
+      default:
+        return 'secondary';
     }
   };
 
-  const getPriorityColor = (priority: string) => {
+  const getPriorityColor = (priority: string): 'default' | 'secondary' | 'destructive' => {
     switch (priority) {
-      case 'urgent': return 'destructive';
-      case 'high': return 'destructive';
-      case 'medium': return 'secondary';
-      case 'low': return 'outline';
-      default: return 'outline';
+      case 'urgent':
+        return 'destructive';
+      case 'high':
+        return 'destructive';
+      case 'medium':
+        return 'secondary';
+      case 'low':
+        return 'secondary';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredOrders = orders.filter(order =>
-    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOrders = orders.filter(
+    order =>
+      order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      order.customerName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalOrders = orders.length;
-  const pendingOrders = orders.filter(o => o.status === 'pending' || o.status === 'confirmed').length;
+  const pendingOrders = orders.filter(
+    o => o.status === 'pending' || o.status === 'confirmed'
+  ).length;
   const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
   const pendingPayments = payments.filter(p => p.status === 'pending').length;
 
@@ -238,7 +277,9 @@ export default function OrderOperations() {
             <CreditCard className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">₹{totalRevenue.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-green-600">
+              ₹{totalRevenue.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -281,7 +322,7 @@ export default function OrderOperations() {
 
       {/* Navigation Tabs */}
       <div className="flex space-x-4 border-b">
-        {['overview', 'orders', 'payments', 'delivery', 'support'].map((tab) => (
+        {['overview', 'orders', 'payments', 'delivery', 'support'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -309,7 +350,7 @@ export default function OrderOperations() {
             <Input
               placeholder="Search orders or customers..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -352,7 +393,7 @@ export default function OrderOperations() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredOrders.map((order) => (
+                  {filteredOrders.map(order => (
                     <tr key={order.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{order.orderNumber}</div>
@@ -365,9 +406,7 @@ export default function OrderOperations() {
                         <div className="text-sm text-gray-500">{order.customerEmail}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <div className="text-sm">
-                          {order.items.length} items
-                        </div>
+                        <div className="text-sm">{order.items.length} items</div>
                       </td>
                       <td className="py-3 px-4">₹{order.totalAmount}</td>
                       <td className="py-3 px-4">
@@ -383,11 +422,15 @@ export default function OrderOperations() {
                       <td className="py-3 px-4">{order.branchName}</td>
                       <td className="py-3 px-4">
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" onClick={() => setSelectedOrder(order)}>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setSelectedOrder(order)}
+                          >
                             <Eye className="h-4 w-4 mr-1" />
                             View
                           </Button>
-                          <Select onValueChange={(status) => updateOrderStatus(order.id, status)}>
+                          <Select onValueChange={status => updateOrderStatus(order.id, status)}>
                             <SelectTrigger className="w-28">
                               <SelectValue placeholder="Update" />
                             </SelectTrigger>
@@ -432,7 +475,7 @@ export default function OrderOperations() {
                   </tr>
                 </thead>
                 <tbody>
-                  {payments.map((payment) => (
+                  {payments.map(payment => (
                     <tr key={payment.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-mono text-sm">{payment.transactionId || 'N/A'}</div>
@@ -440,7 +483,7 @@ export default function OrderOperations() {
                       <td className="py-3 px-4">{payment.orderId}</td>
                       <td className="py-3 px-4">₹{payment.amount}</td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{payment.method.toUpperCase()}</Badge>
+                        <Badge variant="secondary">{payment.method.toUpperCase()}</Badge>
                       </td>
                       <td className="py-3 px-4">{payment.gateway}</td>
                       <td className="py-3 px-4">
@@ -453,8 +496,8 @@ export default function OrderOperations() {
                       </td>
                       <td className="py-3 px-4">
                         {payment.status === 'completed' && (
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             variant="outline"
                             onClick={() => processRefund(payment.id, payment.amount)}
                           >
@@ -479,7 +522,7 @@ export default function OrderOperations() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {deliveryRoutes.map((route) => (
+              {deliveryRoutes.map(route => (
                 <Card key={route.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -544,7 +587,7 @@ export default function OrderOperations() {
                   </tr>
                 </thead>
                 <tbody>
-                  {supportTickets.map((ticket) => (
+                  {supportTickets.map(ticket => (
                     <tr key={ticket.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-mono text-sm">#{ticket.id.slice(-6)}</div>
@@ -612,7 +655,7 @@ export default function OrderOperations() {
               <div>
                 <Label>Order Items</Label>
                 <div className="mt-2 space-y-2">
-                  {selectedOrder.items.map((item) => (
+                  {selectedOrder.items.map(item => (
                     <div key={item.id} className="flex justify-between p-2 bg-gray-50 rounded">
                       <div>
                         <div className="font-medium">{item.productName}</div>

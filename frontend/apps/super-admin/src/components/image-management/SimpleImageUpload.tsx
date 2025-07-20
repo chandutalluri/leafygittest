@@ -14,17 +14,17 @@ export default function SimpleImageUpload() {
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append('file', file);
-      
+
       const response = await fetch('/api/image-management/upload', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Upload failed: ${response.status} - ${errorText}`);
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
@@ -44,14 +44,14 @@ export default function SimpleImageUpload() {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.gif']
+      'image/*': ['.jpeg', '.jpg', '.png', '.webp', '.gif'],
     },
     maxSize: 10 * 1024 * 1024, // 10MB
   });
 
   const handleUpload = async () => {
     if (files.length === 0) return;
-    
+
     setUploading(true);
     try {
       for (const file of files) {
@@ -98,9 +98,7 @@ export default function SimpleImageUpload() {
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors ${
-            isDragActive
-              ? 'border-blue-500 bg-blue-50'
-              : 'border-gray-300 hover:border-gray-400'
+            isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
           }`}
         >
           <input {...getInputProps()} />
@@ -109,12 +107,8 @@ export default function SimpleImageUpload() {
             <p className="text-blue-600">Drop the images here...</p>
           ) : (
             <div>
-              <p className="text-gray-600 mb-2">
-                Drag and drop images here, or click to select
-              </p>
-              <p className="text-sm text-gray-500">
-                Supports JPEG, PNG, WebP, GIF up to 10MB
-              </p>
+              <p className="text-gray-600 mb-2">Drag and drop images here, or click to select</p>
+              <p className="text-sm text-gray-500">Supports JPEG, PNG, WebP, GIF up to 10MB</p>
             </div>
           )}
         </div>
@@ -134,9 +128,7 @@ export default function SimpleImageUpload() {
                   <div className="flex items-center">
                     <PhotoIcon className="h-5 w-5 text-gray-400 mr-3" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {file.name}
-                      </p>
+                      <p className="text-sm font-medium text-gray-900">{file.name}</p>
                       <p className="text-xs text-gray-500">
                         {(file.size / 1024 / 1024).toFixed(2)} MB
                       </p>
@@ -167,7 +159,9 @@ export default function SimpleImageUpload() {
             disabled={files.length === 0 || uploading}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            {uploading ? 'Uploading...' : `Upload ${files.length} ${files.length === 1 ? 'Image' : 'Images'}`}
+            {uploading
+              ? 'Uploading...'
+              : `Upload ${files.length} ${files.length === 1 ? 'Image' : 'Images'}`}
           </button>
         </div>
       </div>

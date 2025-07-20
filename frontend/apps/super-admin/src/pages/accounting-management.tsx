@@ -4,8 +4,8 @@ import { FinancialControlCenter } from '../components/business-domains';
 
 export default function AccountingManagement() {
   return (
-    <DashboardLayout 
-      title="Financial Control" 
+    <DashboardLayout
+      title="Financial Control"
       description="Comprehensive financial oversight"
       activeDomain="financial"
     >

@@ -4,8 +4,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
-import { Receipt, TrendingUp, TrendingDown, AlertTriangle, Calendar, Plus, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Receipt,
+  TrendingUp,
+  TrendingDown,
+  AlertTriangle,
+  Calendar,
+  Plus,
+  Filter,
+} from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -64,9 +79,9 @@ export default function ExpenseMonitoring() {
         apiClient.get('/api/direct-data/expenses', {
           status: statusFilter !== 'all' ? statusFilter : undefined,
           category: categoryFilter !== 'all' ? categoryFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/expense-budgets')
+        apiClient.get('/api/direct-data/expense-budgets'),
       ]);
       setExpenses(expensesData || []);
       setBudgets(budgetsData || []);
@@ -98,28 +113,39 @@ export default function ExpenseMonitoring() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'approved': return 'default';
-      case 'pending': return 'secondary';
-      case 'paid': return 'default';
-      case 'rejected': return 'destructive';
-      case 'reimbursed': return 'outline';
-      default: return 'secondary';
+      case 'approved':
+        return 'default';
+      case 'pending':
+        return 'secondary';
+      case 'paid':
+        return 'default';
+      case 'rejected':
+        return 'destructive';
+      case 'reimbursed':
+        return 'outline';
+      default:
+        return 'secondary';
     }
   };
 
   const getBudgetStatusColor = (status: string) => {
     switch (status) {
-      case 'on_track': return 'default';
-      case 'warning': return 'secondary';
-      case 'exceeded': return 'destructive';
-      default: return 'secondary';
+      case 'on_track':
+        return 'default';
+      case 'warning':
+        return 'secondary';
+      case 'exceeded':
+        return 'destructive';
+      default:
+        return 'secondary';
     }
   };
 
-  const filteredExpenses = expenses.filter(expense =>
-    expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    expense.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredExpenses = expenses.filter(
+    expense =>
+      expense.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      expense.employeeName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
@@ -130,7 +156,9 @@ export default function ExpenseMonitoring() {
     .reduce((sum, e) => sum + e.amount, 0);
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading expense monitoring...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">Loading expense monitoring...</div>
+    );
   }
 
   return (
@@ -153,7 +181,10 @@ export default function ExpenseMonitoring() {
                 <DialogTitle>Record New Expense</DialogTitle>
                 <DialogDescription>Add a new business expense to the system</DialogDescription>
               </DialogHeader>
-              <ExpenseForm onSubmit={createExpense} onCancel={() => setIsExpenseDialogOpen(false)} />
+              <ExpenseForm
+                onSubmit={createExpense}
+                onCancel={() => setIsExpenseDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -176,7 +207,9 @@ export default function ExpenseMonitoring() {
             <Calendar className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">₹{thisMonthExpenses.toLocaleString()}</div>
+            <div className="text-2xl font-bold text-green-600">
+              ₹{thisMonthExpenses.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -236,7 +269,7 @@ export default function ExpenseMonitoring() {
             <Input
               placeholder="Search expenses..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger>
@@ -275,7 +308,9 @@ export default function ExpenseMonitoring() {
         <Card>
           <CardHeader>
             <CardTitle>Expense Records</CardTitle>
-            <CardDescription>All recorded business expenses and their approval status</CardDescription>
+            <CardDescription>
+              All recorded business expenses and their approval status
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
@@ -293,7 +328,7 @@ export default function ExpenseMonitoring() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredExpenses.map((expense) => (
+                  {filteredExpenses.map(expense => (
                     <tr key={expense.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 text-sm">
                         {new Date(expense.date).toLocaleDateString()}
@@ -359,17 +394,21 @@ export default function ExpenseMonitoring() {
         <Card>
           <CardHeader>
             <CardTitle>Budget Tracking</CardTitle>
-            <CardDescription>Monitor expense budgets and spending limits by category</CardDescription>
+            <CardDescription>
+              Monitor expense budgets and spending limits by category
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {budgets.map((budget) => (
+              {budgets.map(budget => (
                 <Card key={budget.id}>
                   <CardHeader>
                     <div className="flex justify-between items-start">
                       <div>
                         <CardTitle className="text-lg">{budget.category}</CardTitle>
-                        <CardDescription>{budget.branchName} - {budget.period}</CardDescription>
+                        <CardDescription>
+                          {budget.branchName} - {budget.period}
+                        </CardDescription>
                       </div>
                       <Badge variant={getBudgetStatusColor(budget.status)}>
                         {budget.status.replace('_', ' ').toUpperCase()}
@@ -381,16 +420,21 @@ export default function ExpenseMonitoring() {
                       <div>
                         <div className="flex justify-between mb-2">
                           <span>Spent</span>
-                          <span className="font-medium">₹{budget.spentAmount.toLocaleString()}</span>
+                          <span className="font-medium">
+                            ₹{budget.spentAmount.toLocaleString()}
+                          </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-2">
                           <div
                             className={`h-2 rounded-full ${
-                              budget.status === 'exceeded' ? 'bg-red-500' :
-                              budget.status === 'warning' ? 'bg-yellow-500' : 'bg-green-500'
+                              budget.status === 'exceeded'
+                                ? 'bg-red-500'
+                                : budget.status === 'warning'
+                                  ? 'bg-yellow-500'
+                                  : 'bg-green-500'
                             }`}
                             style={{
-                              width: `${Math.min((budget.spentAmount / budget.budgetAmount) * 100, 100)}%`
+                              width: `${Math.min((budget.spentAmount / budget.budgetAmount) * 100, 100)}%`,
                             }}
                           />
                         </div>
@@ -402,13 +446,16 @@ export default function ExpenseMonitoring() {
                         </div>
                         <div>
                           <div className="text-gray-500">Remaining</div>
-                          <div className={`font-medium ${budget.remainingAmount < 0 ? 'text-red-600' : 'text-green-600'}`}>
+                          <div
+                            className={`font-medium ${budget.remainingAmount < 0 ? 'text-red-600' : 'text-green-600'}`}
+                          >
                             ₹{budget.remainingAmount.toLocaleString()}
                           </div>
                         </div>
                       </div>
                       <div className="text-xs text-gray-500">
-                        {((budget.spentAmount / budget.budgetAmount) * 100).toFixed(1)}% of budget used
+                        {((budget.spentAmount / budget.budgetAmount) * 100).toFixed(1)}% of budget
+                        used
                       </div>
                     </div>
                   </CardContent>
@@ -422,10 +469,10 @@ export default function ExpenseMonitoring() {
   );
 }
 
-function ExpenseForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function ExpenseForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<Expense>) => void;
   onCancel: () => void;
 }) {
@@ -437,7 +484,7 @@ function ExpenseForm({
     amount: 0,
     paymentMethod: 'card' as const,
     vendor: '',
-    receiptNumber: ''
+    receiptNumber: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -454,7 +501,7 @@ function ExpenseForm({
             id="date"
             type="date"
             value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            onChange={e => setFormData({ ...formData, date: e.target.value })}
             required
           />
         </div>
@@ -465,7 +512,7 @@ function ExpenseForm({
             type="number"
             step="0.01"
             value={formData.amount}
-            onChange={(e) => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
+            onChange={e => setFormData({ ...formData, amount: parseFloat(e.target.value) || 0 })}
             required
           />
         </div>
@@ -476,7 +523,7 @@ function ExpenseForm({
         <Textarea
           id="description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={e => setFormData({ ...formData, description: e.target.value })}
           placeholder="Enter expense description"
           required
         />
@@ -485,7 +532,10 @@ function ExpenseForm({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Label htmlFor="category">Category</Label>
-          <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
+          <Select
+            value={formData.category}
+            onValueChange={value => setFormData({ ...formData, category: value })}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select category" />
             </SelectTrigger>
@@ -503,7 +553,10 @@ function ExpenseForm({
         </div>
         <div>
           <Label htmlFor="paymentMethod">Payment Method</Label>
-          <Select value={formData.paymentMethod} onValueChange={(value: any) => setFormData({ ...formData, paymentMethod: value })}>
+          <Select
+            value={formData.paymentMethod}
+            onValueChange={(value: any) => setFormData({ ...formData, paymentMethod: value })}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -524,7 +577,7 @@ function ExpenseForm({
           <Input
             id="vendor"
             value={formData.vendor}
-            onChange={(e) => setFormData({ ...formData, vendor: e.target.value })}
+            onChange={e => setFormData({ ...formData, vendor: e.target.value })}
             placeholder="Enter vendor name"
             required
           />
@@ -534,7 +587,7 @@ function ExpenseForm({
           <Input
             id="receiptNumber"
             value={formData.receiptNumber}
-            onChange={(e) => setFormData({ ...formData, receiptNumber: e.target.value })}
+            onChange={e => setFormData({ ...formData, receiptNumber: e.target.value })}
             placeholder="Enter receipt number"
           />
         </div>
@@ -544,9 +597,7 @@ function ExpenseForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Create Expense
-        </Button>
+        <Button type="submit">Create Expense</Button>
       </div>
     </form>
   );

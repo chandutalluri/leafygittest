@@ -5,7 +5,14 @@ import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Globe, Languages, Edit, Plus, Download, Upload, Filter } from 'lucide-react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
@@ -73,9 +80,9 @@ export default function MultiLanguageManagement() {
         apiClient.get('/api/direct-data/translations', {
           language: languageFilter !== 'all' ? languageFilter : undefined,
           category: categoryFilter !== 'all' ? categoryFilter : undefined,
-          search: searchTerm
+          search: searchTerm,
         }),
-        apiClient.get('/api/direct-data/translation-keys')
+        apiClient.get('/api/direct-data/translation-keys'),
       ]);
       setLanguages(languagesData || []);
       setTranslations(translationsData || []);
@@ -149,24 +156,31 @@ export default function MultiLanguageManagement() {
     }
   };
 
-  const filteredTranslations = translations.filter(translation =>
-    translation.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    translation.value.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTranslations = translations.filter(
+    translation =>
+      translation.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      translation.value.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredKeys = translationKeys.filter(key =>
-    key.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    key.defaultValue.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredKeys = translationKeys.filter(
+    key =>
+      key.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      key.defaultValue.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalLanguages = languages.length;
   const activeLanguages = languages.filter(l => l.isActive).length;
   const totalTranslations = translations.length;
   const approvedTranslations = translations.filter(t => t.isApproved).length;
-  const translationProgress = totalTranslations > 0 ? Math.round((approvedTranslations / totalTranslations) * 100) : 0;
+  const translationProgress =
+    totalTranslations > 0 ? Math.round((approvedTranslations / totalTranslations) * 100) : 0;
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading multi-language management...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        Loading multi-language management...
+      </div>
+    );
   }
 
   return (
@@ -189,7 +203,10 @@ export default function MultiLanguageManagement() {
                 <DialogTitle>Add New Language</DialogTitle>
                 <DialogDescription>Add a new language for translation support</DialogDescription>
               </DialogHeader>
-              <LanguageForm onSubmit={createLanguage} onCancel={() => setIsLanguageDialogOpen(false)} />
+              <LanguageForm
+                onSubmit={createLanguage}
+                onCancel={() => setIsLanguageDialogOpen(false)}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -237,7 +254,7 @@ export default function MultiLanguageManagement() {
 
       {/* Tabs */}
       <div className="flex space-x-4 border-b">
-        {['languages', 'translations', 'keys'].map((tab) => (
+        {['languages', 'translations', 'keys'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
@@ -265,7 +282,7 @@ export default function MultiLanguageManagement() {
             <Input
               placeholder={`Search ${activeTab}...`}
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
             {activeTab === 'translations' && (
               <>
@@ -275,7 +292,7 @@ export default function MultiLanguageManagement() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Languages</SelectItem>
-                    {languages.map((lang) => (
+                    {languages.map(lang => (
                       <SelectItem key={lang.id} value={lang.code}>
                         {lang.name}
                       </SelectItem>
@@ -323,7 +340,7 @@ export default function MultiLanguageManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {languages.map((language) => (
+                  {languages.map(language => (
                     <tr key={language.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-medium">{language.name}</div>
@@ -412,7 +429,7 @@ export default function MultiLanguageManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredTranslations.map((translation) => (
+                  {filteredTranslations.map(translation => (
                     <tr key={translation.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-mono text-sm">{translation.key}</div>
@@ -438,10 +455,7 @@ export default function MultiLanguageManagement() {
                             Edit
                           </Button>
                           {!translation.isApproved && (
-                            <Button
-                              size="sm"
-                              onClick={() => approveTranslation(translation.id)}
-                            >
+                            <Button size="sm" onClick={() => approveTranslation(translation.id)}>
                               Approve
                             </Button>
                           )}
@@ -475,7 +489,7 @@ export default function MultiLanguageManagement() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredKeys.map((key) => (
+                  {filteredKeys.map(key => (
                     <tr key={key.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4">
                         <div className="font-mono text-sm">{key.key}</div>
@@ -506,10 +520,10 @@ export default function MultiLanguageManagement() {
   );
 }
 
-function LanguageForm({ 
-  onSubmit, 
-  onCancel 
-}: { 
+function LanguageForm({
+  onSubmit,
+  onCancel,
+}: {
   onSubmit: (data: Partial<Language>) => void;
   onCancel: () => void;
 }) {
@@ -517,7 +531,7 @@ function LanguageForm({
     name: '',
     code: '',
     nativeName: '',
-    isRTL: false
+    isRTL: false,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -528,7 +542,7 @@ function LanguageForm({
       isDefault: false,
       translationProgress: 0,
       totalKeys: 0,
-      translatedKeys: 0
+      translatedKeys: 0,
     });
   };
 
@@ -540,7 +554,7 @@ function LanguageForm({
           <Input
             id="name"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
             placeholder="English"
             required
           />
@@ -550,7 +564,7 @@ function LanguageForm({
           <Input
             id="code"
             value={formData.code}
-            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+            onChange={e => setFormData({ ...formData, code: e.target.value })}
             placeholder="en"
             required
           />
@@ -562,7 +576,7 @@ function LanguageForm({
         <Input
           id="nativeName"
           value={formData.nativeName}
-          onChange={(e) => setFormData({ ...formData, nativeName: e.target.value })}
+          onChange={e => setFormData({ ...formData, nativeName: e.target.value })}
           placeholder="English"
           required
         />
@@ -573,7 +587,7 @@ function LanguageForm({
           id="isRTL"
           type="checkbox"
           checked={formData.isRTL}
-          onChange={(e) => setFormData({ ...formData, isRTL: e.target.checked })}
+          onChange={e => setFormData({ ...formData, isRTL: e.target.checked })}
         />
         <Label htmlFor="isRTL">Right-to-Left (RTL) Language</Label>
       </div>
@@ -582,9 +596,7 @@ function LanguageForm({
         <Button type="button" variant="outline" onClick={onCancel}>
           Cancel
         </Button>
-        <Button type="submit">
-          Add Language
-        </Button>
+        <Button type="submit">Add Language</Button>
       </div>
     </form>
   );

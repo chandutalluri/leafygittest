@@ -3,7 +3,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { toast } from 'react-hot-toast';
 import { Plus, Search, Edit, Copy, Trash2, Eye, Grid, Ruler } from 'lucide-react';
 import { TemplateDesigner } from './TemplateDesigner';
@@ -39,11 +49,11 @@ interface TemplateManagerProps {
   onRefresh?: () => void;
 }
 
-export function TemplateManager({ 
-  templates: propTemplates, 
-  onTemplateSelect, 
-  onTemplateCreated, 
-  onRefresh 
+export function TemplateManager({
+  templates: propTemplates,
+  onTemplateSelect,
+  onTemplateCreated,
+  onRefresh,
 }: TemplateManagerProps = {}) {
   const [templates, setTemplates] = useState<LabelTemplate[]>(propTemplates || []);
   const [filteredTemplates, setFilteredTemplates] = useState<LabelTemplate[]>([]);
@@ -70,9 +80,9 @@ export function TemplateManager({
       setIsLoading(true);
       const response = await fetch('/api/labels/custom-templates');
       const data = await response.json();
-      
+
       if (response.ok) {
-        const templatesArray = Array.isArray(data) ? data : (data.data || []);
+        const templatesArray = Array.isArray(data) ? data : data.data || [];
         const templatesWithTotalLabels = templatesArray.map((template: any) => ({
           id: template.id,
           name: template.name || 'Unnamed Template',
@@ -94,7 +104,7 @@ export function TemplateManager({
           cornerRadius: parseFloat(template.corner_radius || '0'),
           templateType: template.template_type || 'product_label',
           createdAt: template.created_at || new Date().toISOString(),
-          updatedAt: template.updated_at || new Date().toISOString()
+          updatedAt: template.updated_at || new Date().toISOString(),
         }));
         setTemplates(templatesWithTotalLabels);
       } else {
@@ -112,11 +122,12 @@ export function TemplateManager({
     if (!searchTerm) {
       setFilteredTemplates(templates);
     } else {
-      const filtered = templates.filter(template =>
-        template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.templateType.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        template.paperSize.toLowerCase().includes(searchTerm.toLowerCase())
+      const filtered = templates.filter(
+        template =>
+          template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          template.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          template.templateType.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          template.paperSize.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredTemplates(filtered);
     }
@@ -147,8 +158,8 @@ export function TemplateManager({
           templateType: template.templateType,
           createdBy: 1, // TODO: Get from auth context
           companyId: 1,
-          branchId: 1
-        })
+          branchId: 1,
+        }),
       });
 
       const data = await response.json();
@@ -183,8 +194,8 @@ export function TemplateManager({
           ...template,
           createdBy: 1, // TODO: Get from auth context
           companyId: 1,
-          branchId: 1
-        })
+          branchId: 1,
+        }),
       });
 
       const data = await response.json();
@@ -207,16 +218,16 @@ export function TemplateManager({
       id: undefined,
       name: `${template.name} (Copy)`,
       createdAt: undefined,
-      updatedAt: undefined
+      updatedAt: undefined,
     };
-    
+
     await handleCreateTemplate(duplicatedTemplate);
   };
 
   const handleDeleteTemplate = async (templateId: number) => {
     try {
       const response = await fetch(`/api/labels/templates/${templateId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
 
       const data = await response.json();
@@ -234,31 +245,35 @@ export function TemplateManager({
 
   const formatTemplateType = (type: string | undefined) => {
     if (!type) return 'Custom Template';
-    
+
     const typeMap: { [key: string]: string } = {
-      'price_tag': 'Price Tag',
-      'product_label': 'Product Label',
-      'barcode_label': 'Barcode Label',
-      'nutrition_label': 'Nutrition Label',
-      'organic_certification': 'Organic Certificate',
-      'custom': 'Custom Design'
+      price_tag: 'Price Tag',
+      product_label: 'Product Label',
+      barcode_label: 'Barcode Label',
+      nutrition_label: 'Nutrition Label',
+      organic_certification: 'Organic Certificate',
+      custom: 'Custom Design',
     };
-    
-    return typeMap[type] || type.split('_').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ');
+
+    return (
+      typeMap[type] ||
+      type
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    );
   };
 
   const getTemplateTypeColor = (type: string | undefined) => {
     if (!type) return 'bg-gray-100 text-gray-800';
-    
+
     const colorMap: { [key: string]: string } = {
-      'price_tag': 'bg-green-100 text-green-800',
-      'product_label': 'bg-blue-100 text-blue-800',
-      'barcode_label': 'bg-purple-100 text-purple-800',
-      'nutrition_label': 'bg-orange-100 text-orange-800',
-      'organic_certification': 'bg-emerald-100 text-emerald-800',
-      'custom': 'bg-gray-100 text-gray-800'
+      price_tag: 'bg-green-100 text-green-800',
+      product_label: 'bg-blue-100 text-blue-800',
+      barcode_label: 'bg-purple-100 text-purple-800',
+      nutrition_label: 'bg-orange-100 text-orange-800',
+      organic_certification: 'bg-emerald-100 text-emerald-800',
+      custom: 'bg-gray-100 text-gray-800',
     };
     return colorMap[type] || 'bg-gray-100 text-gray-800';
   };
@@ -266,7 +281,7 @@ export function TemplateManager({
   const handlePreviewTemplate = (template: LabelTemplate) => {
     // Template-specific preview actions based on type
     const templateType = template.templateType || 'custom';
-    
+
     switch (templateType) {
       case 'price_tag':
         toast.success(`Previewing price tag template: ${template.name}`);
@@ -286,7 +301,7 @@ export function TemplateManager({
       default:
         toast.success(`Previewing custom template: ${template.name}`);
     }
-    
+
     // Here you could implement specific preview logic for each template type
     console.log(`Previewing ${templateType} template:`, template);
   };
@@ -304,7 +319,7 @@ export function TemplateManager({
           </Badge>
         </div>
       </CardHeader>
-      
+
       <CardContent>
         <div className="space-y-3">
           {/* Template Stats */}
@@ -322,9 +337,15 @@ export function TemplateManager({
           {/* Layout Info */}
           <div className="p-3 bg-gray-50 rounded-lg">
             <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-              <div>Layout: {template.horizontalCount}×{template.verticalCount}</div>
-              <div>Size: {template.labelWidth}×{template.labelHeight}mm</div>
-              <div>Paper: {template.paperWidth}×{template.paperHeight}mm</div>
+              <div>
+                Layout: {template.horizontalCount}×{template.verticalCount}
+              </div>
+              <div>
+                Size: {template.labelWidth}×{template.labelHeight}mm
+              </div>
+              <div>
+                Paper: {template.paperWidth}×{template.paperHeight}mm
+              </div>
               <div>Margins: {template.marginTop}mm</div>
             </div>
           </div>
@@ -334,7 +355,7 @@ export function TemplateManager({
             <div className="text-xs text-gray-500">
               Created {new Date(template.createdAt || '').toLocaleDateString()}
             </div>
-            
+
             <div className="flex gap-1">
               <Button
                 size="sm"
@@ -344,17 +365,19 @@ export function TemplateManager({
               >
                 <Eye className="w-4 h-4" />
               </Button>
-              
+
               <Button
                 size="sm"
                 variant="outline"
-                onClick={() => onTemplateSelect ? onTemplateSelect(template) : handleEditTemplate(template)}
+                onClick={() =>
+                  onTemplateSelect ? onTemplateSelect(template) : handleEditTemplate(template)
+                }
                 className="h-8 w-8 p-0"
-                title={onTemplateSelect ? "Load Template" : "Edit Template"}
+                title={onTemplateSelect ? 'Load Template' : 'Edit Template'}
               >
                 <Edit className="w-4 h-4" />
               </Button>
-              
+
               <Button
                 size="sm"
                 variant="outline"
@@ -363,7 +386,7 @@ export function TemplateManager({
               >
                 <Copy className="w-4 h-4" />
               </Button>
-              
+
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
@@ -378,7 +401,8 @@ export function TemplateManager({
                   <AlertDialogHeader>
                     <AlertDialogTitle>Delete Template</AlertDialogTitle>
                     <AlertDialogDescription>
-                      Are you sure you want to delete "{template.name}"? This action cannot be undone.
+                      Are you sure you want to delete "{template.name}"? This action cannot be
+                      undone.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -416,10 +440,12 @@ export function TemplateManager({
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-2xl font-bold">Template Management</h2>
-          <p className="text-gray-600">Create and manage custom label templates with precise dimensions</p>
+          <p className="text-gray-600">
+            Create and manage custom label templates with precise dimensions
+          </p>
         </div>
-        
-        <Button 
+
+        <Button
           onClick={() => {
             setEditingTemplate(null);
             setShowDesigner(true);
@@ -437,7 +463,7 @@ export function TemplateManager({
         <Input
           placeholder="Search templates..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={e => setSearchTerm(e.target.value)}
           className="pl-10"
         />
       </div>
@@ -450,7 +476,7 @@ export function TemplateManager({
             <div className="text-sm text-gray-600">Total Templates</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-green-600">
@@ -459,7 +485,7 @@ export function TemplateManager({
             <div className="text-sm text-gray-600">Product Labels</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-purple-600">
@@ -468,11 +494,13 @@ export function TemplateManager({
             <div className="text-sm text-gray-600">A4 Templates</div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-orange-600">
-              {Math.round(templates.reduce((acc, t) => acc + (t.totalLabels || 0), 0) / templates.length) || 0}
+              {Math.round(
+                templates.reduce((acc, t) => acc + (t.totalLabels || 0), 0) / templates.length
+              ) || 0}
             </div>
             <div className="text-sm text-gray-600">Avg Labels/Sheet</div>
           </CardContent>
@@ -487,13 +515,12 @@ export function TemplateManager({
             {searchTerm ? 'No templates found' : 'No templates created'}
           </h3>
           <p className="text-gray-500 mb-4">
-            {searchTerm 
+            {searchTerm
               ? 'Try adjusting your search terms'
-              : 'Create your first custom template to get started'
-            }
+              : 'Create your first custom template to get started'}
           </p>
           {!searchTerm && (
-            <Button 
+            <Button
               onClick={() => {
                 setEditingTemplate(null);
                 setShowDesigner(true);

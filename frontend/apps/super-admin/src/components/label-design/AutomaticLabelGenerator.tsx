@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
@@ -20,7 +20,9 @@ interface AutomaticLabelGeneratorProps {
   onLabelGenerated: (labelData: any) => void;
 }
 
-export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticLabelGeneratorProps) {
+export default function AutomaticLabelGenerator({
+  onLabelGenerated,
+}: AutomaticLabelGeneratorProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [labelType, setLabelType] = useState<'food' | 'delivery' | 'business'>('food');
@@ -30,7 +32,7 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
     customerName: '',
     address: '',
     phone: '',
-    quantity: 1
+    quantity: 1,
   });
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
       if (response.ok) {
         const data = await response.json();
         // Handle both array response and object with products array
-        const productList = Array.isArray(data) ? data : (data.products || []);
+        const productList = Array.isArray(data) ? data : data.products || [];
         console.log('Fetched products:', productList);
         setProducts(productList);
       } else {
@@ -60,7 +62,7 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
       product,
       type,
       timestamp: new Date().toISOString(),
-      generatedBy: 'automatic-system'
+      generatedBy: 'automatic-system',
     };
 
     switch (type) {
@@ -71,44 +73,70 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
             {
               type: 'text',
               content: product.name,
-              x: 20, y: 20, width: 280, height: 35,
-              fontSize: 18, fontWeight: 'bold', color: '#000000'
+              x: 20,
+              y: 20,
+              width: 280,
+              height: 35,
+              fontSize: 18,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'text',
               content: `MRP: ₹${product.mrp} (incl. all taxes)`,
-              x: 20, y: 60, width: 250, height: 25,
-              fontSize: 14, fontWeight: 'bold', color: '#DC2626'
+              x: 20,
+              y: 60,
+              width: 250,
+              height: 25,
+              fontSize: 14,
+              fontWeight: 'bold',
+              color: '#DC2626',
             },
             {
               type: 'text',
               content: `Net Qty: ${product.net_weight}`,
-              x: 20, y: 90, width: 200, height: 20,
-              fontSize: 12, color: '#000000'
+              x: 20,
+              y: 90,
+              width: 200,
+              height: 20,
+              fontSize: 12,
+              color: '#000000',
             },
             {
               type: 'text',
               content: 'FSSAI Lic. No: 12345678901234',
-              x: 20, y: 120, width: 250, height: 18,
-              fontSize: 10, fontWeight: 'bold', color: '#000000'
+              x: 20,
+              y: 120,
+              width: 250,
+              height: 18,
+              fontSize: 10,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'text',
               content: `Ingredients: ${product.ingredients}`,
-              x: 20, y: 145, width: 280, height: 40,
-              fontSize: 9, color: '#374151'
+              x: 20,
+              y: 145,
+              width: 280,
+              height: 40,
+              fontSize: 9,
+              color: '#374151',
             },
             {
               type: 'barcode',
               content: product.sku,
-              x: 20, y: 195, width: 120, height: 30
-            }
+              x: 20,
+              y: 195,
+              width: 120,
+              height: 30,
+            },
           ],
           compliance: {
             fssai: true,
             legalMetrology: true,
-            bis: product.category === 'packaged_food'
-          }
+            bis: product.category === 'packaged_food',
+          },
         };
 
       case 'delivery':
@@ -118,43 +146,69 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
             {
               type: 'text',
               content: `Order #${orderDetails.orderNumber}`,
-              x: 20, y: 20, width: 280, height: 30,
-              fontSize: 16, fontWeight: 'bold', color: '#000000'
+              x: 20,
+              y: 20,
+              width: 280,
+              height: 30,
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'text',
               content: orderDetails.customerName,
-              x: 20, y: 55, width: 280, height: 25,
-              fontSize: 14, fontWeight: 'bold', color: '#000000'
+              x: 20,
+              y: 55,
+              width: 280,
+              height: 25,
+              fontSize: 14,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'text',
               content: orderDetails.address,
-              x: 20, y: 85, width: 280, height: 40,
-              fontSize: 11, color: '#000000'
+              x: 20,
+              y: 85,
+              width: 280,
+              height: 40,
+              fontSize: 11,
+              color: '#000000',
             },
             {
               type: 'text',
               content: `Ph: ${orderDetails.phone}`,
-              x: 20, y: 130, width: 180, height: 20,
-              fontSize: 11, color: '#000000'
+              x: 20,
+              y: 130,
+              width: 180,
+              height: 20,
+              fontSize: 11,
+              color: '#000000',
             },
             {
               type: 'text',
               content: `Qty: ${orderDetails.quantity}`,
-              x: 210, y: 130, width: 90, height: 20,
-              fontSize: 11, fontWeight: 'bold', color: '#000000'
+              x: 210,
+              y: 130,
+              width: 90,
+              height: 20,
+              fontSize: 11,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'qr',
               content: `Order: ${orderDetails.orderNumber}, Customer: ${orderDetails.customerName}`,
-              x: 230, y: 20, width: 60, height: 60
-            }
+              x: 230,
+              y: 20,
+              width: 60,
+              height: 60,
+            },
           ],
           shipping: {
             trackingEnabled: true,
-            expressDelivery: false
-          }
+            expressDelivery: false,
+          },
         };
 
       case 'business':
@@ -164,45 +218,72 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
             {
               type: 'text',
               content: 'LEAFYHEALTH',
-              x: 20, y: 20, width: 280, height: 30,
-              fontSize: 20, fontWeight: 'bold', color: '#059669'
+              x: 20,
+              y: 20,
+              width: 280,
+              height: 30,
+              fontSize: 20,
+              fontWeight: 'bold',
+              color: '#059669',
             },
             {
               type: 'text',
               content: 'Organic Excellence',
-              x: 20, y: 55, width: 180, height: 20,
-              fontSize: 12, color: '#6B7280'
+              x: 20,
+              y: 55,
+              width: 180,
+              height: 20,
+              fontSize: 12,
+              color: '#6B7280',
             },
             {
               type: 'text',
               content: product.name,
-              x: 20, y: 85, width: 280, height: 25,
-              fontSize: 14, fontWeight: 'bold', color: '#000000'
+              x: 20,
+              y: 85,
+              width: 280,
+              height: 25,
+              fontSize: 14,
+              fontWeight: 'bold',
+              color: '#000000',
             },
             {
               type: 'text',
               content: `SKU: ${product.sku}`,
-              x: 20, y: 115, width: 120, height: 20,
-              fontSize: 10, color: '#6B7280'
+              x: 20,
+              y: 115,
+              width: 120,
+              height: 20,
+              fontSize: 10,
+              color: '#6B7280',
             },
             {
               type: 'text',
               content: `Brand: ${product.brand}`,
-              x: 150, y: 115, width: 130, height: 20,
-              fontSize: 10, color: '#6B7280'
+              x: 150,
+              y: 115,
+              width: 130,
+              height: 20,
+              fontSize: 10,
+              color: '#6B7280',
             },
             {
               type: 'text',
               content: 'For Business Use Only',
-              x: 20, y: 145, width: 200, height: 18,
-              fontSize: 9, fontStyle: 'italic', color: '#EF4444'
-            }
+              x: 20,
+              y: 145,
+              width: 200,
+              height: 18,
+              fontSize: 9,
+              fontStyle: 'italic',
+              color: '#EF4444',
+            },
           ],
           businessUse: {
             inventoryManagement: true,
             qualityControl: true,
-            batchTracking: true
-          }
+            batchTracking: true,
+          },
         };
 
       default:
@@ -227,10 +308,12 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
     setTimeout(() => {
       const labelData = generateLabelData(selectedProduct, labelType);
       console.log('🏷️ Generated label data:', labelData);
-      
+
       onLabelGenerated(labelData);
       setIsGenerating(false);
-      toast.success(`${labelType.charAt(0).toUpperCase() + labelType.slice(1)} label generated successfully!`);
+      toast.success(
+        `${labelType.charAt(0).toUpperCase() + labelType.slice(1)} label generated successfully!`
+      );
     }, 1500);
   };
 
@@ -239,15 +322,14 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
       <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4">
         <h3 className="text-lg font-bold text-orange-800 mb-2">🚀 Automatic Label Generation</h3>
         <p className="text-orange-700 text-sm">
-          Zero manual input required. Select a product, choose label type, and generate print-ready labels instantly.
+          Zero manual input required. Select a product, choose label type, and generate print-ready
+          labels instantly.
         </p>
       </div>
 
       {/* Label Type Selection */}
       <div className="space-y-3">
-        <label className="block text-sm font-medium text-gray-700">
-          Label Type
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Label Type</label>
         <div className="grid grid-cols-3 gap-3">
           <button
             onClick={() => setLabelType('food')}
@@ -290,19 +372,17 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
 
       {/* Product Selection */}
       <div className="space-y-3">
-        <label className="block text-sm font-medium text-gray-700">
-          Select Product
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Select Product</label>
         <select
           value={selectedProduct?.id || ''}
-          onChange={(e) => {
+          onChange={e => {
             const product = products.find(p => p.id === e.target.value);
             setSelectedProduct(product || null);
           }}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="">Choose a product...</option>
-          {products.map((product) => (
+          {products.map(product => (
             <option key={product.id} value={product.id}>
               {product.name} - ₹{product.mrp}
             </option>
@@ -316,25 +396,21 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
           <h4 className="font-medium text-blue-800">Delivery Details</h4>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Order Number
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Order Number</label>
               <input
                 type="text"
                 value={orderDetails.orderNumber}
-                onChange={(e) => setOrderDetails(prev => ({ ...prev, orderNumber: e.target.value }))}
+                onChange={e => setOrderDetails(prev => ({ ...prev, orderNumber: e.target.value }))}
                 placeholder="LH2025001"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Customer Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Customer Name</label>
               <input
                 type="text"
                 value={orderDetails.customerName}
-                onChange={(e) => setOrderDetails(prev => ({ ...prev, customerName: e.target.value }))}
+                onChange={e => setOrderDetails(prev => ({ ...prev, customerName: e.target.value }))}
                 placeholder="Customer Name"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -345,32 +421,30 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
               </label>
               <textarea
                 value={orderDetails.address}
-                onChange={(e) => setOrderDetails(prev => ({ ...prev, address: e.target.value }))}
+                onChange={e => setOrderDetails(prev => ({ ...prev, address: e.target.value }))}
                 placeholder="Complete delivery address..."
                 rows={2}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
               <input
                 type="tel"
                 value={orderDetails.phone}
-                onChange={(e) => setOrderDetails(prev => ({ ...prev, phone: e.target.value }))}
+                onChange={e => setOrderDetails(prev => ({ ...prev, phone: e.target.value }))}
                 placeholder="+91 9876543210"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Quantity
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Quantity</label>
               <input
                 type="number"
                 value={orderDetails.quantity}
-                onChange={(e) => setOrderDetails(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))}
+                onChange={e =>
+                  setOrderDetails(prev => ({ ...prev, quantity: parseInt(e.target.value) || 1 }))
+                }
                 min="1"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -384,12 +458,22 @@ export default function AutomaticLabelGenerator({ onLabelGenerated }: AutomaticL
         <div className="bg-gray-50 p-4 rounded-lg">
           <h4 className="font-medium text-gray-800 mb-2">Selected Product</h4>
           <div className="text-sm text-gray-600 space-y-1">
-            <div><strong>Name:</strong> {selectedProduct.name}</div>
-            <div><strong>SKU:</strong> {selectedProduct.sku}</div>
-            <div><strong>MRP:</strong> ₹{selectedProduct.mrp}</div>
-            <div><strong>Category:</strong> {selectedProduct.category}</div>
+            <div>
+              <strong>Name:</strong> {selectedProduct.name}
+            </div>
+            <div>
+              <strong>SKU:</strong> {selectedProduct.sku}
+            </div>
+            <div>
+              <strong>MRP:</strong> ₹{selectedProduct.mrp}
+            </div>
+            <div>
+              <strong>Category:</strong> {selectedProduct.category}
+            </div>
             {selectedProduct.net_weight && (
-              <div><strong>Net Weight:</strong> {selectedProduct.net_weight}</div>
+              <div>
+                <strong>Net Weight:</strong> {selectedProduct.net_weight}
+              </div>
             )}
           </div>
         </div>

@@ -49,13 +49,13 @@ export function LabelDesignWorkflow() {
 
   const handleDesignSave = async (elements: any[]) => {
     setCurrentDesign(elements);
-    
+
     // Show save template modal
     const templateName = prompt('Enter template name:');
     if (!templateName) return;
-    
+
     const templateDescription = prompt('Enter template description (optional):');
-    
+
     try {
       const response = await fetch('/api/labels/custom-templates', {
         method: 'POST',
@@ -71,12 +71,12 @@ export function LabelDesignWorkflow() {
               backgroundColor: '#ffffff',
               borderStyle: 'solid',
               borderWidth: 1,
-              borderColor: '#000000'
-            }
-          }
-        })
+              borderColor: '#000000',
+            },
+          },
+        }),
       });
-      
+
       const result = await response.json();
       if (result.success) {
         toast.success('Template saved successfully');
@@ -98,9 +98,13 @@ export function LabelDesignWorkflow() {
 
   const steps = [
     { id: 1, name: 'Media Template', completed: !!selectedMedia },
-    { id: 2, name: 'Label Design Template', completed: !!selectedDesignTemplate || currentDesign.length > 0 },
+    {
+      id: 2,
+      name: 'Label Design Template',
+      completed: !!selectedDesignTemplate || currentDesign.length > 0,
+    },
     { id: 3, name: 'Product Selection', completed: selectedProducts.length > 0 },
-    { id: 4, name: 'Print Job', completed: false }
+    { id: 4, name: 'Print Job', completed: false },
   ];
 
   return (
@@ -115,8 +119,8 @@ export function LabelDesignWorkflow() {
                   step.completed
                     ? 'bg-emerald-600 border-emerald-600 text-white'
                     : currentStep === step.id
-                    ? 'border-emerald-600 text-emerald-600'
-                    : 'border-gray-300 text-gray-500'
+                      ? 'border-emerald-600 text-emerald-600'
+                      : 'border-gray-300 text-gray-500'
                 }`}
               >
                 {step.completed ? '✓' : index + 1}
@@ -128,9 +132,7 @@ export function LabelDesignWorkflow() {
               >
                 {step.name}
               </span>
-              {index < steps.length - 1 && (
-                <div className="w-24 h-0.5 bg-gray-300 mx-4"></div>
-              )}
+              {index < steps.length - 1 && <div className="w-24 h-0.5 bg-gray-300 mx-4"></div>}
             </div>
           ))}
         </div>
@@ -143,21 +145,27 @@ export function LabelDesignWorkflow() {
           <div className="h-full">
             <div className="p-4 bg-gray-50 border-b">
               <h2 className="text-xl font-semibold text-gray-900">Step 1: Select Media Template</h2>
-              <p className="text-gray-600 mt-1">Choose the physical media type for your labels (A4, roll, etc.)</p>
+              <p className="text-gray-600 mt-1">
+                Choose the physical media type for your labels (A4, roll, etc.)
+              </p>
             </div>
             <MediaTemplateSelector onSelect={handleMediaSelect} />
           </div>
         )}
-        
+
         {/* Step 2: Label Design Template */}
         {currentStep === 2 && selectedMedia && (
           <div className="h-full">
             <div className="p-4 bg-gray-50 border-b">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Step 2: Create Label Design Template</h2>
+                  <h2 className="text-xl font-semibold text-gray-900">
+                    Step 2: Create Label Design Template
+                  </h2>
                   <p className="text-gray-600 mt-1">
-                    Design your label template for media: {selectedMedia.name} ({selectedMedia.dimensions.labelWidth} × {selectedMedia.dimensions.labelHeight}mm)
+                    Design your label template for media: {selectedMedia.name} (
+                    {selectedMedia.dimensions.labelWidth} × {selectedMedia.dimensions.labelHeight}
+                    mm)
                   </p>
                 </div>
                 <button
@@ -168,16 +176,13 @@ export function LabelDesignWorkflow() {
                 </button>
               </div>
             </div>
-            
+
             <div className="h-full">
-              <LabelDesigner
-                mediaTemplate={selectedMedia}
-                onSave={handleDesignSave}
-              />
+              <LabelDesigner mediaTemplate={selectedMedia} onSave={handleDesignSave} />
             </div>
           </div>
         )}
-        
+
         {/* Step 3: Product Selection */}
         {currentStep === 3 && selectedMedia && (
           <div className="h-full">
@@ -185,20 +190,26 @@ export function LabelDesignWorkflow() {
               <h2 className="text-xl font-semibold text-gray-900">Step 3: Select Products</h2>
               <p className="text-gray-600 mt-1">Choose which products will use this label design</p>
             </div>
-            
+
             <div className="p-6">
               <div className="bg-white border rounded-lg p-8">
                 <div className="text-center">
                   <h3 className="text-lg font-medium text-gray-900 mb-2">Product Selection</h3>
-                  <p className="text-gray-600 mb-4">Select products that will use this label design</p>
-                  
+                  <p className="text-gray-600 mb-4">
+                    Select products that will use this label design
+                  </p>
+
                   <div className="mb-6">
-                    <p className="text-sm text-gray-500 mb-2">Selected Products: {selectedProducts.length}</p>
+                    <p className="text-sm text-gray-500 mb-2">
+                      Selected Products: {selectedProducts.length}
+                    </p>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 min-h-[200px]">
-                      <p className="text-gray-500">Product selection interface will be implemented here</p>
+                      <p className="text-gray-500">
+                        Product selection interface will be implemented here
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex space-x-4 justify-center">
                     <button
                       onClick={() => setCurrentStep(2)}
@@ -222,25 +233,29 @@ export function LabelDesignWorkflow() {
             </div>
           </div>
         )}
-        
+
         {/* Step 4: Print Job */}
         {currentStep === 4 && selectedMedia && (
           <div className="h-full">
             <div className="p-4 bg-gray-50 border-b">
               <h2 className="text-xl font-semibold text-gray-900">Step 4: Create Print Job</h2>
-              <p className="text-gray-600 mt-1">Configure and execute the print job for your labels</p>
+              <p className="text-gray-600 mt-1">
+                Configure and execute the print job for your labels
+              </p>
             </div>
-            
+
             <PrintManager
               mediaTemplate={selectedMedia}
-              designTemplate={selectedDesignTemplate || {
-                id: 0,
-                name: 'Current Design',
-                templateJson: {
-                  elements: currentDesign,
-                  labelSettings: {}
+              designTemplate={
+                selectedDesignTemplate || {
+                  id: 0,
+                  name: 'Current Design',
+                  templateJson: {
+                    elements: currentDesign,
+                    labelSettings: {},
+                  },
                 }
-              }}
+              }
               selectedProducts={selectedProducts}
             />
           </div>
@@ -261,10 +276,7 @@ export function LabelDesignWorkflow() {
               </button>
             </div>
             <div className="overflow-auto max-h-[calc(80vh-120px)]">
-              <TemplateLibrary
-                mediaId={selectedMedia.id}
-                onSelect={handleTemplateSelect}
-              />
+              <TemplateLibrary mediaId={selectedMedia.id} onSelect={handleTemplateSelect} />
             </div>
           </div>
         </div>

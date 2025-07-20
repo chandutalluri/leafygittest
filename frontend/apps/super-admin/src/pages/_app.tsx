@@ -1,5 +1,5 @@
-import type { AppProps } from 'next/app'
-import { MainNavigation } from '../components/layout/MainNavigation'
+import type { AppProps } from 'next/app';
+import { MainNavigation } from '../components/layout/MainNavigation';
 import { QueryProvider } from '../providers/QueryProvider';
 import { ToastProvider } from '../providers/ToastProvider';
 import { AuthProvider } from '../providers/AuthProvider';
@@ -17,8 +17,8 @@ function AppWrapper({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-import '../styles/globals.css'
-import '../styles/accessibility.css'
+import '../styles/globals.css';
+import '../styles/accessibility.css';
 
 function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
   const { user, isAuthenticated, isLoading } = useAuthStore();
@@ -34,18 +34,20 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
         router.replace('/login');
         return;
       }
-      
+
       // Prevent dashboard flashing - secure routing for authenticated users
       if (isAuthenticated && user) {
         // Check user role/type for proper routing
-        const isGlobalAdmin = user.email === 'global.admin@leafyhealth.com' || 
-                              user.user_type === 'global_admin' || 
-                              user.role === 'global_admin';
-        
-        const isOperationalAdmin = user.email === 'ops.admin@leafyhealth.com' || 
-                                   user.user_type === 'operational_admin' || 
-                                   user.role === 'operational_admin';
-        
+        const isGlobalAdmin =
+          user.email === 'global.admin@leafyhealth.com' ||
+          user.user_type === 'global_admin' ||
+          user.role === 'global_admin';
+
+        const isOperationalAdmin =
+          user.email === 'ops.admin@leafyhealth.com' ||
+          user.user_type === 'operational_admin' ||
+          user.role === 'operational_admin';
+
         // Route users to appropriate dashboard
         if (router.pathname === '/') {
           if (isGlobalAdmin) {
@@ -94,11 +96,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
 
   if (isOperationalAdmin) {
     // Operations Admin: NO SIDEBAR - only main content
-    return (
-      <main className="min-h-screen bg-gray-50">
-        {children}
-      </main>
-    );
+    return <main className="min-h-screen bg-gray-50">{children}</main>;
   }
 
   // System Admin: Full dashboard layout with sidebar
@@ -106,9 +104,7 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen bg-gray-50">
       <MainNavigation />
       <main className="flex-1 overflow-auto">
-        <div className="p-8">
-          {children}
-        </div>
+        <div className="p-8">{children}</div>
       </main>
     </div>
   );
@@ -129,7 +125,7 @@ function App({ Component, pageProps }: AppProps) {
         </AuthProvider>
       </QueryProvider>
     </AppWrapper>
-  )
+  );
 }
 
 export default App;

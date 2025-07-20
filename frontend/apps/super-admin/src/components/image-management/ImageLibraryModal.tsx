@@ -17,7 +17,7 @@ export default function ImageLibraryModal({
   onClose,
   onSelectImages,
   entityType = 'product',
-  maxSelection = 5
+  maxSelection = 5,
 }: ImageLibraryModalProps) {
   const [images, setImages] = useState<ImageMetadata[]>([]);
   const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
@@ -37,16 +37,18 @@ export default function ImageLibraryModal({
       if (response.ok) {
         const data = await response.json();
         const imageList = data.images || data || [];
-        setImages(imageList.map((img: any) => ({
-          ...img,
-          variants: {
-            thumbnail: `/api/image-management/variants/${img.filename}?variant=thumbnail`,
-            small: `/api/image-management/variants/${img.filename}?variant=small`,
-            medium: `/api/image-management/variants/${img.filename}?variant=medium`,
-            large: `/api/image-management/variants/${img.filename}?variant=large`,
-            original: `/api/image-management/serve/${img.filename}`
-          }
-        })));
+        setImages(
+          imageList.map((img: any) => ({
+            ...img,
+            variants: {
+              thumbnail: `/api/image-management/variants/${img.filename}?variant=thumbnail`,
+              small: `/api/image-management/variants/${img.filename}?variant=small`,
+              medium: `/api/image-management/variants/${img.filename}?variant=medium`,
+              large: `/api/image-management/variants/${img.filename}?variant=large`,
+              original: `/api/image-management/serve/${img.filename}`,
+            },
+          }))
+        );
       }
     } catch (error) {
       console.error('Failed to fetch images:', error);
@@ -72,9 +74,10 @@ export default function ImageLibraryModal({
     setSelectedImages(new Set());
   };
 
-  const filteredImages = images.filter(img =>
-    img.originalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    img.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredImages = images.filter(
+    img =>
+      img.originalName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      img.description?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (!isOpen) return null;
@@ -95,10 +98,7 @@ export default function ImageLibraryModal({
               Select up to {maxSelection} images ({selectedImages.size} selected)
             </p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          >
+          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
             <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
@@ -109,7 +109,7 @@ export default function ImageLibraryModal({
             type="text"
             placeholder="Search images..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
         </div>
@@ -128,25 +128,28 @@ export default function ImageLibraryModal({
             </div>
           ) : (
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-              {filteredImages.map((image) => {
+              {filteredImages.map(image => {
                 const isSelected = selectedImages.has(image.id);
                 return (
                   <div
                     key={image.id}
                     onClick={() => toggleImageSelection(image.id)}
                     className={`relative cursor-pointer rounded-lg overflow-hidden border-2 transition-all ${
-                      isSelected ? 'border-green-500 ring-2 ring-green-200' : 'border-gray-200 hover:border-gray-300'
+                      isSelected
+                        ? 'border-green-500 ring-2 ring-green-200'
+                        : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="aspect-square relative">
-                      <Image
-                        src={image.variants?.thumbnail || `/api/image-management/serve/${image.filename}`}
+                      <img
+                        src={
+                          image.variants?.thumbnail ||
+                          `/api/image-management/serve/${image.filename}`
+                        }
                         alt={image.originalName}
-                        fill
-                        className="object-cover"
-                        sizes="150px"
+                        className="w-full h-full object-cover"
                       />
-                      
+
                       {isSelected && (
                         <div className="absolute inset-0 bg-green-500/20 flex items-center justify-center">
                           <div className="bg-green-500 rounded-full p-1">
@@ -155,7 +158,7 @@ export default function ImageLibraryModal({
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="p-2">
                       <p className="text-xs text-gray-600 truncate" title={image.originalName}>
                         {image.originalName}

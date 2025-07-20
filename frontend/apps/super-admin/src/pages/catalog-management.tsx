@@ -4,8 +4,8 @@ import { ProductEcosystemHub } from '../components/business-domains';
 
 export default function CatalogManagement() {
   return (
-    <DashboardLayout 
-      title="Product Ecosystem" 
+    <DashboardLayout
+      title="Product Ecosystem"
       description="Complete product lifecycle management"
       activeDomain="products"
     >

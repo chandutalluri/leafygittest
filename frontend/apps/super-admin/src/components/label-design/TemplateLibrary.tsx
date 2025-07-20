@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
@@ -21,7 +21,7 @@ export function TemplateLibrary({ mediaId, onSelect }: TemplateLibraryProps) {
       setLoading(true);
       const response = await fetch(`/api/labels/custom-templates?mediaId=${mediaId}`);
       const result = await response.json();
-      
+
       if (result.success) {
         setTemplates(result.data || []);
       } else {
@@ -53,7 +53,7 @@ export function TemplateLibrary({ mediaId, onSelect }: TemplateLibraryProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {templates.map((template) => (
+          {templates.map(template => (
             <div
               key={template.id}
               className="bg-white border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"

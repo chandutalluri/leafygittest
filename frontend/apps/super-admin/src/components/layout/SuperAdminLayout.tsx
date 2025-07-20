@@ -1,23 +1,20 @@
-import { ReactNode } from 'react'
-
+import { ReactNode } from 'react';
 
 interface SuperAdminLayoutProps {
-  children: ReactNode
-  title: string
-  subtitle: string
-  icon?: string
-  showBackButton?: boolean
+  children: ReactNode;
+  title: string;
+  subtitle: string;
+  icon?: string;
+  showBackButton?: boolean;
 }
 
-function SuperAdminLayoutContent({ 
-  children, 
-  title, 
-  subtitle, 
-  icon = "⚙️",
-  showBackButton = true 
+function SuperAdminLayoutContent({
+  children,
+  title,
+  subtitle,
+  icon = '⚙️',
+  showBackButton = true,
 }: SuperAdminLayoutProps) {
-
-  
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50">
       {/* Header */}
@@ -40,14 +37,13 @@ function SuperAdminLayoutContent({
                 System Status: <span className="text-green-600 font-medium">Operational</span>
               </div>
               {showBackButton && (
-                <button 
-                  onClick={() => window.location.href = '/superadmin/operational-dashboard'}
+                <button
+                  onClick={() => (window.location.href = '/superadmin/operational-dashboard')}
                   className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700"
                 >
                   Back to Dashboard
                 </button>
               )}
-
             </div>
           </div>
         </div>
@@ -55,28 +51,22 @@ function SuperAdminLayoutContent({
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          {children}
-        </div>
+        <div className="px-4 py-6 sm:px-0">{children}</div>
       </main>
 
       {/* Footer */}
       <footer className="bg-white border-t border-gray-200 mt-12">
         <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <p className="text-sm text-gray-500">
-              LeafyHealth Super Admin v1.1
-            </p>
-            <p className="text-sm text-gray-500">
-              System Management Interface
-            </p>
+            <p className="text-sm text-gray-500">LeafyHealth Super Admin v1.1</p>
+            <p className="text-sm text-gray-500">System Management Interface</p>
           </div>
         </div>
       </footer>
     </div>
-  )
+  );
 }
 
 export function SuperAdminLayout(props: SuperAdminLayoutProps) {
-  return <SuperAdminLayoutContent {...props} />
+  return <SuperAdminLayoutContent {...props} />;
 }
