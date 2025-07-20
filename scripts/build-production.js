@@ -8,7 +8,6 @@
 const { execSync, spawn } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const chalk = require('chalk');
 
 class ProductionBuilder {
   constructor() {
@@ -19,12 +18,9 @@ class ProductionBuilder {
 
   log(message, type = 'info') {
     const timestamp = new Date().toISOString();
-    const coloredMessage = type === 'error' ? chalk.red(message) : 
-                          type === 'success' ? chalk.green(message) : 
-                          type === 'warning' ? chalk.yellow(message) : 
-                          chalk.blue(message);
+    const prefix = type === 'error' ? '❌' : type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️';
     
-    console.log(`[${timestamp}] ${coloredMessage}`);
+    console.log(`[${timestamp}] ${prefix} ${message}`);
     this.buildLog.push(`[${timestamp}] ${message}`);
   }
 
