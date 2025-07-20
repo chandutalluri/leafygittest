@@ -280,12 +280,18 @@ function proxyRequest(req, res, targetPort, targetPath, requestBody = null) {
     }
   });
 
-  // Send request body if present
+  // Handle request body
   if (requestBody) {
+    // If we have a pre-parsed body, write it
     proxyReq.write(requestBody);
+    proxyReq.end();
+  } else if (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') {
+    // For multipart uploads, pipe the request directly
+    req.pipe(proxyReq);
+  } else {
+    // No body needed
+    proxyReq.end();
   }
-  
-  proxyReq.end();
 }
 
 // Device detection function already declared at top of file
@@ -578,7 +584,12 @@ async function handleRequest(req, res) {
 
   // API routes - proxy to backend microservices with fixed routing
   if (pathname.startsWith('/api/')) {
-    const requestBody = req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH' 
+    // Check if this is a multipart form upload for image management
+    const isImageUpload = pathname.startsWith('/api/image-management/upload') && 
+                         req.headers['content-type'] && 
+                         req.headers['content-type'].includes('multipart/form-data');
+    
+    const requestBody = (req.method === 'POST' || req.method === 'PUT' || req.method === 'PATCH') && !isImageUpload
       ? await parseRequestBody(req) : null;
 
     // Fixed authentication service routing

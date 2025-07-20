@@ -109,7 +109,20 @@ export class ImageManagementController {
         throw new Error('No file uploaded');
       }
 
-      const { originalname, filename, path: filePath, size, mimetype } = file;
+      // Generate unique filename
+      const uniqueId = uuidv4();
+      const ext = path.extname(file.originalname);
+      const filename = `${uniqueId}${ext}`;
+      
+      // Save file to disk
+      const uploadDir = path.join(process.cwd(), 'uploads', 'images');
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      
+      const filePath = path.join(uploadDir, filename);
+      fs.writeFileSync(filePath, file.buffer);
+
       const { alt_text, description, category, entity_type, entity_id, branch_id } = body;
 
       // Insert into database
@@ -117,7 +130,7 @@ export class ImageManagementController {
         `INSERT INTO images (filename, original_name, file_path, file_size, mime_type, alt_text, description, category, entity_type, entity_id, branch_id) 
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) 
          RETURNING *`,
-        [filename, originalname, filePath, size, mimetype, alt_text, description, category, entity_type, entity_id, branch_id]
+        [filename, file.originalname, filePath, file.size, file.mimetype, alt_text, description, category, entity_type, entity_id, branch_id || 1]
       );
 
       return {
