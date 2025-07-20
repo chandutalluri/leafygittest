@@ -118,7 +118,7 @@ export default function AccountingManagement() {
       case 'revenue':
         return 'default';
       case 'expense':
-        return 'outline';
+        return 'destructive';
       default:
         return 'secondary';
     }
@@ -131,7 +131,7 @@ export default function AccountingManagement() {
       case 'reviewed':
         return 'secondary';
       case 'draft':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }

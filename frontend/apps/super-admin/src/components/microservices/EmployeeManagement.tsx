@@ -135,7 +135,7 @@ export default function EmployeeManagement() {
       case 'terminated':
         return 'destructive';
       case 'on_leave':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }
@@ -152,7 +152,7 @@ export default function EmployeeManagement() {
       case 'half_day':
         return 'secondary';
       case 'holiday':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }

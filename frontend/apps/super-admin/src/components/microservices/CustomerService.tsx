@@ -127,7 +127,7 @@ export default function CustomerService() {
       case 'resolved':
         return 'default';
       case 'closed':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }
@@ -142,7 +142,7 @@ export default function CustomerService() {
       case 'medium':
         return 'secondary';
       case 'low':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }
@@ -468,7 +468,7 @@ function getPriorityColor(priority: string) {
     case 'medium':
       return 'secondary';
     case 'low':
-      return 'outline';
+      return 'secondary';
     default:
       return 'secondary';
   }

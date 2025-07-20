@@ -150,11 +150,11 @@ export default function OrderManagement() {
           </p>
         </div>
         <div className="flex gap-2">
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="secondary" className="text-sm">
             <ShoppingCart className="w-4 h-4 mr-1" />
             {orders.length} Total Orders
           </Badge>
-          <Badge variant="outline" className="text-sm">
+          <Badge variant="secondary" className="text-sm">
             <DollarSign className="w-4 h-4 mr-1" />$
             {orders.reduce((sum, order) => sum + order.totalAmount, 0).toFixed(2)}
           </Badge>
@@ -303,7 +303,7 @@ export default function OrderManagement() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold">Order Details: {selectedOrder.orderNumber}</h3>
-                <Button variant="ghost" onClick={() => setSelectedOrder(null)}>
+                <Button variant="outline" onClick={() => setSelectedOrder(null)}>
                   ×
                 </Button>
               </div>

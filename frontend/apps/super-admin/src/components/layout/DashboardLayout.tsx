@@ -95,7 +95,7 @@ export function DashboardLayout({
                   System Status: <span className="text-green-600 font-medium">Operational</span>
                 </div>
                 <div className="text-sm text-gray-500">
-                  {user?.firstName} {user?.lastName}
+                  {user?.email}
                 </div>
               </div>
             </div>

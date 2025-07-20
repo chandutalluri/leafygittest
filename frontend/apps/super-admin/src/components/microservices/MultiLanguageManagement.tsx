@@ -347,7 +347,7 @@ export default function MultiLanguageManagement() {
                         <div className="text-sm text-gray-500">{language.nativeName}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{language.code}</Badge>
+                        <Badge variant="secondary">{language.code}</Badge>
                       </td>
                       <td className="py-3 px-4">
                         <div className="flex items-center gap-2">
@@ -435,13 +435,13 @@ export default function MultiLanguageManagement() {
                         <div className="font-mono text-sm">{translation.key}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{translation.languageCode}</Badge>
+                        <Badge variant="secondary">{translation.languageCode}</Badge>
                       </td>
                       <td className="py-3 px-4">
                         <div className="max-w-xs truncate">{translation.value}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{translation.category}</Badge>
+                        <Badge variant="secondary">{translation.category}</Badge>
                       </td>
                       <td className="py-3 px-4">
                         <Badge variant={translation.isApproved ? 'default' : 'secondary'}>
@@ -498,7 +498,7 @@ export default function MultiLanguageManagement() {
                         <div className="max-w-xs truncate">{key.defaultValue}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline">{key.category}</Badge>
+                        <Badge variant="secondary">{key.category}</Badge>
                       </td>
                       <td className="py-3 px-4">
                         <div className="text-sm text-gray-500">{key.description || '-'}</div>

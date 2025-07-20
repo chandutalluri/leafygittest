@@ -323,16 +323,16 @@ export default function TemplatePreview({
 
   const renderSheetPreview = (template: LabelTemplate) => {
     const scale = 1; // Smaller scale for sheet view
-    const labelWidth = template.label_width * scale;
-    const labelHeight = template.label_height * scale;
+    const labelWidth = (template.label_width || 100) * scale;
+    const labelHeight = (template.label_height || 50) * scale;
     const marginTop = (template.margin_top || 10) * scale;
     const marginLeft = (template.margin_left || 10) * scale;
     const hGap = (template.horizontal_gap || 3) * scale;
     const vGap = (template.vertical_gap || 3) * scale;
 
     const labels = [];
-    for (let row = 0; row < template.vertical_count; row++) {
-      for (let col = 0; col < template.horizontal_count; col++) {
+    for (let row = 0; row < (template.vertical_count || 1); row++) {
+      for (let col = 0; col < (template.horizontal_count || 1); col++) {
         const left = marginLeft + col * (labelWidth + hGap);
         const top = marginTop + row * (labelHeight + vGap);
 
@@ -675,7 +675,7 @@ export default function TemplatePreview({
                   </div>
                   <div>
                     <span className="text-gray-500">Labels per Sheet:</span>{' '}
-                    {selectedTemplate.horizontal_count * selectedTemplate.vertical_count}
+                    {(selectedTemplate.horizontal_count || 1) * (selectedTemplate.vertical_count || 1)}
                   </div>
                   <div>
                     <span className="text-gray-500">Label Size:</span>{' '}

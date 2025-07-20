@@ -122,7 +122,7 @@ export default function ExpenseMonitoring() {
       case 'rejected':
         return 'destructive';
       case 'reimbursed':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }

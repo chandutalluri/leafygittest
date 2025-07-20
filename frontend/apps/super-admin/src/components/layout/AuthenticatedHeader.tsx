@@ -29,7 +29,7 @@ export const AuthenticatedHeader: React.FC = () => {
             <UserCircleIcon className="h-8 w-8 text-gray-400" />
             <div>
               <p className="text-sm font-medium text-gray-900">
-                {user?.firstName} {user?.lastName}
+                {user?.email}
               </p>
               <p className="text-xs text-gray-500">{user?.email}</p>
               <p className="text-xs text-purple-600 font-medium">

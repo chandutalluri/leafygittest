@@ -52,7 +52,7 @@ function SecureLogoutButton() {
         <UserCircle className="h-4 w-4 text-gray-400 mr-2" />
         <div className="flex-1 min-w-0">
           <p className="text-xs font-medium text-gray-900 truncate">
-            {user?.firstName} {user?.lastName}
+            {user?.email}
           </p>
           <p className="text-xs text-gray-500 truncate">{user?.email}</p>
         </div>

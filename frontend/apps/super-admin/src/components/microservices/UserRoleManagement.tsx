@@ -131,8 +131,8 @@ export default function UserRoleManagement() {
                       <Badge variant={user.isActive ? 'default' : 'secondary'}>
                         {user.isActive ? 'Active' : 'Inactive'}
                       </Badge>
-                      <Badge variant="outline">{user.role}</Badge>
-                      <Button variant="ghost" size="sm">
+                      <Badge variant="secondary">{user.role}</Badge>
+                      <Button variant="outline" size="sm">
                         <Settings className="w-4 h-4" />
                       </Button>
                     </div>

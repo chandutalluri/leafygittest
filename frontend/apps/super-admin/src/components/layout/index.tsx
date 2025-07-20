@@ -214,7 +214,7 @@ const SidebarContent = ({
                   Business Domains
                 </h3>
               </div>
-              {businessDomains.map(domain => {
+              {businessDomains.map((domain: any) => {
                 const Icon = domain.icon;
                 return (
                   <a
@@ -233,13 +233,13 @@ const SidebarContent = ({
                     <div className="mt-1 ml-8">
                       <p className="text-xs text-gray-500">{domain.description}</p>
                       <div className="flex flex-wrap gap-1 mt-1">
-                        {domain.services.slice(0, 2).map(service => (
-                          <Badge key={service} variant="outline" className="text-xs">
+                        {domain.services.slice(0, 2).map((service: any) => (
+                          <Badge key={service} variant="secondary" className="text-xs">
                             {service.split('-')[0]}
                           </Badge>
                         ))}
                         {domain.services.length > 2 && (
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="secondary" className="text-xs">
                             +{domain.services.length - 2}
                           </Badge>
                         )}
@@ -256,7 +256,7 @@ const SidebarContent = ({
                   Global Administration
                 </h3>
               </div>
-              {globalAdminNavigation.map(item => {
+              {globalAdminNavigation.map((item: any) => {
                 const Icon = item.icon;
                 return (
                   <a

@@ -1043,9 +1043,9 @@ Customer Care: {{CUSTOMER_CARE}}`,
       {showModal === 'qr' && (
         <EnhancedQRCodeGenerator
           onClose={() => setShowModal(null)}
-          onGenerate={qrData => {
+          onQRCodeGenerated={qrData => {
             addElement('qr', {
-              content: qrData.data,
+              content: qrData.content,
               qrType: qrData.type,
               width: 100,
               height: 100,
@@ -1058,9 +1058,9 @@ Customer Care: {{CUSTOMER_CARE}}`,
       {showModal === 'barcode' && (
         <MultipleBarcodeGenerator
           onClose={() => setShowModal(null)}
-          onAddToCanvas={barcodeData => {
+          onBarcodeGenerated={barcodeData => {
             addElement('barcode', {
-              content: barcodeData.value,
+              content: barcodeData.content,
               width: 150,
               height: 50,
             });
@@ -1071,14 +1071,13 @@ Customer Care: {{CUSTOMER_CARE}}`,
 
       {showModal === 'nutrition' && (
         <DynamicNutritionFacts
-          onClose={() => setShowModal(null)}
-          onAddToCanvas={nutritionData => {
-            addElement('nutrition-table', {
-              nutritionData,
-              width: 200,
-              height: 250,
-            });
-            setShowModal(null);
+          width={200}
+          height={250}
+          nutritionData={{
+            energy_kcal: 250,
+            protein: 12,
+            total_fat: 15,
+            carbohydrates: 30
           }}
         />
       )}
@@ -1165,9 +1164,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
 
       {showModal === 'auto-generate' && (
         <AutomaticLabelGenerator
-          onClose={() => setShowModal(null)}
-          selectedProduct={selectedProduct}
-          onGenerate={elements => {
+          onLabelGenerated={elements => {
             setCanvasElements(elements);
             setShowModal(null);
           }}
@@ -1176,8 +1173,7 @@ Customer Care: {{CUSTOMER_CARE}}`,
 
       {showModal === 'templates' && (
         <AutomaticLabelTemplates
-          onClose={() => setShowModal(null)}
-          onSelectTemplate={template => {
+          onTemplateSelect={template => {
             setCanvasElements(template.elements);
             setShowModal(null);
             toast.success('Template applied');

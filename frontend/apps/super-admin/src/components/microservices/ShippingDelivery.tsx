@@ -165,7 +165,7 @@ export default function ShippingDelivery() {
       case 'medium':
         return 'secondary';
       case 'low':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }
@@ -514,12 +514,12 @@ export default function ShippingDelivery() {
                         <div className="text-gray-500 text-sm">Service Areas</div>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {carrier.serviceAreas.slice(0, 3).map((area, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
+                            <Badge key={index} variant="secondary" className="text-xs">
                               {area}
                             </Badge>
                           ))}
                           {carrier.serviceAreas.length > 3 && (
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="secondary" className="text-xs">
                               +{carrier.serviceAreas.length - 3} more
                             </Badge>
                           )}

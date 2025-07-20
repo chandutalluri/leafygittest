@@ -187,11 +187,7 @@ export function StreamlinedLabelDesign() {
             <TabsContent value="designer" className="h-full m-0">
               <div className="h-full">
                 {showDesigner ? (
-                  <ProfessionalLabelDesigner
-                    selectedTemplate={selectedTemplate}
-                    onTemplateCleared={handleDesignerClose}
-                    onTemplateSaved={handleTemplateUpdated}
-                  />
+                  <ProfessionalLabelDesigner />
                 ) : (
                   <div className="flex items-center justify-center h-full">
                     <div className="text-center">
@@ -214,7 +210,7 @@ export function StreamlinedLabelDesign() {
 
             <TabsContent value="print" className="h-full m-0">
               <div className="h-full p-6">
-                <PrintManagement templates={templates} />
+                <PrintManagement />
               </div>
             </TabsContent>
 

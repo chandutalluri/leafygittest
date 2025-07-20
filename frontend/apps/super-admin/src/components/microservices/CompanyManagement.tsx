@@ -172,7 +172,7 @@ export default function CompanyManagement() {
                       <Badge variant={company.isActive ? 'default' : 'secondary'}>
                         {company.isActive ? 'Active' : 'Inactive'}
                       </Badge>
-                      <Button variant="ghost" size="sm" onClick={() => deleteCompany(company.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => deleteCompany(company.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -190,7 +190,7 @@ export default function CompanyManagement() {
                       {company.branchCount} branches
                     </div>
                     <div className="flex justify-between items-center mt-4">
-                      <Badge variant="outline">{company.phone}</Badge>
+                      <Badge variant="secondary">{company.phone}</Badge>
                       <Button variant="outline" size="sm">
                         <Settings className="w-4 h-4" />
                       </Button>
@@ -245,8 +245,8 @@ export default function CompanyManagement() {
                       <Badge variant={branch.isActive ? 'default' : 'secondary'}>
                         {branch.isActive ? 'Active' : 'Inactive'}
                       </Badge>
-                      <Badge variant="outline">{branch.employeeCount} employees</Badge>
-                      <Button variant="ghost" size="sm" onClick={() => deleteBranch(branch.id)}>
+                      <Badge variant="secondary">{branch.employeeCount} employees</Badge>
+                      <Button variant="destructive" size="sm" onClick={() => deleteBranch(branch.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>

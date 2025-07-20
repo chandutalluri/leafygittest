@@ -173,7 +173,7 @@ export default function NotificationService() {
       case 'medium':
         return 'secondary';
       case 'low':
-        return 'outline';
+        return 'secondary';
       default:
         return 'secondary';
     }
@@ -361,7 +361,7 @@ export default function NotificationService() {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline" className="gap-1">
+                        <Badge variant="secondary" className="gap-1">
                           {getTypeIcon(notification.type)}
                           {notification.type.toUpperCase()}
                         </Badge>
@@ -420,10 +420,10 @@ export default function NotificationService() {
                         <CardDescription>{template.category} template</CardDescription>
                       </div>
                       <div className="flex gap-2">
-                        <Badge variant={template.isActive ? 'default' : 'outline'}>
+                        <Badge variant={template.isActive ? 'default' : 'secondary'}>
                           {template.isActive ? 'Active' : 'Inactive'}
                         </Badge>
-                        <Badge variant="outline" className="gap-1">
+                        <Badge variant="secondary" className="gap-1">
                           {getTypeIcon(template.type)}
                           {template.type.toUpperCase()}
                         </Badge>
@@ -447,7 +447,7 @@ export default function NotificationService() {
                           <div className="text-sm font-medium">Variables</div>
                           <div className="flex flex-wrap gap-1 mt-1">
                             {template.variables.map((variable, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
+                              <Badge key={index} variant="secondary" className="text-xs">
                                 {variable}
                               </Badge>
                             ))}
@@ -501,22 +501,22 @@ export default function NotificationService() {
                     <tr key={preference.id} className="border-b hover:bg-gray-50">
                       <td className="py-3 px-4 font-medium">{preference.userName}</td>
                       <td className="py-3 px-4">
-                        <Badge variant={preference.emailEnabled ? 'default' : 'outline'}>
+                        <Badge variant={preference.emailEnabled ? 'default' : 'secondary'}>
                           {preference.emailEnabled ? 'Enabled' : 'Disabled'}
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant={preference.smsEnabled ? 'default' : 'outline'}>
+                        <Badge variant={preference.smsEnabled ? 'default' : 'secondary'}>
                           {preference.smsEnabled ? 'Enabled' : 'Disabled'}
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant={preference.pushEnabled ? 'default' : 'outline'}>
+                        <Badge variant={preference.pushEnabled ? 'default' : 'secondary'}>
                           {preference.pushEnabled ? 'Enabled' : 'Disabled'}
                         </Badge>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant={preference.whatsappEnabled ? 'default' : 'outline'}>
+                        <Badge variant={preference.whatsappEnabled ? 'default' : 'secondary'}>
                           {preference.whatsappEnabled ? 'Enabled' : 'Disabled'}
                         </Badge>
                       </td>
@@ -525,7 +525,7 @@ export default function NotificationService() {
                           {Object.entries(preference.categories)
                             .filter(([_, enabled]) => enabled)
                             .map(([category, _]) => (
-                              <Badge key={category} variant="outline" className="text-xs">
+                              <Badge key={category} variant="secondary" className="text-xs">
                                 {category}
                               </Badge>
                             ))}

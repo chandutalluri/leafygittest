@@ -161,7 +161,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       // Only add QR for larger labels
       elements.push({
         id: `qr-code-${Date.now()}`,
-        type: 'qr',
+        type: 'barcode',
         x: labelWidth - 35,
         y: 5,
         width: 30,
@@ -176,7 +176,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       // Only add for taller labels
       elements.push({
         id: `indian-compliance-${Date.now()}`,
-        type: 'indian-compliance',
+        type: 'text',
         x: 5,
         y: labelHeight - 35,
         width: labelWidth - 10,
@@ -237,9 +237,9 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
       type,
       x: 20,
       y: 20,
-      width: type === 'qr' ? 30 : 100,
-      height: type === 'qr' ? 30 : 20,
-      content: type === 'text' ? 'New Text' : type === 'qr' ? 'https://example.com' : '',
+      width: type === 'barcode' ? 30 : 100,
+      height: type === 'barcode' ? 30 : 20,
+      content: type === 'text' ? 'New Text' : type === 'barcode' ? 'https://example.com' : '',
       fontSize: 12,
       fontFamily: 'Arial',
       color: '#000000',
@@ -334,7 +334,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
               + Text
             </button>
             <button
-              onClick={() => addNewElement('qr')}
+              onClick={() => addNewElement('barcode')}
               className="px-3 py-1 bg-green-100 text-green-800 rounded-md hover:bg-green-200 transition-colors"
             >
               + QR Code
@@ -346,7 +346,7 @@ export default function TemplateController({ onTemplateChange }: TemplateControl
               + Barcode
             </button>
             <button
-              onClick={() => addNewElement('indian-compliance')}
+              onClick={() => addNewElement('text')}
               className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-md hover:bg-yellow-200 transition-colors"
             >
               + Compliance

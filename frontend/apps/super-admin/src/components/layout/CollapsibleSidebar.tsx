@@ -463,7 +463,7 @@ export function CollapsibleSidebar({ activeDomain, onDomainChange }: Collapsible
                 <UserCircle className="h-8 w-8 text-gray-400 mr-3" />
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate">
-                    {user?.firstName} {user?.lastName}
+                    {user?.email}
                   </p>
                   <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                 </div>

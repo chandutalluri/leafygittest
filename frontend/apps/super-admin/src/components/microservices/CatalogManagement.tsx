@@ -203,13 +203,13 @@ export default function CatalogManagement() {
                   <CardTitle className="flex items-center justify-between">
                     <span className="truncate">{product.name}</span>
                     <div className="flex items-center space-x-1">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="outline" size="sm">
                         <Eye className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="outline" size="sm">
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm" onClick={() => deleteProduct(product.id)}>
+                      <Button variant="destructive" size="sm" onClick={() => deleteProduct(product.id)}>
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
@@ -219,7 +219,7 @@ export default function CatalogManagement() {
                 <CardContent>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <Badge variant="outline">{product.category}</Badge>
+                      <Badge variant="secondary">{product.category}</Badge>
                       <Badge
                         variant={
                           product.status === 'active'
@@ -306,10 +306,10 @@ export default function CatalogManagement() {
                       {category.productCount} products
                     </span>
                     <div className="flex gap-1">
-                      <Button variant="ghost" size="sm">
+                      <Button variant="outline" size="sm">
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="destructive" size="sm">
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>

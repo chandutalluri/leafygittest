@@ -327,7 +327,7 @@ export default function PaymentProcessing() {
                       <div className="text-sm text-gray-500">{payment.currency}</div>
                     </td>
                     <td className="py-3 px-4">
-                      <Badge variant="outline" className="gap-1">
+                      <Badge variant="secondary" className="gap-1">
                         {getMethodIcon(payment.paymentMethod)}
                         {payment.paymentMethod.replace('_', ' ').toUpperCase()}
                       </Badge>

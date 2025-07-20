@@ -147,9 +147,8 @@ export default function ContentManagement() {
       formData.append('file', file);
       formData.append('folder', folder);
 
-      await apiClient.post('/api/direct-data/media/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      const response = await apiClient.post('/api/direct-data/media/upload', formData);
+      // Note: Content-Type header is set automatically by axios for FormData
       fetchContentData();
     } catch (error) {
       console.error('Failed to upload media:', error);
@@ -163,7 +162,7 @@ export default function ContentManagement() {
       case 'draft':
         return 'secondary';
       case 'scheduled':
-        return 'outline';
+        return 'secondary';
       case 'archived':
         return 'destructive';
       default:
@@ -391,7 +390,7 @@ export default function ContentManagement() {
                         <div className="text-sm text-gray-500">/{item.slug}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant="outline" className="gap-1">
+                        <Badge variant="secondary" className="gap-1">
                           {getTypeIcon(item.type)}
                           {item.type.replace('_', ' ').toUpperCase()}
                         </Badge>
@@ -508,7 +507,7 @@ export default function ContentManagement() {
                           {template.type.replace('_', ' ')} template
                         </CardDescription>
                       </div>
-                      <Badge variant={template.isActive ? 'default' : 'outline'}>
+                      <Badge variant={template.isActive ? 'default' : 'secondary'}>
                         {template.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>
@@ -519,7 +518,7 @@ export default function ContentManagement() {
                         <div className="text-sm font-medium">Fields</div>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {template.fields.map((field, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
+                            <Badge key={index} variant="secondary" className="text-xs">
                               {field}
                             </Badge>
                           ))}

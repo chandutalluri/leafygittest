@@ -348,7 +348,7 @@ export default function AnalyticsReporting() {
                       <Badge variant={report.status === 'active' ? 'default' : 'secondary'}>
                         {report.status}
                       </Badge>
-                      <Badge variant="outline">{report.frequency}</Badge>
+                      <Badge variant="secondary">{report.frequency}</Badge>
                     </div>
                   </div>
                 </CardHeader>
@@ -361,7 +361,7 @@ export default function AnalyticsReporting() {
                       <Button variant="outline" size="sm" onClick={() => generateReport(report.id)}>
                         Generate Now
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="outline" size="sm">
                         Configure
                       </Button>
                     </div>
