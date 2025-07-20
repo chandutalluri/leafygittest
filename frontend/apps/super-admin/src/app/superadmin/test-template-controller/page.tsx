@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import React, { useState } from 'react';
-import { toast } from 'react-hot-toast';
+import React, { useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function TestTemplateController() {
   const [testStatus, setTestStatus] = useState<string>('Ready to test');

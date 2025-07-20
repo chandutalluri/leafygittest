@@ -27,24 +27,24 @@ jobs:
 
     - name: Build frontend applications
       run: |
-        # Build super-admin (skip if build fails - use dev mode)
+        # Build super-admin
         cd frontend/apps/super-admin
-        npm run build || echo "Super-admin build failed, will use dev mode"
+        npm run build
         cd ../../..
         
-        # Build ecommerce-web (skip if build fails - use dev mode)
+        # Build ecommerce-web  
         cd frontend/apps/ecommerce-web
-        npm run build || echo "Ecommerce-web build failed, will use dev mode"
+        npm run build
         cd ../../..
         
-        # Build admin-portal (skip if build fails - use dev mode)
+        # Build admin-portal
         cd frontend/apps/admin-portal
-        npm run build || echo "Admin-portal build failed, will use dev mode"
+        npm run build
         cd ../../..
         
-        # Build ops-delivery (skip if build fails - use dev mode)
+        # Build ops-delivery
         cd frontend/apps/ops-delivery
-        npm run build || echo "Ops-delivery build failed, will use dev mode"
+        npm run build
         cd ../../..
 
     - name: Prepare deployment package
@@ -52,7 +52,13 @@ jobs:
         # Create deployment directory
         mkdir -p deploy
         
-        # Copy frontend apps (built or source)
+        # Copy built frontend apps
+        cp -r frontend/apps/super-admin/.next deploy/super-admin-build
+        cp -r frontend/apps/ecommerce-web/.next deploy/ecommerce-web-build  
+        cp -r frontend/apps/admin-portal/.next deploy/admin-portal-build
+        cp -r frontend/apps/ops-delivery/.next deploy/ops-delivery-build
+        
+        # Copy frontend source for runtime
         cp -r frontend deploy/
         
         # Copy backend services
