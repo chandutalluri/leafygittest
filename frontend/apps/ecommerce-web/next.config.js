@@ -27,6 +27,8 @@ const nextConfig = {
   },
 
   allowedDevOrigins: [
+    'https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev',
+    'https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000',
     'https://f8f5cf53-9e11-4ffc-9b09-9006147cf921-00-3axzra1dcfeym.sisko.replit.dev',
     'https://f8f5cf53-9e11-4ffc-9b09-9006147cf921-00-3axzra1dcfeym.sisko.replit.dev:5000',
     '*.replit.dev',

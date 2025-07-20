@@ -1560,6 +1560,28 @@ self.addEventListener('fetch', function(event) {
     return;
   }
 
+  // Handle manifest.json requests
+  if (pathname === '/manifest.json') {
+    // Route to the customer app's manifest by default
+    proxyRequest(req, res, 3000, '/manifest.json');
+    return;
+  }
+
+  // Handle font requests - route to appropriate app based on font name
+  if (pathname.startsWith('/__nextjs_font/')) {
+    const targetPort = getTargetPortFromContext(req);
+    console.log(`🎯 Next.js font request: ${pathname} → port ${targetPort}`);
+    proxyRequest(req, res, targetPort, pathname);
+    return;
+  }
+
+  // Handle favicon and PWA icon requests
+  if (pathname.match(/\.(ico|png|jpg|jpeg|svg)$/) && !pathname.startsWith('/api/')) {
+    // Route static assets to customer app by default
+    proxyRequest(req, res, 3000, pathname);
+    return;
+  }
+
   // SMART DEVICE-BASED REDIRECTION SYSTEM
   // Automatically redirect users to appropriate app based on device type
   if (pathname === '/' || 
