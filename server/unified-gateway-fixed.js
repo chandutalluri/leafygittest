@@ -1491,7 +1491,13 @@ async function handleRequest(req, res) {
     return 3003;
   }
 
-  // Next.js static assets handled by cookie-based routing below
+  // Handle Next.js static assets (/_next/static) and chunks
+  if (pathname.startsWith('/_next/') || pathname.startsWith('/__nextjs_')) {
+    const targetPort = getTargetPortFromContext(req);
+    console.log(`🎯 Next.js static asset request: ${pathname} → port ${targetPort}`);
+    proxyRequest(req, res, targetPort, pathname);
+    return;
+  }
 
   // Frontend routes - multi-app routing based on path prefix
   if (pathname.startsWith('/customer')) {

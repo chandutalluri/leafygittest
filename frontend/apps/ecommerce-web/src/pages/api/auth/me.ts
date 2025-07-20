@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Forward the request to the backend auth service
-    const response = await fetch('http://127.0.0.1:8085/api/auth/me', {
+    const response = await fetch('http://127.0.0.1:8085/api/auth/user', {
       headers: {
         Authorization: req.headers.authorization || '',
         Cookie: req.headers.cookie || '',
