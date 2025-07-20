@@ -521,7 +521,26 @@ Each service exposes:
 - **Gateway**: 5000 (unified access point)
 - **Special Services**: 8085 (auth), 8081 (direct-data)
 
+### **Production Deployment System (July 20, 2025)**
+- **Issue Fixed**: JavaScript variable conflict causing "Cannot access 'process' before initialization" error
+- **Solution**: Renamed conflicting variables from `process` to `childProcess` in production scripts
+- **Dependency Fix**: Created `scripts/fix-dependencies.js` to resolve npm eslint peer dependency conflicts
+- **Simple Start**: Added `scripts/simple-start.js` for quick gateway testing without full build
+- **Result**: Production deployment system now fully functional for Ubuntu 22.04 VPS
+
+### **Single Command Deployment**
+```bash
+# Fix dependencies (run once)
+node scripts/fix-dependencies.js
+
+# Build and start everything
+node build-and-run.js
+
+# Or test gateway only
+node scripts/simple-start.js
+```
+
 ---
 
-*Last Updated: July 15, 2025*
-*Version: 2.3 - Enterprise Image Management System Implemented*
+*Last Updated: July 20, 2025*
+*Version: 2.4 - Production Deployment System Fixed and Operational*

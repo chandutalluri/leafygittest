@@ -63,7 +63,7 @@ class ProductionStarter {
     return new Promise((resolve, reject) => {
       this.log(`Starting ${name}...`);
       
-      const process = spawn('bash', ['-c', command], {
+      const childProcess = spawn('bash', ['-c', command], {
         cwd: cwd || this.rootDir,
         env: { 
           ...process.env, 
@@ -74,35 +74,35 @@ class ProductionStarter {
       });
 
       // Log output
-      process.stdout.on('data', (data) => {
+      childProcess.stdout.on('data', (data) => {
         const output = data.toString().trim();
         if (output) {
           console.log(`[${name}] ${output}`);
         }
       });
 
-      process.stderr.on('data', (data) => {
+      childProcess.stderr.on('data', (data) => {
         const output = data.toString().trim();
         if (output && !output.includes('ExperimentalWarning')) {
           console.error(`[${name}] ${output}`);
         }
       });
 
-      process.on('close', (code) => {
+      childProcess.on('close', (code) => {
         this.log(`${name} exited with code ${code}`, code === 0 ? 'info' : 'error');
         this.processes.delete(name);
       });
 
-      process.on('error', (error) => {
+      childProcess.on('error', (error) => {
         this.log(`${name} error: ${error.message}`, 'error');
         this.processes.delete(name);
         reject(error);
       });
 
-      this.processes.set(name, process);
+      this.processes.set(name, childProcess);
       
       // Give the process a moment to start
-      setTimeout(() => resolve(process), 2000);
+      setTimeout(() => resolve(childProcess), 2000);
     });
   }
 
@@ -231,16 +231,16 @@ server.listen(5001, () => {
       
       this.log('Shutting down gracefully...');
       
-      for (const [name, process] of this.processes) {
+      for (const [name, childProcess] of this.processes) {
         this.log(`Stopping ${name}...`);
-        process.kill('SIGTERM');
+        childProcess.kill('SIGTERM');
       }
       
       setTimeout(() => {
-        for (const [name, process] of this.processes) {
-          if (!process.killed) {
+        for (const [name, childProcess] of this.processes) {
+          if (!childProcess.killed) {
             this.log(`Force killing ${name}...`, 'warning');
-            process.kill('SIGKILL');
+            childProcess.kill('SIGKILL');
           }
         }
         process.exit(0);

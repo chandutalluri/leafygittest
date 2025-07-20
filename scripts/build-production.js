@@ -32,7 +32,7 @@ class ProductionBuilder {
     return new Promise((resolve, reject) => {
       this.log(`Executing: ${command}`, 'info');
       
-      const process = spawn('bash', ['-c', command], { 
+      const childProcess = spawn('bash', ['-c', command], { 
         cwd, 
         stdio: ['inherit', 'pipe', 'pipe'],
         env: { ...process.env, NODE_ENV: 'production' }
@@ -41,17 +41,17 @@ class ProductionBuilder {
       let stdout = '';
       let stderr = '';
 
-      process.stdout.on('data', (data) => {
+      childProcess.stdout.on('data', (data) => {
         stdout += data.toString();
         console.log(data.toString().trim());
       });
 
-      process.stderr.on('data', (data) => {
+      childProcess.stderr.on('data', (data) => {
         stderr += data.toString();
         console.error(data.toString().trim());
       });
 
-      process.on('close', (code) => {
+      childProcess.on('close', (code) => {
         if (code === 0) {
           resolve({ stdout, stderr });
         } else {
