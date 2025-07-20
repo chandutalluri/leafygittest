@@ -1,0 +1,301 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/accounting-management",
+      "regex": "^/accounting\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/accounting\\-management(?:/)?$"
+    },
+    {
+      "page": "/analytics-reporting",
+      "regex": "^/analytics\\-reporting(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/analytics\\-reporting(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/catalog-management",
+      "regex": "^/catalog\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/catalog\\-management(?:/)?$"
+    },
+    {
+      "page": "/categories",
+      "regex": "^/categories(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/categories(?:/)?$"
+    },
+    {
+      "page": "/company-management",
+      "regex": "^/company\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/company\\-management(?:/)?$"
+    },
+    {
+      "page": "/compliance-audit",
+      "regex": "^/compliance\\-audit(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/compliance\\-audit(?:/)?$"
+    },
+    {
+      "page": "/content-management",
+      "regex": "^/content\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/content\\-management(?:/)?$"
+    },
+    {
+      "page": "/create-product",
+      "regex": "^/create\\-product(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/create\\-product(?:/)?$"
+    },
+    {
+      "page": "/customer-service",
+      "regex": "^/customer\\-service(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/customer\\-service(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/database-backup-restore",
+      "regex": "^/database\\-backup\\-restore(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/database\\-backup\\-restore(?:/)?$"
+    },
+    {
+      "page": "/employee-management",
+      "regex": "^/employee\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/employee\\-management(?:/)?$"
+    },
+    {
+      "page": "/expense-monitoring",
+      "regex": "^/expense\\-monitoring(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/expense\\-monitoring(?:/)?$"
+    },
+    {
+      "page": "/image-management",
+      "regex": "^/image\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/image\\-management(?:/)?$"
+    },
+    {
+      "page": "/integration-hub",
+      "regex": "^/integration\\-hub(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/integration\\-hub(?:/)?$"
+    },
+    {
+      "page": "/inventory-management",
+      "regex": "^/inventory\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/inventory\\-management(?:/)?$"
+    },
+    {
+      "page": "/label-design",
+      "regex": "^/label\\-design(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/label\\-design(?:/)?$"
+    },
+    {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/marketplace-management",
+      "regex": "^/marketplace\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/marketplace\\-management(?:/)?$"
+    },
+    {
+      "page": "/monitoring",
+      "regex": "^/monitoring(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/monitoring(?:/)?$"
+    },
+    {
+      "page": "/multi-language-management",
+      "regex": "^/multi\\-language\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/multi\\-language\\-management(?:/)?$"
+    },
+    {
+      "page": "/notification-service",
+      "regex": "^/notification\\-service(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/notification\\-service(?:/)?$"
+    },
+    {
+      "page": "/operational-dashboard",
+      "regex": "^/operational\\-dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/operational\\-dashboard(?:/)?$"
+    },
+    {
+      "page": "/order-management",
+      "regex": "^/order\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/order\\-management(?:/)?$"
+    },
+    {
+      "page": "/orders",
+      "regex": "^/orders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/orders(?:/)?$"
+    },
+    {
+      "page": "/payment-processing",
+      "regex": "^/payment\\-processing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-processing(?:/)?$"
+    },
+    {
+      "page": "/performance-monitor",
+      "regex": "^/performance\\-monitor(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/performance\\-monitor(?:/)?$"
+    },
+    {
+      "page": "/product-catalog",
+      "regex": "^/product\\-catalog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/product\\-catalog(?:/)?$"
+    },
+    {
+      "page": "/products",
+      "regex": "^/products(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/products(?:/)?$"
+    },
+    {
+      "page": "/reporting-management",
+      "regex": "^/reporting\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/reporting\\-management(?:/)?$"
+    },
+    {
+      "page": "/security",
+      "regex": "^/security(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/security(?:/)?$"
+    },
+    {
+      "page": "/shipping-delivery",
+      "regex": "^/shipping\\-delivery(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/shipping\\-delivery(?:/)?$"
+    },
+    {
+      "page": "/system-dashboard",
+      "regex": "^/system\\-dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/system\\-dashboard(?:/)?$"
+    },
+    {
+      "page": "/traditional/vendors",
+      "regex": "^/traditional/vendors(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/traditional/vendors(?:/)?$"
+    },
+    {
+      "page": "/traditional-orders",
+      "regex": "^/traditional\\-orders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/traditional\\-orders(?:/)?$"
+    },
+    {
+      "page": "/user-management",
+      "regex": "^/user\\-management(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/user\\-management(?:/)?$"
+    }
+  ],
+  "dataRoutes": [
+    {
+      "page": "/orders",
+      "dataRouteRegex": "^/_next/data/Cg1osD_fyestLaXX2gCaI/orders\\.json$"
+    },
+    {
+      "page": "/products",
+      "dataRouteRegex": "^/_next/data/Cg1osD_fyestLaXX2gCaI/products\\.json$"
+    }
+  ],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

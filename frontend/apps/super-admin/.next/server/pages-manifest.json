@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/": "pages/index.js",
-  "/image-management": "pages/image-management.js",
-  "/label-design": "pages/label-design.js",
-  "/product-catalog": "pages/product-catalog.js"
+  "/login": "pages/login.js",
+  "/operational-dashboard": "pages/operational-dashboard.js"
 }

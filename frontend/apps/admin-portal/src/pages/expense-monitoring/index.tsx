@@ -96,7 +96,7 @@ export default function ExpenseMonitoringPage() {
               <CardTitle className="flex items-center justify-between">
                 <span className="truncate">{item.expenseType}</span>
                 <Badge variant="secondary">
-                  {item.status || 'Active'}
+                  {item.approvalStatus || 'Pending'}
                 </Badge>
               </CardTitle>
               <CardDescription>

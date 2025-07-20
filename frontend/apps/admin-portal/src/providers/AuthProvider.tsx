@@ -6,7 +6,7 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { api } from '../lib/apiClient';
+import { apiClient } from '../lib/apiClient';
 
 interface User {
   id: string;
@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await api.auth.logout();
+      await apiClient.post('/auth/logout');
       setUser(null);
       window.location.href = '/';
     } catch (error) {

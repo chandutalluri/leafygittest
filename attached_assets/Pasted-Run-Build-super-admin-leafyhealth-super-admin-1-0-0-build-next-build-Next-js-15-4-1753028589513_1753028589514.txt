@@ -1,0 +1,174 @@
+Run # Build super-admin
+
+> @leafyhealth/super-admin@1.0.0 build
+> next build
+
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+
+   Skipping linting
+   Checking validity of types ...
+   Creating an optimized production build ...
+ ⚠ Compiled with warnings in 11.0s
+
+../../../node_modules/framer-motion/dist/es/render/dom/utils/filter-props.mjs
+Module not found: Can't resolve '@emotion/is-prop-valid' in '/home/runner/work/leafygittest/leafygittest/node_modules/framer-motion/dist/es/render/dom/utils'
+
+Import trace for requested module:
+../../../node_modules/framer-motion/dist/es/render/dom/utils/filter-props.mjs
+../../../node_modules/framer-motion/dist/es/index.mjs
+./src/components/image-management/ImageManagementHub.tsx
+
+   Collecting page data ...
+   Generating static pages (0/38) ...
+   Generating static pages (9/38) 
+   Generating static pages (18/38) 
+   Generating static pages (28/38) 
+ ✓ Generating static pages (38/38)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                                 Size  First Load JS
+┌ ○ / (325 ms)                              2.4 kB        98.8 kB
+├   /_app                                      0 B        96.4 kB
+├ ○ /404                                     183 B        96.6 kB
+├ ○ /accounting-management (324 ms)          362 B         117 kB
+├ ○ /analytics-reporting (687 ms)            368 B         117 kB
+├ ○ /auth/login (685 ms)                   4.62 kB         101 kB
+├ ○ /catalog-management (683 ms)             358 B         117 kB
+├ ○ /categories (683 ms)                   4.01 kB         112 kB
+├ ○ /company-management (683 ms)             359 B         117 kB
+├ ○ /compliance-audit (635 ms)             3.15 kB        99.6 kB
+├ ○ /content-management (635 ms)           2.21 kB        98.6 kB
+├ ○ /create-product (683 ms)               1.03 kB         132 kB
+├ ○ /customer-service (331 ms)               358 B         117 kB
+├ ○ /dashboard (332 ms)                    13.5 kB         118 kB
+├ ○ /database-backup-restore (348 ms)      10.3 kB         143 kB
+├ ○ /employee-management (329 ms)          2.21 kB        98.6 kB
+├ ○ /expense-monitoring (326 ms)           2.22 kB        98.6 kB
+├ ○ /image-management                      45.5 kB         161 kB
+├ ○ /integration-hub (325 ms)              3.42 kB        99.8 kB
+├ ○ /inventory-management                  6.24 kB         114 kB
+├ ○ /label-design (862 ms)                 30.8 kB         167 kB
+├ ○ /login                                 2.74 kB        99.1 kB
+├ ○ /marketplace-management                 1.4 kB        97.8 kB
+├ ○ /monitoring (826 ms)                   3.05 kB         107 kB
+├ ○ /multi-language-management (827 ms)    3.04 kB        99.4 kB
+├ ○ /notification-service (824 ms)         2.21 kB        98.6 kB
+├ ○ /operational-dashboard (826 ms)        2.33 kB         110 kB
+├ ○ /order-management (825 ms)               365 B         117 kB
+├ ƒ /orders                                5.91 kB         142 kB
+├ ○ /payment-processing (823 ms)           2.21 kB        98.6 kB
+├ ○ /performance-monitor (823 ms)          3.06 kB        99.5 kB
+├ ○ /product-catalog                         532 B         165 kB
+├ ƒ /products                              6.04 kB         170 kB
+├ ○ /reporting-management                  1.39 kB        97.8 kB
+├ ○ /security                              8.54 kB         105 kB
+├ ○ /shipping-delivery                     2.22 kB        98.6 kB
+├ ○ /system-dashboard                      5.89 kB         102 kB
+├ ○ /traditional-orders                    3.29 kB         121 kB
+├ ○ /traditional/vendors                   6.33 kB         124 kB
+└ ○ /user-management                       3.43 kB        99.8 kB
++ First Load JS shared by all               108 kB
+  ├ chunks/framework-09ae834e3819fb7d.js   44.9 kB
+  ├ chunks/main-d0281dd5299fffee.js        32.7 kB
+  ├ chunks/pages/_app-a18c3bfd7389b8d3.js  17.8 kB
+  ├ css/9289fb1d9179f9dd.css               11.2 kB
+  └ other shared chunks (total)              985 B
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> @leafyhealth/ecommerce-web@0.1.0 build
+> next build
+
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+     · optimizePackageImports
+
+   Skipping linting
+   Checking validity of types ...
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 9.0s
+   Collecting page data ...
+   Generating static pages (0/19) ...
+   Generating static pages (4/19) 
+   Generating static pages (9/19) 
+   Generating static pages (14/19) 
+ ✓ Generating static pages (19/19)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (pages)                                 Size  First Load JS
+┌ ○ /                                      2.72 kB         148 kB
+├   /_app                                      0 B         145 kB
+├ ○ /404 (592 ms)                            653 B         146 kB
+├ ○ /account                               4.01 kB         149 kB
+├ ○ /admin/features (590 ms)               1.72 kB         147 kB
+├ ƒ /api/auth/login                            0 B         145 kB
+├ ƒ /api/auth/logout                           0 B         145 kB
+├ ƒ /api/auth/me                               0 B         145 kB
+├ ƒ /api/auth/register                         0 B         145 kB
+├ ƒ /api/direct-data/categories                0 B         145 kB
+├ ƒ /api/direct-data/products                  0 B         145 kB
+├ ○ /auth/login (590 ms)                   4.87 kB         150 kB
+├ ○ /auth/register (590 ms)                1.89 kB         147 kB
+├ ○ /cart (589 ms)                          1.7 kB         147 kB
+├ ○ /categories (589 ms)                   1.38 kB         146 kB
+├ ○ /checkout (589 ms)                     3.01 kB         151 kB
+├ ○ /contact (589 ms)                       2.6 kB         148 kB
+├ ○ /order-history                         3.35 kB         151 kB
+├ ○ /product/[id]                          4.83 kB         153 kB
+├ ○ /products                               3.9 kB         152 kB
+├ ○ /status                                1.41 kB         146 kB
+├ ○ /subscriptions                         3.31 kB         148 kB
+├ ○ /track-order                           2.41 kB         147 kB
+├ ○ /traditional                           5.25 kB         150 kB
+├ ○ /traditional/history                   2.61 kB         151 kB
+└ ○ /traditional/order/[id]                2.54 kB         148 kB
++ First Load JS shared by all               154 kB
+  ├ chunks/framework-98177fb2e8834792.js   44.9 kB
+  ├ chunks/main-d11df0e80b4b1879.js        32.7 kB
+  ├ chunks/pages/_app-06168326f777f76f.js  66.6 kB
+  └ other shared chunks (total)            9.85 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> @leafyhealth/admin-portal@1.0.0 build
+> next build
+
+   ▲ Next.js 15.4.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ externalDir
+     ✓ optimizeCss
+
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+
+./src/components/index.ts:1:29
+Type error: Cannot find module './layout/AdminLayout' or its corresponding type declarations.
+
+> 1 | export { AdminLayout } from './layout/AdminLayout'
+    |                             ^
+  2 | export { Sidebar } from './layout/Sidebar'
+  3 | export { Topbar } from './layout/Topbar'
+Next.js build worker exited with code: 1 and signal: null
+npm error Lifecycle script `build` failed with error:
+npm error code 1
+npm error path /home/runner/work/leafygittest/leafygittest/frontend/apps/admin-portal
+npm error workspace @leafyhealth/admin-portal@1.0.0
+npm error location /home/runner/work/leafygittest/leafygittest/frontend/apps/admin-portal
+npm error command failed
+npm error command sh -c next build
+Error: Process completed with exit code 1.

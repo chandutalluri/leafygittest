@@ -28,20 +28,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/image-management": [
+    "/login": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/image-management.js"
+      "static/chunks/pages/login.js"
     ],
-    "/label-design": [
+    "/operational-dashboard": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/label-design.js"
-    ],
-    "/product-catalog": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/product-catalog.js"
+      "static/chunks/pages/operational-dashboard.js"
     ]
   },
   "ampFirstPages": []
