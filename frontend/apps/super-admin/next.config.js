@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: process.env.NODE_ENV === 'production',
-  basePath: '/superadmin',
+  // basePath: '/superadmin', // Removed for gateway compatibility
   experimental: {
     externalDir: true,
     // Development optimizations for faster restarts

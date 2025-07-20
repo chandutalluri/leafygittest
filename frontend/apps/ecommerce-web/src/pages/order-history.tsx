@@ -11,9 +11,10 @@ import {
   ShoppingBagIcon,
 } from '@heroicons/react/24/outline';
 import GlassCard from '@/components/ui/GlassCard';
-import { LoadingSkeleton, ErrorFallback } from '@/components/ui/ErrorFallback';
-import { useAuthStore } from '@/lib/stores/auth';
-import { apiClient } from '@/lib/api';
+import ErrorFallback from '@/components/ui/ErrorFallback';
+import LoadingSkeleton from '@/components/ui/LoadingSkeleton';
+import { useAuthStore } from '../stores/authStore';
+// import { apiClient } from '@/lib/api';
 
 interface Order {
   id: string;
@@ -34,7 +35,11 @@ export default function OrderHistoryPage() {
     error,
   } = useQuery({
     queryKey: ['orders', user?.id],
-    queryFn: () => apiClient.getOrders(),
+    queryFn: async () => {
+      const response = await fetch('/api/order-management/orders');
+      if (!response.ok) throw new Error('Failed to fetch orders');
+      return response.json();
+    },
     enabled: !!user?.id,
   });
 
@@ -176,9 +181,17 @@ export default function OrderHistoryPage() {
 
           {/* Orders List */}
           {isLoading ? (
-            <LoadingSkeleton count={5} type="card" />
+            <div className="space-y-4">
+              {[...Array(5)].map((_, i) => (
+                <LoadingSkeleton key={i} className="h-32 w-full" />
+              ))}
+            </div>
           ) : error ? (
-            <ErrorFallback error={error} />
+            <ErrorFallback>
+              <div className="text-center py-8">
+                <p className="text-red-600">Failed to load orders. Please try again later.</p>
+              </div>
+            </ErrorFallback>
           ) : filteredOrders.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }}

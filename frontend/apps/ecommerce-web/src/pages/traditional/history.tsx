@@ -25,14 +25,14 @@ export default function TraditionalOrderHistory() {
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user?.id) {
+    if ((user as any)?.id) {
       fetchOrders();
     }
   }, [user, filter]);
 
   const fetchOrders = async () => {
     try {
-      let url = `/api/traditional/customer/${user?.id}/orders`;
+      let url = `/api/traditional/customer/${(user as any)?.id}/orders`;
       if (filter !== 'all') {
         url += `?status=${filter}`;
       }

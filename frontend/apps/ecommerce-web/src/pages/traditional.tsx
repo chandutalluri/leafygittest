@@ -251,7 +251,7 @@ export default function TraditionalSuppliesEnhanced() {
       unit: 'list',
       category: 'Traditional Provisional List',
       branchId: selectedBranch?.id?.toString() || '1',
-      description: selectedItemsList.join(', ')
+
     });
 
     toast.success(`Monthly provisional list added to cart! ₹${totalAmount.toFixed(2)} for ${itemCount} items`);

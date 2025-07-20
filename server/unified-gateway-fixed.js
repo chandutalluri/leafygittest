@@ -300,13 +300,12 @@ async function handleRequest(req, res) {
 
   // Route root path - redirect based on device type
   if (pathname === '/' && req.method === 'GET') {
-    // Route root access to super-admin dashboard with correct basePath
+    // Route root access directly to super-admin dashboard
     console.log('🏠 Root access - routing to super-admin dashboard');
     setCorsHeaders(res, origin);
     setSecurityHeaders(res);
     res.setHeader('Set-Cookie', 'app=super-admin; Path=/; HttpOnly; SameSite=Strict');
-    res.writeHead(302, { 'Location': '/superadmin' });
-    res.end();
+    proxyRequest(req, res, 3003, '/');
     return;
   }
 
@@ -1492,33 +1491,7 @@ async function handleRequest(req, res) {
     return 3003;
   }
 
-  // Handle Next.js static assets with proper app context
-  if (pathname.startsWith('/_next')) {
-    // For pages specifically, check the referer more carefully
-    if (pathname.includes('/pages/') || pathname.includes('/chunks/pages/')) {
-      const referer = req.headers.referer || '';
-      if (referer.includes('/customer')) {
-        proxyRequest(req, res, 3000, pathname);
-        return;
-      }
-      if (referer.includes('/mobile')) {
-        proxyRequest(req, res, 3001, pathname);
-        return;
-      }
-      if (referer.includes('/admin')) {
-        proxyRequest(req, res, 3002, pathname);
-        return;
-      }
-      if (referer.includes('/ops')) {
-        proxyRequest(req, res, 3004, pathname);
-        return;
-      }
-    }
-    
-    const targetPort = getTargetPortFromContext(req);
-    proxyRequest(req, res, targetPort, pathname);
-    return;
-  }
+  // Next.js static assets handled by cookie-based routing below
 
   // Frontend routes - multi-app routing based on path prefix
   if (pathname.startsWith('/customer')) {
@@ -1551,9 +1524,10 @@ async function handleRequest(req, res) {
   }
   
   if (pathname.startsWith('/superadmin')) {
-    // Don't strip prefix - Next.js basePath handles it
+    // Handle super-admin routes - strip prefix since basePath is removed
+    const internalPath = pathname === '/superadmin' ? '/' : pathname.substring('/superadmin'.length);
     res.setHeader('Set-Cookie', 'app=superadmin; Path=/; HttpOnly; SameSite=Strict');
-    proxyRequest(req, res, 3003, pathname);
+    proxyRequest(req, res, 3003, internalPath);
     return;
   }
 

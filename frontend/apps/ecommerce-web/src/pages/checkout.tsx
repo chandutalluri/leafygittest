@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -9,6 +10,7 @@ import { useCartStore } from '@/lib/stores/useCartStore';
 import { useBranchStore } from '@/lib/stores/useBranchStore';
 
 export default function Checkout() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -36,7 +38,7 @@ export default function Checkout() {
 
       // Create order in order management service
       const orderData = {
-        customerId: user.id,
+        customerId: (user as any).id,
         items: cartItems.map(item => ({
           productId: item.id,
           quantity: item.quantity,
@@ -53,7 +55,19 @@ export default function Checkout() {
         branchId: selectedBranch?.id,
       };
 
-      const order = await apiClient.orders.create(orderData);
+      const orderResponse = await fetch('/api/order-management/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+      
+      if (!orderResponse.ok) {
+        throw new Error('Failed to create order');
+      }
+      
+      const order = await orderResponse.json();
 
       if (order.id) {
         // Create payment with Razorpay
@@ -61,22 +75,34 @@ export default function Checkout() {
           orderId: order.id,
           amount: total * 100, // Convert to paise
           currency: 'INR',
-          customerId: user.id,
-          customerEmail: user.email,
-          customerPhone: user.phone || '9999999999',
+          customerId: (user as any).id,
+          customerEmail: (user as any).email,
+          customerPhone: (user as any).phone || '9999999999',
         };
 
-        const paymentResponse = await apiClient.payments.createRazorpay(paymentData);
+        const paymentResponse = await fetch('/api/payment-processing/razorpay/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(paymentData),
+        });
+        
+        if (!paymentResponse.ok) {
+          throw new Error('Failed to create payment');
+        }
+        
+        const razorpayData = await paymentResponse.json();
 
-        if (paymentResponse.success) {
+        if (razorpayData.success) {
           // Open Razorpay checkout
           const options = {
-            key: paymentResponse.key,
-            amount: paymentResponse.amount,
-            currency: paymentResponse.currency,
+            key: razorpayData.key,
+            amount: razorpayData.amount,
+            currency: razorpayData.currency,
             name: 'LeafyHealth',
             description: `Order #${order.id}`,
-            order_id: paymentResponse.razorpayOrderId,
+            order_id: razorpayData.razorpayOrderId,
             handler: async function (response: any) {
               try {
                 // Verify payment
@@ -87,16 +113,34 @@ export default function Checkout() {
                   orderId: order.id,
                 };
 
-                const verification = await apiClient.payments.verifyRazorpay(verificationData);
+                const verifyResponse = await fetch('/api/payment-processing/razorpay/verify', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(verificationData),
+                });
+                
+                if (!verifyResponse.ok) {
+                  throw new Error('Payment verification failed');
+                }
+                
+                const verification = await verifyResponse.json();
 
                 if (verification.success) {
                   // Send order confirmation notification
-                  await apiClient.notifications.send({
-                    userId: user.id,
-                    type: 'order_confirmation',
-                    title: 'Order Confirmed',
-                    message: `Your order #${order.id} has been confirmed and will be delivered soon.`,
-                    channel: 'email',
+                  await fetch('/api/notification-service/send', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                      userId: (user as any).id,
+                      type: 'order_confirmation',
+                      title: 'Order Confirmed',
+                      message: `Your order #${order.id} has been confirmed and will be delivered soon.`,
+                      channel: 'email',
+                    }),
                   });
 
                   // Clear cart
@@ -113,9 +157,9 @@ export default function Checkout() {
               }
             },
             prefill: {
-              name: user.name,
-              email: user.email,
-              contact: user.phone || '9999999999',
+              name: (user as any).name,
+              email: (user as any).email,
+              contact: (user as any).phone || '9999999999',
             },
             theme: {
               color: '#22c55e',

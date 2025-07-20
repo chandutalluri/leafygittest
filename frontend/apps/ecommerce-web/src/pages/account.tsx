@@ -16,7 +16,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { useAuthStore } from '../stores/authStore';
 import { useBranchStore } from '../lib/stores/useBranchStore';
-import { Header } from '../components/layout/Header';
+import Header from '../components/layout/Header';
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
 import { toast } from 'react-hot-toast';
 
