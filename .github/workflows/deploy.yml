@@ -22,6 +22,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        rm -f package-lock.json
         npm install --legacy-peer-deps
 
     - name: Build frontend applications
@@ -64,7 +65,6 @@ jobs:
         
         # Copy configuration files
         cp package.json deploy/
-        cp package-lock.json deploy/
         cp tsconfig.json deploy/
         cp drizzle.config.js deploy/
         cp .env.example deploy/.env
@@ -81,6 +81,7 @@ jobs:
         
         # Install dependencies if needed
         if [ ! -d "node_modules" ]; then
+          rm -f package-lock.json
           npm install --legacy-peer-deps --production
         fi
         
@@ -142,6 +143,7 @@ jobs:
           rm /tmp/leafyhealth-deploy.tar.gz
           
           # Install production dependencies
+          rm -f package-lock.json
           npm install --legacy-peer-deps --production
           
           # Create systemd service
