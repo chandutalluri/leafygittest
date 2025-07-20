@@ -1,0 +1,89 @@
+No token found, skipping verification
+:5000/__nextjs_font/geist-latin.woff2:1  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-latin.woff2 net::ERR_ABORTED 403 (Forbidden)Understand this error
+websocket.js:85 WebSocket connection to 'wss://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/_next/webpack-hmr' failed: 
+init @ websocket.js:85
+connectHMR @ websocket.js:91
+pageBootstrap @ page-bootstrap.js:25
+eval @ next-dev.js:24Understand this error
+login.tsx:23 TypeError: Cannot read properties of undefined (reading 'call')
+    at options.factory (webpack.js:639:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:296:21)
+    at eval (index.tsx:13:71)
+    at (pages-dir-browser)/src/pages/index.tsx (https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/_next/static/chunks/pages/index.js:49:1)
+    at options.factory (webpack.js:639:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:296:21)
+    at eval (next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Ffrontend%2Fapps%2Fecommerce-web%2Fsrc%2Fpages%2Findex.tsx&page=%2F!:5:16)
+    at eval (route-loader.js:238:51)
+nextJsHandleConsoleError @ client.js:82
+handleRouteInfoError @ router.js:1008
+getRouteInfo @ router.js:1232
+await in getRouteInfo
+change @ router.js:743
+await in change
+replace @ router.js:447
+instance.<computed> @ router.js:184
+LoginPage.useEffect @ login.tsx:23
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+commitRootImpl @ react-dom.development.js:26969
+commitRoot @ react-dom.development.js:26716
+performSyncWorkOnRoot @ react-dom.development.js:26151
+flushSyncCallbacks @ react-dom.development.js:12042
+eval @ react-dom.development.js:25685Understand this error
+webpack.js:639 Uncaught (in promise) TypeError: Cannot read properties of undefined (reading 'call')
+    at options.factory (webpack.js:639:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:296:21)
+    at eval (index.tsx:13:71)
+    at (pages-dir-browser)/src/pages/index.tsx (https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/_next/static/chunks/pages/index.js:49:1)
+    at options.factory (webpack.js:639:31)
+    at __webpack_require__ (webpack.js:37:33)
+    at fn (webpack.js:296:21)
+    at eval (next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Ffrontend%2Fapps%2Fecommerce-web%2Fsrc%2Fpages%2Findex.tsx&page=%2F!:5:16)
+    at eval (route-loader.js:238:51)
+options.factory @ webpack.js:639
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:296
+eval @ index.tsx:13
+(pages-dir-browser)/./src/pages/index.tsx @ index.js:49
+options.factory @ webpack.js:639
+__webpack_require__ @ webpack.js:37
+fn @ webpack.js:296
+eval @ next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Ffrontend%2Fapps%2Fecommerce-web%2Fsrc%2Fpages%2Findex.tsx&page=%2F!:5
+eval @ route-loader.js:238
+Promise.then
+onEntrypoint @ route-loader.js:238
+register @ index.js:163
+eval @ next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Ffrontend%2Fapps%2Fecommerce-web%2Fsrc%2Fpages%2Findex.tsx&page=%2F!:2
+(pages-dir-browser)/../../../node_modules/next/dist/build/webpack/loaders/next-client-pages-loader.js?absolutePagePath=%2Fhome%2Frunner%2Fworkspace%2Ffrontend%2Fapps%2Fecommerce-web%2Fsrc%2Fpages%2Findex.tsx&page=%2F! @ index.js:17
+options.factory @ webpack.js:639
+__webpack_require__ @ webpack.js:37
+__webpack_exec__ @ index.js:55
+(anonymous) @ index.js:56
+__webpack_require__.O @ webpack.js:84
+(anonymous) @ index.js:57
+webpackJsonpCallback @ webpack.js:1182
+(anonymous) @ index.js:9Understand this error
+stack-frame.js:78  POST https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_original-stack-frames 403 (Forbidden)
+getOriginalStackFrames @ stack-frame.js:78
+getErrorByType @ get-error-by-type.js:74
+eval @ render-error.js:78
+commitHookEffectListMount @ react-dom.development.js:23184
+commitPassiveMountOnFiber @ react-dom.development.js:24960
+commitPassiveMountEffects_complete @ react-dom.development.js:24925
+commitPassiveMountEffects_begin @ react-dom.development.js:24912
+commitPassiveMountEffects @ react-dom.development.js:24900
+flushPassiveEffectsImpl @ react-dom.development.js:27073
+flushPassiveEffects @ react-dom.development.js:27018
+eval @ react-dom.development.js:26803
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533Understand this error
+:5000/__nextjs_font/geist-mono-latin.woff2:1  GET https://0073941e-d78c-4dc5-9728-82036535c583-00-18q4sxhc0swdq.spock.replit.dev:5000/__nextjs_font/geist-mono-latin.woff2 net::ERR_ABORTED 403 (Forbidden)

@@ -17,7 +17,7 @@ import { HeartIcon as HeartSolid, BellIcon as BellSolid } from '@heroicons/react
 import GlassCard from '@/components/ui/GlassCard';
 import { useCartStore } from '@/lib/stores/useCartStore';
 import { useBranchStore } from '@/lib/stores/useBranchStore';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '@/stores/authStore';
 import { AuthButton } from '../ui/AuthButton';
 import CartDrawer from '@/components/cart/CartDrawer';
 

@@ -6,8 +6,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Forward the request to the backend auth service
-    const response = await fetch('http://127.0.0.1:8085/api/auth/login', {
+    // Forward the request to the backend auth service through gateway
+    const response = await fetch('http://127.0.0.1:5000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
