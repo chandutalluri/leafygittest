@@ -188,12 +188,13 @@ export default function OrderManagement() {
       {/* Orders List */}
       <div className="grid gap-4">
         {filteredOrders.map(order => (
-          <Card
+          <div
             key={order.id}
-            className="cursor-pointer hover:bg-accent/50"
             onClick={() => setSelectedOrder(order)}
+            className="cursor-pointer"
           >
-            <CardHeader>
+            <Card className="hover:bg-accent/50">
+              <CardHeader>
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
@@ -293,6 +294,7 @@ export default function OrderManagement() {
               </div>
             </CardContent>
           </Card>
+          </div>
         ))}
       </div>
 

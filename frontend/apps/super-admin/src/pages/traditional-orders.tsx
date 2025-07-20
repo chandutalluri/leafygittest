@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Layout from '../components/Layout';
+// import Layout from '../components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select } from '@/components/ui/select';
@@ -143,7 +143,7 @@ export default function TraditionalOrdersSuperAdminPage() {
   };
 
   return (
-    <Layout>
+    <div className="p-4">
       <Head>
         <title>Traditional Orders System - Super Admin</title>
       </Head>
@@ -396,6 +396,6 @@ export default function TraditionalOrdersSuperAdminPage() {
           )}
         </Card>
       </div>
-    </Layout>
+    </div>
   );
 }

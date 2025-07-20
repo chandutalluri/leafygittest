@@ -364,7 +364,7 @@ export default function MultiLanguageManagement() {
                         </div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant={language.isActive ? 'default' : 'outline'}>
+                        <Badge variant={language.isActive ? 'default' : 'secondary'}>
                           {language.isActive ? 'Active' : 'Inactive'}
                         </Badge>
                       </td>
@@ -504,7 +504,7 @@ export default function MultiLanguageManagement() {
                         <div className="text-sm text-gray-500">{key.description || '-'}</div>
                       </td>
                       <td className="py-3 px-4">
-                        <Badge variant={key.isPlural ? 'secondary' : 'outline'}>
+                        <Badge variant={key.isPlural ? 'secondary' : 'default'}>
                           {key.isPlural ? 'Plural' : 'Singular'}
                         </Badge>
                       </td>

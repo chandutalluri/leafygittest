@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
-import Layout from '../../components/Layout';
+// import Layout from '../../components/Layout';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Store, Star, Package, DollarSign, TrendingUp, Edit, Plus, MapPin } from 'lucide-react';
@@ -123,7 +123,7 @@ export default function TraditionalVendorsPage() {
   };
 
   return (
-    <Layout>
+    <div className="p-4">
       <Head>
         <title>Traditional Vendors Management - Super Admin</title>
       </Head>
@@ -221,7 +221,7 @@ export default function TraditionalVendorsPage() {
                   </Button>
                   <Button
                     size="sm"
-                    variant={vendor.is_active ? 'secondary' : 'default'}
+                    variant={vendor.is_active ? 'outline' : 'default'}
                     onClick={() => toggleVendorStatus(vendor)}
                     className="flex-1"
                   >
@@ -332,6 +332,6 @@ export default function TraditionalVendorsPage() {
           </div>
         )}
       </div>
-    </Layout>
+    </div>
   );
 }

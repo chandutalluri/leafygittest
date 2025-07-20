@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes, forwardRef } from 'react';
-import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
 
 interface GlassButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -30,7 +29,7 @@ const GlassButton = forwardRef<HTMLButtonElement, GlassButtonProps>(
     };
 
     return (
-      <motion.button
+      <button
         ref={ref}
         className={cn(
           baseClasses,
@@ -40,15 +39,13 @@ const GlassButton = forwardRef<HTMLButtonElement, GlassButtonProps>(
           className
         )}
         disabled={disabled || isLoading}
-        whileHover={{ scale: disabled || isLoading ? 1 : 1.02 }}
-        whileTap={{ scale: disabled || isLoading ? 1 : 0.98 }}
         {...props}
       >
         {isLoading && (
           <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
         )}
         {children}
-      </motion.button>
+      </button>
     );
   }
 );

@@ -147,7 +147,7 @@ export default function ShippingDelivery() {
         return 'secondary';
       case 'planned':
       case 'scheduled':
-        return 'outline';
+        return 'secondary';
       case 'cancelled':
       case 'failed':
         return 'destructive';
@@ -493,7 +493,7 @@ export default function ShippingDelivery() {
                         <CardTitle className="text-lg">{carrier.name}</CardTitle>
                         <CardDescription>{carrier.code}</CardDescription>
                       </div>
-                      <Badge variant={carrier.isActive ? 'default' : 'outline'}>
+                      <Badge variant={carrier.isActive ? 'default' : 'secondary'}>
                         {carrier.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>

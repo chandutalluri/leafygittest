@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import MainLayout from '@/components/layout/MainLayout';
-import GlassCard from '@/components/ui/GlassCard';
+// import MainLayout from '@/components/layout/MainLayout';
+import { GlassCard } from '@/components/ui/GlassCard';
 import { AlertCircle, CheckCircle, Server, Database, Activity, Cpu, HardDrive } from 'lucide-react';
 
 interface SystemMetrics {
@@ -59,7 +59,7 @@ export default function MonitoringDashboard() {
       setError(null);
     } catch (err) {
       console.error('Error fetching metrics:', err);
-      setError(err.message);
+      setError((err as any)?.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -107,16 +107,16 @@ export default function MonitoringDashboard() {
 
   if (loading) {
     return (
-      <MainLayout>
+      <div className="p-4">
         <div className="flex items-center justify-center h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-600"></div>
         </div>
-      </MainLayout>
+      </div>
     );
   }
 
   return (
-    <MainLayout>
+    <div className="p-4">
       <Head>
         <title>System Monitoring - LeafyHealth</title>
       </Head>
@@ -346,6 +346,6 @@ export default function MonitoringDashboard() {
           </>
         )}
       </div>
-    </MainLayout>
+    </div>
   );
 }

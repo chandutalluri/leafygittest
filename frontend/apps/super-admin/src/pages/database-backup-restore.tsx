@@ -22,8 +22,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Switch } from '@/components/ui/switch';
-import { Progress } from '@/components/ui/progress';
+// import { Switch } from '@/components/ui/switch';
+// import { Progress } from '@/components/ui/progress';
 import {
   AlertCircle,
   Calendar,
@@ -263,7 +263,7 @@ export default function DatabaseBackupRestore() {
       }
     } catch (err) {
       console.error('Failed to create backup:', err);
-      setError(err.message || 'Failed to create backup. Please try again.');
+      setError((err as any)?.message || 'Failed to create backup. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -386,7 +386,7 @@ export default function DatabaseBackupRestore() {
       }
     } catch (err) {
       console.error('Failed to delete backup:', err);
-      setError(err.message || 'Failed to delete backup. Please try again.');
+      setError((err as any)?.message || 'Failed to delete backup. Please try again.');
     } finally {
       setLoading(false);
     }

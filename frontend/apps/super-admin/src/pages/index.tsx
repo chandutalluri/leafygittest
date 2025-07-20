@@ -155,7 +155,7 @@ export default function SuperAdminDashboard() {
     if (isAuthenticated && user) {
       const isGlobalAdmin =
         user.email === 'global.admin@leafyhealth.com' ||
-        user.user_type === 'global_admin' ||
+        (user as any).user_type === 'global_admin' ||
         user.role === 'global_admin';
 
       // Redirect operational admins to their dashboard

@@ -130,7 +130,7 @@ export default function PaymentProcessing() {
       case 'failed':
         return 'destructive';
       case 'refunded':
-        return 'outline';
+        return 'secondary';
       case 'cancelled':
         return 'destructive';
       default:
@@ -378,7 +378,7 @@ export default function PaymentProcessing() {
                         )}
                         {payment.status === 'failed' && (
                           <Button
-                            variant="secondary"
+                            variant="outline"
                             size="sm"
                             onClick={() => retryPayment(payment.id)}
                           >
@@ -455,7 +455,7 @@ function getStatusColor(status: string) {
     case 'failed':
       return 'destructive';
     case 'refunded':
-      return 'outline';
+      return 'secondary';
     case 'cancelled':
       return 'destructive';
     default:

@@ -300,14 +300,12 @@ async function handleRequest(req, res) {
 
   // Route root path - redirect based on device type
   if (pathname === '/' && req.method === 'GET') {
-    // Simple device detection using userAgent string
-    const mobileCheck = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i;
-    const isCurrentMobile = mobileCheck.test(userAgent || '');
-    const targetPath = isCurrentMobile ? '/mobile' : '/customer';
-    console.log(`🏠 Root access - ${isCurrentMobile ? 'Mobile' : 'Desktop'} device detected, redirecting to ${targetPath}`);
+    // Route root access to super-admin dashboard with correct basePath
+    console.log('🏠 Root access - routing to super-admin dashboard');
     setCorsHeaders(res, origin);
     setSecurityHeaders(res);
-    res.writeHead(302, { 'Location': targetPath });
+    res.setHeader('Set-Cookie', 'app=super-admin; Path=/; HttpOnly; SameSite=Strict');
+    res.writeHead(302, { 'Location': '/superadmin' });
     res.end();
     return;
   }

@@ -336,7 +336,7 @@ export default function SystemDashboard() {
           ) : (
             <div className="space-y-8">
               {Object.entries(groupedServices).map(([category, services]) => {
-                const CategoryIcon = CATEGORY_ICONS[category] || CogIcon;
+                const CategoryIcon = (CATEGORY_ICONS as any)[category] || CogIcon;
                 return (
                   <div key={category} className="bg-white rounded-lg shadow">
                     <div className="px-6 py-4 border-b border-gray-200">
@@ -351,7 +351,7 @@ export default function SystemDashboard() {
                     <div className="p-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         {services.map(service => {
-                          const ServiceIcon = SERVICE_ICONS[service.name] || ServerIcon;
+                          const ServiceIcon = (SERVICE_ICONS as any)[service.name] || ServerIcon;
                           const StatusIcon = getStatusIcon(service.status);
                           return (
                             <div

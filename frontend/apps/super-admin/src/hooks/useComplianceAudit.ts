@@ -58,7 +58,7 @@ export function useComplianceAudit() {
     queryKey: ['compliance-audit', 'all'],
     queryFn: async () => {
       try {
-        return await api.complianceAudit.getAll();
+        return await apiClient.get(`${API_PREFIX}`);
       } catch (error) {
         if (error instanceof APIError && error.status === 401) {
           toast({

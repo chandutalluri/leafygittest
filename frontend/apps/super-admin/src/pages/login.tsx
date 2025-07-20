@@ -14,7 +14,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [adminType, setAdminType] = useState<'global' | 'operational'>('global');
-  const { loginInternal, isLoading, error, clearError, isAuthenticated } = useAuthStore();
+  const { login, isLoading, error, clearError, isAuthenticated } = useAuthStore();
   const router = useRouter();
 
   // Redirect to dashboard if already authenticated
@@ -32,10 +32,8 @@ export default function LoginPage() {
       return;
     }
 
-    const success = await loginInternal(email, password);
-    if (success) {
-      router.replace('/');
-    }
+    await login(email, password);
+    // Login function will handle routing on success
   };
 
   return (

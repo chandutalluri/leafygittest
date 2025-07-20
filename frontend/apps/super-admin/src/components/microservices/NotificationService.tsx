@@ -142,7 +142,7 @@ export default function NotificationService() {
       case 'failed':
         return 'destructive';
       case 'read':
-        return 'outline';
+        return 'default';
       default:
         return 'secondary';
     }

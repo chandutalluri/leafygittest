@@ -40,12 +40,12 @@ function AuthenticatedLayout({ children }: { children: React.ReactNode }) {
         // Check user role/type for proper routing
         const isGlobalAdmin =
           user.email === 'global.admin@leafyhealth.com' ||
-          user.user_type === 'global_admin' ||
+          (user as any).user_type === 'global_admin' ||
           user.role === 'global_admin';
 
         const isOperationalAdmin =
           user.email === 'ops.admin@leafyhealth.com' ||
-          user.user_type === 'operational_admin' ||
+          (user as any).user_type === 'operational_admin' ||
           user.role === 'operational_admin';
 
         // Route users to appropriate dashboard
