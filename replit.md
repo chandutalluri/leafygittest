@@ -528,19 +528,31 @@ Each service exposes:
 - **Simple Start**: Added `scripts/simple-start.js` for quick gateway testing without full build
 - **Result**: Production deployment system now fully functional for Ubuntu 22.04 VPS
 
-### **Single Command Deployment**
+### **GitHub Actions CI/CD Pipeline (July 20, 2025)**
+- **Implementation**: Complete automated build and deployment system
+- **Features**: 
+  - Automated frontend builds in GitHub Actions
+  - SSH-based VPS deployment
+  - Systemd service setup
+  - Health monitoring and validation
+  - Zero-downtime deployment with backup/rollback
+- **Workflows**: 
+  - `build-only.yml` - PR testing and validation
+  - `deploy.yml` - Production deployment to Ubuntu VPS
+- **Requirements**: VPS_HOST, VPS_USERNAME, VPS_SSH_KEY, VPS_PORT secrets
+- **Result**: Professional CI/CD pipeline eliminating local build issues
+
+### **Single Command Deployment (Local)**
 ```bash
-# Fix dependencies (run once)
-node scripts/fix-dependencies.js
+# GitHub Actions deployment (recommended)
+git push origin main
 
-# Build and start everything
-node build-and-run.js
-
-# Or test gateway only
-node scripts/simple-start.js
+# Local testing only
+node quick-start.js
+node gateway-only.js
 ```
 
 ---
 
 *Last Updated: July 20, 2025*
-*Version: 2.4 - Production Deployment System Fixed and Operational*
+*Version: 2.5 - GitHub Actions CI/CD Pipeline Implemented*

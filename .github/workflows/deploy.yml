@@ -1,0 +1,196 @@
+name: Deploy LeafyHealth to VPS
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: |
+        npm install --legacy-peer-deps
+
+    - name: Build frontend applications
+      run: |
+        # Build super-admin
+        cd frontend/apps/super-admin
+        npm run build
+        cd ../../..
+        
+        # Build ecommerce-web  
+        cd frontend/apps/ecommerce-web
+        npm run build
+        cd ../../..
+        
+        # Build admin-portal
+        cd frontend/apps/admin-portal
+        npm run build
+        cd ../../..
+        
+        # Build ops-delivery
+        cd frontend/apps/ops-delivery
+        npm run build
+        cd ../../..
+
+    - name: Prepare deployment package
+      run: |
+        # Create deployment directory
+        mkdir -p deploy
+        
+        # Copy built frontend apps
+        cp -r frontend/apps/super-admin/.next deploy/super-admin-build
+        cp -r frontend/apps/ecommerce-web/.next deploy/ecommerce-web-build
+        cp -r frontend/apps/admin-portal/.next deploy/admin-portal-build
+        cp -r frontend/apps/ops-delivery/.next deploy/ops-delivery-build
+        
+        # Copy backend services
+        cp -r backend deploy/
+        cp -r server deploy/
+        cp -r shared deploy/
+        
+        # Copy configuration files
+        cp package.json deploy/
+        cp package-lock.json deploy/
+        cp tsconfig.json deploy/
+        cp drizzle.config.js deploy/
+        cp .env.example deploy/.env
+        
+        # Copy startup scripts
+        cp quick-start.js deploy/
+        cp gateway-only.js deploy/
+        
+        # Create production startup script
+        cat > deploy/production-start.sh << 'EOF'
+        #!/bin/bash
+        cd /opt/leafyhealth
+        export NODE_ENV=production
+        
+        # Install dependencies if needed
+        if [ ! -d "node_modules" ]; then
+          npm install --legacy-peer-deps --production
+        fi
+        
+        # Start gateway only (production mode)
+        node gateway-only.js
+        EOF
+        chmod +x deploy/production-start.sh
+
+    - name: Create deployment archive
+      run: |
+        cd deploy
+        tar -czf ../leafyhealth-deploy.tar.gz .
+        cd ..
+
+    - name: Deploy to VPS
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
+        script: |
+          # Create application directory
+          sudo mkdir -p /opt/leafyhealth
+          sudo chown $USER:$USER /opt/leafyhealth
+          
+          # Stop existing service if running
+          sudo systemctl stop leafyhealth || true
+          
+          # Backup current deployment
+          if [ -d "/opt/leafyhealth/current" ]; then
+            sudo mv /opt/leafyhealth/current /opt/leafyhealth/backup-$(date +%Y%m%d-%H%M%S)
+          fi
+
+    - name: Upload deployment package
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
+        source: "leafyhealth-deploy.tar.gz"
+        target: "/tmp/"
+
+    - name: Extract and setup application
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
+        script: |
+          # Extract deployment package
+          cd /opt/leafyhealth
+          tar -xzf /tmp/leafyhealth-deploy.tar.gz
+          rm /tmp/leafyhealth-deploy.tar.gz
+          
+          # Install production dependencies
+          npm install --legacy-peer-deps --production
+          
+          # Create systemd service
+          sudo tee /etc/systemd/system/leafyhealth.service > /dev/null << 'EOF'
+          [Unit]
+          Description=LeafyHealth Platform
+          After=network.target
+          
+          [Service]
+          Type=simple
+          User=leafy
+          WorkingDirectory=/opt/leafyhealth
+          ExecStart=/usr/bin/node gateway-only.js
+          Restart=on-failure
+          RestartSec=10
+          Environment=NODE_ENV=production
+          Environment=PORT=5000
+          
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+          
+          # Enable and start service
+          sudo systemctl daemon-reload
+          sudo systemctl enable leafyhealth
+          sudo systemctl start leafyhealth
+          
+          # Check service status
+          sleep 5
+          sudo systemctl status leafyhealth
+
+    - name: Health check
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: ${{ secrets.VPS_PORT || 22 }}
+        script: |
+          # Wait for service to start
+          sleep 10
+          
+          # Test health endpoint
+          if curl -f http://localhost:5000/health; then
+            echo "✅ LeafyHealth platform is running successfully!"
+            echo "🌐 Application URL: http://${{ secrets.VPS_HOST }}:5000"
+          else
+            echo "❌ Health check failed"
+            sudo systemctl status leafyhealth
+            exit 1
+          fi
